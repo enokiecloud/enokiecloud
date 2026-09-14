@@ -72,12 +72,11 @@
     main {
       width: min(900px, 88%);
       margin: auto;
-      padding: 78px 0 100px;
+      padding: 80px 0 100px;
     }
 
     .intro {
-      position: relative;
-      margin-bottom: 64px;
+      margin-bottom: 58px;
     }
 
     h1 {
@@ -88,7 +87,6 @@
     }
 
     .subtitle {
-      max-width: 560px;
       margin-top: 15px;
 
       color: var(--soft);
@@ -96,41 +94,19 @@
       font-family: "Cormorant Garamond", serif;
       font-size: 19px;
       font-style: italic;
-      line-height: 1.5;
-    }
-
-    .intro-note {
-      max-width: 500px;
-      margin-top: 32px;
-
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 9px;
-      line-height: 1.8;
-    }
-
-    .little-heart {
-      position: absolute;
-      right: 25px;
-      top: 5px;
-
-      font-family: "Cormorant Garamond", serif;
-      font-size: 37px;
-
-      transform: rotate(8deg);
     }
 
     .archive {
       border-top: 1px solid var(--ink);
-      padding-top: 12px;
+      padding-top: 15px;
     }
 
     .archive-item {
-      min-height: 135px;
-      padding: 28px 5px;
+      min-height: 140px;
+      padding: 30px 5px;
 
-      display: grid;
-      grid-template-columns: 70px 1fr auto;
-      gap: 25px;
+      display: flex;
+      justify-content: space-between;
       align-items: center;
 
       transition:
@@ -143,15 +119,9 @@
       padding-right: 14px;
     }
 
-    .number {
-      color: var(--soft);
-      font-size: 8px;
-      letter-spacing: 1.5px;
-    }
-
     .archive-title {
       font-family: "Cormorant Garamond", serif;
-      font-size: 31px;
+      font-size: 32px;
       font-weight: 500;
       line-height: 1;
     }
@@ -177,31 +147,10 @@
       transform: translate(4px, -4px);
     }
 
-    .bottom-note {
-      margin-top: 34px;
-
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      color: var(--soft);
-
-      font-family: "Cormorant Garamond", serif;
-      font-size: 16px;
-      font-style: italic;
-    }
-
-    .bottom-heart {
-      color: var(--ink);
-      font-size: 21px;
-      font-style: normal;
-    }
-
     .back {
       display: inline-block;
       margin-top: 45px;
 
-      font-family: "IBM Plex Mono", monospace;
       font-size: 10px;
     }
 
@@ -210,7 +159,6 @@
     }
 
     @media (max-width: 650px) {
-
       nav {
         flex-direction: column;
         align-items: flex-start;
@@ -221,18 +169,12 @@
         padding-top: 55px;
       }
 
-      .little-heart {
-        right: 0;
-      }
-
       .archive-item {
-        grid-template-columns: 35px 1fr auto;
-        gap: 15px;
         min-height: 120px;
       }
 
       .archive-title {
-        font-size: 27px;
+        font-size: 28px;
       }
     }
   </style>
@@ -253,12 +195,9 @@
 
   </nav>
 
-
   <main>
 
     <section class="intro">
-
-      <span class="little-heart">♡</span>
 
       <h1>memory box</h1>
 
@@ -266,18 +205,11 @@
         little things i used to love, remember, or still think about
       </p>
 
-      <p class="intro-note">
-        no real organization here ~ just things i wanted to keep somewhere ♡
-      </p>
-
     </section>
-
 
     <section class="archive">
 
       <a href="archie-comics.html" class="archive-item">
-
-        <span class="number">01</span>
 
         <div>
           <h2 class="archive-title">archie comics</h2>
@@ -291,10 +223,7 @@
 
       </a>
 
-
       <a href="kitchen-notes.html" class="archive-item">
-
-        <span class="number">02</span>
 
         <div>
           <h2 class="archive-title">kitchen notes</h2>
@@ -309,18 +238,6 @@
       </a>
 
     </section>
-
-
-    <div class="bottom-note">
-
-      <span>
-        more things will probably end up here eventually...
-      </span>
-
-      <span class="bottom-heart">♡</span>
-
-    </div>
-
 
     <a href="index.html" class="back">
       ← back home
