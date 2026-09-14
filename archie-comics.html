@@ -88,11 +88,11 @@
     .comic-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 42px 28px;
+      gap: 34px 28px;
     }
 
     .comic {
-      display: block;
+      overflow: hidden;
     }
 
     .comic-cover {
@@ -101,17 +101,14 @@
       object-fit: cover;
       display: block;
       border: 1px solid var(--line);
-      transition: transform .2s ease;
+      transition:
+        transform .25s ease,
+        box-shadow .25s ease;
     }
 
     .comic:hover .comic-cover {
-      transform: translateY(-5px);
-    }
-
-    .comic-title {
-      margin-top: 10px;
-      font-family: "Cormorant Garamond", serif;
-      font-size: 19px;
+      transform: translateY(-5px) scale(1.015);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
     }
 
     .back {
@@ -161,47 +158,38 @@
 
       <div class="comic">
         <img class="comic-cover" src="images/archie1" alt="archie comic cover">
-        <div class="comic-title">archie 01</div>
       </div>
 
       <div class="comic">
         <img class="comic-cover" src="images/archie2" alt="archie comic cover">
-        <div class="comic-title">archie 02</div>
       </div>
 
       <div class="comic">
         <img class="comic-cover" src="images/archie3" alt="archie comic cover">
-        <div class="comic-title">archie 03</div>
       </div>
 
       <div class="comic">
         <img class="comic-cover" src="images/archie4" alt="archie comic cover">
-        <div class="comic-title">archie 04</div>
       </div>
 
       <div class="comic">
         <img class="comic-cover" src="images/archie5" alt="archie comic cover">
-        <div class="comic-title">archie 05</div>
       </div>
 
       <div class="comic">
         <img class="comic-cover" src="images/archie6" alt="archie comic cover">
-        <div class="comic-title">archie 06</div>
       </div>
 
       <div class="comic">
         <img class="comic-cover" src="images/archie7" alt="archie comic cover">
-        <div class="comic-title">archie 07</div>
       </div>
 
       <div class="comic">
         <img class="comic-cover" src="images/archie8" alt="archie comic cover">
-        <div class="comic-title">archie 08</div>
       </div>
 
       <div class="comic">
         <img class="comic-cover" src="images/archie9" alt="archie comic cover">
-        <div class="comic-title">archie 09</div>
       </div>
 
     </div>
