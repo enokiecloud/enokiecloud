@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@300;400&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@300;400&family=Schoolbell&display=swap"
     rel="stylesheet"
   >
 
@@ -29,8 +29,10 @@
 
     body {
       min-height: 100vh;
+
       background: var(--paper);
       color: var(--ink);
+
       font-family: "IBM Plex Mono", monospace;
     }
 
@@ -80,11 +82,13 @@
       width: min(850px, 88%);
       margin: auto;
       padding: 65px 0 70px;
+
       text-align: center;
     }
 
     .tiny-label {
       color: var(--soft);
+
       font-size: 8px;
       letter-spacing: 3px;
     }
@@ -99,13 +103,13 @@
     }
 
     .subtitle {
-      margin-top: 13px;
+      margin-top: 12px;
 
       color: var(--soft);
 
-      font-family: "Cormorant Garamond", serif;
-      font-size: 17px;
-      font-style: italic;
+      font-family: "Schoolbell", cursive;
+      font-size: 18px;
+      line-height: 1.4;
     }
 
     .fortune-area {
@@ -166,16 +170,15 @@
 
       color: var(--soft);
 
-      font-family: "Cormorant Garamond", serif;
-      font-size: 15px;
-      font-style: italic;
+      font-family: "Schoolbell", cursive;
+      font-size: 16px;
     }
 
     .fortune-wrap {
       width: min(520px, 100%);
-      min-height: 125px;
+      min-height: 135px;
 
-      margin-top: 28px;
+      margin-top: 25px;
 
       display: flex;
       flex-direction: column;
@@ -188,6 +191,7 @@
 
       color: var(--soft);
 
+      font-family: "IBM Plex Mono", monospace;
       font-size: 8px;
       letter-spacing: 1.5px;
 
@@ -197,15 +201,14 @@
     }
 
     .fortune {
-      min-height: 55px;
+      min-height: 60px;
 
       display: flex;
       align-items: center;
       justify-content: center;
 
-      font-family: "Cormorant Garamond", serif;
-      font-size: 25px;
-      font-style: italic;
+      font-family: "Schoolbell", cursive;
+      font-size: 28px;
       line-height: 1.35;
 
       opacity: 0;
@@ -231,12 +234,13 @@
       border: 0;
       border-bottom: 1px solid var(--ink);
       background: transparent;
+
       padding: 0 0 2px;
 
       color: var(--ink);
 
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 8px;
+      font-family: "Schoolbell", cursive;
+      font-size: 15px;
 
       cursor: pointer;
 
@@ -252,7 +256,7 @@
     }
 
     .again:hover {
-      font-style: italic;
+      transform: rotate(-2deg);
     }
 
     .bottom {
@@ -264,6 +268,7 @@
 
       display: flex;
       justify-content: space-between;
+      align-items: center;
 
       font-family: "Cormorant Garamond", serif;
       font-size: 16px;
@@ -275,7 +280,9 @@
 
     .bottom-note {
       color: var(--soft);
-      font-style: italic;
+
+      font-family: "Schoolbell", cursive;
+      font-size: 15px;
     }
 
     @media (max-width: 650px) {
@@ -299,7 +306,7 @@
       }
 
       .fortune {
-        font-size: 22px;
+        font-size: 25px;
       }
 
       .bottom {
