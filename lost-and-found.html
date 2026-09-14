@@ -18,14 +18,19 @@
     :root {
       --paper: #fdfcf9;
       --ink: #111111;
-      --soft: #77736e;
-      --line: #d8d3cc;
+      --soft: #6f6b66;
+      --line: #d7d2cb;
+      --faint: #ece8e1;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
@@ -108,15 +113,15 @@
     }
 
     .tiny-note {
-      margin-top: 9px;
+      margin-top: 10px;
       color: var(--soft);
-      font-size: 7px;
+      font-size: 8px;
       line-height: 1.6;
     }
 
     .found-field {
       position: relative;
-      min-height: 630px;
+      min-height: 680px;
       margin-top: 34px;
 
       border-top: 1px solid var(--ink);
@@ -131,199 +136,384 @@
       cursor: pointer;
       user-select: none;
       -webkit-user-select: none;
+
       transition:
-        transform .2s ease,
-        opacity .2s ease;
+        transform .22s ease,
+        opacity .22s ease;
     }
 
     .found-object:hover {
-      transform: translateY(-3px) rotate(-1deg);
+      transform: translateY(-4px) rotate(-1deg);
     }
 
     .found-object:focus-visible {
       outline: 1px solid var(--ink);
-      outline-offset: 7px;
+      outline-offset: 8px;
     }
 
     .object-label {
       display: block;
-      margin-top: 7px;
+      margin-top: 10px;
       color: var(--soft);
-      font-size: 6px;
+      font-size: 9px;
       text-align: center;
       letter-spacing: .03em;
+      white-space: nowrap;
     }
 
-    /* key */
+    /* old key */
     .key {
-      left: 8%;
+      left: 7%;
       top: 14%;
-      transform: rotate(-9deg);
+      transform: rotate(-8deg);
     }
 
     .key-shape {
       position: relative;
-      width: 76px;
-      height: 27px;
+      display: block;
+      width: 106px;
+      height: 34px;
     }
 
-    .key-shape::before {
-      content: "";
+    .key-ring {
       position: absolute;
       left: 0;
-      top: 2px;
-      width: 20px;
-      height: 20px;
+      top: 3px;
+
+      width: 28px;
+      height: 28px;
+
       border: 2px solid var(--ink);
+      border-radius: 50%;
+      background: transparent;
+    }
+
+    .key-ring::after {
+      content: "";
+      position: absolute;
+      left: 8px;
+      top: 8px;
+
+      width: 8px;
+      height: 8px;
+
+      border: 1px solid var(--ink);
       border-radius: 50%;
     }
 
-    .key-shape::after {
-      content: "";
+    .key-stem {
       position: absolute;
-      left: 19px;
-      top: 11px;
-      width: 52px;
+      left: 26px;
+      top: 16px;
+
+      width: 68px;
       height: 2px;
       background: var(--ink);
-      box-shadow:
-        36px 5px 0 -0.5px var(--ink),
-        44px 5px 0 -0.5px var(--ink);
+    }
+
+    .key-tooth-a,
+    .key-tooth-b {
+      position: absolute;
+      width: 2px;
+      background: var(--ink);
+    }
+
+    .key-tooth-a {
+      left: 77px;
+      top: 16px;
+      height: 11px;
+    }
+
+    .key-tooth-b {
+      left: 90px;
+      top: 16px;
+      height: 8px;
+    }
+
+    .key-tip {
+      position: absolute;
+      left: 93px;
+      top: 14px;
+
+      width: 12px;
+      height: 6px;
+
+      border-top: 2px solid var(--ink);
+      border-right: 2px solid var(--ink);
     }
 
     /* receipt */
     .receipt {
-      right: 12%;
-      top: 9%;
+      right: 9%;
+      top: 8%;
       transform: rotate(4deg);
     }
 
     .receipt-shape {
-      width: 72px;
-      min-height: 116px;
-      padding: 12px 9px;
+      position: relative;
+      display: block;
+
+      width: 98px;
+      min-height: 146px;
+
+      padding: 18px 13px 16px;
+
       border: 1px solid var(--ink);
       background: var(--paper);
+
+      box-shadow: 3px 4px 0 var(--faint);
+    }
+
+    .receipt-shape::before {
+      content: "THANK U";
+      display: block;
+      margin-bottom: 13px;
+
+      font-size: 7px;
+      letter-spacing: .12em;
+      text-align: center;
+    }
+
+    .receipt-shape::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -1px;
+
+      width: 100%;
+      height: 8px;
+
+      background:
+        linear-gradient(135deg, transparent 4px, var(--paper) 0) 0 0/8px 8px repeat-x;
     }
 
     .receipt-line {
       display: block;
       height: 1px;
-      margin-bottom: 8px;
+      margin-bottom: 9px;
       background: var(--line);
     }
 
     .receipt-line.short {
-      width: 62%;
+      width: 68%;
+    }
+
+    .receipt-total {
+      display: block;
+      margin-top: 12px;
+      border-top: 1px solid var(--line);
+      padding-top: 8px;
+
+      font-size: 7px;
+      text-align: right;
     }
 
     /* hair tie */
     .hair-tie {
-      left: 37%;
-      top: 29%;
+      left: 35%;
+      top: 30%;
       transform: rotate(15deg);
     }
 
     .hair-tie-shape {
-      width: 58px;
-      height: 58px;
-      border: 6px solid var(--ink);
-      border-radius: 50%;
+      display: block;
+
+      width: 78px;
+      height: 68px;
+
+      border: 8px solid var(--ink);
+      border-radius: 48% 52% 46% 54% / 52% 46% 54% 48%;
     }
 
-    /* photo */
+    /* polaroid */
     .photo {
-      right: 28%;
-      top: 36%;
+      right: 27%;
+      top: 35%;
       transform: rotate(-7deg);
     }
 
     .photo-shape {
-      width: 108px;
-      height: 128px;
+      display: block;
+
+      width: 132px;
+      height: 160px;
+
       border: 1px solid var(--ink);
       background: var(--paper);
-      padding: 8px 8px 25px;
+
+      padding: 10px 10px 30px;
+
+      box-shadow: 4px 4px 0 var(--faint);
     }
 
     .photo-inner {
+      position: relative;
+      display: block;
+
       width: 100%;
       height: 100%;
+
+      overflow: hidden;
       border: 1px solid var(--line);
+
       background:
-        linear-gradient(
-          135deg,
-          transparent 46%,
-          var(--line) 47%,
-          var(--line) 49%,
-          transparent 50%
-        );
+        linear-gradient(to bottom, #f7f5f0 0 50%, #ebe6de 50% 100%);
     }
 
-    /* button */
+    .photo-inner::before {
+      content: "";
+      position: absolute;
+      left: 15%;
+      bottom: 14%;
+
+      width: 28px;
+      height: 42px;
+
+      border: 1px solid var(--soft);
+      border-radius: 48% 48% 42% 42%;
+      opacity: .65;
+    }
+
+    .photo-inner::after {
+      content: "";
+      position: absolute;
+      right: 14%;
+      bottom: 12%;
+
+      width: 35px;
+      height: 50px;
+
+      border: 1px solid var(--soft);
+      border-radius: 50% 50% 44% 44%;
+      opacity: .45;
+    }
+
+    /* loose button */
     .button-object {
-      left: 18%;
-      bottom: 15%;
+      left: 17%;
+      bottom: 14%;
       transform: rotate(7deg);
     }
 
     .button-shape {
       position: relative;
-      width: 48px;
-      height: 48px;
+      display: block;
+
+      width: 62px;
+      height: 62px;
+
       border: 2px solid var(--ink);
       border-radius: 50%;
+
+      box-shadow: inset 0 0 0 5px var(--paper), inset 0 0 0 6px var(--line);
     }
 
-    .button-shape::before,
-    .button-shape::after {
-      content: "";
+    .button-hole {
       position: absolute;
-      top: 17px;
-      width: 5px;
-      height: 5px;
+
+      width: 6px;
+      height: 6px;
+
       border: 1px solid var(--ink);
       border-radius: 50%;
     }
 
-    .button-shape::before {
-      left: 14px;
+    .button-hole.one {
+      left: 19px;
+      top: 19px;
     }
 
-    .button-shape::after {
-      right: 14px;
+    .button-hole.two {
+      right: 19px;
+      top: 19px;
+    }
+
+    .button-hole.three {
+      left: 19px;
+      bottom: 19px;
+    }
+
+    .button-hole.four {
+      right: 19px;
+      bottom: 19px;
     }
 
     /* folded note */
     .note-object {
-      right: 7%;
-      bottom: 17%;
-      transform: rotate(10deg);
+      right: 6%;
+      bottom: 15%;
+      transform: rotate(9deg);
     }
 
     .note-shape {
       position: relative;
-      width: 108px;
-      height: 74px;
+      display: block;
+
+      width: 132px;
+      height: 94px;
+
       border: 1px solid var(--ink);
       background: var(--paper);
+
+      box-shadow: 3px 3px 0 var(--faint);
     }
 
-    .note-shape::after {
+    .note-fold-one,
+    .note-fold-two {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .note-fold-one::before {
       content: "";
       position: absolute;
       left: 0;
       top: 0;
+
       width: 100%;
       height: 100%;
+
       background:
         linear-gradient(
-          35deg,
-          transparent 49%,
-          var(--line) 50%,
-          transparent 51%
+          33deg,
+          transparent 49.3%,
+          var(--line) 49.7%,
+          var(--line) 50.3%,
+          transparent 50.7%
         );
-      opacity: .8;
+    }
+
+    .note-fold-two::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+
+      width: 100%;
+      height: 100%;
+
+      background:
+        linear-gradient(
+          -33deg,
+          transparent 49.3%,
+          var(--line) 49.7%,
+          var(--line) 50.3%,
+          transparent 50.7%
+        );
+    }
+
+    .note-writing {
+      position: absolute;
+      left: 21px;
+      top: 35px;
+
+      width: 88px;
+
+      font-family: "Cormorant Garamond", serif;
+      font-size: 10px;
+      font-style: italic;
+      text-align: center;
     }
 
     /* coin */
@@ -334,26 +524,99 @@
     }
 
     .coin-shape {
+      position: relative;
+
       display: grid;
       place-items: center;
-      width: 44px;
-      height: 44px;
+
+      width: 58px;
+      height: 58px;
+
       border: 2px solid var(--ink);
       border-radius: 50%;
+
       font-family: "Cormorant Garamond", serif;
-      font-size: 20px;
+      font-size: 23px;
+    }
+
+    .coin-shape::after {
+      content: "";
+      position: absolute;
+      inset: 5px;
+
+      border: 1px solid var(--line);
+      border-radius: 50%;
+    }
+
+    /* tiny earring */
+    .earring {
+      left: 50%;
+      top: 13%;
+      transform: rotate(-5deg);
+    }
+
+    .earring-shape {
+      position: relative;
+      display: block;
+
+      width: 42px;
+      height: 74px;
+    }
+
+    .earring-hook {
+      position: absolute;
+      left: 13px;
+      top: 0;
+
+      width: 17px;
+      height: 27px;
+
+      border: 1.5px solid var(--ink);
+      border-left-color: transparent;
+      border-bottom-color: transparent;
+      border-radius: 50%;
+      transform: rotate(18deg);
+    }
+
+    .earring-drop {
+      position: absolute;
+      left: 11px;
+      bottom: 0;
+
+      width: 20px;
+      height: 29px;
+
+      border: 1.5px solid var(--ink);
+      border-radius: 50% 50% 56% 44% / 45% 45% 55% 55%;
+    }
+
+    .earring-chain {
+      position: absolute;
+      left: 20px;
+      top: 24px;
+
+      width: 1px;
+      height: 24px;
+
+      background: var(--ink);
     }
 
     .detail-panel {
       position: absolute;
+      z-index: 20;
+
       left: 50%;
       top: 50%;
-      width: min(360px, 82%);
+
+      width: min(380px, 84%);
+
       transform: translate(-50%, -50%);
 
-      background: var(--paper);
+      background: rgba(253, 252, 249, .98);
       border: 1px solid var(--ink);
-      padding: 26px 24px 22px;
+      padding: 28px 26px 24px;
+
+      box-shadow: 8px 8px 0 var(--faint);
 
       opacity: 0;
       visibility: hidden;
@@ -373,42 +636,48 @@
 
     .detail-kicker {
       color: var(--soft);
-      font-size: 7px;
+      font-size: 8px;
       letter-spacing: .06em;
       text-transform: uppercase;
     }
 
     .detail-title {
       margin-top: 8px;
+
       font-family: "Cormorant Garamond", serif;
-      font-size: 32px;
+      font-size: 34px;
       font-weight: 500;
       line-height: 1;
     }
 
     .detail-body {
-      margin-top: 14px;
+      margin-top: 15px;
+
       font-family: "Cormorant Garamond", serif;
-      font-size: 18px;
+      font-size: 19px;
       line-height: 1.45;
     }
 
     .detail-meta {
-      margin-top: 16px;
+      margin-top: 17px;
+
       color: var(--soft);
-      font-size: 7px;
-      line-height: 1.6;
+      font-size: 8px;
+      line-height: 1.7;
     }
 
     .detail-close {
       margin-top: 20px;
+
       border: 0;
       border-bottom: 1px solid var(--ink);
       background: transparent;
+
       padding: 2px 0;
 
       font-family: "Cormorant Garamond", serif;
       font-size: 17px;
+
       cursor: pointer;
     }
 
@@ -443,42 +712,47 @@
       }
 
       .found-field {
-        min-height: 720px;
+        min-height: 860px;
       }
 
       .key {
-        left: 5%;
+        left: 4%;
+        top: 8%;
+      }
+
+      .earring {
+        left: 48%;
         top: 10%;
       }
 
       .receipt {
-        right: 4%;
-        top: 8%;
+        right: 2%;
+        top: 9%;
       }
 
       .hair-tie {
-        left: 20%;
-        top: 35%;
+        left: 12%;
+        top: 34%;
       }
 
       .photo {
-        right: 7%;
-        top: 42%;
+        right: 4%;
+        top: 38%;
       }
 
       .button-object {
-        left: 8%;
-        bottom: 15%;
+        left: 7%;
+        bottom: 14%;
       }
 
       .coin {
-        left: 45%;
-        bottom: 8%;
+        left: 44%;
+        bottom: 7%;
       }
 
       .note-object {
-        right: 4%;
-        bottom: 14%;
+        right: 3%;
+        bottom: 13%;
       }
     }
   </style>
@@ -524,7 +798,13 @@
         data-item="key"
         aria-label="old key"
       >
-        <span class="key-shape"></span>
+        <span class="key-shape">
+          <span class="key-ring"></span>
+          <span class="key-stem"></span>
+          <span class="key-tooth-a"></span>
+          <span class="key-tooth-b"></span>
+          <span class="key-tip"></span>
+        </span>
         <span class="object-label">old key</span>
       </button>
 
@@ -541,6 +821,7 @@
           <span class="receipt-line short"></span>
           <span class="receipt-line"></span>
           <span class="receipt-line short"></span>
+          <span class="receipt-total">$ ?.??</span>
         </span>
         <span class="object-label">receipt</span>
       </button>
@@ -564,7 +845,7 @@
         <span class="photo-shape">
           <span class="photo-inner"></span>
         </span>
-        <span class="object-label">photo</span>
+        <span class="object-label">old photo</span>
       </button>
 
       <button
@@ -573,8 +854,13 @@
         data-item="button"
         aria-label="loose button"
       >
-        <span class="button-shape"></span>
-        <span class="object-label">button</span>
+        <span class="button-shape">
+          <span class="button-hole one"></span>
+          <span class="button-hole two"></span>
+          <span class="button-hole three"></span>
+          <span class="button-hole four"></span>
+        </span>
+        <span class="object-label">loose button</span>
       </button>
 
       <button
@@ -583,7 +869,11 @@
         data-item="note"
         aria-label="folded note"
       >
-        <span class="note-shape"></span>
+        <span class="note-shape">
+          <span class="note-fold-one"></span>
+          <span class="note-fold-two"></span>
+          <span class="note-writing">don't forget</span>
+        </span>
         <span class="object-label">folded note</span>
       </button>
 
@@ -591,10 +881,24 @@
         class="found-object coin"
         type="button"
         data-item="coin"
-        aria-label="coin"
+        aria-label="weird coin"
       >
         <span class="coin-shape">?</span>
-        <span class="object-label">coin</span>
+        <span class="object-label">weird coin</span>
+      </button>
+
+      <button
+        class="found-object earring"
+        type="button"
+        data-item="earring"
+        aria-label="single earring"
+      >
+        <span class="earring-shape">
+          <span class="earring-hook"></span>
+          <span class="earring-chain"></span>
+          <span class="earring-drop"></span>
+        </span>
+        <span class="object-label">single earring</span>
       </button>
 
       <div
@@ -604,7 +908,7 @@
         aria-modal="true"
         aria-hidden="true"
       >
-        <p class="detail-kicker" id="detailKicker">
+        <p class="detail-kicker">
           found item
         </p>
 
@@ -687,11 +991,16 @@
           "not enough to buy anything. still feels wrong to throw it away.",
         meta:
           "found: couch cushion / value: emotionally significant apparently"
+      },
+
+      earring: {
+        title: "single earring",
+        body:
+          "the other one is nowhere to be found. naturally.",
+        meta:
+          "found: beside the bed / pair status: complicated"
       }
     };
-
-    const foundField =
-      document.getElementById("foundField");
 
     const detailPanel =
       document.getElementById("detailPanel");
@@ -715,12 +1024,10 @@
         )
       );
 
-    let lastFocused =
-      null;
+    let lastFocused = null;
 
     function openItem(itemKey) {
-      const item =
-        items[itemKey];
+      const item = items[itemKey];
 
       if (!item) {
         return;
