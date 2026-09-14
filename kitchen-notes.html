@@ -118,10 +118,6 @@
       border-bottom: 1px solid var(--line);
     }
 
-    .entry:nth-child(even) {
-      padding-left: 45px;
-    }
-
     .entry-title {
       font-family: "Cormorant Garamond", serif;
       font-size: 27px;
@@ -157,22 +153,6 @@
       font-style: italic;
     }
 
-    .signature {
-      position: relative;
-    }
-
-    .signature::after {
-      content: "♡";
-      position: absolute;
-      right: 5%;
-      top: 25px;
-
-      font-family: "Cormorant Garamond", serif;
-      font-size: 50px;
-
-      transform: rotate(8deg);
-    }
-
     .back {
       display: inline-block;
       margin-top: 55px;
@@ -192,16 +172,10 @@
         gap: 15px;
       }
 
-      .entry,
-      .entry:nth-child(even) {
+      .entry {
         grid-template-columns: 1fr;
         gap: 18px;
         padding: 35px 0;
-      }
-
-      .signature::after {
-        right: 0;
-        top: 20px;
       }
     }
   </style>
@@ -249,7 +223,6 @@
         </p>
       </article>
 
-
       <article class="entry">
         <div>
           <h2 class="entry-title">sushi bake</h2>
@@ -263,7 +236,6 @@
           imitation crab + unagi sauce. just sooo much goodness!
         </p>
       </article>
-
 
       <article class="entry">
         <div>
@@ -279,7 +251,6 @@
         </p>
       </article>
 
-
       <article class="entry">
         <div>
           <h2 class="entry-title">honey glazed salmon</h2>
@@ -292,7 +263,6 @@
           mwuah.
         </p>
       </article>
-
 
       <article class="entry">
         <div>
@@ -308,7 +278,6 @@
         </p>
       </article>
 
-
       <article class="entry">
         <div>
           <h2 class="entry-title">adobo</h2>
@@ -319,7 +288,6 @@
           idk my version for some reason was so good...
         </p>
       </article>
-
 
       <article class="entry">
         <div>
@@ -333,7 +301,6 @@
         </p>
       </article>
 
-
       <article class="entry">
         <div>
           <h2 class="entry-title">tteokbokki</h2>
@@ -345,7 +312,6 @@
           heavy cream + gochujang and it was delishhh.
         </p>
       </article>
-
 
       <article class="entry">
         <div>
@@ -359,8 +325,7 @@
         </p>
       </article>
 
-
-      <article class="entry signature">
+      <article class="entry">
         <div>
           <h2 class="entry-title">my signature scrambled egg</h2>
           <span class="rating">10 / 5 ♡</span>
