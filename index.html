@@ -47,10 +47,9 @@
     /* NAV */
 
     nav {
-      max-width: 1420px;
+      width: min(1420px, 92%);
       margin: auto;
-      min-height: 115px;
-      padding: 20px 5%;
+      min-height: 120px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -61,8 +60,7 @@
 
     .logo-wrap {
       width: 390px;
-      display: flex;
-      align-items: center;
+      max-width: 40vw;
     }
 
     .logo-image {
@@ -73,7 +71,8 @@
 
     .nav-links {
       display: flex;
-      gap: 32px;
+      gap: 34px;
+      align-items: center;
     }
 
     .nav-links a {
@@ -85,69 +84,94 @@
       font-style: italic;
     }
 
-    /* DECORATIONS */
-
-    .decor {
-      position: absolute;
-      pointer-events: none;
-      z-index: 0;
-      opacity: .9;
-    }
-
-    .decor-left {
-      width: 230px;
-      left: -25px;
-      top: 585px;
-      transform: rotate(-8deg);
-    }
-
-    .decor-right {
-      width: 270px;
-      right: -35px;
-      top: 240px;
-      transform: rotate(2deg);
-    }
-
     /* MAIN HERO */
 
     .home {
-      max-width: 1420px;
-      margin: auto;
+      width: min(1420px, 92%);
       min-height: 690px;
-      padding: 52px 5% 40px;
+      margin: auto;
+      padding: 60px 5% 35px;
+
       display: grid;
-      grid-template-columns: 1.05fr 1.5fr 1fr;
+      grid-template-columns: 1fr 1.45fr .95fr;
       align-items: center;
+
       position: relative;
       z-index: 2;
     }
 
+    /* REAL IMAGE DECORATIONS */
+
+    .flourish {
+      position: absolute;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .left-flourish {
+      width: 400px;
+      height: auto;
+
+      left: -190px;
+      bottom: -80px;
+
+      z-index: 1;
+    }
+
+    .right-flourish {
+      width: 420px;
+      height: auto;
+
+      right: -235px;
+      top: 45px;
+
+      z-index: 1;
+
+      mix-blend-mode: multiply;
+    }
+
+    /* LEFT TEXT */
+
+    .left-side {
+      position: relative;
+      z-index: 3;
+    }
+
     .site-title {
       font-family: "Cormorant Garamond", serif;
-      font-size: clamp(46px, 5vw, 76px);
+      font-size: clamp(48px, 5vw, 74px);
       font-weight: 500;
-      line-height: 1;
+      line-height: .95;
       letter-spacing: -3px;
       white-space: nowrap;
     }
 
     .site-sub {
-      margin-top: 18px;
+      margin-top: 19px;
+
       color: var(--soft);
+
       font-family: "Cormorant Garamond", serif;
-      font-style: italic;
       font-size: 18px;
+      font-style: italic;
     }
 
     .tiny-list {
+      width: max-content;
+
       margin-top: 58px;
-      line-height: 1.75;
-      color: #4c4945;
-      border-left: 1px solid var(--ink);
       padding-left: 15px;
+
+      border-left: 1px solid var(--ink);
+
+      color: #4c4945;
+
       font-family: "Cormorant Garamond", serif;
-      font-style: italic;
       font-size: 17px;
+      font-style: italic;
+
+      line-height: 1.75;
     }
 
     .tiny-list span {
@@ -158,53 +182,82 @@
 
     .art-wrap {
       height: 565px;
+
       display: flex;
       justify-content: center;
       align-items: flex-end;
+
       position: relative;
+      z-index: 3;
     }
 
     .girl-art {
       width: min(560px, 100%);
       max-height: 565px;
+
       object-fit: contain;
+
       filter: grayscale(100%) contrast(1.07);
+
+      position: relative;
+      z-index: 2;
     }
 
     .scribble-heart {
       position: absolute;
-      left: 4%;
-      top: 30%;
+
+      left: 3%;
+      top: 29%;
+
       font-family: "Cormorant Garamond", serif;
-      font-size: 66px;
+      font-size: 68px;
+
       transform: rotate(-8deg);
+
+      z-index: 4;
     }
 
-    .star-one {
+    .little-mark-one {
       position: absolute;
+
       left: 18%;
-      top: 18%;
-      font-size: 26px;
+      top: 19%;
+
+      font-family: "Cormorant Garamond", serif;
+      font-size: 28px;
+
+      transform: rotate(-12deg);
+
+      z-index: 4;
     }
 
-    .star-two {
+    .little-mark-two {
       position: absolute;
-      right: 3%;
+
+      right: 1%;
       top: 48%;
-      font-size: 18px;
+
+      font-size: 16px;
+
+      z-index: 4;
     }
 
     /* ARCHIVE */
 
     .right-side {
       padding-left: 28px;
+
+      position: relative;
+      z-index: 4;
     }
 
     .section-label {
+      margin-bottom: 22px;
+
+      color: var(--soft);
+
       font-size: 9px;
       letter-spacing: 2px;
-      color: var(--soft);
-      margin-bottom: 22px;
     }
 
     .archive-list {
@@ -219,9 +272,11 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+
       font-family: "Cormorant Garamond", serif;
       font-size: 20px;
-      transition: padding .2s ease;
+
+      transition: padding-left .2s ease;
     }
 
     .archive-list a:hover {
@@ -230,6 +285,8 @@
     }
 
     .archive-arrow {
+      margin-left: 20px;
+
       font-family: "IBM Plex Mono", monospace;
       font-size: 11px;
     }
@@ -237,18 +294,22 @@
     /* CURRENTLY */
 
     .current {
-      max-width: 1000px;
+      width: min(1000px, 82%);
       margin: auto;
+
       padding: 42px 5% 55px;
+
       border-top: 1px solid var(--ink);
+
       position: relative;
-      z-index: 2;
+      z-index: 5;
     }
 
     .current-header {
       display: flex;
       align-items: baseline;
       justify-content: space-between;
+
       margin-bottom: 27px;
     }
 
@@ -259,9 +320,10 @@
     }
 
     .current-date {
+      color: var(--soft);
+
       font-size: 8px;
       letter-spacing: 1.5px;
-      color: var(--soft);
     }
 
     .current-list {
@@ -273,6 +335,7 @@
     .current-row {
       display: grid;
       grid-template-columns: 135px 1fr;
+
       align-items: baseline;
     }
 
@@ -282,26 +345,30 @@
     }
 
     .current-value {
+      color: #403d39;
+
       font-size: 10px;
       line-height: 1.6;
-      color: #403d39;
     }
 
     /* FOOTER */
 
     .footer-line {
-      max-width: 1420px;
+      width: min(1420px, 92%);
       margin: 0 auto 40px;
-      padding: 0 5%;
+
       position: relative;
-      z-index: 2;
+      z-index: 5;
     }
 
     .footer-line-inner {
-      border-top: 1px solid var(--ink);
       padding-top: 18px;
+
+      border-top: 1px solid var(--ink);
+
       display: flex;
       justify-content: space-between;
+
       font-family: "Cormorant Garamond", serif;
       font-size: 17px;
     }
@@ -309,7 +376,10 @@
     /* MOBILE */
 
     @media (max-width: 900px) {
+
       nav {
+        padding: 18px 0;
+
         flex-direction: column;
         align-items: flex-start;
         gap: 16px;
@@ -317,6 +387,7 @@
 
       .logo-wrap {
         width: 320px;
+        max-width: 90%;
       }
 
       .nav-links {
@@ -326,6 +397,7 @@
 
       .home {
         grid-template-columns: 1fr;
+        padding-top: 45px;
       }
 
       .site-title {
@@ -338,7 +410,7 @@
 
       .art-wrap {
         height: auto;
-        margin: 30px 0;
+        margin: 35px 0;
       }
 
       .right-side {
@@ -346,82 +418,39 @@
         margin-top: 20px;
       }
 
-      .decor {
-        opacity: .3;
+      .left-flourish {
+        width: 280px;
+        left: -160px;
+        bottom: 30px;
+        opacity: .65;
+      }
+
+      .right-flourish {
+        width: 280px;
+        right: -190px;
+        top: 280px;
+        opacity: .55;
+      }
+
+      .current {
+        width: 92%;
+      }
+
+      .current-row {
+        grid-template-columns: 110px 1fr;
+      }
+
+      .footer-line-inner {
+        gap: 20px;
       }
     }
   </style>
 </head>
 
+
 <body>
 
-  <!-- LEFT DECORATION -->
-  <svg
-    class="decor decor-left"
-    viewBox="0 0 300 390"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <g stroke="#111" stroke-width="2" stroke-linecap="round">
-      <path d="M34 371 C79 335 94 285 78 234 C62 184 75 142 117 119 C148 101 185 101 212 118"/>
-      <path d="M77 235 C42 224 20 198 17 165"/>
-      <path d="M92 188 C123 178 145 156 153 128"/>
-      <path d="M103 304 C132 291 153 268 161 241"/>
-      <path d="M35 371 C28 343 39 323 60 318"/>
-      <ellipse cx="78" cy="259" rx="31" ry="20" transform="rotate(-20 78 259)"/>
-      <ellipse cx="105" cy="273" rx="28" ry="19" transform="rotate(35 105 273)"/>
-      <ellipse cx="95" cy="302" rx="26" ry="18" transform="rotate(78 95 302)"/>
-      <ellipse cx="62" cy="299" rx="27" ry="18" transform="rotate(-45 62 299)"/>
-      <ellipse cx="52" cy="272" rx="26" ry="18" transform="rotate(-70 52 272)"/>
-      <circle cx="79" cy="281" r="10"/>
-      <path d="M161 241 C181 219 204 211 228 216"/>
-      <path d="M117 119 C130 92 156 78 182 82"/>
-    </g>
-
-    <g fill="#111">
-      <circle cx="79" cy="281" r="7"/>
-      <circle cx="155" cy="107" r="3"/>
-      <path d="M231 119 l5 11 11 5 -11 5 -5 11 -5-11 -11-5 11-5z"/>
-    </g>
-  </svg>
-
-
-  <!-- RIGHT DECORATION -->
-  <svg
-    class="decor decor-right"
-    viewBox="0 0 300 520"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <g stroke="#111" stroke-width="2" stroke-linecap="round">
-      <path d="M173 515 C171 430 211 375 198 295 C187 230 145 203 152 143 C159 91 208 69 252 94"/>
-      <path d="M198 302 C245 283 272 249 269 208"/>
-      <path d="M177 229 C128 213 104 176 116 137"/>
-      <path d="M217 394 C250 378 275 352 284 320"/>
-      <path d="M155 143 C139 111 110 98 80 106 C51 114 45 145 61 160"/>
-      <ellipse cx="205" cy="170" rx="28" ry="20"/>
-      <ellipse cx="232" cy="185" rx="26" ry="18" transform="rotate(34 232 185)"/>
-      <ellipse cx="214" cy="207" rx="25" ry="18" transform="rotate(70 214 207)"/>
-      <ellipse cx="181" cy="200" rx="26" ry="18" transform="rotate(-40 181 200)"/>
-      <ellipse cx="178" cy="174" rx="25" ry="18" transform="rotate(-15 178 174)"/>
-      <circle cx="205" cy="188" r="10"/>
-      <ellipse cx="245" cy="333" rx="31" ry="21"/>
-      <ellipse cx="268" cy="355" rx="28" ry="19" transform="rotate(45 268 355)"/>
-      <ellipse cx="249" cy="381" rx="27" ry="19" transform="rotate(82 249 381)"/>
-      <ellipse cx="216" cy="371" rx="28" ry="19" transform="rotate(-45 216 371)"/>
-      <ellipse cx="215" cy="341" rx="28" ry="19" transform="rotate(-18 215 341)"/>
-      <circle cx="242" cy="358" r="11"/>
-    </g>
-
-    <g fill="#111">
-      <circle cx="205" cy="188" r="6"/>
-      <circle cx="242" cy="358" r="7"/>
-      <path d="M135 61 l5 12 12 5 -12 5 -5 12 -5-12 -12-5 12-5z"/>
-    </g>
-  </svg>
-
-
-  <!-- NAV -->
+  <!-- TOP NAV -->
 
   <nav>
 
@@ -446,11 +475,35 @@
 
   <main>
 
+    <!-- HERO -->
+
     <section class="home">
+
+      <!-- NEW LEFT FLOURISH -->
+
+      <img
+        src="images/left-flourish.png"
+        alt=""
+        class="flourish left-flourish"
+      >
+
+
+      <!-- NEW RIGHT FLOURISH -->
+
+      <img
+        src="images/right-flourish.png"
+        alt=""
+        class="flourish right-flourish"
+      >
+
+
+      <!-- LEFT SIDE -->
 
       <div class="left-side">
 
-        <h1 class="site-title">enokiecloud</h1>
+        <h1 class="site-title">
+          enokiecloud
+        </h1>
 
         <p class="site-sub">
           personal archive / 2026
@@ -468,11 +521,19 @@
       </div>
 
 
+      <!-- CENTER -->
+
       <div class="art-wrap">
 
-        <span class="star-one">✦</span>
-        <span class="scribble-heart">♡</span>
-        <span class="star-two">✧</span>
+        <span class="little-mark-one">✦</span>
+
+        <span class="scribble-heart">
+          ♡
+        </span>
+
+        <span class="little-mark-two">
+          ✧
+        </span>
 
         <img
           class="girl-art"
@@ -482,6 +543,8 @@
 
       </div>
 
+
+      <!-- RIGHT SIDE -->
 
       <div class="right-side">
 
@@ -519,33 +582,66 @@
     </section>
 
 
+    <!-- CURRENTLY -->
+
     <section class="current" id="current">
 
       <div class="current-header">
-        <h2>currently</h2>
-        <span class="current-date">09 / 2026</span>
+
+        <h2>
+          currently
+        </h2>
+
+        <span class="current-date">
+          09 / 2026
+        </span>
+
       </div>
+
 
       <div class="current-list">
 
         <div class="current-row">
-          <span class="current-label">listening</span>
-          <span class="current-value">wantmetoo (demo) / reiko</span>
+          <span class="current-label">
+            listening
+          </span>
+
+          <span class="current-value">
+            wantmetoo (demo) / reiko
+          </span>
         </div>
 
-        <div class="current-row">
-          <span class="current-label">watching</span>
-          <span class="current-value">police body cams + crime videos on youtube</span>
-        </div>
 
         <div class="current-row">
-          <span class="current-label">loving</span>
-          <span class="current-value">my RC work ♡</span>
+          <span class="current-label">
+            watching
+          </span>
+
+          <span class="current-value">
+            police body cams + crime videos on youtube
+          </span>
         </div>
 
+
         <div class="current-row">
-          <span class="current-label">making</span>
-          <span class="current-value">this website hehe</span>
+          <span class="current-label">
+            loving
+          </span>
+
+          <span class="current-value">
+            my RC work ♡
+          </span>
+        </div>
+
+
+        <div class="current-row">
+          <span class="current-label">
+            making
+          </span>
+
+          <span class="current-value">
+            this website hehe
+          </span>
         </div>
 
       </div>
@@ -553,11 +649,22 @@
     </section>
 
 
+    <!-- FOOTER -->
+
     <div class="footer-line">
+
       <div class="footer-line-inner">
-        <span>just a girl and her little archive</span>
-        <span>better things ahead ✶</span>
+
+        <span>
+          just a girl and her little archive
+        </span>
+
+        <span>
+          better things ahead ♡
+        </span>
+
       </div>
+
     </div>
 
   </main>
