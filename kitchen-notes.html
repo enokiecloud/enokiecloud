@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@300;400&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=IBM+Plex+Mono:wght@300;400&display=swap"
     rel="stylesheet"
   >
 
@@ -19,13 +19,17 @@
       --paper: #fdfcf9;
       --ink: #111111;
       --soft: #77736e;
-      --line: #d2cec8;
+      --line: #d8d3cc;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
@@ -43,9 +47,11 @@
       width: min(1200px, 90%);
       margin: auto;
       padding: 25px 0;
+
       display: flex;
       justify-content: space-between;
       align-items: center;
+
       border-bottom: 1px solid var(--ink);
     }
 
@@ -56,7 +62,7 @@
 
     .nav-links {
       display: flex;
-      gap: 25px;
+      gap: 26px;
     }
 
     .nav-links a {
@@ -71,38 +77,60 @@
     main {
       width: min(900px, 88%);
       margin: auto;
-      padding: 80px 0 100px;
+      padding: 76px 0 100px;
     }
 
     .intro {
-      margin-bottom: 75px;
+      margin-bottom: 66px;
+      position: relative;
+    }
+
+    .tiny-heart {
+      position: absolute;
+      right: 8px;
+      top: 16px;
+
+      font-family: "Cormorant Garamond", serif;
+      font-size: 30px;
+
+      transform: rotate(8deg);
     }
 
     h1 {
       font-family: "Cormorant Garamond", serif;
-      font-size: clamp(52px, 7vw, 76px);
+      font-size: clamp(54px, 7vw, 78px);
       font-weight: 500;
       line-height: 1;
     }
 
     .subtitle {
-      margin-top: 13px;
+      margin-top: 14px;
+
+      color: var(--soft);
+
       font-family: "Cormorant Garamond", serif;
       font-size: 18px;
       font-style: italic;
-      color: var(--soft);
     }
 
     .little-note {
-      max-width: 520px;
+      max-width: 525px;
+
       margin-top: 34px;
-      padding-left: 17px;
+      padding: 13px 18px;
+
       border-left: 1px solid var(--ink);
 
       font-family: "Cormorant Garamond", serif;
       font-size: 18px;
       font-style: italic;
-      line-height: 1.55;
+      line-height: 1.5;
+    }
+
+    .little-note-heart {
+      margin-left: 6px;
+      font-style: normal;
+      font-size: 19px;
     }
 
     .entries {
@@ -111,11 +139,14 @@
 
     .entry {
       display: grid;
-      grid-template-columns: 220px 1fr;
+      grid-template-columns: 215px 1fr;
       gap: 55px;
 
-      padding: 42px 0 46px;
+      padding: 40px 0 43px;
+
       border-bottom: 1px solid var(--line);
+
+      position: relative;
     }
 
     .entry-title {
@@ -125,18 +156,40 @@
       line-height: 1.05;
     }
 
-    .rating {
+    .rating-wrap {
+      margin-top: 11px;
+    }
+
+    .rating-number {
       display: block;
-      margin-top: 10px;
+
+      margin-bottom: 5px;
 
       color: var(--soft);
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 9px;
-      letter-spacing: 1px;
+
+      font-size: 8px;
+      letter-spacing: 1.2px;
+    }
+
+    .hearts {
+      display: flex;
+      gap: 3px;
+
+      font-family: "Cormorant Garamond", serif;
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .heart-filled {
+      color: var(--ink);
+    }
+
+    .heart-empty {
+      color: #aaa59e;
     }
 
     .entry-note {
-      max-width: 520px;
+      max-width: 530px;
 
       font-family: "Cormorant Garamond", serif;
       font-size: 19px;
@@ -145,19 +198,50 @@
 
     .tiny-thought {
       display: block;
-      margin-top: 12px;
+
+      margin-top: 10px;
 
       color: var(--soft);
+
       font-family: "Cormorant Garamond", serif;
       font-size: 16px;
       font-style: italic;
     }
 
+    .special-note {
+      margin-top: 16px;
+
+      padding-left: 14px;
+
+      border-left: 1px dotted var(--soft);
+
+      font-style: italic;
+    }
+
+    .egg-entry::after {
+      content: "♡";
+      position: absolute;
+
+      right: 5px;
+      top: 18px;
+
+      font-family: "Cormorant Garamond", serif;
+      font-size: 26px;
+
+      transform: rotate(-8deg);
+    }
+
+    .ten-hearts {
+      flex-wrap: wrap;
+      max-width: 115px;
+      line-height: 1.2;
+    }
+
     .back {
       display: inline-block;
+
       margin-top: 55px;
 
-      font-family: "IBM Plex Mono", monospace;
       font-size: 10px;
     }
 
@@ -165,17 +249,60 @@
       font-style: italic;
     }
 
+    .ending {
+      margin-top: 55px;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      color: var(--soft);
+
+      font-family: "Cormorant Garamond", serif;
+      font-size: 16px;
+      font-style: italic;
+    }
+
+    .ending-heart {
+      color: var(--ink);
+      font-size: 21px;
+      font-style: normal;
+    }
+
     @media (max-width: 700px) {
+
       nav {
-        align-items: flex-start;
         flex-direction: column;
-        gap: 15px;
+        align-items: flex-start;
+        gap: 14px;
+      }
+
+      .nav-links {
+        gap: 18px;
+      }
+
+      main {
+        padding-top: 55px;
       }
 
       .entry {
         grid-template-columns: 1fr;
         gap: 18px;
-        padding: 35px 0;
+        padding: 33px 0 36px;
+      }
+
+      .tiny-heart {
+        display: none;
+      }
+
+      .egg-entry::after {
+        right: 0;
+        top: 14px;
+      }
+
+      .ending {
+        align-items: flex-start;
+        gap: 20px;
       }
     }
   </style>
@@ -184,17 +311,23 @@
 <body>
 
   <nav>
-    <a href="index.html" class="logo">enokiecloud ♡</a>
+
+    <a href="index.html" class="logo">
+      enokiecloud ♡
+    </a>
 
     <div class="nav-links">
       <a href="index.html">home</a>
       <a href="memory-box.html">memory box</a>
     </div>
+
   </nav>
 
   <main>
 
     <section class="intro">
+
+      <span class="tiny-heart">♡</span>
 
       <h1>kitchen notes</h1>
 
@@ -204,70 +337,187 @@
 
       <p class="little-note">
         i’ll post the recipes sometime later ~ for now,
-        these are just my little cooking notes ♡
+        these are just my little cooking notes
+        <span class="little-note-heart">♡</span>
       </p>
 
     </section>
 
+
     <section class="entries">
 
+
       <article class="entry">
+
         <div>
-          <h2 class="entry-title">pepper lunch</h2>
-          <span class="rating">5 / 5 ♡</span>
+
+          <h2 class="entry-title">
+            pepper lunch
+          </h2>
+
+          <div class="rating-wrap">
+
+            <span class="rating-number">
+              5 / 5
+            </span>
+
+            <div class="hearts">
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+            </div>
+
+          </div>
+
         </div>
 
         <p class="entry-note">
           super delicious. it’s like comfort food. i love when i add
           honey to my sauce, it makes it even better.
         </p>
+
       </article>
 
+
       <article class="entry">
+
         <div>
-          <h2 class="entry-title">sushi bake</h2>
-          <span class="rating">5 / 5 ♡</span>
+
+          <h2 class="entry-title">
+            sushi bake
+          </h2>
+
+          <div class="rating-wrap">
+
+            <span class="rating-number">
+              5 / 5
+            </span>
+
+            <div class="hearts">
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+            </div>
+
+          </div>
+
         </div>
 
         <p class="entry-note">
+
           this recipe actually came from my kiddo jas
-          <span class="tiny-thought">(kiddo in greek for those who don’t know)</span>
+
+          <span class="tiny-thought">
+            (kiddo in greek for those who don’t know)
+          </span>
+
           she did fundraisers using this recipe ~ salmon + shrimp +
           imitation crab + unagi sauce. just sooo much goodness!
+
         </p>
+
       </article>
 
+
       <article class="entry">
+
         <div>
-          <h2 class="entry-title">alfredo pasta</h2>
-          <span class="rating">3 / 5 ♡</span>
+
+          <h2 class="entry-title">
+            alfredo pasta
+          </h2>
+
+          <div class="rating-wrap">
+
+            <span class="rating-number">
+              3 / 5
+            </span>
+
+            <div class="hearts">
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-empty">♡</span>
+              <span class="heart-empty">♡</span>
+            </div>
+
+          </div>
+
         </div>
 
         <p class="entry-note">
           learned this with chichi and i still can’t get the right taste.
-          idk what i’m missing 😭 i remember always using the jar for the
+          idk what i’m missing. i remember always using the jar for the
           sauce, but last time i made my own sauce and it was loved by a
           few friends!
         </p>
+
       </article>
 
+
       <article class="entry">
+
         <div>
-          <h2 class="entry-title">honey glazed salmon</h2>
-          <span class="rating">4 / 5 ♡</span>
+
+          <h2 class="entry-title">
+            honey glazed salmon
+          </h2>
+
+          <div class="rating-wrap">
+
+            <span class="rating-number">
+              4 / 5
+            </span>
+
+            <div class="hearts">
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-empty">♡</span>
+            </div>
+
+          </div>
+
         </div>
 
         <p class="entry-note">
-          def my favorite but at times i burn the salmon too much 😭
+          def my favorite but at times i burn the salmon too much.
           everything else is perfect though. the sweetness + saltiness...
           mwuah.
         </p>
+
       </article>
 
+
       <article class="entry">
+
         <div>
-          <h2 class="entry-title">hawaiian butter mochi</h2>
-          <span class="rating">3.5 / 5 ♡</span>
+
+          <h2 class="entry-title">
+            hawaiian butter mochi
+          </h2>
+
+          <div class="rating-wrap">
+
+            <span class="rating-number">
+              4 / 5
+            </span>
+
+            <div class="hearts">
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-empty">♡</span>
+            </div>
+
+          </div>
+
         </div>
 
         <p class="entry-note">
@@ -276,82 +526,218 @@
           consistency i wanted, so i worked extra hard along with my
           sisters. it was good, but it could’ve been better.
         </p>
+
       </article>
 
+
       <article class="entry">
+
         <div>
-          <h2 class="entry-title">adobo</h2>
-          <span class="rating">5 / 5 ♡</span>
+
+          <h2 class="entry-title">
+            adobo
+          </h2>
+
+          <div class="rating-wrap">
+
+            <span class="rating-number">
+              5 / 5
+            </span>
+
+            <div class="hearts">
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+            </div>
+
+          </div>
+
         </div>
 
         <p class="entry-note">
           idk my version for some reason was so good...
         </p>
+
       </article>
 
+
       <article class="entry">
+
         <div>
-          <h2 class="entry-title">bistek</h2>
-          <span class="rating">3 / 5 ♡</span>
+
+          <h2 class="entry-title">
+            bistek
+          </h2>
+
+          <div class="rating-wrap">
+
+            <span class="rating-number">
+              3 / 5
+            </span>
+
+            <div class="hearts">
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-empty">♡</span>
+              <span class="heart-empty">♡</span>
+            </div>
+
+          </div>
+
         </div>
 
         <p class="entry-note">
           it’s kind of difficult bc my mom’s recipe is sooo good and i can
           never replicate it... maybe less vinegar next time? idk.
         </p>
+
       </article>
 
+
       <article class="entry">
+
         <div>
-          <h2 class="entry-title">tteokbokki</h2>
-          <span class="rating">5 / 5 ♡</span>
+
+          <h2 class="entry-title">
+            tteokbokki
+          </h2>
+
+          <div class="rating-wrap">
+
+            <span class="rating-number">
+              5 / 5
+            </span>
+
+            <div class="hearts">
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+            </div>
+
+          </div>
+
         </div>
 
         <p class="entry-note">
           this is kind of cheating bc it’s trader joe’s LOL but i added
           heavy cream + gochujang and it was delishhh.
         </p>
+
       </article>
 
+
       <article class="entry">
+
         <div>
-          <h2 class="entry-title">steak</h2>
-          <span class="rating">4 / 5 ♡</span>
+
+          <h2 class="entry-title">
+            steak
+          </h2>
+
+          <div class="rating-wrap">
+
+            <span class="rating-number">
+              4 / 5
+            </span>
+
+            <div class="hearts">
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-empty">♡</span>
+            </div>
+
+          </div>
+
         </div>
 
         <p class="entry-note">
+
           flavor was rly good but the steak wasn’t seared how i liked it.
-          <span class="tiny-thought">buy a stainless steel pan girl...</span>
+
+          <span class="tiny-thought">
+            buy a stainless steel pan girl...
+          </span>
+
         </p>
+
       </article>
 
-      <article class="entry">
+
+      <article class="entry egg-entry">
+
         <div>
-          <h2 class="entry-title">my signature scrambled egg</h2>
-          <span class="rating">10 / 5 ♡</span>
+
+          <h2 class="entry-title">
+            my signature scrambled egg
+          </h2>
+
+          <div class="rating-wrap">
+
+            <span class="rating-number">
+              10 / 5
+            </span>
+
+            <div class="hearts ten-hearts">
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+              <span class="heart-filled">♥</span>
+            </div>
+
+          </div>
+
         </div>
 
-        <p class="entry-note">
-          i love love love this. this was my own comfort food and i take
-          pride bc it’s just... wow. the flavors.
+        <div class="entry-note">
 
-          <br><br>
+          <p>
+            i love love love this. this was my own comfort food and i take
+            pride bc it’s just... wow. the flavors.
+          </p>
 
-          and it’s crazy bc it’s not even that crazy ~ eggs, milk, salt,
-          light pepper. FLUFFY and SOFT. and not dry fluffy eggs either.
-          topped with furikake. immaculate.
+          <p class="special-note">
+            and it’s crazy bc it’s not even that crazy ~ eggs, milk, salt,
+            light pepper. FLUFFY and SOFT. and not dry fluffy eggs either.
+            topped with furikake. immaculate.
+          </p>
 
           <span class="tiny-thought">
             idc what other ppl say abt runny eggs, they misunderstand...
           </span>
-        </p>
+
+        </div>
+
       </article>
+
 
     </section>
 
-    <a href="memory-box.html" class="back">
-      ← back to memory box
-    </a>
+
+    <div class="ending">
+
+      <a href="memory-box.html" class="back">
+        ← back to memory box
+      </a>
+
+      <span>
+        made with love
+        <span class="ending-heart">♡</span>
+      </span>
+
+    </div>
 
   </main>
 
