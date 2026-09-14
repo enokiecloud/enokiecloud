@@ -1,1 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>cat corner ~ enokiecloud</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=IBM+Plex+Mono:wght@300;400&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --paper: #fdfcf9;
+      --ink: #111111;
+      --soft: #77736e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "IBM Plex Mono", monospace;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    nav {
+      width: min(1200px, 90%);
+      margin: auto;
+      padding: 18px 0;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      border-bottom: 1px solid var(--ink);
+    }
+
+    .logo-wrap {
+      width: 245px;
+      max-width: 42vw;
+    }
+
+    .logo-image {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 17px;
+    }
+
+    .nav-links a:hover {
+      font-style: italic;
+    }
+
+    main {
+      width: min(1050px, 88%);
+      margin: auto;
+      padding: 78px 0 100px;
+    }
+
+    .intro {
+      margin-bottom: 80px;
+    }
+
+    h1 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(55px, 7vw, 78px);
+      font-weight: 500;
+      line-height: 1;
+    }
+
+    .subtitle {
+      margin-top: 15px;
+
+      color: var(--soft);
+
+      font-family: "Cormorant Garamond", serif;
+      font-size: 19px;
+      font-style: italic;
+    }
+
+    .tiny-note {
+      margin-top: 28px;
+      font-size: 9px;
+      line-height: 1.8;
+      max-width: 430px;
+    }
+
+    .scrapbook {
+      position: relative;
+
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 65px 22px;
+
+      align-items: start;
+    }
+
+    .photo {
+      position: relative;
+    }
+
+    .photo img {
+      display: block;
+      width: 100%;
+      height: auto;
+
+      filter: contrast(1.01);
+
+      transition:
+        transform .25s ease,
+        filter .25s ease;
+    }
+
+    .photo:hover img {
+      transform: translateY(-4px);
+      filter: contrast(1.04);
+    }
+
+    .caption {
+      margin-top: 10px;
+
+      font-family: "Cormorant Garamond", serif;
+      font-size: 15px;
+      font-style: italic;
+      line-height: 1.3;
+    }
+
+    .photo-one {
+      grid-column: 1 / span 5;
+      transform: rotate(-1.2deg);
+    }
+
+    .photo-two {
+      grid-column: 8 / span 4;
+      margin-top: 65px;
+      transform: rotate(1.4deg);
+    }
+
+    .photo-three {
+      grid-column: 3 / span 4;
+      margin-top: 15px;
+      transform: rotate(.7deg);
+    }
+
+    .photo-four {
+      grid-column: 8 / span 5;
+      margin-top: -20px;
+      transform: rotate(-1deg);
+    }
+
+    .photo-five {
+      grid-column: 2 / span 5;
+      margin-top: 20px;
+      transform: rotate(1.1deg);
+    }
+
+    .little-text {
+      grid-column: 8 / span 4;
+      align-self: center;
+
+      margin-top: 75px;
+
+      font-family: "Cormorant Garamond", serif;
+      font-size: 21px;
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    .little-text span {
+      display: block;
+      margin-top: 12px;
+
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 8px;
+      font-style: normal;
+    }
+
+    .back {
+      display: inline-block;
+      margin-top: 85px;
+
+      font-size: 10px;
+    }
+
+    .back:hover {
+      font-style: italic;
+    }
+
+    @media (max-width: 700px) {
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+      }
+
+      .logo-wrap {
+        width: 220px;
+        max-width: 90%;
+      }
+
+      main {
+        padding-top: 55px;
+      }
+
+      .intro {
+        margin-bottom: 55px;
+      }
+
+      .scrapbook {
+        display: block;
+      }
+
+      .photo {
+        width: 88%;
+        margin: 0 auto 55px;
+      }
+
+      .photo:nth-child(even) {
+        margin-left: 7%;
+      }
+
+      .photo-two,
+      .photo-three,
+      .photo-four,
+      .photo-five {
+        margin-top: 0;
+      }
+
+      .little-text {
+        width: 80%;
+        margin: 20px auto 65px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+
+    <a href="index.html" class="logo-wrap">
+      <img
+        src="images/enokiecloud-logo.png"
+        alt="enokiecloud"
+        class="logo-image"
+      >
+    </a>
+
+    <div class="nav-links">
+      <a href="index.html">home</a>
+      <a href="memory-box.html">memory box</a>
+    </div>
+
+  </nav>
+
+  <main>
+
+    <section class="intro">
+
+      <h1>cat corner</h1>
+
+      <p class="subtitle">
+        a little corner for my little guy ♡
+      </p>
+
+      <p class="tiny-note">
+        because obviously he needed his own page
+      </p>
+
+    </section>
+
+
+    <section class="scrapbook">
+
+      <figure class="photo photo-one">
+        <img src="images/cat1.jpg" alt="my cat">
+        <figcaption class="caption">
+          just a little guy...
+        </figcaption>
+      </figure>
+
+
+      <figure class="photo photo-two">
+        <img src="images/cat2.jpg" alt="my cat">
+        <figcaption class="caption">
+          professional cutie
+        </figcaption>
+      </figure>
+
+
+      <figure class="photo photo-three">
+        <img src="images/cat3.jpg" alt="my cat">
+        <figcaption class="caption">
+          why does he sit like this
+        </figcaption>
+      </figure>
+
+
+      <figure class="photo photo-four">
+        <img src="images/cat4.jpg" alt="my cat">
+        <figcaption class="caption">
+          him being him
+        </figcaption>
+      </figure>
+
+
+      <figure class="photo photo-five">
+        <img src="images/cat5.jpg" alt="my cat">
+        <figcaption class="caption">
+          one of my favs ♡
+        </figcaption>
+      </figure>
+
+
+      <div class="little-text">
+        tiny paws, big personality
+
+        <span>
+          more cat spam eventually...
+        </span>
+      </div>
+
+    </section>
+
+
+    <a href="memory-box.html" class="back">
+      ← back to memory box
+    </a>
+
+  </main>
+
+</body>
+</html>
