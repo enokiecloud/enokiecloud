@@ -106,19 +106,20 @@
 
     .subtitle {
       margin-top: 10px;
+
       color: #55514d;
 
       font-family: "Gaegu", cursive;
       font-size: 20px;
     }
 
-    .question-area {
-      margin: 35px auto 0;
-      width: min(600px, 100%);
+    .topic-area {
+      width: min(580px, 100%);
+      margin: 30px auto 0;
     }
 
-    .question-label {
-      margin-bottom: 12px;
+    .topic-question {
+      margin-bottom: 11px;
 
       color: var(--soft);
 
@@ -126,18 +127,18 @@
       font-size: 16px;
     }
 
-    .topic-buttons {
+    .topics {
       display: flex;
-      justify-content: center;
       flex-wrap: wrap;
+      justify-content: center;
       gap: 8px;
     }
 
-    .topic-button {
+    .topic {
       border: 1px solid #aaa49d;
       background: transparent;
 
-      padding: 7px 12px;
+      padding: 6px 12px;
 
       font-family: "Gaegu", cursive;
       font-size: 16px;
@@ -150,18 +151,18 @@
         transform .15s ease;
     }
 
-    .topic-button:hover {
+    .topic:hover {
       transform: rotate(-1deg);
     }
 
-    .topic-button.selected {
+    .topic.selected {
       background: var(--ink);
       color: var(--paper);
       border-color: var(--ink);
     }
 
     .fortune-stage {
-      margin-top: 30px;
+      margin-top: 28px;
 
       display: flex;
       flex-direction: column;
@@ -176,7 +177,7 @@
     }
 
     .fortune-cat {
-      width: 260px;
+      width: 255px;
       max-width: 68vw;
       height: auto;
 
@@ -200,15 +201,15 @@
         transform: rotate(0deg);
       }
 
-      22% {
-        transform: rotate(-4deg) translateY(-3px);
+      25% {
+        transform: rotate(-4deg) translateY(-4px);
       }
 
-      45% {
+      50% {
         transform: rotate(4deg) translateY(-6px);
       }
 
-      68% {
+      75% {
         transform: rotate(-2deg) translateY(-3px);
       }
 
@@ -219,7 +220,7 @@
 
     .tap-label {
       min-height: 25px;
-      margin-top: 9px;
+      margin-top: 8px;
 
       color: var(--soft);
 
@@ -282,9 +283,19 @@
       line-height: 1.15;
     }
 
-    .again {
-      margin-top: 20px;
+    .after-fortune {
+      min-height: 55px;
+      margin-top: 17px;
 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 22px;
+
+      flex-wrap: wrap;
+    }
+
+    .again {
       border: 0;
       background: transparent;
 
@@ -327,6 +338,22 @@
 
     .again:hover {
       transform: rotate(-2deg);
+    }
+
+    .bothered {
+      color: var(--soft);
+
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 7px;
+      letter-spacing: .5px;
+
+      opacity: 0;
+
+      transition: opacity .25s ease;
+    }
+
+    .bothered.show {
+      opacity: 1;
     }
 
     .bottom {
@@ -379,13 +406,9 @@
         font-size: 27px;
       }
 
-      .topic-buttons {
-        gap: 6px;
-      }
-
-      .topic-button {
-        padding: 7px 10px;
+      .topic {
         font-size: 15px;
+        padding: 6px 10px;
       }
 
       .bottom {
@@ -433,19 +456,19 @@
       class="subtitle"
       id="subtitle"
     >
-      pick what ur bothering him about
+      okay sooo... what happened
     </p>
 
-    <section class="question-area">
+    <section class="topic-area">
 
-      <p class="question-label">
-        okay sooo... what's this about?
+      <p class="topic-question">
+        what are u bothering him about?
       </p>
 
-      <div class="topic-buttons">
+      <div class="topics">
 
         <button
-          class="topic-button"
+          class="topic"
           type="button"
           data-topic="partner"
         >
@@ -453,7 +476,7 @@
         </button>
 
         <button
-          class="topic-button"
+          class="topic"
           type="button"
           data-topic="crush"
         >
@@ -461,7 +484,7 @@
         </button>
 
         <button
-          class="topic-button"
+          class="topic"
           type="button"
           data-topic="ex"
         >
@@ -469,7 +492,7 @@
         </button>
 
         <button
-          class="topic-button"
+          class="topic"
           type="button"
           data-topic="friends"
         >
@@ -477,7 +500,7 @@
         </button>
 
         <button
-          class="topic-button"
+          class="topic"
           type="button"
           data-topic="life"
         >
@@ -485,7 +508,7 @@
         </button>
 
         <button
-          class="topic-button"
+          class="topic"
           type="button"
           data-topic="idk"
         >
@@ -516,7 +539,7 @@
         class="tap-label"
         id="tapLabel"
       >
-        pick something first
+        pick one first
       </p>
 
       <div
@@ -538,13 +561,24 @@
 
       </div>
 
-      <button
-        class="again"
-        id="againButton"
-        type="button"
-      >
-        ask again
-      </button>
+      <div class="after-fortune">
+
+        <button
+          class="again"
+          id="againButton"
+          type="button"
+        >
+          bother him again
+        </button>
+
+        <span
+          class="bothered"
+          id="bothered"
+        >
+          cat bothered: 0 times
+        </span>
+
+      </div>
 
     </section>
 
@@ -557,7 +591,7 @@
     </a>
 
     <span class="bottom-note">
-      the cat is not liable for bad decisions
+      don't blame the cat
     </span>
 
   </div>
@@ -581,17 +615,17 @@
     const againButton =
       document.getElementById("againButton");
 
+    const bothered =
+      document.getElementById("bothered");
+
     const tapLabel =
       document.getElementById("tapLabel");
 
-    const subtitle =
-      document.getElementById("subtitle");
-
     const topicButtons =
-      document.querySelectorAll(".topic-button");
+      document.querySelectorAll(".topic");
 
     let selectedTopic = null;
-    let lastMessage = null;
+    let lastMessage = "";
 
     const rotations = [
       "-1.2deg",
@@ -605,293 +639,365 @@
     const fortunes = {
 
       partner: [
-        "if something's bothering u, talk to them before u create 14 scenarios in ur head",
-        "one bad day doesn't mean the relationship is doomed bruh",
-        "okay but are they actually listening to u or just waiting for u to stop being mad",
-        "u shouldn't have to beg ur partner for basic reassurance",
-        "if they apologized but keep doing the same thing... that's kinda ur answer",
-        "don't test them. just tell them what u need",
-        "maybe they're not mad at u. maybe they're literally just tired",
-        "stop reading into the dry text and ask them what's wrong",
-        "if u feel safe enough to be honest with them, be honest",
-        "loving someone doesn't mean ignoring what keeps hurting u",
-        "if ur always scared they'll leave, that's something worth talking about",
-        "don't start an argument just because u miss them omg",
+        "if ur upset then talk to them before u make up the whole argument in ur head",
+        "maybe they're not mad at u bruh. maybe they're literally tired",
+        "if they keep apologizing but nothing changes... okay then what are we doing",
+        "u shouldn't have to beg ur partner to care",
+        "stop testing them and just say what u need",
+        "one dry text does not mean they hate u",
+        "if something feels off, ask. don't investigate like the fbi",
+        "u can love them and still be annoyed with them",
+        "if they're trying, maybe notice that too",
+        "okay but did u actually tell them why ur mad",
         "they cannot read ur mind babe",
-        "if they consistently show up for u, stop looking for reasons they secretly hate u",
-        "a relationship shouldn't feel like detective work every day",
-        "okay but do u actually want a solution or do u just want them to say sorry",
-        "u can love them and still tell them they pissed u off",
-        "if u both keep avoiding the same issue it's not magically disappearing",
-        "don't compare ur relationship to whatever couple u saw online",
-        "maybe give them the benefit of the doubt once before spiraling",
-        "if u can't bring up ur feelings without being mocked... that's not cute",
-        "sometimes the answer is literally just communicate omg",
-        "if they make an effort after u tell them something matters, notice that too",
-        "u are allowed to need reassurance. just don't turn it into an interrogation",
-        "don't threaten to leave every time ur upset if u don't actually mean it",
-        "okay wait... have u eaten before starting this conversation",
-        "if they're genuinely trying, let them be human too",
-        "ur partner is supposed to be on ur team, not someone ur constantly scared of",
-        "missing them doesn't automatically mean something is wrong",
-        "ask them directly. ur gonna survive the answer either way"
+        "if u feel safe with them then stop assuming the worst every time",
+        "don't start a fight because u miss them omg",
+        "if they make u feel small every time u bring something up... that's not cute",
+        "sometimes u need reassurance. just ask for it",
+        "if u both want this then act like ur on the same team",
+        "okay but are u mad at THEM or are u just having a bad day",
+        "don't compare ur relationship to people online",
+        "if the same problem keeps happening then yeah... talk about it fr",
+        "maybe sleep before sending the paragraph",
+        "u deserve consistency, not guessing games",
+        "if they genuinely care, they'll want to understand why ur hurt",
+        "u can forgive them without pretending nothing happened",
+        "if ur always scared they're gonna leave, maybe talk about why",
+        "remember that they're a person too, not a mind reader",
+        "okay but do u want a solution or do u just wanna win the argument",
+        "if they make time for u even when they're busy, that matters",
+        "sometimes the issue isn't the relationship. ur both just exhausted",
+        "love should not feel like detective work 24/7",
+        "tell them the truth instead of saying 'nothing' when something is obviously wrong",
+        "if ur asking whether they care, look at what they consistently do",
+        "being annoyed at each other sometimes doesn't mean everything is falling apart",
+        "okay but if u keep avoiding the convo... how are they supposed to know",
+        "don't punish them for something an ex did",
+        "if u don't trust them, figure out whether that's because of them or ur fear",
+        "u are allowed to ask for more effort",
+        "if they only listen when ur ready to leave... that's worth noticing",
+        "sometimes the answer is literally hug them and chill",
+        "u don't have to agree on everything to love each other",
+        "if they make u feel loved in actions, stop ignoring that because of one weird text"
       ],
 
       crush: [
-        "if they like u, there will probably be SOME effort. let's start there",
-        "stop analyzing the story view bruh",
-        "a like is not a marriage proposal",
-        "okay but do they talk to u when they don't need something",
-        "if ur always initiating... maybe chill and see what happens",
-        "u can flirt back omg it's okay",
-        "don't confess ur entire life story after three conversations pls",
-        "they might like u. they also might just be nice. breathe",
-        "if they keep finding reasons to talk to u... okayyy maybe",
-        "eye contact is cute but we need more evidence detective",
-        "stop stalking their following list rn",
-        "if they wanted ur number and got it... let them use it",
-        "don't pretend u don't care so hard that they think u actually don't care",
-        "okay lowkey send the text",
-        "no. do not send the paragraph.",
-        "if they consistently remember little things u say... that's kinda cute ngl",
-        "u don't need to become their exact type. be urself bruh",
-        "if they're flirting with everybody then maybe don't write the wedding vows yet",
-        "maybe they are nervous too",
+        "stop analyzing their story views bruh",
+        "if they like u there should be at least SOME effort",
+        "a like is not a declaration of love babe",
+        "okay but do they talk to u when they don't need anything",
+        "if ur always starting every convo... maybe chill for a sec",
+        "u can flirt back omg",
+        "don't fall in love after three conversations pls",
+        "maybe they're nervous too",
+        "if they remember little random stuff u said... okayyy",
         "if the convo keeps dying and u keep reviving it... girl",
-        "don't fall in love with potential after two interactions pls",
-        "okayyy this one might actually like u",
-        "give them room to show interest instead of doing all the work",
-        "if u have to decode everything they do then we don't know enough yet",
-        "ur crush being attractive is not evidence of compatibility btw",
-        "go talk to them instead of asking a cat",
-        "they might be waiting for a sign from u too",
-        "a little flirting never killed anybody",
-        "don't act unavailable then get mad when they leave u alone",
-        "idk... this one has potential but don't be crazy"
+        "stop stalking the following list",
+        "eye contact is cute but we need additional evidence detective",
+        "okay lowkey just send the text",
+        "NO paragraph",
+        "let them show u they like u too",
+        "don't act uninterested then get mad when they leave u alone",
+        "if they're flirting with everyone maybe calm down before planning the wedding",
+        "u don't need to become their exact type",
+        "if they find random reasons to talk to u... hmm",
+        "ur crush being hot does not mean they're good for u btw",
+        "maybe they genuinely can't tell that u like them",
+        "if they got ur number then let THEM use it too",
+        "go talk to them instead of asking me bruh",
+        "okay i see potential... don't be weird",
+        "don't decode every single punctuation mark omg",
+        "if they seem interested one day and disappear the next... notice that",
+        "a little flirting is fine. relax.",
+        "don't confess a whole relationship that only exists in ur head",
+        "if u have to chase them constantly, that's not very romantic",
+        "give it time before deciding this is the love of ur life",
+        "if they keep looking for excuses to be around u... okay that means something",
+        "maybe they're shy. maybe they're not interested. we need more data bruh",
+        "don't create chemistry out of one compliment",
+        "if they reply fast sometimes and slow other times that is called having a life",
+        "u can literally just ask them to hang out",
+        "stop trying to make every interaction perfect",
+        "if they don't make u feel wanted at all, don't force it",
+        "okayyyy if they're teasing u AND always seeking u out... hmm",
+        "don't tell all ur friends before anything even happens lol",
+        "let the crush be fun before u turn it into a crisis"
       ],
 
       ex: [
-        "missing them is not the same thing as needing them back",
-        "do NOT text them just because it's late and ur lonely",
+        "missing them does not automatically mean u should go back",
         "girl close their profile",
-        "if they changed, there should be actual evidence. not just 'i miss u'",
-        "remember why u broke up before u romanticize everything",
-        "u can miss the good parts and still know it wasn't good for u",
-        "if they only come back when ur finally moving on... interesting",
-        "don't confuse familiarity with compatibility",
+        "do not text them because it's 1am and ur lonely",
+        "if they changed there should be actual proof",
+        "remember why y'all broke up before u start romanticizing everything",
+        "do u miss THEM or do u miss having somebody",
+        "if they only come back when ur moving on... hmm",
+        "familiar does not always mean good",
         "okay but what would actually be different this time",
-        "if the relationship was draining u, nostalgia is lying rn",
-        "no stalking the new person either. leave that alone",
-        "if they apologized specifically and changed their behavior... okay maybe hear them out",
-        "if it's another 'hey stranger' at 1am absolutely not",
-        "ur allowed to forgive them without dating them again",
-        "if u want closure, make sure ur not secretly asking for another chance",
+        "if u were miserable half the relationship don't rewrite history now",
+        "no stalking the new person either",
+        "if they gave a real apology AND changed... okay maybe that's different",
+        "if the message starts with 'hey stranger' i'm already annoyed",
+        "u can forgive somebody without dating them again",
         "sometimes the closure is literally how they treated u",
-        "girl u survived the breakup. don't restart season one",
-        "if u keep checking if they viewed ur story... mute them",
-        "be honest. do u miss THEM or do u miss having someone",
-        "if u were constantly anxious with them, don't forget that part",
-        "people can change. they also love saying they changed. look at the actions",
-        "don't send 'i miss u' unless ur ready for literally any response",
-        "if they have a new partner leave it tf alone",
-        "u don't need to prove that ur doing better. just do better",
-        "if u got back together tomorrow would the old problem still be there",
-        "okay... maybe don't block and unblock them again today",
-        "ur brain remembers the highlights. i remember the lore.",
-        "the fact that u have history doesn't mean u need a sequel",
-        "if they genuinely treated u well and timing was the issue... okay that's different",
-        "sleep on it. ex decisions should not be made after midnight"
+        "girl u already survived the breakup",
+        "stop checking whether they viewed ur story",
+        "if u got back together tomorrow would the original problem still exist",
+        "don't send 'i miss u' unless ur prepared for literally any response",
+        "if they have somebody new leave it alone",
+        "u do not need to prove ur doing better to them",
+        "history is not the same thing as compatibility",
+        "if u were constantly anxious with them pls remember that part too",
+        "people can change. people also love SAYING they've changed",
+        "okay don't block and unblock them again today",
+        "ur brain is showing u the highlight reel",
+        "not every relationship needs a sequel",
+        "if timing was genuinely the only issue... okay that's different",
+        "sleep on it before contacting an ex",
+        "if the breakup gave u peace, don't ignore that",
+        "if they hurt u and never took accountability... what exactly are we going back for",
+        "sometimes u miss the routine more than the person",
+        "don't text them just because they liked ur story",
+        "if they wanted another chance they can use actual words",
+        "if getting back together means becoming anxious again... girl no",
+        "okay but were u actually happier with them",
+        "if they've genuinely grown, u'll see it without having to convince urself",
+        "u don't owe somebody access to u because u have history",
+        "sometimes the best response to an ex is literally nothing",
+        "if ur asking me whether to text them... wait until tomorrow"
       ],
 
       friends: [
-        "if ur always the one checking in, notice that",
-        "one weird interaction doesn't mean they secretly hate u",
-        "ask them instead of silently building resentment",
-        "friends can be busy and still love u",
-        "if they constantly make jokes at ur expense and u hate it, say something",
-        "u don't have to keep a friendship just because it's old",
-        "don't assume u weren't invited on purpose before u know what happened",
-        "if u feel drained every time u hang out... hmm",
-        "a real friend can hear that they hurt u without making it all about them",
-        "maybe text them. pride is dumb sometimes",
-        "if they're going through something they might be quieter than usual",
-        "stop testing ur friends to see if they care",
-        "if they celebrate u without making it weird, keep them",
-        "u are allowed to outgrow people without hating them",
-        "not every friendship needs to be super deep",
-        "if they're only around when they need something... girl",
-        "talk it out before deciding the entire friendship is over",
-        "sometimes people drift. it doesn't mean the memories were fake",
-        "if u can't be urself around them why are u forcing it",
-        "maybe they genuinely didn't realize they hurt ur feelings",
-        "u deserve friends who actually seem happy to see u",
-        "stop keeping score over every tiny thing",
-        "if they tell ur business after u trusted them... remember that",
+        "one weird text does not mean they secretly hate u",
+        "if ur always the one checking in... notice that",
+        "friends can be busy and still care about u",
+        "maybe just ask instead of quietly getting mad",
+        "if they keep embarrassing u and calling it a joke... hmm",
+        "u do not have to keep a friendship just because it's old",
+        "don't assume u were excluded on purpose before u know",
+        "if u feel drained every time y'all hang out... okay that's something",
+        "a good friend should be able to hear that they hurt u",
+        "maybe text them. pride is annoying",
+        "stop testing ur friends to see if they'll notice",
+        "u are allowed to outgrow people",
+        "not every friend needs to be ur best friend",
+        "if they only appear when they need something... girl",
+        "talk before deciding the entire friendship is dead",
+        "sometimes people drift and nobody did anything wrong",
+        "u deserve friends who are actually happy for u",
+        "if they tell everybody ur business after u trusted them... remember that",
         "u can love someone and still need distance",
-        "don't make a group chat issue bigger than it is pls",
-        "if u miss them... say hi. it's not that deep",
-        "if the friendship only works when u stay quiet about ur feelings, that's not great",
-        "give people grace but like... not unlimited grace",
+        "please don't start a group chat war",
+        "if u miss them literally just say hi",
         "ur friend having other friends is not betrayal babe",
-        "maybe everyone's just tired rn lol"
+        "if u have to stay quiet to keep the friendship, that's not great",
+        "give grace but not unlimited access",
+        "maybe everybody's just tired lol",
+        "if they keep making u feel left out after u talked about it... notice that",
+        "u don't need to compete with ur friends",
+        "real friends can disagree without trying to humiliate each other",
+        "don't keep score over every tiny favor",
+        "sometimes u need to stop assuming and just ask",
+        "if they apologized and actually changed how they act, that's worth something",
+        "not every friendship issue needs a friendship breakup",
+        "if u always leave feeling worse about urself, pay attention",
+        "maybe they're going through something too",
+        "u can check on them without taking responsibility for everything",
+        "if they only support u when ur doing worse than them... yikes",
+        "stop reading into every silence",
+        "friendship shouldn't feel like ur auditioning for a spot",
+        "sometimes u just need different expectations",
+        "if u care about them, have the awkward convo"
       ],
 
       life: [
-        "u don't have to figure out ur entire life this week",
-        "do the next thing. not all 40 things.",
-        "okay maybe u need sleep before making a major decision",
+        "u don't need to figure out ur entire life rn",
+        "do the next thing. not all 50 things",
+        "maybe u need sleep before making this decision",
         "u are allowed to change ur mind",
-        "not being good at something immediately doesn't mean stop",
-        "one bad week is not a bad life bruh",
-        "stop comparing ur chapter 2 to someone's chapter 19",
-        "u probably need less pressure and more consistency",
-        "if u keep thinking about doing it... maybe start",
+        "being bad at something at first is normal bruh",
+        "one bad week is not ur whole life",
+        "stop comparing ur timeline to everybody else's",
+        "maybe u need consistency more than motivation",
+        "if u keep thinking about starting it... start small",
         "ur allowed to want something different now",
-        "sometimes the productive thing is literally resting",
-        "don't quit just because today sucked",
-        "u cannot plan every possible outcome",
-        "do one thing today that future u will appreciate",
-        "maybe ur not behind. maybe ur just on ur own timeline",
-        "if the opportunity scares u in an exciting way... hmm maybe",
-        "stop waiting to feel 100% ready",
-        "u can start badly. that's allowed.",
-        "not everything deserves an immediate answer",
-        "okay but what do YOU actually want",
-        "ur gonna be okay even if the plan changes",
-        "a boring peaceful life moment is still a good life moment",
-        "please stop turning every mistake into a personality diagnosis",
-        "u need a break not a whole new identity",
-        "if it matters to u, make time for it little by little",
-        "don't make permanent choices because of a temporary bad mood",
-        "ur future isn't ruined because one thing didn't work",
-        "try it before u decide ur incapable",
-        "maybe the answer is simpler than ur making it",
-        "go eat, shower, sleep and reassess tomorrow"
+        "sometimes resting IS productive",
+        "don't quit because today sucked",
+        "u literally cannot plan every outcome",
+        "do one thing future u will appreciate",
+        "maybe ur not behind",
+        "if it scares u but also excites u... maybe that's worth noticing",
+        "stop waiting until u feel completely ready",
+        "u can start badly",
+        "not everything needs an answer today",
+        "okay but what do U actually want",
+        "ur gonna survive if the plan changes",
+        "peaceful and boring can actually be nice",
+        "stop making every mistake mean something huge about urself",
+        "u may need a break, not a whole new life",
+        "if it matters to u, give it a little time every day",
+        "don't make permanent choices because ur having a horrible night",
+        "one thing not working does not mean ur future is ruined",
+        "try before deciding u can't do it",
+        "the answer might be way simpler than ur making it",
+        "eat. shower. sleep. then revisit.",
+        "sometimes u need to stop planning and actually start",
+        "u are not late to ur own life",
+        "okay but maybe don't make a life decision at 3am",
+        "small progress still counts even when it's boring",
+        "if u hate the path ur on, ur allowed to redirect",
+        "not every opportunity deserves a yes",
+        "sometimes the right answer is literally no",
+        "u can be scared and still do it",
+        "give urself a week before declaring everything a disaster",
+        "future u probably wants current u to stop panicking"
       ],
 
       idk: [
-        "bruh then how am i supposed to know",
-        "okayyy mysterious",
+        "bruh if u don't know what ur asking how am i supposed to",
+        "okay mysterious",
         "idk either",
-        "wha are we even asking about",
-        "yes. no. maybe. hope this helps",
-        "hmm... suspicious",
-        "my professional opinion is: girl idk",
+        "wha are we even talking about",
+        "yes. no. maybe. hope this helped",
+        "hmm suspicious",
+        "my professional opinion is girl idk",
         "okay just don't do anything insane",
-        "if ur gut immediately said something, maybe start there",
-        "go with whichever option gives u more peace",
-        "maybe wait one day",
-        "u need more information bruh",
-        "okay but what's the worst realistic outcome",
-        "if u have to force it, probably no",
-        "if it's harmless and u want to... sure lol",
+        "whatever ur gut said immediately... maybe listen to that",
+        "pick whichever option gives u more peace",
+        "wait a day",
+        "u need more information",
+        "okay what's the worst REALISTIC outcome",
+        "if u have to force it probably no",
+        "if it's harmless then sure lol",
         "the vibes are inconclusive",
         "ask again tomorrow maybe i'll care",
         "i'm literally a cat",
         "why are u trusting me with this",
-        "okay fine... yes",
-        "actually wait no",
+        "okay fine yes",
+        "wait actually no",
         "hmm maybe",
-        "do it for the plot but like safely",
-        "go ask somebody who knows the situation omg",
+        "do it for the plot but safely",
+        "go ask somebody who actually knows the situation omg",
         "ur overthinking whatever it is",
         "sleep on it",
-        "don't send the paragraph",
-        "maybe send the text though",
-        "i feel like u already decided",
-        "k good luck"
+        "do NOT send the paragraph",
+        "maybe send the text tho",
+        "i feel like u already chose",
+        "k good luck",
+        "ur first instinct was probably the answer",
+        "maybe don't do anything rn",
+        "idk but i feel like u should wait",
+        "okay yes but don't blame me",
+        "wha do u want from a cat",
+        "if ur asking because u want permission... fine i guess",
+        "maybe",
+        "actually... no",
+        "okay this one feels like a bad idea",
+        "eh. could be worse"
       ]
     };
 
-    const annoyedMessages = [
+    const mildlyAnnoyed = [
+      "okayyy another one",
+      "u got a lot going on huh",
+      "bruh again",
+      "hmm okay one more",
+      "girl how many questions do u have",
+      "okay i'm starting to feel used"
+    ];
+
+    const annoyed = [
       "okay u literally just asked me",
-      "another one??",
+      "again??",
       "bruh",
       "okay relax",
       "wha do u want from me",
       "i already answered u omg",
-      "ur shopping for the answer u want huh",
+      "ur shopping for a different answer huh",
       "girl the answer isn't changing",
-      "okay now ur just clicking me",
+      "okay now ur just bothering me",
       "wth man",
+      "why are u still clicking me",
+      "bruh go ask ur friend",
+      "okay i'm tired",
       "LEAVE ME ALONE",
-      "bruh go text ur friend",
-      "i need a break",
-      "why are u still here",
-      "okay ur getting on my nerves",
+      "u do not need another fortune",
+      "girl pls",
       "ENOUGH",
-      "go drink some water",
+      "go drink water or something",
       "close the tab",
       "come back tomorrow omg",
       "no more wisdom for u",
       "...",
+      "no",
+      "still here?",
+      "okay fan behavior",
+      "ur obsessed with me",
+      "wth man seriously",
       "i'm ignoring u now"
-    ];
-
-    const dailyOpenings = [
-      "okay... i'll hear u out",
-      "what happened now",
-      "hmm okay ask",
-      "he seems weirdly nice today",
-      "idk what mood he's in today",
-      "okay but don't ask anything crazy",
-      "he's listening... kinda",
-      "go ahead i guess",
-      "girl what happened",
-      "okay spill"
     ];
 
     function getToday() {
       const now = new Date();
 
-      return [
-        now.getFullYear(),
-        String(now.getMonth() + 1).padStart(2, "0"),
+      return (
+        now.getFullYear() +
+        "-" +
+        String(now.getMonth() + 1).padStart(2, "0") +
+        "-" +
         String(now.getDate()).padStart(2, "0")
-      ].join("-");
+      );
     }
 
     const today = getToday();
 
-    const savedDay =
-      localStorage.getItem("fortuneCatDay");
+    const storedDay =
+      localStorage.getItem("fortuneCatFinalDay");
 
-    if (savedDay !== today) {
-      localStorage.setItem("fortuneCatDay", today);
-      localStorage.setItem("fortuneCatClicks", "0");
-      localStorage.removeItem("fortuneCatLastMessage");
+    if (storedDay !== today) {
+      localStorage.setItem(
+        "fortuneCatFinalDay",
+        today
+      );
+
+      localStorage.setItem(
+        "fortuneCatFinalClicks",
+        "0"
+      );
     }
 
     let clicksToday =
       Number(
-        localStorage.getItem("fortuneCatClicks") || 0
+        localStorage.getItem(
+          "fortuneCatFinalClicks"
+        ) || 0
       );
 
     let fortuneCount = clicksToday;
 
-    function seededNumber(text) {
-      let total = 0;
+    function updateBothered() {
+      bothered.textContent =
+        "cat bothered: " +
+        clicksToday +
+        (
+          clicksToday === 1
+            ? " time"
+            : " times"
+        );
 
-      for (let i = 0; i < text.length; i++) {
-        total += text.charCodeAt(i);
+      if (clicksToday > 0) {
+        bothered.classList.add("show");
       }
-
-      return total;
     }
 
-    const openingIndex =
-      seededNumber(today) %
-      dailyOpenings.length;
-
-    subtitle.textContent =
-      dailyOpenings[openingIndex];
+    updateBothered();
 
     topicButtons.forEach((button) => {
 
       button.addEventListener("click", () => {
 
-        topicButtons.forEach((otherButton) => {
-          otherButton.classList.remove("selected");
+        topicButtons.forEach((other) => {
+          other.classList.remove("selected");
         });
 
         button.classList.add("selected");
@@ -902,77 +1008,91 @@
         fortunePaper.classList.remove("show");
         againButton.classList.remove("show");
 
-        const topicLabels = {
+        const labels = {
           partner: "okay... what did they do",
-          crush: "ohhh okay 👀",
+          crush: "ohhh okay",
           ex: "girl...",
-          friends: "okay tell me",
+          friends: "okay spill",
           life: "hmm okay",
           idk: "bruh okay"
         };
 
         tapLabel.textContent =
-          topicLabels[selectedTopic] +
+          labels[selectedTopic] +
           " ~ tap me";
-
       });
 
     });
 
-    function getNormalFortune() {
-
+    function getRandomNormalMessage() {
       const pool =
         fortunes[selectedTopic];
 
-      let index =
-        Math.floor(
-          Math.random() * pool.length
-        );
-
       let message =
-        pool[index];
+        pool[
+          Math.floor(
+            Math.random() * pool.length
+          )
+        ];
 
-      let attempts = 0;
+      let tries = 0;
 
       while (
         message === lastMessage &&
-        attempts < 10
+        tries < 10
       ) {
-
-        index =
-          Math.floor(
-            Math.random() * pool.length
-          );
-
         message =
-          pool[index];
+          pool[
+            Math.floor(
+              Math.random() * pool.length
+            )
+          ];
 
-        attempts++;
+        tries++;
       }
 
       return message;
     }
 
-    function getAnnoyedFortune() {
+    function getMessage() {
 
-      const annoyanceLevel =
-        clicksToday - 6;
+      if (clicksToday < 6) {
+        return getRandomNormalMessage();
+      }
 
-      const index =
+      if (clicksToday < 9) {
+        const index =
+          Math.min(
+            clicksToday - 6,
+            mildlyAnnoyed.length - 1
+          );
+
+        return mildlyAnnoyed[index];
+      }
+
+      const annoyedIndex =
         Math.min(
-          annoyanceLevel,
-          annoyedMessages.length - 1
+          clicksToday - 9,
+          annoyed.length - 1
         );
 
-      return annoyedMessages[index];
+      return annoyed[annoyedIndex];
     }
 
     function giveFortune() {
 
       if (!selectedTopic) {
-
         tapLabel.textContent =
           "girl pick what ur asking about first";
+
+        return;
+      }
+
+      if (clicksToday >= 20) {
+        tapLabel.textContent =
+          "come back tomorrow bruh";
+
+        againButton.classList.remove("show");
 
         return;
       }
@@ -986,17 +1106,11 @@
       fortunePaper.classList.remove("show");
       againButton.classList.remove("show");
 
-      tapLabel.textContent = "...";
+      tapLabel.textContent =
+        "...";
 
-      let message;
-
-      if (clicksToday >= 6) {
-        message =
-          getAnnoyedFortune();
-      } else {
-        message =
-          getNormalFortune();
-      }
+      const message =
+        getMessage();
 
       lastMessage = message;
 
@@ -1004,14 +1118,11 @@
       fortuneCount++;
 
       localStorage.setItem(
-        "fortuneCatClicks",
+        "fortuneCatFinalClicks",
         String(clicksToday)
       );
 
-      localStorage.setItem(
-        "fortuneCatLastMessage",
-        message
-      );
+      updateBothered();
 
       const rotation =
         rotations[
@@ -1037,40 +1148,40 @@
 
         fortunePaper.classList.add("show");
 
-        if (clicksToday <= 18) {
+        if (clicksToday < 20) {
           againButton.classList.add("show");
         }
 
-        if (clicksToday === 1) {
-          tapLabel.textContent =
-            "there. happy?";
-        }
-
-        else if (clicksToday <= 3) {
+        if (clicksToday <= 3) {
           tapLabel.textContent =
             "he has spoken";
         }
 
         else if (clicksToday <= 5) {
           tapLabel.textContent =
-            "u still asking??";
+            "okayyy";
         }
 
         else if (clicksToday <= 8) {
           tapLabel.textContent =
-            "he's getting annoyed";
+            "he's starting to notice";
+        }
+
+        else if (clicksToday <= 12) {
+          tapLabel.textContent =
+            "okay he's annoyed now";
+        }
+
+        else if (clicksToday < 20) {
+          tapLabel.textContent =
+            "girl leave him alone";
         }
 
         else {
           tapLabel.textContent =
-            "yeah he's over u";
-        }
-
-        if (clicksToday >= 18) {
-          againButton.classList.remove("show");
-
-          tapLabel.textContent =
             "come back tomorrow bruh";
+
+          againButton.classList.remove("show");
         }
 
       }, 520);
