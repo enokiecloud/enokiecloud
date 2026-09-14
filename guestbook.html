@@ -281,6 +281,84 @@
       font-style: italic;
     }
 
+
+    /* fortune cat guestbook reaction */
+    .fortune-reaction {
+      position: fixed;
+      right: 22px;
+      bottom: -240px;
+      z-index: 1000;
+      width: min(230px, 58vw);
+      pointer-events: none;
+      transition: bottom .7s cubic-bezier(.2,.8,.2,1), transform .45s ease;
+    }
+
+    .fortune-reaction.show {
+      bottom: -18px;
+      pointer-events: auto;
+    }
+
+    .fortune-reaction.cat-high.show {
+      bottom: -2px;
+    }
+
+    .fortune-reaction.cat-tilt-left {
+      transform: rotate(-2deg);
+    }
+
+    .fortune-reaction.cat-tilt-right {
+      transform: rotate(2deg);
+    }
+
+    .fortune-reaction-bubble {
+      position: absolute;
+      right: 72px;
+      bottom: 155px;
+      width: max-content;
+      max-width: 190px;
+      padding: 8px 10px;
+      background: var(--paper);
+      border: 1px solid var(--ink);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 8px;
+      line-height: 1.45;
+      text-align: left;
+      opacity: 0;
+      transform: translateY(5px);
+      transition: opacity .35s ease .35s, transform .35s ease .35s;
+    }
+
+    .fortune-reaction.show .fortune-reaction-bubble {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .fortune-reaction.bubble-low .fortune-reaction-bubble {
+      bottom: 132px;
+    }
+
+    .fortune-reaction-cat {
+      display: block;
+      width: 145px;
+      margin-left: auto;
+      cursor: pointer;
+      filter: contrast(1.05);
+    }
+
+    .fortune-reaction-hint {
+      position: absolute;
+      right: 10px;
+      bottom: 25px;
+      font-size: 6px;
+      opacity: 0;
+      transition: opacity .25s ease;
+      white-space: nowrap;
+    }
+
+    .fortune-reaction:hover .fortune-reaction-hint {
+      opacity: .55;
+    }
+
     @media (max-width: 700px) {
       nav {
         flex-direction: column;
@@ -299,6 +377,20 @@
 
       .entry-top {
         align-items: flex-start;
+      }
+
+      .fortune-reaction {
+        right: 8px;
+        width: 205px;
+      }
+
+      .fortune-reaction-bubble {
+        right: 58px;
+        max-width: 155px;
+      }
+
+      .fortune-reaction-cat {
+        width: 125px;
       }
     }
   </style>
@@ -423,6 +515,30 @@
   </main>
 
 
+
+  <div
+    class="fortune-reaction"
+    id="fortuneReaction"
+    aria-hidden="true"
+  >
+    <div
+      class="fortune-reaction-bubble"
+      id="fortuneReactionBubble"
+    ></div>
+
+    <img
+      src="images/fortune-cat.png"
+      alt="fortune cat"
+      class="fortune-reaction-cat"
+      id="fortuneReactionCat"
+    >
+
+    <span class="fortune-reaction-hint">
+      bother the cat →
+    </span>
+  </div>
+
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
@@ -466,6 +582,219 @@
 
     const entries =
       document.getElementById("entries");
+
+
+    const fortuneReaction =
+      document.getElementById("fortuneReaction");
+
+    const fortuneReactionBubble =
+      document.getElementById("fortuneReactionBubble");
+
+    const fortuneReactionCat =
+      document.getElementById("fortuneReactionCat");
+
+    let fortuneReactionTimeout =
+      null;
+
+    let fortuneReactionLine =
+      "";
+
+    let fortuneReactionIsSecret =
+      false;
+
+
+    const normalFortuneReactions = [
+      "...noted",
+      "oh hi",
+      "who let u in",
+      "i'll tell her",
+      "okay that's kinda cute",
+      "interesting...",
+      "hmm.",
+      "i saw that",
+      "okayyy",
+      "noted against my will",
+      "i'll allow it",
+      "she'll probably like this",
+      "ur kinda cute for that",
+      "very brave of u",
+      "who invited u",
+      "fine u can stay",
+      "i'm judging respectfully",
+      "another human...",
+      "this one can stay",
+      "i'll file this somewhere",
+      "okay wait that's sweet",
+      "ur lucky i'm in a good mood",
+      "don't make this weird",
+      "message received. unfortunately.",
+      "huh. noted.",
+      "i read everything btw"
+    ];
+
+
+    function randomItem(items) {
+      return items[
+        Math.floor(Math.random() * items.length)
+      ];
+    }
+
+
+    function chooseFortuneReaction(message) {
+
+      const length =
+        message.trim().length;
+
+      const roll =
+        Math.random();
+
+      fortuneReactionIsSecret =
+        false;
+
+      if (roll < 0.01) {
+        fortuneReactionIsSecret = true;
+        return "u weren't supposed to get this one";
+      }
+
+      if (roll < 0.06) {
+        return "...come see me";
+      }
+
+      if (length <= 12) {
+        return randomItem([
+          "that's it???",
+          "short and mysterious huh",
+          "u came all this way for that",
+          "...okay then",
+          "tiny message. noted."
+        ]);
+      }
+
+      if (length >= 180) {
+        return randomItem([
+          "okay wait that's actually cute",
+          "damn u had thoughts",
+          "she better read all of this",
+          "oh u really meant that",
+          "okayyy heartfelt"
+        ]);
+      }
+
+      return randomItem(
+        normalFortuneReactions
+      );
+    }
+
+
+    function hideFortuneReaction() {
+
+      fortuneReaction.classList.remove(
+        "show"
+      );
+
+      fortuneReaction.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+    }
+
+
+    function showFortuneReaction(message) {
+
+      if (fortuneReactionTimeout) {
+        clearTimeout(
+          fortuneReactionTimeout
+        );
+      }
+
+      fortuneReaction.className =
+        "fortune-reaction";
+
+      const movementRoll =
+        Math.random();
+
+      if (movementRoll < .33) {
+        fortuneReaction.classList.add(
+          "cat-tilt-left"
+        );
+      } else if (movementRoll < .66) {
+        fortuneReaction.classList.add(
+          "cat-tilt-right"
+        );
+      }
+
+      if (Math.random() < .45) {
+        fortuneReaction.classList.add(
+          "cat-high"
+        );
+      }
+
+      if (Math.random() < .5) {
+        fortuneReaction.classList.add(
+          "bubble-low"
+        );
+      }
+
+      fortuneReactionLine =
+        chooseFortuneReaction(message);
+
+      fortuneReactionBubble.textContent =
+        fortuneReactionLine;
+
+      fortuneReaction.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+      requestAnimationFrame(() => {
+        fortuneReaction.classList.add(
+          "show"
+        );
+      });
+
+      const visibleFor =
+        4000 + Math.floor(Math.random() * 2001);
+
+      fortuneReactionTimeout =
+        setTimeout(
+          hideFortuneReaction,
+          visibleFor
+        );
+    }
+
+
+    fortuneReactionCat.addEventListener(
+      "click",
+      () => {
+
+        if (fortuneReactionIsSecret) {
+          try {
+            localStorage.setItem(
+              "enokiecloud_secret_clue_guestbook",
+              "found"
+            );
+          } catch (error) {
+            console.log(
+              "secret clue couldn't be saved"
+            );
+          }
+        }
+
+        fortuneReactionBubble.textContent =
+          "oh so NOW u wanna talk to me";
+
+        if (fortuneReactionTimeout) {
+          clearTimeout(
+            fortuneReactionTimeout
+          );
+        }
+
+        setTimeout(() => {
+          window.location.href =
+            "fortune-cat.html";
+        }, 650);
+      }
+    );
 
 
     function formatDate(dateString) {
@@ -763,6 +1092,9 @@
       }
 
 
+      const signedMessage =
+        message;
+
       nameInput.value =
         "";
 
@@ -771,6 +1103,10 @@
 
       status.textContent =
         "signed ♡";
+
+      showFortuneReaction(
+        signedMessage
+      );
 
       localStorage.setItem(
         COOLDOWN_KEY,
