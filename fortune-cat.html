@@ -29,9 +29,12 @@
 
     body {
       min-height: 100vh;
+
       background: var(--paper);
       color: var(--ink);
+
       font-family: "IBM Plex Mono", monospace;
+
       overflow-x: hidden;
     }
 
@@ -78,17 +81,17 @@
     }
 
     main {
-      width: min(980px, 90%);
+      width: min(820px, 88%);
       margin: auto;
-      padding: 55px 0 45px;
-    }
 
-    .intro {
+      padding: 65px 0 55px;
+
       text-align: center;
     }
 
     .tiny-label {
       color: var(--soft);
+
       font-size: 7px;
       letter-spacing: 3px;
     }
@@ -97,14 +100,14 @@
       margin-top: 10px;
 
       font-family: "Cormorant Garamond", serif;
-      font-size: clamp(58px, 7vw, 84px);
+      font-size: clamp(58px, 7vw, 82px);
       font-weight: 500;
       line-height: .95;
       letter-spacing: -2px;
     }
 
     .subtitle {
-      margin-top: 9px;
+      margin-top: 10px;
 
       color: #55514d;
 
@@ -113,80 +116,23 @@
     }
 
     .fortune-stage {
-      width: min(760px, 100%);
-      min-height: 560px;
-
-      margin: 18px auto 0;
-
-      position: relative;
+      margin-top: 35px;
 
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
-    }
-
-    .cat-zone {
-      width: 390px;
-      max-width: 90vw;
-      height: 365px;
-
-      position: relative;
-
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-    }
-
-    .pspsps {
-      position: absolute;
-      left: -25px;
-      top: 85px;
-
-      width: 120px;
-
-      color: #55514d;
-
-      font-family: "Gaegu", cursive;
-      font-size: 18px;
-      line-height: 1.1;
-
-      transform: rotate(-8deg);
-
-      transition: opacity .25s ease;
-    }
-
-    .pspsps.hidden {
-      opacity: 0;
-    }
-
-    .cat-note {
-      position: absolute;
-      right: -10px;
-      top: 125px;
-
-      color: var(--soft);
-
-      font-family: "Gaegu", cursive;
-      font-size: 15px;
-
-      transform: rotate(6deg);
     }
 
     .fortune-cat-button {
-      position: relative;
-      z-index: 5;
-
       border: 0;
       background: transparent;
-
       padding: 0;
 
       cursor: pointer;
     }
 
     .fortune-cat {
-      width: 285px;
+      width: 270px;
       max-width: 70vw;
       height: auto;
 
@@ -198,78 +144,68 @@
     }
 
     .fortune-cat-button:hover .fortune-cat {
-      transform: translateY(-3px) rotate(-1deg);
+      transform: translateY(-3px);
     }
 
     .fortune-cat.thinking {
-      animation: catThinking .62s ease;
+      animation: catThinking .55s ease;
     }
 
     @keyframes catThinking {
       0% {
-        transform: rotate(0deg) translateY(0) scaleY(1);
+        transform: rotate(0deg);
       }
 
-      20% {
-        transform: rotate(-5deg) translateY(-3px) scaleY(1);
+      25% {
+        transform: rotate(-4deg) translateY(-4px);
       }
 
-      38% {
-        transform: rotate(-5deg) translateY(-3px) scaleY(.92);
+      50% {
+        transform: rotate(3deg) translateY(-6px);
       }
 
-      48% {
-        transform: rotate(-5deg) translateY(-3px) scaleY(1);
-      }
-
-      68% {
-        transform: rotate(4deg) translateY(-5px) scaleY(1);
+      75% {
+        transform: rotate(-2deg) translateY(-3px);
       }
 
       100% {
-        transform: rotate(0deg) translateY(0) scaleY(1);
+        transform: rotate(0deg);
       }
     }
 
     .tap-label {
-      position: absolute;
-      bottom: 4px;
+      margin-top: 10px;
 
-      color: #55514d;
+      color: var(--soft);
 
       font-family: "Gaegu", cursive;
       font-size: 17px;
-
-      transition: opacity .2s ease;
     }
 
     .fortune-paper {
-      width: min(570px, 92%);
-      min-height: 135px;
+      width: min(540px, 92%);
+      min-height: 125px;
 
-      margin-top: -8px;
-      padding: 22px 28px 18px;
+      margin-top: 28px;
+      padding: 20px 28px 22px;
 
       background: #fffefb;
 
       border-top: 1px solid var(--ink);
       border-bottom: 1px solid var(--ink);
 
-      position: relative;
-      z-index: 2;
-
       opacity: 0;
 
       transform:
-        translateY(-70px)
-        rotate(-2deg)
-        scale(.92);
+        translateY(-25px)
+        rotate(-1deg)
+        scale(.96);
 
       pointer-events: none;
 
       transition:
-        opacity .35s ease,
-        transform .45s cubic-bezier(.2,.8,.2,1);
+        opacity .3s ease,
+        transform .4s cubic-bezier(.2,.8,.2,1);
     }
 
     .fortune-paper.show {
@@ -283,93 +219,34 @@
       pointer-events: auto;
     }
 
-    .fortune-paper::before {
-      content: "";
-      position: absolute;
-
-      left: 0;
-      top: 7px;
-      bottom: 7px;
-
-      border-left: 1px dashed #aaa49d;
-    }
-
-    .fortune-paper::after {
-      content: "";
-      position: absolute;
-
-      right: 0;
-      top: 7px;
-      bottom: 7px;
-
-      border-right: 1px dashed #aaa49d;
-    }
-
-    .fortune-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      margin-bottom: 11px;
+    .fortune-number {
+      margin-bottom: 14px;
 
       color: var(--soft);
 
       font-family: "IBM Plex Mono", monospace;
       font-size: 7px;
       letter-spacing: 1.5px;
+
+      text-align: left;
     }
 
     .fortune {
-      padding: 3px 12px 5px;
-
       font-family: "Gaegu", cursive;
-      font-size: clamp(25px, 4vw, 34px);
-      font-weight: 400;
-      line-height: 1.12;
-      text-align: center;
-    }
-
-    .fortune-bottom {
-      margin-top: 11px;
-
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-
-      color: var(--soft);
-    }
-
-    .lucky-number {
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 7px;
-      letter-spacing: 1px;
-    }
-
-    .cat-verdict {
-      font-family: "Gaegu", cursive;
-      font-size: 15px;
-
-      transform: rotate(-2deg);
-    }
-
-    .again-row {
-      min-height: 55px;
-      margin-top: 14px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 26px;
+      font-size: clamp(27px, 4vw, 34px);
+      line-height: 1.15;
     }
 
     .again {
+      margin-top: 22px;
+
       border: 0;
       background: transparent;
 
-      padding: 5px 2px;
+      padding: 3px 2px;
 
       font-family: "Gaegu", cursive;
-      font-size: 19px;
+      font-size: 18px;
 
       cursor: pointer;
 
@@ -386,16 +263,16 @@
     .again::after {
       content: "";
 
-      width: 100%;
-      height: 1px;
-
       position: absolute;
       left: 0;
-      bottom: 1px;
+      right: 0;
+      bottom: 0;
+
+      height: 1px;
 
       background: var(--ink);
 
-      transform: rotate(-2deg);
+      transform: rotate(-1deg);
     }
 
     .again.show {
@@ -404,41 +281,11 @@
     }
 
     .again:hover {
-      transform: rotate(-3deg) scale(1.05);
-    }
-
-    .bother-count {
-      color: var(--soft);
-
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 7px;
-      letter-spacing: .5px;
-
-      opacity: 0;
-
-      transition: opacity .25s ease;
-    }
-
-    .bother-count.show {
-      opacity: 1;
-    }
-
-    .tiny-warning {
-      width: max-content;
-      max-width: 100%;
-
-      margin: 10px 0 0 auto;
-
-      color: var(--soft);
-
-      font-family: "Gaegu", cursive;
-      font-size: 15px;
-
-      transform: rotate(2deg);
+      transform: rotate(-2deg);
     }
 
     .bottom {
-      width: min(980px, 90%);
+      width: min(820px, 88%);
       margin: 0 auto 40px;
       padding-top: 18px;
 
@@ -447,9 +294,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
 
-    .bottom a {
       font-family: "Cormorant Garamond", serif;
       font-size: 17px;
     }
@@ -462,9 +307,7 @@
       color: var(--soft);
 
       font-family: "Gaegu", cursive;
-      font-size: 16px;
-
-      transform: rotate(-1deg);
+      font-size: 15px;
     }
 
     @media (max-width: 650px) {
@@ -480,50 +323,15 @@
       }
 
       main {
-        padding-top: 45px;
-      }
-
-      .fortune-stage {
-        min-height: 520px;
-      }
-
-      .cat-zone {
-        width: 100%;
-        height: 330px;
+        padding-top: 50px;
       }
 
       .fortune-cat {
-        width: 245px;
-      }
-
-      .pspsps {
-        left: 0;
-        top: 60px;
-
-        width: 85px;
-
-        font-size: 15px;
-      }
-
-      .cat-note {
-        right: 0;
-        top: 100px;
-
-        font-size: 13px;
-      }
-
-      .fortune-paper {
-        margin-top: -2px;
-        padding-left: 19px;
-        padding-right: 19px;
+        width: 235px;
       }
 
       .fortune {
-        font-size: 26px;
-      }
-
-      .fortune-top {
-        gap: 15px;
+        font-size: 27px;
       }
 
       .bottom {
@@ -559,126 +367,67 @@
 
   <main>
 
-    <section class="intro">
+    <p class="tiny-label">
+      ASK WISELY
+    </p>
 
-      <p class="tiny-label">
-        ASK WISELY
-      </p>
+    <h1>
+      fortune cat
+    </h1>
 
-      <h1>
-        fortune cat
-      </h1>
-
-      <p class="subtitle">
-        he knows things... allegedly
-      </p>
-
-    </section>
+    <p class="subtitle">
+      he knows things... allegedly
+    </p>
 
     <section class="fortune-stage">
 
-      <div class="cat-zone">
-
-        <p
-          class="pspsps"
-          id="pspsps"
+      <button
+        class="fortune-cat-button"
+        id="fortuneCatButton"
+        type="button"
+        aria-label="ask fortune cat"
+      >
+        <img
+          src="images/fortune-cat.png"
+          alt="fortune cat"
+          class="fortune-cat"
+          id="fortuneCat"
         >
-          pspsps...<br>
-          ask me something
-        </p>
+      </button>
 
-        <p class="cat-note">
-          don't be shy
-        </p>
-
-        <button
-          class="fortune-cat-button"
-          id="fortuneCatButton"
-          type="button"
-          aria-label="ask fortune cat"
-        >
-          <img
-            src="images/fortune-cat.png"
-            alt="fortune cat"
-            class="fortune-cat"
-            id="fortuneCat"
-          >
-        </button>
-
-        <p
-          class="tap-label"
-          id="tapLabel"
-        >
-          tap the cat
-        </p>
-
-      </div>
+      <p
+        class="tap-label"
+        id="tapLabel"
+      >
+        tap the cat
+      </p>
 
       <div
         class="fortune-paper"
         id="fortunePaper"
       >
 
-        <div class="fortune-top">
-
-          <span>
-            FORTUNE NO.
-            <span id="fortuneNumber">001</span>
-          </span>
-
-          <span>
-            ENOKIECLOUD
-          </span>
-
-        </div>
+        <p
+          class="fortune-number"
+          id="fortuneNumber"
+        >
+          FORTUNE NO. 001
+        </p>
 
         <p
           class="fortune"
           id="fortune"
         ></p>
 
-        <div class="fortune-bottom">
-
-          <span
-            class="lucky-number"
-            id="luckyNumber"
-          >
-            lucky no. 7
-          </span>
-
-          <span
-            class="cat-verdict"
-            id="catVerdict"
-          >
-            cat approved
-          </span>
-
-        </div>
-
       </div>
 
-      <div class="again-row">
-
-        <button
-          class="again"
-          id="againButton"
-          type="button"
-        >
-          ask him again
-        </button>
-
-        <span
-          class="bother-count"
-          id="botherCount"
-        >
-          cat bothered: 0 times
-        </span>
-
-      </div>
-
-      <p class="tiny-warning">
-        results may be suspiciously specific
-      </p>
+      <button
+        class="again"
+        id="againButton"
+        type="button"
+      >
+        ask again
+      </button>
 
     </section>
 
@@ -691,7 +440,7 @@
     </a>
 
     <span class="bottom-note">
-      don't blame the cat if u don't like ur answer
+      don't blame the cat
     </span>
 
   </div>
@@ -712,23 +461,11 @@
     const fortuneNumber =
       document.getElementById("fortuneNumber");
 
-    const luckyNumber =
-      document.getElementById("luckyNumber");
-
-    const catVerdict =
-      document.getElementById("catVerdict");
-
     const againButton =
       document.getElementById("againButton");
 
-    const botherCount =
-      document.getElementById("botherCount");
-
     const tapLabel =
       document.getElementById("tapLabel");
-
-    const pspsps =
-      document.getElementById("pspsps");
 
     const fortunes = [
       "something good is already making its way to u",
@@ -761,11 +498,9 @@
       "the answer is probably simpler than ur making it",
       "keep that idea. there's something there.",
       "the cat says absolutely not.",
-      "hmm... maybe mind ur business for this one",
       "ur gonna laugh about this later",
       "do it for the plot",
       "the answer is yes but don't make it weird",
-      "something u've been waiting on is shifting",
       "let them miss u a little",
       "one more day. then decide.",
       "don't ruin a good thing by overthinking it",
@@ -773,30 +508,16 @@
       "ur intuition clocked it before u did"
     ];
 
-    const verdicts = [
-      "cat approved",
-      "hmm... interesting",
-      "he seems confident",
-      "don't question him",
-      "probably true",
-      "he knows.",
-      "take it or leave it",
-      "very serious business",
-      "his final answer",
-      "apparently."
-    ];
-
     const rotations = [
-      "-2deg",
-      "-1.3deg",
-      "-0.5deg",
-      "0.6deg",
-      "1.2deg",
-      "2deg"
+      "-1.4deg",
+      "-.8deg",
+      "-.3deg",
+      ".4deg",
+      ".9deg",
+      "1.3deg"
     ];
 
     let lastFortune = -1;
-    let timesBothered = 0;
     let fortuneCount = 0;
 
     function giveFortune() {
@@ -812,8 +533,6 @@
 
       tapLabel.textContent = "...";
 
-      pspsps.classList.add("hidden");
-
       let randomIndex;
 
       do {
@@ -825,17 +544,7 @@
       );
 
       lastFortune = randomIndex;
-
-      timesBothered++;
       fortuneCount++;
-
-      const randomLucky =
-        Math.floor(Math.random() * 98) + 1;
-
-      const randomVerdict =
-        verdicts[
-          Math.floor(Math.random() * verdicts.length)
-        ];
 
       const randomRotation =
         rotations[
@@ -848,13 +557,8 @@
           fortunes[randomIndex];
 
         fortuneNumber.textContent =
+          "FORTUNE NO. " +
           String(fortuneCount).padStart(3, "0");
-
-        luckyNumber.textContent =
-          "lucky no. " + randomLucky;
-
-        catVerdict.textContent =
-          randomVerdict;
 
         fortunePaper.style.setProperty(
           "--fortune-rotation",
@@ -865,21 +569,10 @@
 
         againButton.classList.add("show");
 
-        botherCount.textContent =
-          "cat bothered: " +
-          timesBothered +
-          (
-            timesBothered === 1
-              ? " time"
-              : " times"
-          );
-
-        botherCount.classList.add("show");
-
         tapLabel.textContent =
           "he has spoken";
 
-      }, 540);
+      }, 500);
     }
 
     fortuneCatButton.addEventListener(
