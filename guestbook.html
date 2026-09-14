@@ -442,6 +442,16 @@
       );
 
 
+    const COOLDOWN_MS =
+      60 * 1000;
+
+    const COOLDOWN_KEY =
+      "enokiecloudGuestbookLastSignedAt";
+
+    let cooldownTimer =
+      null;
+
+
     const nameInput =
       document.getElementById("name");
 
@@ -581,7 +591,101 @@
     }
 
 
+    function getCooldownRemaining() {
+
+      const lastSignedAt =
+        Number(
+          localStorage.getItem(
+            COOLDOWN_KEY
+          ) || 0
+        );
+
+      const elapsed =
+        Date.now() - lastSignedAt;
+
+      return Math.max(
+        0,
+        COOLDOWN_MS - elapsed
+      );
+    }
+
+
+    function updateCooldownDisplay() {
+
+      const remaining =
+        getCooldownRemaining();
+
+      if (remaining <= 0) {
+
+        signButton.disabled =
+          false;
+
+        if (
+          status.textContent.startsWith(
+            "wait "
+          )
+        ) {
+          status.textContent =
+            "";
+        }
+
+        if (cooldownTimer) {
+          clearInterval(
+            cooldownTimer
+          );
+
+          cooldownTimer =
+            null;
+        }
+
+        return;
+      }
+
+      const seconds =
+        Math.ceil(
+          remaining / 1000
+        );
+
+      signButton.disabled =
+        true;
+
+      status.textContent =
+        "wait " +
+        seconds +
+        "s before signing again";
+    }
+
+
+    function startCooldownTimer() {
+
+      updateCooldownDisplay();
+
+      if (cooldownTimer) {
+        clearInterval(
+          cooldownTimer
+        );
+      }
+
+      cooldownTimer =
+        setInterval(
+          updateCooldownDisplay,
+          250
+        );
+    }
+
+
     async function signGuestbook() {
+
+      const remaining =
+        getCooldownRemaining();
+
+      if (remaining > 0) {
+
+        startCooldownTimer();
+
+        return;
+      }
+
 
       const name =
         nameInput.value.trim();
@@ -668,6 +772,13 @@
       status.textContent =
         "signed ♡";
 
+      localStorage.setItem(
+        COOLDOWN_KEY,
+        String(Date.now())
+      );
+
+      startCooldownTimer();
+
 
       await loadEntries();
     }
@@ -680,6 +791,12 @@
 
 
     loadEntries();
+
+    if (
+      getCooldownRemaining() > 0
+    ) {
+      startCooldownTimer();
+    }
   </script>
 
 </body>
