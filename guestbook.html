@@ -197,6 +197,11 @@
       font-style: italic;
     }
 
+    .sign-button:disabled {
+      opacity: .5;
+      cursor: default;
+    }
+
     .status {
       margin-top: 10px;
 
@@ -249,9 +254,12 @@
       font-family: "IBM Plex Mono", monospace;
       font-size: 9px;
       line-height: 1.7;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
     }
 
-    .empty-note {
+    .empty-note,
+    .loading-note {
       padding: 20px 0;
 
       color: var(--soft);
@@ -398,8 +406,8 @@
 
       <div id="entries">
 
-        <p class="empty-note">
-          nobody has written anything yet... awkward
+        <p class="loading-note">
+          opening the guestbook...
         </p>
 
       </div>
@@ -414,7 +422,25 @@
   </main>
 
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <script>
+    const SUPABASE_URL =
+      "https://szezeozsmdhlyibxhwqv.supabase.co";
+
+    const SUPABASE_KEY =
+      "sb_publishable_k40X-XyTfxJ97f4_kkMTPQ_epBOcFAh";
+
+    const { createClient } =
+      supabase;
+
+    const db =
+      createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
+
+
     const nameInput =
       document.getElementById("name");
 
@@ -431,18 +457,12 @@
       document.getElementById("entries");
 
 
-    const savedEntries =
-      JSON.parse(
-        localStorage.getItem("enokieGuestbookEntries") || "[]"
-      );
+    function formatDate(dateString) {
 
+      const date =
+        new Date(dateString);
 
-    function getDate() {
-
-      const now =
-        new Date();
-
-      return now.toLocaleDateString(
+      return date.toLocaleDateString(
         "en-US",
         {
           month: "2-digit",
@@ -453,21 +473,95 @@
     }
 
 
-    function escapeHTML(text) {
+    function createEntryElement(entry) {
 
-      const div =
+      const article =
+        document.createElement("article");
+
+      article.className =
+        "entry";
+
+
+      const top =
         document.createElement("div");
 
-      div.textContent =
-        text;
+      top.className =
+        "entry-top";
 
-      return div.innerHTML;
+
+      const name =
+        document.createElement("p");
+
+      name.className =
+        "entry-name";
+
+      name.textContent =
+        entry.name;
+
+
+      const date =
+        document.createElement("span");
+
+      date.className =
+        "entry-date";
+
+      date.textContent =
+        formatDate(entry.created_at);
+
+
+      const message =
+        document.createElement("p");
+
+      message.className =
+        "entry-message";
+
+      message.textContent =
+        entry.message;
+
+
+      top.appendChild(name);
+      top.appendChild(date);
+
+      article.appendChild(top);
+      article.appendChild(message);
+
+      return article;
     }
 
 
-    function renderEntries() {
+    async function loadEntries() {
 
-      if (savedEntries.length === 0) {
+      entries.innerHTML =
+        '<p class="loading-note">opening the guestbook...</p>';
+
+
+      const {
+        data,
+        error
+      } =
+        await db
+          .from("guestbook")
+          .select("id, name, message, created_at")
+          .order("created_at", {
+            ascending: false
+          });
+
+
+      if (error) {
+
+        console.error(error);
+
+        entries.innerHTML =
+          '<p class="empty-note">hmm... the guestbook is being weird rn</p>';
+
+        return;
+      }
+
+
+      entries.innerHTML = "";
+
+
+      if (!data || data.length === 0) {
 
         entries.innerHTML =
           '<p class="empty-note">nobody has written anything yet... awkward</p>';
@@ -475,40 +569,18 @@
         return;
       }
 
-      entries.innerHTML =
-        savedEntries
-          .slice()
-          .reverse()
-          .map((entry) => {
 
-            return `
-              <article class="entry">
+      data.forEach((entry) => {
 
-                <div class="entry-top">
+        entries.appendChild(
+          createEntryElement(entry)
+        );
 
-                  <p class="entry-name">
-                    ${escapeHTML(entry.name)}
-                  </p>
-
-                  <span class="entry-date">
-                    ${escapeHTML(entry.date)}
-                  </span>
-
-                </div>
-
-                <p class="entry-message">
-                  ${escapeHTML(entry.message)}
-                </p>
-
-              </article>
-            `;
-
-          })
-          .join("");
+      });
     }
 
 
-    signButton.addEventListener("click", () => {
+    async function signGuestbook() {
 
       const name =
         nameInput.value.trim();
@@ -539,30 +611,74 @@
       }
 
 
-      savedEntries.push({
-        name: name,
-        message: message,
-        date: getDate()
-      });
+      if (
+        name.length > 30 ||
+        message.length > 300
+      ) {
+
+        status.textContent =
+          "okay that's a little too much writing";
+
+        return;
+      }
 
 
-      localStorage.setItem(
-        "enokieGuestbookEntries",
-        JSON.stringify(savedEntries)
-      );
+      signButton.disabled =
+        true;
+
+      status.textContent =
+        "signing...";
 
 
-      renderEntries();
+      const {
+        error
+      } =
+        await db
+          .from("guestbook")
+          .insert([
+            {
+              name: name,
+              message: message
+            }
+          ]);
 
-      nameInput.value = "";
-      messageInput.value = "";
+
+      signButton.disabled =
+        false;
+
+
+      if (error) {
+
+        console.error(error);
+
+        status.textContent =
+          "wait it didn't save... try again";
+
+        return;
+      }
+
+
+      nameInput.value =
+        "";
+
+      messageInput.value =
+        "";
 
       status.textContent =
         "signed ♡";
-    });
 
 
-    renderEntries();
+      await loadEntries();
+    }
+
+
+    signButton.addEventListener(
+      "click",
+      signGuestbook
+    );
+
+
+    loadEntries();
   </script>
 
 </body>
