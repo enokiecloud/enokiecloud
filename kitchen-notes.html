@@ -42,16 +42,24 @@
     nav {
       width: min(1200px, 90%);
       margin: auto;
-      padding: 25px 0;
+      padding: 18px 0;
+
       display: flex;
       justify-content: space-between;
       align-items: center;
+
       border-bottom: 1px solid var(--ink);
     }
 
-    .logo {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 31px;
+    .logo-wrap {
+      width: 245px;
+      max-width: 42vw;
+    }
+
+    .logo-image {
+      width: 100%;
+      height: auto;
+      display: block;
     }
 
     .nav-links {
@@ -76,7 +84,6 @@
 
     .intro {
       margin-bottom: 65px;
-      position: relative;
     }
 
     h1 {
@@ -154,14 +161,6 @@
       letter-spacing: .15px;
     }
 
-    .tiny-note {
-      margin-top: 8px;
-      color: var(--soft);
-      font-family: "Cormorant Garamond", serif;
-      font-size: 16px;
-      font-style: italic;
-    }
-
     .signature .entry-title {
       font-size: 29px;
     }
@@ -187,6 +186,11 @@
         gap: 14px;
       }
 
+      .logo-wrap {
+        width: 220px;
+        max-width: 90%;
+      }
+
       main {
         padding-top: 55px;
       }
@@ -209,12 +213,20 @@
 <body>
 
   <nav>
-    <a href="index.html" class="logo">enokiecloud ♡</a>
+
+    <a href="index.html" class="logo-wrap">
+      <img
+        src="images/enokiecloud-logo.png"
+        alt="enokiecloud"
+        class="logo-image"
+      >
+    </a>
 
     <div class="nav-links">
       <a href="index.html">home</a>
       <a href="memory-box.html">memory box</a>
     </div>
+
   </nav>
 
   <main>
