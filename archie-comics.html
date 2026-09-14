@@ -1,1 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>archie comics ~ enokiecloud</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@300;400&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --paper: #fdfcf9;
+      --ink: #111111;
+      --soft: #77736e;
+      --line: #d2cec8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "IBM Plex Mono", monospace;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    nav {
+      max-width: 1200px;
+      margin: auto;
+      padding: 24px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--ink);
+    }
+
+    .logo {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 32px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 17px;
+    }
+
+    main {
+      max-width: 1050px;
+      margin: auto;
+      padding: 70px 5% 90px;
+    }
+
+    h1 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 64px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .sub {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      color: var(--soft);
+      font-size: 17px;
+      margin-bottom: 55px;
+    }
+
+    .comic-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 42px 28px;
+    }
+
+    .comic {
+      display: block;
+    }
+
+    .comic-cover {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      border: 1px solid var(--line);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      color: var(--soft);
+      background: #f8f6f2;
+      transition: transform .2s ease;
+    }
+
+    .comic:hover .comic-cover {
+      transform: translateY(-5px);
+    }
+
+    .comic-title {
+      margin-top: 12px;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 20px;
+    }
+
+    .comic-note {
+      margin-top: 4px;
+      font-size: 9px;
+      color: var(--soft);
+      line-height: 1.5;
+    }
+
+    .back {
+      display: inline-block;
+      margin-top: 55px;
+      font-size: 11px;
+    }
+
+    @media (max-width: 800px) {
+      .comic-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 520px) {
+      h1 {
+        font-size: 48px;
+      }
+
+      .comic-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">enokiecloud ♡</a>
+
+    <div class="nav-links">
+      <a href="index.html">home</a>
+      <a href="memory-box.html">memory box</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <h1>archie comics</h1>
+
+    <p class="sub">
+      some of the volumes i loved growing up
+    </p>
+
+    <div class="comic-grid">
+
+      <div class="comic">
+        <div class="comic-cover">cover goes here</div>
+        <div class="comic-title">volume one</div>
+        <div class="comic-note">little note about why i loved it</div>
+      </div>
+
+      <div class="comic">
+        <div class="comic-cover">cover goes here</div>
+        <div class="comic-title">volume two</div>
+        <div class="comic-note">little note about why i loved it</div>
+      </div>
+
+      <div class="comic">
+        <div class="comic-cover">cover goes here</div>
+        <div class="comic-title">volume three</div>
+        <div class="comic-note">little note about why i loved it</div>
+      </div>
+
+    </div>
+
+    <a href="memory-box.html" class="back">← back to memory box</a>
+
+  </main>
+
+</body>
+</html>
