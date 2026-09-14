@@ -19,7 +19,6 @@
       --paper: #fdfcf9;
       --ink: #111111;
       --soft: #77736e;
-      --line: #d2cec8;
     }
 
     * {
@@ -40,23 +39,25 @@
     }
 
     nav {
-      max-width: 1200px;
+      width: min(1200px, 90%);
       margin: auto;
-      padding: 24px 5%;
+      padding: 25px 0;
+
       display: flex;
       justify-content: space-between;
       align-items: center;
+
       border-bottom: 1px solid var(--ink);
     }
 
     .logo {
       font-family: "Cormorant Garamond", serif;
-      font-size: 32px;
+      font-size: 31px;
     }
 
     .nav-links {
       display: flex;
-      gap: 24px;
+      gap: 25px;
     }
 
     .nav-links a {
@@ -64,74 +65,100 @@
       font-size: 17px;
     }
 
+    .nav-links a:hover {
+      font-style: italic;
+    }
+
     main {
-      max-width: 1100px;
+      width: min(1050px, 88%);
       margin: auto;
-      padding: 70px 5% 90px;
+      padding: 78px 0 100px;
+    }
+
+    .intro {
+      margin-bottom: 52px;
     }
 
     h1 {
       font-family: "Cormorant Garamond", serif;
-      font-size: 64px;
+      font-size: clamp(55px, 7vw, 78px);
       font-weight: 500;
-      margin-bottom: 8px;
+      line-height: 1;
     }
 
-    .sub {
-      font-family: "Cormorant Garamond", serif;
-      font-style: italic;
+    .subtitle {
+      margin-top: 15px;
+
       color: var(--soft);
-      font-size: 17px;
-      margin-bottom: 48px;
+
+      font-family: "Cormorant Garamond", serif;
+      font-size: 19px;
+      font-style: italic;
     }
 
     .comic-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 34px 28px;
+      gap: 42px 32px;
       align-items: start;
     }
 
     .comic {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
+      display: block;
+      position: relative;
     }
 
     .comic-cover {
+      display: block;
       width: 100%;
       height: auto;
-      display: block;
-      border: 1px solid var(--line);
+
       transition:
         transform .25s ease,
-        box-shadow .25s ease;
+        filter .25s ease;
     }
 
     .comic:hover .comic-cover {
-      transform: translateY(-5px) scale(1.015);
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+      transform: translateY(-5px) rotate(-0.3deg);
+      filter: contrast(1.02);
+    }
+
+    .comic:nth-child(even):hover .comic-cover {
+      transform: translateY(-5px) rotate(0.3deg);
     }
 
     .back {
       display: inline-block;
-      margin-top: 55px;
-      font-size: 11px;
+      margin-top: 58px;
+
+      font-size: 10px;
+    }
+
+    .back:hover {
+      font-style: italic;
     }
 
     @media (max-width: 800px) {
       .comic-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 32px 24px;
       }
     }
 
     @media (max-width: 520px) {
-      h1 {
-        font-size: 48px;
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+      }
+
+      main {
+        padding-top: 55px;
       }
 
       .comic-grid {
         grid-template-columns: 1fr;
+        gap: 35px;
       }
     }
   </style>
@@ -140,23 +167,31 @@
 <body>
 
   <nav>
-    <a href="index.html" class="logo">enokiecloud ♡</a>
+
+    <a href="index.html" class="logo">
+      enokiecloud ♡
+    </a>
 
     <div class="nav-links">
       <a href="index.html">home</a>
       <a href="memory-box.html">memory box</a>
     </div>
+
   </nav>
 
   <main>
 
-    <h1>archie comics</h1>
+    <section class="intro">
 
-    <p class="sub">
-      some of the comics i loved growing up
-    </p>
+      <h1>archie comics</h1>
 
-    <div class="comic-grid">
+      <p class="subtitle">
+        some of the comics i loved growing up
+      </p>
+
+    </section>
+
+    <section class="comic-grid">
 
       <div class="comic">
         <img class="comic-cover" src="images/archie1" alt="archie comic cover">
@@ -194,9 +229,11 @@
         <img class="comic-cover" src="images/archie9" alt="archie comic cover">
       </div>
 
-    </div>
+    </section>
 
-    <a href="memory-box.html" class="back">← back to memory box</a>
+    <a href="memory-box.html" class="back">
+      ← back to memory box
+    </a>
 
   </main>
 
