@@ -968,7 +968,62 @@
 
   </main>
 
+  <audio id="nightCrickets" preload="auto" loop>
+    <source src="sounds/crickets.mp3" type="audio/mpeg">
+  </audio>
+
   <script>
+    const nightCrickets =
+      document.getElementById("nightCrickets");
+
+    nightCrickets.volume = 0.22;
+
+    let cricketAudioUnlocked = false;
+
+    async function startCrickets() {
+      try {
+        nightCrickets.currentTime = 0;
+        await nightCrickets.play();
+        cricketAudioUnlocked = true;
+      } catch (error) {
+        // browsers may block autoplay until the visitor interacts
+      }
+    }
+
+    function stopCrickets() {
+      nightCrickets.pause();
+      nightCrickets.currentTime = 0;
+    }
+
+    document.addEventListener(
+      "pointerdown",
+      () => {
+        if (
+          !cricketAudioUnlocked &&
+          !document.hidden
+        ) {
+          startCrickets();
+        }
+      },
+      { once: true }
+    );
+
+    document.addEventListener(
+      "visibilitychange",
+      () => {
+        if (document.hidden) {
+          stopCrickets();
+        } else if (cricketAudioUnlocked) {
+          startCrickets();
+        }
+      }
+    );
+
+    window.addEventListener(
+      "pagehide",
+      stopCrickets
+    );
+
     const items = {
       key: {
         title: "old key",
