@@ -239,6 +239,15 @@
       cursor: default;
     }
 
+    .come-back {
+      margin-top: 18px;
+      min-height: 16px;
+      text-align: center;
+      color: var(--soft);
+      font-size: 8px;
+      line-height: 1.6;
+    }
+
     .relationship {
       margin-top: 28px;
       text-align: center;
@@ -414,6 +423,8 @@
       <button class="action-button" type="button" data-action="sleep">sleep</button>
     </section>
 
+    <p class="come-back" id="comeBack"></p>
+
     <p class="relationship">
       status with u: <strong id="bondLabel">stranger</strong>
     </p>
@@ -436,6 +447,7 @@
       botherCount: 0,
       feedCount: 0,
       sleeping: false,
+      restingUntil: 0,
       lastSeen: Date.now()
     };
 
@@ -468,6 +480,9 @@
 
     const bondLabel =
       document.getElementById("bondLabel");
+
+    const comeBack =
+      document.getElementById("comeBack");
 
     const buttons =
       Array.from(
@@ -601,6 +616,155 @@
       return "suspicious";
     }
 
+    function needsAreFulfilled() {
+      return (
+        state.hunger <= 25 &&
+        state.mood >= 75 &&
+        state.energy >= 70
+      );
+    }
+
+    function isResting() {
+      return (
+        Number(state.restingUntil || 0) >
+        Date.now()
+      );
+    }
+
+    function formatRestTime(milliseconds) {
+      const totalSeconds =
+        Math.max(
+          0,
+          Math.ceil(milliseconds / 1000)
+        );
+
+      const minutes =
+        Math.floor(totalSeconds / 60);
+
+      const seconds =
+        totalSeconds % 60;
+
+      if (minutes > 0) {
+        return (
+          minutes +
+          "m " +
+          String(seconds).padStart(2, "0") +
+          "s"
+        );
+      }
+
+      return seconds + "s";
+    }
+
+    function beginRest() {
+      if (isResting()) {
+        return;
+      }
+
+      state.restingUntil =
+        Date.now() + (5 * 60 * 1000);
+
+      state.sleeping =
+        false;
+
+      speech.textContent =
+        randomItem([
+          "okay i'm good now. come back later",
+          "all good. go do something else",
+          "my needs are fulfilled. bye for now",
+          "okayyy i'm satisfied. come back in a bit"
+        ]);
+
+      animatePet("sleepy");
+    }
+
+    function finishRestIfNeeded() {
+      if (
+        state.restingUntil &&
+        Date.now() >= state.restingUntil
+      ) {
+        state.restingUntil = 0;
+
+        state.hunger =
+          Math.max(state.hunger, 45);
+
+        state.mood =
+          Math.min(state.mood, 62);
+
+        state.energy =
+          Math.min(state.energy, 60);
+
+        speech.textContent =
+          randomItem([
+            "oh. ur back.",
+            "hi again",
+            "took u long enough",
+            "okay i need attention again"
+          ]);
+      }
+    }
+
+    function applyNaturalChanges() {
+      finishRestIfNeeded();
+
+      const now =
+        Date.now();
+
+      const elapsedMinutes =
+        Math.min(
+          360,
+          Math.max(
+            0,
+            (now - state.lastSeen) / 60000
+          )
+        );
+
+      if (
+        elapsedMinutes > 0 &&
+        !isResting()
+      ) {
+        state.hunger +=
+          elapsedMinutes * 0.75;
+
+        state.mood -=
+          elapsedMinutes * 0.18;
+
+        if (state.sleeping) {
+          state.energy +=
+            elapsedMinutes * 1.4;
+        } else {
+          state.energy -=
+            elapsedMinutes * 0.28;
+        }
+      }
+
+      state.lastSeen =
+        now;
+    }
+
+    function updateRestUI() {
+      const remaining =
+        Number(state.restingUntil || 0) -
+        Date.now();
+
+      const resting =
+        remaining > 0;
+
+      buttons.forEach((button) => {
+        button.disabled =
+          resting;
+      });
+
+      if (resting) {
+        comeBack.textContent =
+          "come back in " +
+          formatRestTime(remaining);
+      } else {
+        comeBack.textContent =
+          "";
+      }
+    }
+
     function updateUI() {
       state.hunger =
         clamp(state.hunger);
@@ -610,6 +774,13 @@
 
       state.energy =
         clamp(state.energy);
+
+      if (
+        needsAreFulfilled() &&
+        !isResting()
+      ) {
+        beginRest();
+      }
 
       hungerFill.style.width =
         state.hunger + "%";
@@ -633,13 +804,15 @@
         getBondLabel();
 
       tinyStatus.textContent =
-        "mood: " +
-        getMoodLabel();
+        isResting()
+          ? "mood: satisfied"
+          : "mood: " + getMoodLabel();
 
       if (state.sleeping) {
         animatePet("sleepy");
       }
 
+      updateRestUI();
       saveState();
     }
 
@@ -668,6 +841,13 @@
     }
 
     function feedPet() {
+      if (isResting()) {
+        speech.textContent =
+          "i said come back later";
+        updateRestUI();
+        return;
+      }
+
       if (wakeIfNeeded()) {
         updateUI();
         return;
@@ -714,6 +894,13 @@
     }
 
     function petPet() {
+      if (isResting()) {
+        speech.textContent =
+          "i said come back later";
+        updateRestUI();
+        return;
+      }
+
       if (wakeIfNeeded()) {
         updateUI();
         return;
@@ -743,6 +930,13 @@
     }
 
     function playPet() {
+      if (isResting()) {
+        speech.textContent =
+          "i said come back later";
+        updateRestUI();
+        return;
+      }
+
       if (wakeIfNeeded()) {
         updateUI();
         return;
@@ -787,6 +981,13 @@
     }
 
     function botherPet() {
+      if (isResting()) {
+        speech.textContent =
+          "i said come back later";
+        updateRestUI();
+        return;
+      }
+
       if (state.sleeping) {
         state.sleeping =
           false;
@@ -827,6 +1028,337 @@
     }
 
     function sleepPet() {
+      if (isResting()) {
+        speech.textContent =
+          "i said come back later";
+        updateRestUI();
+        return;
+      }
+
+      if (state.sleeping) {
+        speech.textContent =
+          randomItem([
+            "zzz",
+            "still sleeping.",
+            "girl let me sleep",
+            "..."
+          ]);
+
+        return;
+      }
+
+      speech.textContent =
+        randomItem([
+          "finally",
+          "goodnight i guess",
+          "don't wake me up",
+          "zzz..."
+        ]);
+
+      state.sleeping =
+        true;
+
+      state.energy +=
+        24;
+
+      state.hunger +=
+        5;
+
+      animatePet("sleepy");
+
+      updateUI();
+    }
+
+    function refreshPetOverTime() {
+      applyNaturalChanges();
+      updateUI();
+    }
+
+    buttons.forEach((button) => {
+        button.disabled =
+          resting;
+      });
+
+      if (resting) {
+        comeBack.textContent =
+          "come back in " +
+          formatRestTime(remaining);
+      } else {
+        comeBack.textContent =
+          "";
+      }
+    }
+
+    function updateUI() {
+      state.hunger =
+        clamp(state.hunger);
+
+      state.mood =
+        clamp(state.mood);
+
+      state.energy =
+        clamp(state.energy);
+
+      if (
+        needsAreFulfilled() &&
+        !isResting()
+      ) {
+        beginRest();
+      }
+
+      hungerFill.style.width =
+        state.hunger + "%";
+
+      moodFill.style.width =
+        state.mood + "%";
+
+      energyFill.style.width =
+        state.energy + "%";
+
+      hungerValue.textContent =
+        state.hunger;
+
+      moodValue.textContent =
+        state.mood;
+
+      energyValue.textContent =
+        state.energy;
+
+      bondLabel.textContent =
+        getBondLabel();
+
+      tinyStatus.textContent =
+        isResting()
+          ? "mood: satisfied"
+          : "mood: " + getMoodLabel();
+
+      if (state.sleeping) {
+        animatePet("sleepy");
+      }
+
+      updateRestUI();
+      saveState();
+    }
+
+    function wakeIfNeeded() {
+      if (!state.sleeping) {
+        return false;
+      }
+
+      state.sleeping =
+        false;
+
+      speech.textContent =
+        randomItem([
+          "bro i was sleeping",
+          "why.",
+          "i literally had one job",
+          "u woke me up???"
+        ]);
+
+      state.mood -=
+        7;
+
+      animatePet("annoyed");
+
+      return true;
+    }
+
+    function feedPet() {
+      if (isResting()) {
+        speech.textContent =
+          "i said come back later";
+        updateRestUI();
+        return;
+      }
+
+      if (wakeIfNeeded()) {
+        updateUI();
+        return;
+      }
+
+      state.feedCount +=
+        1;
+
+      if (state.hunger <= 18) {
+        speech.textContent =
+          randomItem([
+            "bro i'm full",
+            "again???",
+            "girl.",
+            "save it for later"
+          ]);
+
+        state.mood -=
+          2;
+
+        animatePet("wiggle");
+      } else {
+        speech.textContent =
+          randomItem([
+            "okay yum",
+            "acceptable.",
+            "wait... that's good",
+            "fine u can feed me"
+          ]);
+
+        state.hunger -=
+          22;
+
+        state.mood +=
+          5;
+
+        state.bond +=
+          2;
+
+        animatePet("bounce");
+      }
+
+      updateUI();
+    }
+
+    function petPet() {
+      if (isResting()) {
+        speech.textContent =
+          "i said come back later";
+        updateRestUI();
+        return;
+      }
+
+      if (wakeIfNeeded()) {
+        updateUI();
+        return;
+      }
+
+      speech.textContent =
+        randomItem([
+          "...okay",
+          "don't get used to this",
+          "hmm.",
+          "fine. keep going.",
+          "i'll allow it"
+        ]);
+
+      state.mood +=
+        8;
+
+      state.bond +=
+        2;
+
+      state.energy -=
+        2;
+
+      animatePet("wiggle");
+
+      updateUI();
+    }
+
+    function playPet() {
+      if (isResting()) {
+        speech.textContent =
+          "i said come back later";
+        updateRestUI();
+        return;
+      }
+
+      if (wakeIfNeeded()) {
+        updateUI();
+        return;
+      }
+
+      if (state.energy <= 15) {
+        speech.textContent =
+          randomItem([
+            "absolutely not",
+            "too tired",
+            "maybe later",
+            "look at me. no."
+          ]);
+
+        animatePet("annoyed");
+      } else {
+        speech.textContent =
+          randomItem([
+            "okay wait this is fun",
+            "again again",
+            "u almost got me",
+            "i'm faster than u btw",
+            "okayyy"
+          ]);
+
+        state.energy -=
+          16;
+
+        state.mood +=
+          10;
+
+        state.hunger +=
+          9;
+
+        state.bond +=
+          3;
+
+        animatePet("bounce");
+      }
+
+      updateUI();
+    }
+
+    function botherPet() {
+      if (isResting()) {
+        speech.textContent =
+          "i said come back later";
+        updateRestUI();
+        return;
+      }
+
+      if (state.sleeping) {
+        state.sleeping =
+          false;
+      }
+
+      state.botherCount +=
+        1;
+
+      const lines = [
+        "what",
+        "stop",
+        "bro",
+        "again???",
+        "ur annoying",
+        "i literally live here",
+        "...",
+        "leave me alone omg"
+      ];
+
+      const index =
+        Math.min(
+          state.botherCount - 1,
+          lines.length - 1
+        );
+
+      speech.textContent =
+        lines[index];
+
+      state.mood -=
+        9;
+
+      state.bond -=
+        1;
+
+      animatePet("annoyed");
+
+      updateUI();
+    }
+
+    function sleepPet() {
+      if (isResting()) {
+        speech.textContent =
+          "i said come back later";
+        updateRestUI();
+        return;
+      }
+
       if (state.sleeping) {
         speech.textContent =
           randomItem([
@@ -922,9 +1454,10 @@
       );
     });
 
-    applyTimeAway();
+    applyNaturalChanges();
 
     if (
+      !isResting() &&
       state.bond >= 20 &&
       Math.random() < .28
     ) {
@@ -938,6 +1471,11 @@
     }
 
     updateUI();
+
+    setInterval(
+      refreshPetOverTime,
+      1000
+    );
   </script>
 
 </body>
