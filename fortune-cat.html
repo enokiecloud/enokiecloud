@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>fortune cat ~ enokiecloud</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@300;400&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --paper: #fdfcf9;
+      --ink: #111111;
+      --soft: #77736e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "IBM Plex Mono", monospace;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    nav {
+      width: min(1200px, 90%);
+      margin: auto;
+      padding: 18px 0;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      border-bottom: 1px solid var(--ink);
+    }
+
+    .logo-wrap {
+      width: 245px;
+      max-width: 42vw;
+    }
+
+    .logo-image {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 17px;
+    }
+
+    .nav-links a:hover {
+      font-style: italic;
+    }
+
+    main {
+      width: min(850px, 88%);
+      margin: auto;
+      padding: 65px 0 70px;
+      text-align: center;
+    }
+
+    .tiny-label {
+      color: var(--soft);
+      font-size: 8px;
+      letter-spacing: 3px;
+    }
+
+    h1 {
+      margin-top: 13px;
+
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(55px, 7vw, 78px);
+      font-weight: 500;
+      line-height: 1;
+    }
+
+    .subtitle {
+      margin-top: 13px;
+
+      color: var(--soft);
+
+      font-family: "Cormorant Garamond", serif;
+      font-size: 17px;
+      font-style: italic;
+    }
+
+    .fortune-area {
+      margin-top: 38px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .fortune-cat-button {
+      border: 0;
+      background: transparent;
+      padding: 0;
+
+      cursor: pointer;
+    }
+
+    .fortune-cat {
+      width: 280px;
+      max-width: 70vw;
+      height: auto;
+
+      display: block;
+      mix-blend-mode: multiply;
+
+      transition: transform .2s ease;
+    }
+
+    .fortune-cat-button:hover .fortune-cat {
+      transform: translateY(-4px);
+    }
+
+    .fortune-cat.bounce {
+      animation: catBounce .38s ease;
+    }
+
+    @keyframes catBounce {
+      0% {
+        transform: translateY(0);
+      }
+
+      35% {
+        transform: translateY(-13px) rotate(-2deg);
+      }
+
+      65% {
+        transform: translateY(-5px) rotate(2deg);
+      }
+
+      100% {
+        transform: translateY(0);
+      }
+    }
+
+    .ask {
+      margin-top: 10px;
+
+      color: var(--soft);
+
+      font-family: "Cormorant Garamond", serif;
+      font-size: 15px;
+      font-style: italic;
+    }
+
+    .fortune-wrap {
+      width: min(520px, 100%);
+      min-height: 125px;
+
+      margin-top: 28px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .decided {
+      margin-bottom: 12px;
+
+      color: var(--soft);
+
+      font-size: 8px;
+      letter-spacing: 1.5px;
+
+      opacity: 0;
+
+      transition: opacity .25s ease;
+    }
+
+    .fortune {
+      min-height: 55px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-family: "Cormorant Garamond", serif;
+      font-size: 25px;
+      font-style: italic;
+      line-height: 1.35;
+
+      opacity: 0;
+      transform: translateY(5px);
+
+      transition:
+        opacity .25s ease,
+        transform .25s ease;
+    }
+
+    .fortune.show,
+    .decided.show {
+      opacity: 1;
+    }
+
+    .fortune.show {
+      transform: translateY(0);
+    }
+
+    .again {
+      margin-top: 14px;
+
+      border: 0;
+      border-bottom: 1px solid var(--ink);
+      background: transparent;
+      padding: 0 0 2px;
+
+      color: var(--ink);
+
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 8px;
+
+      cursor: pointer;
+
+      opacity: 0;
+      pointer-events: none;
+
+      transition: opacity .25s ease;
+    }
+
+    .again.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .again:hover {
+      font-style: italic;
+    }
+
+    .bottom {
+      width: min(850px, 88%);
+      margin: 15px auto 40px;
+      padding-top: 18px;
+
+      border-top: 1px solid var(--ink);
+
+      display: flex;
+      justify-content: space-between;
+
+      font-family: "Cormorant Garamond", serif;
+      font-size: 16px;
+    }
+
+    .bottom a:hover {
+      font-style: italic;
+    }
+
+    .bottom-note {
+      color: var(--soft);
+      font-style: italic;
+    }
+
+    @media (max-width: 650px) {
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+      }
+
+      .logo-wrap {
+        width: 220px;
+        max-width: 90%;
+      }
+
+      main {
+        padding-top: 50px;
+      }
+
+      .fortune-cat {
+        width: 230px;
+      }
+
+      .fortune {
+        font-size: 22px;
+      }
+
+      .bottom {
+        gap: 25px;
+        align-items: flex-end;
+      }
+
+      .bottom-note {
+        text-align: right;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+
+    <a href="index.html" class="logo-wrap">
+      <img
+        src="images/enokiecloud-logo.png"
+        alt="enokiecloud"
+        class="logo-image"
+      >
+    </a>
+
+    <div class="nav-links">
+      <a href="index.html">home</a>
+      <a href="memory-box.html">memory box</a>
+    </div>
+
+  </nav>
+
+  <main>
+
+    <p class="tiny-label">
+      ASK WISELY
+    </p>
+
+    <h1>
+      fortune cat
+    </h1>
+
+    <p class="subtitle">
+      he knows things. probably.
+    </p>
+
+    <div class="fortune-area">
+
+      <button
+        class="fortune-cat-button"
+        id="fortuneCatButton"
+        type="button"
+        aria-label="ask the fortune cat"
+      >
+        <img
+          src="images/fortune%20cat.jpg"
+          alt="fortune cat"
+          class="fortune-cat"
+          id="fortuneCat"
+        >
+      </button>
+
+      <p class="ask" id="askText">
+        click him to ask
+      </p>
+
+      <div class="fortune-wrap">
+
+        <p
+          class="decided"
+          id="decided"
+        >
+          THE CAT HAS DECIDED
+        </p>
+
+        <p
+          class="fortune"
+          id="fortune"
+        ></p>
+
+        <button
+          class="again"
+          id="againButton"
+          type="button"
+        >
+          ask again
+        </button>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <div class="bottom">
+
+    <a href="index.html">
+      ← back home
+    </a>
+
+    <span class="bottom-note">
+      don't blame the cat
+    </span>
+
+  </div>
+
+  <script>
+    const fortuneCatButton =
+      document.getElementById("fortuneCatButton");
+
+    const fortuneCat =
+      document.getElementById("fortuneCat");
+
+    const fortune =
+      document.getElementById("fortune");
+
+    const decided =
+      document.getElementById("decided");
+
+    const againButton =
+      document.getElementById("againButton");
+
+    const askText =
+      document.getElementById("askText");
+
+    const fortunes = [
+      "something good is already making its way to u",
+      "ur overthinking again",
+      "yes. that's ur sign.",
+      "trust ur gut this time",
+      "go buy yourself a little treat",
+      "today is giving side quest energy",
+      "stop checking. it'll happen when it happens.",
+      "you already know the answer",
+      "maybe sleep on it first",
+      "something small is about to make u really happy",
+      "don't force what isn't flowing",
+      "ur allowed to change ur mind",
+      "the thing ur worried about will feel smaller soon",
+      "say yes to the weird little opportunity",
+      "someone is thinking about u",
+      "leave it alone for today",
+      "good news likes to arrive unexpectedly",
+      "take the compliment and stop arguing",
+      "ur doing better than u think",
+      "don't text them rn lol",
+      "actually... go for it",
+      "not everything needs to be figured out tonight",
+      "ur next favorite memory hasn't happened yet",
+      "something u thought was over might surprise u",
+      "be nosy. investigate.",
+      "today calls for a little treat",
+      "wait a little longer",
+      "the answer is probably simpler than ur making it",
+      "keep that idea. there's something there.",
+      "the cat says absolutely not."
+    ];
+
+    let lastFortune = -1;
+
+    function giveFortune() {
+
+      fortuneCat.classList.remove("bounce");
+
+      void fortuneCat.offsetWidth;
+
+      fortuneCat.classList.add("bounce");
+
+      fortune.classList.remove("show");
+      decided.classList.remove("show");
+      againButton.classList.remove("show");
+
+      askText.textContent = "...";
+
+      let randomIndex;
+
+      do {
+        randomIndex =
+          Math.floor(Math.random() * fortunes.length);
+      } while (
+        randomIndex === lastFortune &&
+        fortunes.length > 1
+      );
+
+      lastFortune = randomIndex;
+
+      setTimeout(() => {
+
+        fortune.textContent =
+          fortunes[randomIndex];
+
+        decided.classList.add("show");
+        fortune.classList.add("show");
+        againButton.classList.add("show");
+
+        askText.textContent =
+          "he has spoken";
+
+      }, 380);
+    }
+
+    fortuneCatButton.addEventListener(
+      "click",
+      giveFortune
+    );
+
+    againButton.addEventListener(
+      "click",
+      giveFortune
+    );
+  </script>
+
+</body>
+</html>
