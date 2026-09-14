@@ -8,13 +8,21 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Instrument+Serif:ital@0;1&family=Caveat:wght@400;500&display=swap" rel="stylesheet">
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
 
   <style>
+    :root {
+      --paper: #fdfcf9;
+      --ink: #111111;
+      --soft: #77736e;
+      --line: #c9c6c0;
+    }
+
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
     }
 
     html {
@@ -22,376 +30,465 @@
     }
 
     body {
-      background: #f7f4ef;
-      color: #292826;
-      font-family: "DM Sans", sans-serif;
-      font-weight: 300;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "IBM Plex Mono", monospace;
+      overflow-x: hidden;
     }
 
-    /* NAVIGATION */
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ---------- NAV ---------- */
 
     nav {
-      height: 75px;
-      display: flex;
+      max-width: 1420px;
+      margin: auto;
+      min-height: 85px;
+      padding: 22px 5%;
+      display: grid;
+      grid-template-columns: 1fr auto;
       align-items: center;
-      justify-content: space-between;
-      padding: 0 7%;
-      border-bottom: 1px solid #ded9d3;
-      background: rgba(247, 244, 239, .95);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      border-bottom: 1px solid var(--ink);
     }
 
     .logo {
-      font-family: "Instrument Serif", serif;
-      font-size: 28px;
-      letter-spacing: 1px;
-    }
-
-    .logo span {
-      font-family: "DM Sans", sans-serif;
-      font-size: 22px;
-      margin-left: 5px;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 34px;
+      font-weight: 500;
+      letter-spacing: -1px;
     }
 
     .nav-links {
       display: flex;
-      gap: 32px;
+      gap: 34px;
+      align-items: center;
     }
 
     .nav-links a {
-      color: #292826;
-      text-decoration: none;
-      font-size: 13px;
-      letter-spacing: .7px;
-      transition: opacity .2s;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 17px;
+      position: relative;
     }
 
-    .nav-links a:hover {
-      opacity: .45;
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 0;
+      height: 1px;
+      background: var(--ink);
+      transition: width .2s ease;
     }
 
-    /* HERO */
+    .nav-links a:hover::after {
+      width: 100%;
+    }
 
-    .hero {
-      min-height: 76vh;
+    /* ---------- HOME ---------- */
+
+    .home {
+      max-width: 1420px;
+      margin: auto;
+      min-height: 720px;
+      padding: 55px 5% 40px;
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      max-width: 1250px;
-      margin: auto;
-      padding: 80px 7%;
+      grid-template-columns: 1fr 1.45fr 1fr;
       align-items: center;
-      gap: 80px;
+      position: relative;
     }
 
-    .tiny-note {
-      font-family: "Caveat", cursive;
-      font-size: 19px;
-      margin-bottom: 16px;
-      transform: rotate(-2deg);
+    .left-side {
+      align-self: center;
+      padding-bottom: 40px;
     }
 
-    .hero h1 {
-      font-family: "Instrument Serif", serif;
-      font-weight: 400;
-      font-size: clamp(65px, 8vw, 115px);
+    .site-title {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(54px, 6vw, 94px);
+      font-weight: 500;
       line-height: .85;
-      letter-spacing: -3px;
+      letter-spacing: -4px;
     }
 
-    .hero h1 span {
-      font-family: "DM Sans", sans-serif;
-      font-size: .38em;
-      vertical-align: top;
-      margin-left: 8px;
+    .site-sub {
+      margin-top: 22px;
+      color: var(--soft);
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: 19px;
     }
 
-    .tagline {
-      margin-top: 26px;
-      font-family: "Caveat", cursive;
-      font-size: 23px;
-      color: #77716b;
-    }
-
-    .intro {
-      max-width: 420px;
-      margin-top: 24px;
-      line-height: 1.8;
-      font-size: 14px;
-      color: #625f5a;
-    }
-
-    .buttons {
-      display: flex;
-      gap: 12px;
-      margin-top: 30px;
-    }
-
-    .button {
-      padding: 12px 22px;
-      border-radius: 100px;
-      border: 1px solid #292826;
-      text-decoration: none;
-      color: #292826;
-      font-size: 13px;
-      transition: .25s;
-    }
-
-    .button.dark {
-      background: #292826;
-      color: #f7f4ef;
-    }
-
-    .button:hover {
-      transform: translateY(-2px);
-    }
-
-    /* LITTLE WINDOW */
-
-    .cloud-card {
-      background: #ede7e1;
-      min-height: 430px;
-      border-radius: 35px 35px 110px 35px;
-      position: relative;
-      padding: 45px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      overflow: hidden;
-    }
-
-    .cloud {
-      font-size: 110px;
-      position: absolute;
-      top: 55px;
-      left: 50%;
-      transform: translateX(-50%);
-      opacity: .9;
-    }
-
-    .floating-heart {
-      position: absolute;
-      font-size: 25px;
-    }
-
-    .heart-one {
-      top: 40px;
-      right: 45px;
-      transform: rotate(10deg);
-    }
-
-    .heart-two {
-      bottom: 120px;
-      left: 35px;
-      transform: rotate(-15deg);
-    }
-
-    .cloud-card p {
-      font-family: "Caveat", cursive;
-      font-size: 22px;
-      line-height: 1.3;
-      position: relative;
-      z-index: 2;
-    }
-
-    .cloud-card small {
-      margin-top: 10px;
-      opacity: .55;
-    }
-
-    /* CATEGORY STRIP */
-
-    .categories {
-      border-top: 1px solid #ded9d3;
-      border-bottom: 1px solid #ded9d3;
-      min-height: 65px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 35px;
-      flex-wrap: wrap;
-      padding: 18px;
+    .tiny-list {
+      margin-top: 70px;
+      line-height: 1.85;
       font-size: 11px;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
+      color: #4c4945;
     }
 
-    .categories span::after {
-      content: "♡";
-      margin-left: 35px;
-      opacity: .35;
+    .tiny-list a {
+      display: block;
+      width: fit-content;
+      transition: transform .2s ease;
     }
 
-    .categories span:last-child::after {
-      display: none;
+    .tiny-list a:hover {
+      transform: translateX(6px);
     }
 
-    /* LITTLE THINGS */
+    /* ---------- CENTER ART ---------- */
 
-    .little-things {
-      max-width: 1100px;
-      margin: auto;
-      padding: 100px 7%;
+    .art-wrap {
+      height: 590px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      position: relative;
     }
 
-    .section-top {
+    .girl-art {
+      width: min(580px, 100%);
+      max-height: 590px;
+      object-fit: contain;
+      filter: grayscale(100%) contrast(1.07);
+      transition: transform .35s ease;
+      transform-origin: bottom center;
+    }
+
+    .girl-art:hover {
+      transform: translateY(-6px) rotate(-.5deg);
+    }
+
+    .scribble-heart {
+      position: absolute;
+      left: 4%;
+      top: 28%;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 70px;
+      transform: rotate(-8deg);
+      font-weight: 300;
+    }
+
+    .star-one {
+      position: absolute;
+      left: 16%;
+      top: 18%;
+      font-size: 30px;
+      transform: rotate(12deg);
+    }
+
+    .star-two {
+      position: absolute;
+      right: 4%;
+      top: 46%;
+      font-size: 23px;
+    }
+
+    /* ---------- RIGHT ---------- */
+
+    .right-side {
+      padding-left: 25px;
+    }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--soft);
+      margin-bottom: 18px;
+    }
+
+    .archive-list {
+      list-style: none;
+    }
+
+    .archive-list li {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .archive-list a {
+      padding: 12px 0;
       display: flex;
       justify-content: space-between;
-      align-items: end;
-      margin-bottom: 40px;
+      gap: 20px;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 20px;
+      transition: padding .2s ease;
     }
 
-    .section-top h2 {
-      font-family: "Instrument Serif", serif;
-      font-size: 48px;
-      font-weight: 400;
+    .archive-list a:hover {
+      padding-left: 8px;
+      font-style: italic;
     }
 
-    .section-top p {
-      font-family: "Caveat", cursive;
-      font-size: 19px;
-      transform: rotate(-2deg);
+    .arrow {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
     }
 
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
+    /* ---------- CURRENT ---------- */
+
+    .current {
+      max-width: 1420px;
+      margin: auto;
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+      padding: 42px 5%;
     }
 
-    .card {
-      background: #eeebe6;
-      border-radius: 18px;
-      min-height: 260px;
-      padding: 25px;
-      position: relative;
-      transition: transform .25s;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-    }
-
-    .card-number {
-      font-size: 11px;
-      opacity: .45;
-    }
-
-    .card h3 {
-      font-family: "Instrument Serif", serif;
-      font-weight: 400;
-      font-size: 28px;
-      margin-top: 75px;
-    }
-
-    .card p {
-      font-family: "Caveat", cursive;
-      margin-top: 8px;
-      font-size: 18px;
-      color: #746f69;
-    }
-
-    .card-heart {
-      position: absolute;
-      right: 20px;
-      top: 18px;
-      font-size: 18px;
-    }
-
-    /* CURRENTLY */
-
-    .currently {
-      max-width: 1100px;
-      margin: 0 auto 100px;
-      padding: 45px;
-      border: 1px solid #d8d2cc;
-      border-radius: 22px;
-      display: grid;
-      grid-template-columns: 1.2fr repeat(4, 1fr);
+    .current-top {
+      display: flex;
+      align-items: baseline;
       gap: 25px;
-      align-items: center;
+      margin-bottom: 30px;
     }
 
-    .currently h2 {
-      font-family: "Instrument Serif", serif;
-      font-size: 35px;
-      font-weight: 400;
+    .current h2 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 43px;
+      font-weight: 500;
+    }
+
+    .current-top span {
+      color: var(--soft);
+      font-size: 9px;
+      letter-spacing: 2px;
+    }
+
+    .current-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--line);
+    }
+
+    .current-item {
+      min-height: 145px;
+      padding: 24px 25px;
+      border-right: 1px solid var(--line);
+      position: relative;
+      transition: background .2s ease;
+    }
+
+    .current-item:first-child {
+      padding-left: 0;
+    }
+
+    .current-item:last-child {
+      border-right: none;
+    }
+
+    .current-item:hover {
+      background: #f5f3ef;
     }
 
     .current-item small {
       display: block;
-      text-transform: uppercase;
       font-size: 9px;
-      letter-spacing: 1.5px;
-      opacity: .45;
-      margin-bottom: 6px;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: var(--soft);
+      margin-bottom: 24px;
     }
 
     .current-item p {
-      font-family: "Caveat", cursive;
-      font-size: 18px;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 20px;
+      line-height: 1.25;
     }
 
-    /* FOOTER */
+    .current-item em {
+      font-size: 11px;
+      display: block;
+      margin-top: 7px;
+      color: var(--soft);
+      font-style: normal;
+    }
+
+    /* ---------- DIRECTORY ---------- */
+
+    .directory {
+      max-width: 1420px;
+      margin: auto;
+      padding: 55px 5%;
+    }
+
+    .directory-heading {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      margin-bottom: 28px;
+    }
+
+    .directory-heading h2 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 42px;
+      font-weight: 500;
+    }
+
+    .directory-heading::after {
+      content: "";
+      height: 1px;
+      background: var(--line);
+      flex: 1;
+    }
+
+    .directory-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+    }
+
+    .directory-link {
+      min-height: 150px;
+      padding: 27px 22px;
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all .2s ease;
+    }
+
+    .directory-link:last-child {
+      border-right: none;
+    }
+
+    .directory-link:hover {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .directory-link span:first-child {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 27px;
+    }
+
+    .directory-link span:last-child {
+      font-size: 11px;
+    }
+
+    /* ---------- FOOTER ---------- */
 
     footer {
-      padding: 35px 7%;
-      border-top: 1px solid #ded9d3;
+      max-width: 1420px;
+      margin: auto;
+      min-height: 110px;
+      padding: 28px 5%;
       display: flex;
       justify-content: space-between;
-      font-size: 12px;
+      align-items: center;
+      font-size: 10px;
     }
 
-    footer .footer-note {
-      font-family: "Caveat", cursive;
-      font-size: 17px;
+    .footer-logo {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 22px;
     }
 
-    /* PHONE */
+    .footer-star {
+      font-size: 20px;
+    }
 
-    @media (max-width: 760px) {
+    /* ---------- MOBILE ---------- */
+
+    @media (max-width: 900px) {
       nav {
-        padding: 0 6%;
+        grid-template-columns: 1fr;
+        gap: 15px;
       }
 
       .nav-links {
-        gap: 14px;
+        gap: 18px;
+        flex-wrap: wrap;
       }
 
-      .nav-links a:nth-child(3),
-      .nav-links a:nth-child(4) {
-        display: none;
-      }
-
-      .hero {
+      .home {
         grid-template-columns: 1fr;
-        padding-top: 60px;
-        gap: 45px;
+        padding-top: 45px;
       }
 
-      .hero h1 {
-        font-size: 68px;
+      .left-side {
+        padding-bottom: 15px;
       }
 
-      .cloud-card {
-        min-height: 350px;
+      .tiny-list {
+        margin-top: 30px;
       }
 
-      .cards {
-        grid-template-columns: 1fr;
+      .art-wrap {
+        height: auto;
+        margin: 30px 0;
       }
 
-      .currently {
-        margin: 0 7% 70px;
+      .girl-art {
+        max-height: 520px;
+      }
+
+      .right-side {
+        padding-left: 0;
+        margin-top: 25px;
+      }
+
+      .current-grid {
         grid-template-columns: 1fr 1fr;
       }
 
-      .currently h2 {
-        grid-column: 1 / -1;
+      .current-item:nth-child(2) {
+        border-right: none;
+      }
+
+      .current-item:first-child {
+        padding-left: 20px;
+      }
+
+      .current-item {
+        border-bottom: 1px solid var(--line);
+      }
+
+      .directory-row {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .directory-link:nth-child(2) {
+        border-right: none;
+      }
+
+      .directory-link:nth-child(-n+2) {
+        border-bottom: 1px solid var(--line);
+      }
+    }
+
+    @media (max-width: 560px) {
+      .logo {
+        font-size: 29px;
+      }
+
+      .nav-links {
+        font-size: 14px;
+      }
+
+      .site-title {
+        font-size: 62px;
+      }
+
+      .current-grid,
+      .directory-row {
+        grid-template-columns: 1fr;
+      }
+
+      .current-item,
+      .directory-link {
+        border-right: none;
+      }
+
+      .directory-link {
+        border-bottom: 1px solid var(--line);
       }
 
       footer {
+        align-items: flex-start;
         gap: 20px;
       }
     }
@@ -401,135 +498,192 @@
 <body>
 
   <nav>
-    <div class="logo">enokiecloud <span>♡</span></div>
+    <a href="#home" class="logo">enokiecloud ♡</a>
 
     <div class="nav-links">
       <a href="#home">home</a>
+      <a href="#current">lately</a>
+      <a href="#archive">archive</a>
+      <a href="#directory">collections</a>
       <a href="#about">about</a>
-      <a href="#things">things</a>
-      <a href="#gallery">gallery</a>
-      <a href="#contact">contact</a>
     </div>
   </nav>
 
 
   <main>
 
-    <section class="hero" id="home">
+    <section class="home" id="home">
 
-      <div>
-        <p class="tiny-note">welcome to my little corner of the internet ~</p>
+      <div class="left-side">
 
-        <h1>
-          enokie<br>cloud<span>♡</span>
+        <h1 class="site-title">
+          enokie<br>cloud
         </h1>
 
-        <p class="tagline">simple things, softer days</p>
-
-        <p class="intro">
-          a little space for the things i like, things i'm working on,
-          random thoughts, photos, and the little moments i want to keep.
+        <p class="site-sub">
+          personal archive / 2026
         </p>
 
-        <div class="buttons">
-          <a class="button dark" href="#things">explore ♡</a>
-          <a class="button" href="#about">about me</a>
+        <div class="tiny-list">
+          <a href="#">cats</a>
+          <a href="#">music</a>
+          <a href="#">memories</a>
+          <a href="#">good food</a>
+          <a href="#">my people</a>
+          <a href="#">and more...</a>
         </div>
+
       </div>
 
 
-      <div class="cloud-card">
+      <div class="art-wrap">
 
-        <div class="cloud">☁︎</div>
+        <span class="star-one">✦</span>
+        <span class="scribble-heart">♡</span>
+        <span class="star-two">✧</span>
 
-        <span class="floating-heart heart-one">♡</span>
-        <span class="floating-heart heart-two">♡</span>
+        <img
+          class="girl-art"
+          src="./images/enokiecloud%20-%201.png"
+          alt="black and white illustrated girl with cat"
+        >
 
-        <p>
-          same girl,<br>
-          different day ~
-        </p>
+      </div>
 
-        <small>currently somewhere in my own little world</small>
+
+      <div class="right-side" id="archive">
+
+        <p class="section-label">FROM THE ARCHIVE</p>
+
+        <ul class="archive-list">
+
+          <li>
+            <a href="#">
+              <span>archie comics</span>
+              <span class="arrow">↗</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="#">
+              <span>valorant</span>
+              <span class="arrow">↗</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="#">
+              <span>childhood</span>
+              <span class="arrow">↗</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="#">
+              <span>old games</span>
+              <span class="arrow">↗</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="#">
+              <span>school eras</span>
+              <span class="arrow">↗</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="#">
+              <span>random things</span>
+              <span class="arrow">↗</span>
+            </a>
+          </li>
+
+        </ul>
 
       </div>
 
     </section>
 
 
-    <section class="categories">
-      <span>life</span>
-      <span>school</span>
-      <span>cats</span>
-      <span>self care</span>
-      <span>creative things</span>
-      <span>random</span>
+    <section class="current" id="current">
+
+      <div class="current-top">
+        <h2>currently</h2>
+        <span>09.2026</span>
+      </div>
+
+      <div class="current-grid">
+
+        <div class="current-item">
+          <small>listening</small>
+
+          <p>wantmetoo (demo)</p>
+          <em>reiko</em>
+        </div>
+
+
+        <div class="current-item">
+          <small>watching</small>
+
+          <p>
+            police body cams<br>
+            + crime videos
+          </p>
+
+          <em>youtube</em>
+        </div>
+
+
+        <div class="current-item">
+          <small>loving</small>
+
+          <p>my RC work</p>
+          <em>aKDPhi ♡</em>
+        </div>
+
+
+        <div class="current-item">
+          <small>working on</small>
+
+          <p>this website hehe</p>
+          <em>enokiecloud</em>
+        </div>
+
+      </div>
+
     </section>
 
 
-    <section class="little-things" id="things">
+    <section class="directory" id="directory">
 
-      <div class="section-top">
-        <h2>little things ♡</h2>
-        <p>bits & pieces of my life ~</p>
+      <div class="directory-heading">
+        <h2>elsewhere</h2>
       </div>
 
 
-      <div class="cards">
+      <div class="directory-row">
 
-        <div class="card">
-          <span class="card-number">01</span>
-          <span class="card-heart">♡</span>
+        <a href="#current" class="directory-link">
+          <span>lately</span>
+          <span>01 ↗</span>
+        </a>
 
-          <h3>life lately</h3>
-          <p>little updates, thoughts & moments</p>
-        </div>
+        <a href="#archive" class="directory-link">
+          <span>archive</span>
+          <span>02 ↗</span>
+        </a>
 
+        <a href="#" class="directory-link">
+          <span>favorites</span>
+          <span>03 ↗</span>
+        </a>
 
-        <div class="card">
-          <span class="card-number">02</span>
-          <span class="card-heart">♡</span>
+        <a href="#" class="directory-link">
+          <span>photo roll</span>
+          <span>04 ↗</span>
+        </a>
 
-          <h3>things i love</h3>
-          <p>things that make life a little nicer</p>
-        </div>
-
-
-        <div class="card">
-          <span class="card-number">03</span>
-          <span class="card-heart">♡</span>
-
-          <h3>my gallery</h3>
-          <p>photos worth keeping</p>
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <section class="currently">
-
-      <h2>currently ~</h2>
-
-      <div class="current-item">
-        <small>listening</small>
-        <p>my playlists ♡</p>
-      </div>
-
-      <div class="current-item">
-        <small>loving</small>
-        <p>little things</p>
-      </div>
-
-      <div class="current-item">
-        <small>learning</small>
-        <p>as i go ~</p>
-      </div>
-
-      <div class="current-item">
-        <small>mood</small>
-        <p>☁︎ + ♡</p>
       </div>
 
     </section>
@@ -537,14 +691,15 @@
   </main>
 
 
-  <footer>
-    <span>enokiecloud ♡</span>
+  <footer id="about">
 
-    <span class="footer-note">
-      turn your little joys into a bigger, brighter world ~
-    </span>
+    <div>
+      <div class="footer-logo">enokiecloud ♡</div>
+      <div>est. 2026</div>
+    </div>
 
-    <span>est. 2026</span>
+    <div class="footer-star">✦</div>
+
   </footer>
 
 </body>
