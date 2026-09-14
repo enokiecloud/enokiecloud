@@ -626,6 +626,7 @@
 
     let selectedTopic = null;
     let lastMessage = "";
+    let pendingSwitchReaction = "";
 
     const rotations = [
       "-1.2deg",
@@ -903,7 +904,11 @@
       "bruh again",
       "hmm okay one more",
       "girl how many questions do u have",
-      "okay i'm starting to feel used"
+      "okay i'm starting to feel used",
+      "do u ever make decisions urself",
+      "okay detective",
+      "another crisis??",
+      "ur keeping me employed today huh"
     ];
 
     const annoyed = [
@@ -937,6 +942,159 @@
       "i'm ignoring u now"
     ];
 
+    const switchReactions = [
+      "okay we're switching topics now",
+      "oh wow u just gotta know everything huh",
+      "pick a struggle bruh",
+      "ur lore is getting complicated",
+      "okay wait how many people are involved here",
+      "girl i'm gonna need a chart",
+      "wha is going ON",
+      "this is getting messy",
+      "u came here with a whole season finale",
+      "okay miss multiple storylines",
+      "one crisis at a time pls",
+      "there are too many tabs open in ur life rn",
+      "girl i cannot keep track of everybody",
+      "okay so apparently we have subplots now",
+      "ur life got side quests too??",
+      "wha happened to focusing on one thing",
+      "every category??? seriously??",
+      "okay atp tell me the whole story",
+      "this is becoming a group project",
+      "bruh ur giving me homework"
+    ];
+
+    const specificSwitches = {
+
+      "ex>crush": [
+        "dude u JUST asked abt ur ex now ur crush???",
+        "wait ur ex AND a crush?? girl",
+        "oh wow we moved on quick huh",
+        "okay so who's winning rn... the ex or the crush",
+        "girl ur ex barely left the chat"
+      ],
+
+      "crush>ex": [
+        "girl pick a direction pls",
+        "wha happened to the crush now we're back on the ex",
+        "okay so the ex is still in the plot...",
+        "not the crush AND the ex omg",
+        "u were doing so good until u said ex"
+      ],
+
+      "partner>ex": [
+        "wait... partner AND ex??? oh brother",
+        "girl why is the ex entering the chat",
+        "ur partner then ur ex?? i'm listening but concerned",
+        "okay why are we reopening the ex folder rn",
+        "partner to ex is crazy work"
+      ],
+
+      "ex>partner": [
+        "okayyy leaving the past and checking the present i see",
+        "from ex to partner... okay growth maybe",
+        "good. focus on the person actually here",
+        "okay present tense now. i like that better",
+        "finally somebody who isn't the ex"
+      ],
+
+      "crush>partner": [
+        "oh so we got options now??",
+        "wait crush to partner?? how many storylines are there",
+        "okayyy plot twist",
+        "girl who's the crush if u got a partner",
+        "ummm crush AND partner?? explain"
+      ],
+
+      "partner>crush": [
+        "girl... do i even wanna know",
+        "partner to crush??? be serious rn",
+        "okay wait this is getting messy",
+        "wha do u mean crush...",
+        "ur partner is somewhere sneezing rn"
+      ],
+
+      "friends>partner": [
+        "oh so now the relationship is involved too",
+        "friends AND partner?? okay what's the lore",
+        "girl are the friends talking abt ur relationship again",
+        "okay this sounds interconnected and i don't like it"
+      ],
+
+      "partner>friends": [
+        "okay wait now the friends are involved too??",
+        "partner then friends... did somebody say something",
+        "girl are we getting outside opinions now",
+        "okay who's talking abt who"
+      ],
+
+      "friends>crush": [
+        "wait did ur friends put u onto the crush or what",
+        "friends to crush... okay somebody's gossiping",
+        "ohhh so this IS about somebody",
+        "girl i knew there was a person involved"
+      ],
+
+      "crush>friends": [
+        "lemme guess... u told the group chat",
+        "crush then friends?? oh they're getting the screenshots huh",
+        "okay now we're consulting the committee",
+        "girl leave the group chat out of this for two seconds"
+      ],
+
+      "life>ex": [
+        "we were talking abt LIFE and somehow the ex came back omg",
+        "how did ur ex sneak into this",
+        "girl the ex cannot be the answer to every life problem",
+        "life crisis to ex pipeline... unfortunate"
+      ],
+
+      "life>crush": [
+        "life to crush??? okay priorities",
+        "somehow everything leads back to this crush huh",
+        "girl we were being philosophical two seconds ago",
+        "okay so apparently the meaning of life is ur crush"
+      ],
+
+      "life>partner": [
+        "okay so the life crisis includes ur partner too",
+        "partner entered the life category... noted",
+        "girl are they the problem or the emotional support",
+        "okay this just got personal"
+      ],
+
+      "idk>ex": [
+        "ohhh so THAT'S what 'idk' meant. ur ex.",
+        "girl u knew exactly what this was about",
+        "not u saying idk then clicking ex",
+        "mhm. 'idk bruh' sure."
+      ],
+
+      "idk>crush": [
+        "ohhh so THAT'S what this was about",
+        "u said idk like there wasn't a whole crush involved",
+        "girl just say u like them",
+        "mhm suddenly we know the category huh"
+      ],
+
+      "idk>partner": [
+        "oh so u DID know what this was about",
+        "idk to partner... girl pls",
+        "okay mystery solved",
+        "mhm so it was about them the whole time"
+      ]
+    };
+
+    const topicLabels = {
+      partner: "okay... what did they do",
+      crush: "ohhh okay",
+      ex: "girl...",
+      friends: "okay spill",
+      life: "hmm okay",
+      idk: "bruh okay"
+    };
+
     function getToday() {
       const now = new Date();
 
@@ -952,30 +1110,54 @@
     const today = getToday();
 
     const storedDay =
-      localStorage.getItem("fortuneCatFinalDay");
+      localStorage.getItem("fortuneCatV4Day");
 
     if (storedDay !== today) {
+
       localStorage.setItem(
-        "fortuneCatFinalDay",
+        "fortuneCatV4Day",
         today
       );
 
       localStorage.setItem(
-        "fortuneCatFinalClicks",
+        "fortuneCatV4Clicks",
         "0"
+      );
+
+      localStorage.setItem(
+        "fortuneCatV4Switches",
+        "0"
+      );
+
+      localStorage.removeItem(
+        "fortuneCatV4LastTopic"
       );
     }
 
     let clicksToday =
       Number(
         localStorage.getItem(
-          "fortuneCatFinalClicks"
+          "fortuneCatV4Clicks"
         ) || 0
       );
 
-    let fortuneCount = clicksToday;
+    let switchCount =
+      Number(
+        localStorage.getItem(
+          "fortuneCatV4Switches"
+        ) || 0
+      );
+
+    let lastAskedTopic =
+      localStorage.getItem(
+        "fortuneCatV4LastTopic"
+      ) || null;
+
+    let fortuneCount =
+      clicksToday;
 
     function updateBothered() {
+
       bothered.textContent =
         "cat bothered: " +
         clicksToday +
@@ -992,9 +1174,44 @@
 
     updateBothered();
 
+    function randomFrom(array) {
+      return array[
+        Math.floor(
+          Math.random() * array.length
+        )
+      ];
+    }
+
+    function getSwitchReaction(from, to, nextSwitchCount) {
+
+      const key =
+        from + ">" + to;
+
+      if (specificSwitches[key]) {
+        return randomFrom(
+          specificSwitches[key]
+        );
+      }
+
+      if (nextSwitchCount === 1) {
+        return "okay topic change i see";
+      }
+
+      if (nextSwitchCount === 2) {
+        return "wait we're switching again??";
+      }
+
+      return randomFrom(
+        switchReactions
+      );
+    }
+
     topicButtons.forEach((button) => {
 
       button.addEventListener("click", () => {
+
+        const newTopic =
+          button.dataset.topic;
 
         topicButtons.forEach((other) => {
           other.classList.remove("selected");
@@ -1003,37 +1220,46 @@
         button.classList.add("selected");
 
         selectedTopic =
-          button.dataset.topic;
+          newTopic;
 
         fortunePaper.classList.remove("show");
         againButton.classList.remove("show");
 
-        const labels = {
-          partner: "okay... what did they do",
-          crush: "ohhh okay",
-          ex: "girl...",
-          friends: "okay spill",
-          life: "hmm okay",
-          idk: "bruh okay"
-        };
+        if (
+          clicksToday >= 2 &&
+          lastAskedTopic &&
+          selectedTopic !== lastAskedTopic
+        ) {
 
-        tapLabel.textContent =
-          labels[selectedTopic] +
-          " ~ tap me";
+          pendingSwitchReaction =
+            getSwitchReaction(
+              lastAskedTopic,
+              selectedTopic,
+              switchCount + 1
+            );
+
+          tapLabel.textContent =
+            pendingSwitchReaction +
+            " ~ tap me";
+
+        } else {
+
+          pendingSwitchReaction = "";
+
+          tapLabel.textContent =
+            topicLabels[selectedTopic] +
+            " ~ tap me";
+        }
       });
-
     });
 
     function getRandomNormalMessage() {
+
       const pool =
         fortunes[selectedTopic];
 
       let message =
-        pool[
-          Math.floor(
-            Math.random() * pool.length
-          )
-        ];
+        randomFrom(pool);
 
       let tries = 0;
 
@@ -1041,12 +1267,9 @@
         message === lastMessage &&
         tries < 10
       ) {
+
         message =
-          pool[
-            Math.floor(
-              Math.random() * pool.length
-            )
-          ];
+          randomFrom(pool);
 
         tries++;
       }
@@ -1056,32 +1279,56 @@
 
     function getMessage() {
 
-      if (clicksToday < 6) {
+      if (clicksToday < 10) {
         return getRandomNormalMessage();
       }
 
-      if (clicksToday < 9) {
-        const index =
-          Math.min(
-            clicksToday - 6,
-            mildlyAnnoyed.length - 1
-          );
-
-        return mildlyAnnoyed[index];
+      if (clicksToday < 13) {
+        return randomFrom(
+          mildlyAnnoyed
+        );
       }
 
       const annoyedIndex =
         Math.min(
-          clicksToday - 9,
+          clicksToday - 13,
           annoyed.length - 1
         );
 
-      return annoyed[annoyedIndex];
+      return annoyed[
+        annoyedIndex
+      ];
+    }
+
+    function getNormalAfterText() {
+
+      if (clicksToday <= 3) {
+        return "he has spoken";
+      }
+
+      if (clicksToday <= 6) {
+        return "okayyy";
+      }
+
+      if (clicksToday <= 9) {
+        return "he's starting to notice";
+      }
+
+      if (clicksToday <= 12) {
+        return "okay he's getting annoyed";
+      }
+
+      if (clicksToday < 20) {
+        return "girl leave him alone";
+      }
+
+      return "come back tomorrow bruh";
     }
 
     function giveFortune() {
 
       if (!selectedTopic) {
+
         tapLabel.textContent =
           "girl pick what ur asking about first";
 
@@ -1089,12 +1336,36 @@
       }
 
       if (clicksToday >= 20) {
+
         tapLabel.textContent =
           "come back tomorrow bruh";
 
         againButton.classList.remove("show");
 
         return;
+      }
+
+      const switchedTopics =
+        lastAskedTopic &&
+        selectedTopic !== lastAskedTopic;
+
+      let switchReaction = "";
+
+      if (switchedTopics) {
+
+        switchCount++;
+
+        localStorage.setItem(
+          "fortuneCatV4Switches",
+          String(switchCount)
+        );
+
+        switchReaction =
+          getSwitchReaction(
+            lastAskedTopic,
+            selectedTopic,
+            switchCount
+          );
       }
 
       fortuneCat.classList.remove("thinking");
@@ -1112,24 +1383,29 @@
       const message =
         getMessage();
 
-      lastMessage = message;
+      lastMessage =
+        message;
+
+      lastAskedTopic =
+        selectedTopic;
+
+      localStorage.setItem(
+        "fortuneCatV4LastTopic",
+        lastAskedTopic
+      );
 
       clicksToday++;
       fortuneCount++;
 
       localStorage.setItem(
-        "fortuneCatFinalClicks",
+        "fortuneCatV4Clicks",
         String(clicksToday)
       );
 
       updateBothered();
 
       const rotation =
-        rotations[
-          Math.floor(
-            Math.random() * rotations.length
-          )
-        ];
+        randomFrom(rotations);
 
       setTimeout(() => {
 
@@ -1152,32 +1428,21 @@
           againButton.classList.add("show");
         }
 
-        if (clicksToday <= 3) {
+        if (switchReaction) {
+
           tapLabel.textContent =
-            "he has spoken";
+            switchReaction;
+
+        } else {
+
+          tapLabel.textContent =
+            getNormalAfterText();
         }
 
-        else if (clicksToday <= 5) {
-          tapLabel.textContent =
-            "okayyy";
-        }
+        pendingSwitchReaction = "";
 
-        else if (clicksToday <= 8) {
-          tapLabel.textContent =
-            "he's starting to notice";
-        }
+        if (clicksToday >= 20) {
 
-        else if (clicksToday <= 12) {
-          tapLabel.textContent =
-            "okay he's annoyed now";
-        }
-
-        else if (clicksToday < 20) {
-          tapLabel.textContent =
-            "girl leave him alone";
-        }
-
-        else {
           tapLabel.textContent =
             "come back tomorrow bruh";
 
