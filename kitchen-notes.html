@@ -40,9 +40,9 @@
     }
 
     nav {
-      max-width: 1200px;
+      width: min(1200px, 90%);
       margin: auto;
-      padding: 24px 5%;
+      padding: 25px 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -51,12 +51,12 @@
 
     .logo {
       font-family: "Cormorant Garamond", serif;
-      font-size: 32px;
+      font-size: 31px;
     }
 
     .nav-links {
       display: flex;
-      gap: 24px;
+      gap: 25px;
     }
 
     .nav-links a {
@@ -64,83 +64,144 @@
       font-size: 17px;
     }
 
+    .nav-links a:hover {
+      font-style: italic;
+    }
+
     main {
-      max-width: 900px;
+      width: min(900px, 88%);
       margin: auto;
-      padding: 70px 5% 90px;
+      padding: 80px 0 100px;
+    }
+
+    .intro {
+      margin-bottom: 75px;
     }
 
     h1 {
       font-family: "Cormorant Garamond", serif;
-      font-size: 64px;
+      font-size: clamp(52px, 7vw, 76px);
       font-weight: 500;
-      margin-bottom: 8px;
+      line-height: 1;
     }
 
-    .sub {
+    .subtitle {
+      margin-top: 13px;
       font-family: "Cormorant Garamond", serif;
+      font-size: 18px;
       font-style: italic;
       color: var(--soft);
-      font-size: 17px;
-      margin-bottom: 12px;
     }
 
-    .recipe-note {
-      font-size: 9px;
-      color: var(--soft);
-      line-height: 1.7;
-      margin-bottom: 48px;
+    .little-note {
+      max-width: 520px;
+      margin-top: 34px;
+      padding-left: 17px;
+      border-left: 1px solid var(--ink);
+
+      font-family: "Cormorant Garamond", serif;
+      font-size: 18px;
+      font-style: italic;
+      line-height: 1.55;
+    }
+
+    .entries {
+      border-top: 1px solid var(--ink);
     }
 
     .entry {
-      padding: 28px 0;
-      border-top: 1px solid var(--line);
-    }
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 55px;
 
-    .entry:last-of-type {
+      padding: 42px 0 46px;
       border-bottom: 1px solid var(--line);
     }
 
-    .entry-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 20px;
-      margin-bottom: 10px;
+    .entry:nth-child(even) {
+      padding-left: 45px;
     }
 
     .entry-title {
       font-family: "Cormorant Garamond", serif;
-      font-size: 29px;
+      font-size: 27px;
+      font-weight: 500;
+      line-height: 1.05;
     }
 
     .rating {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 18px;
-      white-space: nowrap;
+      display: block;
+      margin-top: 10px;
+
+      color: var(--soft);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 9px;
+      letter-spacing: 1px;
     }
 
-    .note {
-      max-width: 720px;
-      font-size: 10px;
-      line-height: 1.9;
-      color: #403d39;
+    .entry-note {
+      max-width: 520px;
+
+      font-family: "Cormorant Garamond", serif;
+      font-size: 19px;
+      line-height: 1.55;
+    }
+
+    .tiny-thought {
+      display: block;
+      margin-top: 12px;
+
+      color: var(--soft);
+      font-family: "Cormorant Garamond", serif;
+      font-size: 16px;
+      font-style: italic;
+    }
+
+    .signature {
+      position: relative;
+    }
+
+    .signature::after {
+      content: "♡";
+      position: absolute;
+      right: 5%;
+      top: 25px;
+
+      font-family: "Cormorant Garamond", serif;
+      font-size: 50px;
+
+      transform: rotate(8deg);
     }
 
     .back {
       display: inline-block;
-      margin-top: 45px;
-      font-size: 11px;
+      margin-top: 55px;
+
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
     }
 
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 48px;
+    .back:hover {
+      font-style: italic;
+    }
+
+    @media (max-width: 700px) {
+      nav {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 15px;
       }
 
-      .entry-top {
-        flex-direction: column;
-        gap: 4px;
+      .entry,
+      .entry:nth-child(even) {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        padding: 35px 0;
+      }
+
+      .signature::after {
+        right: 0;
+        top: 20px;
       }
     }
   </style>
@@ -159,117 +220,173 @@
 
   <main>
 
-    <h1>kitchen notes</h1>
+    <section class="intro">
 
-    <p class="sub">
-      things i've cooked + my little thoughts about them
-    </p>
+      <h1>kitchen notes</h1>
 
-    <p class="recipe-note">
-      i'll post the recipes sometime later ~ for now, these are just my little cooking notes ♡
-    </p>
+      <p class="subtitle">
+        things i cooked, what worked, what didn't, and what i'd change next time
+      </p>
 
-    <div class="entry">
-      <div class="entry-top">
-        <div class="entry-title">pepper lunch</div>
-        <div class="rating">♥♥♥♥♥</div>
-      </div>
-      <div class="note">
-        super delicious ~ literally comfort food. i love adding honey to my sauce because it makes it even better.
-      </div>
-    </div>
+      <p class="little-note">
+        i’ll post the recipes sometime later ~ for now,
+        these are just my little cooking notes ♡
+      </p>
 
-    <div class="entry">
-      <div class="entry-top">
-        <div class="entry-title">sushi bake</div>
-        <div class="rating">♥♥♥♥♥</div>
-      </div>
-      <div class="note">
-        this recipe actually came from my kiddo jas ~ kiddo in greek for those who don't know lol. she used to do fundraisers with this recipe: salmon + shrimp + imitation crab + unagi sauce. just so good.
-      </div>
-    </div>
+    </section>
 
-    <div class="entry">
-      <div class="entry-top">
-        <div class="entry-title">alfredo pasta</div>
-        <div class="rating">♥♥♥♡♡</div>
-      </div>
-      <div class="note">
-        learned this with chichi and i still can't get the exact taste right. i used to always use jarred sauce, but last time i made my own and a few friends actually loved it. still feel like i'm missing something though.
-      </div>
-    </div>
+    <section class="entries">
 
-    <div class="entry">
-      <div class="entry-top">
-        <div class="entry-title">honey glazed salmon</div>
-        <div class="rating">♥♥♥♥♡</div>
-      </div>
-      <div class="note">
-        definitely one of my favorites. sometimes i burn the salmon a little too much, but everything else is perfect. the sweetness + saltiness... mwuah.
-      </div>
-    </div>
+      <article class="entry">
+        <div>
+          <h2 class="entry-title">pepper lunch</h2>
+          <span class="rating">5 / 5 ♡</span>
+        </div>
 
-    <div class="entry">
-      <div class="entry-top">
-        <div class="entry-title">hawaiian butter mochi</div>
-        <div class="rating">♥♥♥½♡</div>
-      </div>
-      <div class="note">
-        i was sooo tired when i made this. i had 14 orders and the mix was not giving me the consistency i wanted, so me and my sisters were working extra hard. it was good, but i know it could've been better.
-      </div>
-    </div>
+        <p class="entry-note">
+          super delicious. it’s like comfort food. i love when i add
+          honey to my sauce, it makes it even better.
+        </p>
+      </article>
 
-    <div class="entry">
-      <div class="entry-top">
-        <div class="entry-title">adobo</div>
-        <div class="rating">♥♥♥♥♥</div>
-      </div>
-      <div class="note">
-        idk what i did with my version but for some reason it was SO good...
-      </div>
-    </div>
 
-    <div class="entry">
-      <div class="entry-top">
-        <div class="entry-title">bistek</div>
-        <div class="rating">♥♥♥♡♡</div>
-      </div>
-      <div class="note">
-        this one is hard because my mom's recipe is so good and i can never replicate it. maybe less vinegar next time? idk.
-      </div>
-    </div>
+      <article class="entry">
+        <div>
+          <h2 class="entry-title">sushi bake</h2>
+          <span class="rating">5 / 5 ♡</span>
+        </div>
 
-    <div class="entry">
-      <div class="entry-top">
-        <div class="entry-title">tteokbokki</div>
-        <div class="rating">♥♥♥♥♥</div>
-      </div>
-      <div class="note">
-        okay this is kind of cheating because it's trader joe's lol, but i added heavy cream + gochujang and it was delishhh.
-      </div>
-    </div>
+        <p class="entry-note">
+          this recipe actually came from my kiddo jas
+          <span class="tiny-thought">(kiddo in greek for those who don’t know)</span>
+          she did fundraisers using this recipe ~ salmon + shrimp +
+          imitation crab + unagi sauce. just sooo much goodness!
+        </p>
+      </article>
 
-    <div class="entry">
-      <div class="entry-top">
-        <div class="entry-title">steak</div>
-        <div class="rating">♥♥♥♥♡</div>
-      </div>
-      <div class="note">
-        the flavor was really good, but the steak wasn't seared how i wanted it. note to self: buy a stainless steel pan, girl.
-      </div>
-    </div>
 
-    <div class="entry">
-      <div class="entry-top">
-        <div class="entry-title">my signature scrambled egg</div>
-        <div class="rating">♥♥♥♥♥♥♥♥♥♥</div>
-      </div>
-      <div class="note">
-        i LOVE this. this is genuinely one of my comfort foods and i take pride in it because wow... the flavors. and it's not even anything crazy: eggs, milk, salt, light pepper ~ FLUFFY and SOFT, never dry ~ topped with furikake. immaculate. idc what people say about runny eggs. they misunderstand...
-      </div>
-    </div>
+      <article class="entry">
+        <div>
+          <h2 class="entry-title">alfredo pasta</h2>
+          <span class="rating">3 / 5 ♡</span>
+        </div>
 
-    <a href="memory-box.html" class="back">← back to memory box</a>
+        <p class="entry-note">
+          learned this with chichi and i still can’t get the right taste.
+          idk what i’m missing 😭 i remember always using the jar for the
+          sauce, but last time i made my own sauce and it was loved by a
+          few friends!
+        </p>
+      </article>
+
+
+      <article class="entry">
+        <div>
+          <h2 class="entry-title">honey glazed salmon</h2>
+          <span class="rating">4 / 5 ♡</span>
+        </div>
+
+        <p class="entry-note">
+          def my favorite but at times i burn the salmon too much 😭
+          everything else is perfect though. the sweetness + saltiness...
+          mwuah.
+        </p>
+      </article>
+
+
+      <article class="entry">
+        <div>
+          <h2 class="entry-title">hawaiian butter mochi</h2>
+          <span class="rating">3.5 / 5 ♡</span>
+        </div>
+
+        <p class="entry-note">
+          i think when i made the hawaiian butter mochi i was super tired.
+          i had to make 14 orders and the mix wasn’t giving me the
+          consistency i wanted, so i worked extra hard along with my
+          sisters. it was good, but it could’ve been better.
+        </p>
+      </article>
+
+
+      <article class="entry">
+        <div>
+          <h2 class="entry-title">adobo</h2>
+          <span class="rating">5 / 5 ♡</span>
+        </div>
+
+        <p class="entry-note">
+          idk my version for some reason was so good...
+        </p>
+      </article>
+
+
+      <article class="entry">
+        <div>
+          <h2 class="entry-title">bistek</h2>
+          <span class="rating">3 / 5 ♡</span>
+        </div>
+
+        <p class="entry-note">
+          it’s kind of difficult bc my mom’s recipe is sooo good and i can
+          never replicate it... maybe less vinegar next time? idk.
+        </p>
+      </article>
+
+
+      <article class="entry">
+        <div>
+          <h2 class="entry-title">tteokbokki</h2>
+          <span class="rating">5 / 5 ♡</span>
+        </div>
+
+        <p class="entry-note">
+          this is kind of cheating bc it’s trader joe’s LOL but i added
+          heavy cream + gochujang and it was delishhh.
+        </p>
+      </article>
+
+
+      <article class="entry">
+        <div>
+          <h2 class="entry-title">steak</h2>
+          <span class="rating">4 / 5 ♡</span>
+        </div>
+
+        <p class="entry-note">
+          flavor was rly good but the steak wasn’t seared how i liked it.
+          <span class="tiny-thought">buy a stainless steel pan girl...</span>
+        </p>
+      </article>
+
+
+      <article class="entry signature">
+        <div>
+          <h2 class="entry-title">my signature scrambled egg</h2>
+          <span class="rating">10 / 5 ♡</span>
+        </div>
+
+        <p class="entry-note">
+          i love love love this. this was my own comfort food and i take
+          pride bc it’s just... wow. the flavors.
+
+          <br><br>
+
+          and it’s crazy bc it’s not even that crazy ~ eggs, milk, salt,
+          light pepper. FLUFFY and SOFT. and not dry fluffy eggs either.
+          topped with furikake. immaculate.
+
+          <span class="tiny-thought">
+            idc what other ppl say abt runny eggs, they misunderstand...
+          </span>
+        </p>
+      </article>
+
+    </section>
+
+    <a href="memory-box.html" class="back">
+      ← back to memory box
+    </a>
 
   </main>
 
