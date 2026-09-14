@@ -19,7 +19,6 @@
       --paper: #fdfcf9;
       --ink: #111111;
       --soft: #77736e;
-      --line: #cfcac2;
     }
 
     * {
@@ -193,7 +192,7 @@
 
       display: block;
 
-      mix-blend-mode: multiply;
+      transform-origin: 50% 80%;
 
       transition: transform .2s ease;
     }
@@ -202,33 +201,33 @@
       transform: translateY(-3px) rotate(-1deg);
     }
 
-    .fortune-cat.wiggle {
-      animation: catWiggle .55s ease;
+    .fortune-cat.thinking {
+      animation: catThinking .62s ease;
     }
 
-    @keyframes catWiggle {
+    @keyframes catThinking {
       0% {
-        transform: rotate(0deg) translateY(0);
+        transform: rotate(0deg) translateY(0) scaleY(1);
       }
 
       20% {
-        transform: rotate(-4deg) translateY(-4px);
+        transform: rotate(-5deg) translateY(-3px) scaleY(1);
       }
 
-      40% {
-        transform: rotate(4deg) translateY(-7px);
+      38% {
+        transform: rotate(-5deg) translateY(-3px) scaleY(.92);
       }
 
-      60% {
-        transform: rotate(-3deg) translateY(-5px);
+      48% {
+        transform: rotate(-5deg) translateY(-3px) scaleY(1);
       }
 
-      80% {
-        transform: rotate(2deg) translateY(-2px);
+      68% {
+        transform: rotate(4deg) translateY(-5px) scaleY(1);
       }
 
       100% {
-        transform: rotate(0deg) translateY(0);
+        transform: rotate(0deg) translateY(0) scaleY(1);
       }
     }
 
@@ -260,6 +259,7 @@
       z-index: 2;
 
       opacity: 0;
+
       transform:
         translateY(-70px)
         rotate(-2deg)
@@ -598,7 +598,7 @@
           aria-label="ask fortune cat"
         >
           <img
-            src="images/fortune%20cat.jpg"
+            src="images/fortune-cat.png"
             alt="fortune cat"
             class="fortune-cat"
             id="fortuneCat"
@@ -635,8 +635,7 @@
         <p
           class="fortune"
           id="fortune"
-        >
-        </p>
+        ></p>
 
         <div class="fortune-bottom">
 
@@ -802,11 +801,11 @@
 
     function giveFortune() {
 
-      fortuneCat.classList.remove("wiggle");
+      fortuneCat.classList.remove("thinking");
 
       void fortuneCat.offsetWidth;
 
-      fortuneCat.classList.add("wiggle");
+      fortuneCat.classList.add("thinking");
 
       fortunePaper.classList.remove("show");
       againButton.classList.remove("show");
@@ -880,7 +879,7 @@
         tapLabel.textContent =
           "he has spoken";
 
-      }, 420);
+      }, 540);
     }
 
     fortuneCatButton.addEventListener(
