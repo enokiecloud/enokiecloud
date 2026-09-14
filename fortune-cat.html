@@ -29,18 +29,19 @@
 
     body {
       min-height: 100vh;
-
       background: var(--paper);
       color: var(--ink);
-
       font-family: "IBM Plex Mono", monospace;
-
       overflow-x: hidden;
     }
 
     a {
       color: inherit;
       text-decoration: none;
+    }
+
+    button {
+      color: inherit;
     }
 
     nav {
@@ -83,15 +84,12 @@
     main {
       width: min(820px, 88%);
       margin: auto;
-
-      padding: 65px 0 55px;
-
+      padding: 58px 0 55px;
       text-align: center;
     }
 
     .tiny-label {
       color: var(--soft);
-
       font-size: 7px;
       letter-spacing: 3px;
     }
@@ -108,15 +106,62 @@
 
     .subtitle {
       margin-top: 10px;
-
       color: #55514d;
 
       font-family: "Gaegu", cursive;
       font-size: 20px;
     }
 
+    .question-area {
+      margin: 35px auto 0;
+      width: min(600px, 100%);
+    }
+
+    .question-label {
+      margin-bottom: 12px;
+
+      color: var(--soft);
+
+      font-family: "Gaegu", cursive;
+      font-size: 16px;
+    }
+
+    .topic-buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .topic-button {
+      border: 1px solid #aaa49d;
+      background: transparent;
+
+      padding: 7px 12px;
+
+      font-family: "Gaegu", cursive;
+      font-size: 16px;
+
+      cursor: pointer;
+
+      transition:
+        background .15s ease,
+        color .15s ease,
+        transform .15s ease;
+    }
+
+    .topic-button:hover {
+      transform: rotate(-1deg);
+    }
+
+    .topic-button.selected {
+      background: var(--ink);
+      color: var(--paper);
+      border-color: var(--ink);
+    }
+
     .fortune-stage {
-      margin-top: 35px;
+      margin-top: 30px;
 
       display: flex;
       flex-direction: column;
@@ -127,13 +172,12 @@
       border: 0;
       background: transparent;
       padding: 0;
-
       cursor: pointer;
     }
 
     .fortune-cat {
-      width: 270px;
-      max-width: 70vw;
+      width: 260px;
+      max-width: 68vw;
       height: auto;
 
       display: block;
@@ -148,7 +192,7 @@
     }
 
     .fortune-cat.thinking {
-      animation: catThinking .55s ease;
+      animation: catThinking .58s ease;
     }
 
     @keyframes catThinking {
@@ -156,15 +200,15 @@
         transform: rotate(0deg);
       }
 
-      25% {
-        transform: rotate(-4deg) translateY(-4px);
+      22% {
+        transform: rotate(-4deg) translateY(-3px);
       }
 
-      50% {
-        transform: rotate(3deg) translateY(-6px);
+      45% {
+        transform: rotate(4deg) translateY(-6px);
       }
 
-      75% {
+      68% {
         transform: rotate(-2deg) translateY(-3px);
       }
 
@@ -174,7 +218,8 @@
     }
 
     .tap-label {
-      margin-top: 10px;
+      min-height: 25px;
+      margin-top: 9px;
 
       color: var(--soft);
 
@@ -186,7 +231,7 @@
       width: min(540px, 92%);
       min-height: 125px;
 
-      margin-top: 28px;
+      margin-top: 24px;
       padding: 20px 28px 22px;
 
       background: #fffefb;
@@ -197,9 +242,9 @@
       opacity: 0;
 
       transform:
-        translateY(-25px)
+        translateY(-22px)
         rotate(-1deg)
-        scale(.96);
+        scale(.97);
 
       pointer-events: none;
 
@@ -213,7 +258,7 @@
 
       transform:
         translateY(0)
-        rotate(var(--fortune-rotation, -1deg))
+        rotate(var(--fortune-rotation, -.5deg))
         scale(1);
 
       pointer-events: auto;
@@ -238,7 +283,7 @@
     }
 
     .again {
-      margin-top: 22px;
+      margin-top: 20px;
 
       border: 0;
       background: transparent;
@@ -323,15 +368,24 @@
       }
 
       main {
-        padding-top: 50px;
+        padding-top: 48px;
       }
 
       .fortune-cat {
-        width: 235px;
+        width: 225px;
       }
 
       .fortune {
         font-size: 27px;
+      }
+
+      .topic-buttons {
+        gap: 6px;
+      }
+
+      .topic-button {
+        padding: 7px 10px;
+        font-size: 15px;
       }
 
       .bottom {
@@ -375,9 +429,72 @@
       fortune cat
     </h1>
 
-    <p class="subtitle">
-      he knows things... allegedly
+    <p
+      class="subtitle"
+      id="subtitle"
+    >
+      pick what ur bothering him about
     </p>
+
+    <section class="question-area">
+
+      <p class="question-label">
+        okay sooo... what's this about?
+      </p>
+
+      <div class="topic-buttons">
+
+        <button
+          class="topic-button"
+          type="button"
+          data-topic="partner"
+        >
+          partner
+        </button>
+
+        <button
+          class="topic-button"
+          type="button"
+          data-topic="crush"
+        >
+          crush
+        </button>
+
+        <button
+          class="topic-button"
+          type="button"
+          data-topic="ex"
+        >
+          ex
+        </button>
+
+        <button
+          class="topic-button"
+          type="button"
+          data-topic="friends"
+        >
+          friends
+        </button>
+
+        <button
+          class="topic-button"
+          type="button"
+          data-topic="life"
+        >
+          life
+        </button>
+
+        <button
+          class="topic-button"
+          type="button"
+          data-topic="idk"
+        >
+          idk bruh
+        </button>
+
+      </div>
+
+    </section>
 
     <section class="fortune-stage">
 
@@ -399,7 +516,7 @@
         class="tap-label"
         id="tapLabel"
       >
-        tap the cat
+        pick something first
       </p>
 
       <div
@@ -440,7 +557,7 @@
     </a>
 
     <span class="bottom-note">
-      don't blame the cat
+      the cat is not liable for bad decisions
     </span>
 
   </div>
@@ -467,60 +584,398 @@
     const tapLabel =
       document.getElementById("tapLabel");
 
-    const fortunes = [
-      "something good is already making its way to u",
-      "ur overthinking again",
-      "yes. that's ur sign.",
-      "trust ur gut this time",
-      "go buy yourself a little treat",
-      "today is giving side quest energy",
-      "stop checking. it'll happen when it happens.",
-      "you already know the answer",
-      "maybe sleep on it first",
-      "something small is about to make u really happy",
-      "don't force what isn't flowing",
-      "ur allowed to change ur mind",
-      "the thing ur worried about will feel smaller soon",
-      "say yes to the weird little opportunity",
-      "someone is thinking about u",
-      "leave it alone for today",
-      "good news likes to arrive unexpectedly",
-      "take the compliment and stop arguing",
-      "ur doing better than u think",
-      "don't text them rn lol",
-      "actually... go for it",
-      "not everything needs to be figured out tonight",
-      "ur next favorite memory hasn't happened yet",
-      "something u thought was over might surprise u",
-      "be nosy. investigate.",
-      "today calls for a little treat",
-      "wait a little longer",
-      "the answer is probably simpler than ur making it",
-      "keep that idea. there's something there.",
-      "the cat says absolutely not.",
-      "ur gonna laugh about this later",
-      "do it for the plot",
-      "the answer is yes but don't make it weird",
-      "let them miss u a little",
-      "one more day. then decide.",
-      "don't ruin a good thing by overthinking it",
-      "the cat thinks u deserve better",
-      "ur intuition clocked it before u did"
-    ];
+    const subtitle =
+      document.getElementById("subtitle");
+
+    const topicButtons =
+      document.querySelectorAll(".topic-button");
+
+    let selectedTopic = null;
+    let lastMessage = null;
 
     const rotations = [
-      "-1.4deg",
-      "-.8deg",
-      "-.3deg",
-      ".4deg",
-      ".9deg",
-      "1.3deg"
+      "-1.2deg",
+      "-.7deg",
+      "-.2deg",
+      ".3deg",
+      ".8deg",
+      "1.2deg"
     ];
 
-    let lastFortune = -1;
-    let fortuneCount = 0;
+    const fortunes = {
+
+      partner: [
+        "if something's bothering u, talk to them before u create 14 scenarios in ur head",
+        "one bad day doesn't mean the relationship is doomed bruh",
+        "okay but are they actually listening to u or just waiting for u to stop being mad",
+        "u shouldn't have to beg ur partner for basic reassurance",
+        "if they apologized but keep doing the same thing... that's kinda ur answer",
+        "don't test them. just tell them what u need",
+        "maybe they're not mad at u. maybe they're literally just tired",
+        "stop reading into the dry text and ask them what's wrong",
+        "if u feel safe enough to be honest with them, be honest",
+        "loving someone doesn't mean ignoring what keeps hurting u",
+        "if ur always scared they'll leave, that's something worth talking about",
+        "don't start an argument just because u miss them omg",
+        "they cannot read ur mind babe",
+        "if they consistently show up for u, stop looking for reasons they secretly hate u",
+        "a relationship shouldn't feel like detective work every day",
+        "okay but do u actually want a solution or do u just want them to say sorry",
+        "u can love them and still tell them they pissed u off",
+        "if u both keep avoiding the same issue it's not magically disappearing",
+        "don't compare ur relationship to whatever couple u saw online",
+        "maybe give them the benefit of the doubt once before spiraling",
+        "if u can't bring up ur feelings without being mocked... that's not cute",
+        "sometimes the answer is literally just communicate omg",
+        "if they make an effort after u tell them something matters, notice that too",
+        "u are allowed to need reassurance. just don't turn it into an interrogation",
+        "don't threaten to leave every time ur upset if u don't actually mean it",
+        "okay wait... have u eaten before starting this conversation",
+        "if they're genuinely trying, let them be human too",
+        "ur partner is supposed to be on ur team, not someone ur constantly scared of",
+        "missing them doesn't automatically mean something is wrong",
+        "ask them directly. ur gonna survive the answer either way"
+      ],
+
+      crush: [
+        "if they like u, there will probably be SOME effort. let's start there",
+        "stop analyzing the story view bruh",
+        "a like is not a marriage proposal",
+        "okay but do they talk to u when they don't need something",
+        "if ur always initiating... maybe chill and see what happens",
+        "u can flirt back omg it's okay",
+        "don't confess ur entire life story after three conversations pls",
+        "they might like u. they also might just be nice. breathe",
+        "if they keep finding reasons to talk to u... okayyy maybe",
+        "eye contact is cute but we need more evidence detective",
+        "stop stalking their following list rn",
+        "if they wanted ur number and got it... let them use it",
+        "don't pretend u don't care so hard that they think u actually don't care",
+        "okay lowkey send the text",
+        "no. do not send the paragraph.",
+        "if they consistently remember little things u say... that's kinda cute ngl",
+        "u don't need to become their exact type. be urself bruh",
+        "if they're flirting with everybody then maybe don't write the wedding vows yet",
+        "maybe they are nervous too",
+        "if the convo keeps dying and u keep reviving it... girl",
+        "don't fall in love with potential after two interactions pls",
+        "okayyy this one might actually like u",
+        "give them room to show interest instead of doing all the work",
+        "if u have to decode everything they do then we don't know enough yet",
+        "ur crush being attractive is not evidence of compatibility btw",
+        "go talk to them instead of asking a cat",
+        "they might be waiting for a sign from u too",
+        "a little flirting never killed anybody",
+        "don't act unavailable then get mad when they leave u alone",
+        "idk... this one has potential but don't be crazy"
+      ],
+
+      ex: [
+        "missing them is not the same thing as needing them back",
+        "do NOT text them just because it's late and ur lonely",
+        "girl close their profile",
+        "if they changed, there should be actual evidence. not just 'i miss u'",
+        "remember why u broke up before u romanticize everything",
+        "u can miss the good parts and still know it wasn't good for u",
+        "if they only come back when ur finally moving on... interesting",
+        "don't confuse familiarity with compatibility",
+        "okay but what would actually be different this time",
+        "if the relationship was draining u, nostalgia is lying rn",
+        "no stalking the new person either. leave that alone",
+        "if they apologized specifically and changed their behavior... okay maybe hear them out",
+        "if it's another 'hey stranger' at 1am absolutely not",
+        "ur allowed to forgive them without dating them again",
+        "if u want closure, make sure ur not secretly asking for another chance",
+        "sometimes the closure is literally how they treated u",
+        "girl u survived the breakup. don't restart season one",
+        "if u keep checking if they viewed ur story... mute them",
+        "be honest. do u miss THEM or do u miss having someone",
+        "if u were constantly anxious with them, don't forget that part",
+        "people can change. they also love saying they changed. look at the actions",
+        "don't send 'i miss u' unless ur ready for literally any response",
+        "if they have a new partner leave it tf alone",
+        "u don't need to prove that ur doing better. just do better",
+        "if u got back together tomorrow would the old problem still be there",
+        "okay... maybe don't block and unblock them again today",
+        "ur brain remembers the highlights. i remember the lore.",
+        "the fact that u have history doesn't mean u need a sequel",
+        "if they genuinely treated u well and timing was the issue... okay that's different",
+        "sleep on it. ex decisions should not be made after midnight"
+      ],
+
+      friends: [
+        "if ur always the one checking in, notice that",
+        "one weird interaction doesn't mean they secretly hate u",
+        "ask them instead of silently building resentment",
+        "friends can be busy and still love u",
+        "if they constantly make jokes at ur expense and u hate it, say something",
+        "u don't have to keep a friendship just because it's old",
+        "don't assume u weren't invited on purpose before u know what happened",
+        "if u feel drained every time u hang out... hmm",
+        "a real friend can hear that they hurt u without making it all about them",
+        "maybe text them. pride is dumb sometimes",
+        "if they're going through something they might be quieter than usual",
+        "stop testing ur friends to see if they care",
+        "if they celebrate u without making it weird, keep them",
+        "u are allowed to outgrow people without hating them",
+        "not every friendship needs to be super deep",
+        "if they're only around when they need something... girl",
+        "talk it out before deciding the entire friendship is over",
+        "sometimes people drift. it doesn't mean the memories were fake",
+        "if u can't be urself around them why are u forcing it",
+        "maybe they genuinely didn't realize they hurt ur feelings",
+        "u deserve friends who actually seem happy to see u",
+        "stop keeping score over every tiny thing",
+        "if they tell ur business after u trusted them... remember that",
+        "u can love someone and still need distance",
+        "don't make a group chat issue bigger than it is pls",
+        "if u miss them... say hi. it's not that deep",
+        "if the friendship only works when u stay quiet about ur feelings, that's not great",
+        "give people grace but like... not unlimited grace",
+        "ur friend having other friends is not betrayal babe",
+        "maybe everyone's just tired rn lol"
+      ],
+
+      life: [
+        "u don't have to figure out ur entire life this week",
+        "do the next thing. not all 40 things.",
+        "okay maybe u need sleep before making a major decision",
+        "u are allowed to change ur mind",
+        "not being good at something immediately doesn't mean stop",
+        "one bad week is not a bad life bruh",
+        "stop comparing ur chapter 2 to someone's chapter 19",
+        "u probably need less pressure and more consistency",
+        "if u keep thinking about doing it... maybe start",
+        "ur allowed to want something different now",
+        "sometimes the productive thing is literally resting",
+        "don't quit just because today sucked",
+        "u cannot plan every possible outcome",
+        "do one thing today that future u will appreciate",
+        "maybe ur not behind. maybe ur just on ur own timeline",
+        "if the opportunity scares u in an exciting way... hmm maybe",
+        "stop waiting to feel 100% ready",
+        "u can start badly. that's allowed.",
+        "not everything deserves an immediate answer",
+        "okay but what do YOU actually want",
+        "ur gonna be okay even if the plan changes",
+        "a boring peaceful life moment is still a good life moment",
+        "please stop turning every mistake into a personality diagnosis",
+        "u need a break not a whole new identity",
+        "if it matters to u, make time for it little by little",
+        "don't make permanent choices because of a temporary bad mood",
+        "ur future isn't ruined because one thing didn't work",
+        "try it before u decide ur incapable",
+        "maybe the answer is simpler than ur making it",
+        "go eat, shower, sleep and reassess tomorrow"
+      ],
+
+      idk: [
+        "bruh then how am i supposed to know",
+        "okayyy mysterious",
+        "idk either",
+        "wha are we even asking about",
+        "yes. no. maybe. hope this helps",
+        "hmm... suspicious",
+        "my professional opinion is: girl idk",
+        "okay just don't do anything insane",
+        "if ur gut immediately said something, maybe start there",
+        "go with whichever option gives u more peace",
+        "maybe wait one day",
+        "u need more information bruh",
+        "okay but what's the worst realistic outcome",
+        "if u have to force it, probably no",
+        "if it's harmless and u want to... sure lol",
+        "the vibes are inconclusive",
+        "ask again tomorrow maybe i'll care",
+        "i'm literally a cat",
+        "why are u trusting me with this",
+        "okay fine... yes",
+        "actually wait no",
+        "hmm maybe",
+        "do it for the plot but like safely",
+        "go ask somebody who knows the situation omg",
+        "ur overthinking whatever it is",
+        "sleep on it",
+        "don't send the paragraph",
+        "maybe send the text though",
+        "i feel like u already decided",
+        "k good luck"
+      ]
+    };
+
+    const annoyedMessages = [
+      "okay u literally just asked me",
+      "another one??",
+      "bruh",
+      "okay relax",
+      "wha do u want from me",
+      "i already answered u omg",
+      "ur shopping for the answer u want huh",
+      "girl the answer isn't changing",
+      "okay now ur just clicking me",
+      "wth man",
+      "LEAVE ME ALONE",
+      "bruh go text ur friend",
+      "i need a break",
+      "why are u still here",
+      "okay ur getting on my nerves",
+      "ENOUGH",
+      "go drink some water",
+      "close the tab",
+      "come back tomorrow omg",
+      "no more wisdom for u",
+      "...",
+      "i'm ignoring u now"
+    ];
+
+    const dailyOpenings = [
+      "okay... i'll hear u out",
+      "what happened now",
+      "hmm okay ask",
+      "he seems weirdly nice today",
+      "idk what mood he's in today",
+      "okay but don't ask anything crazy",
+      "he's listening... kinda",
+      "go ahead i guess",
+      "girl what happened",
+      "okay spill"
+    ];
+
+    function getToday() {
+      const now = new Date();
+
+      return [
+        now.getFullYear(),
+        String(now.getMonth() + 1).padStart(2, "0"),
+        String(now.getDate()).padStart(2, "0")
+      ].join("-");
+    }
+
+    const today = getToday();
+
+    const savedDay =
+      localStorage.getItem("fortuneCatDay");
+
+    if (savedDay !== today) {
+      localStorage.setItem("fortuneCatDay", today);
+      localStorage.setItem("fortuneCatClicks", "0");
+      localStorage.removeItem("fortuneCatLastMessage");
+    }
+
+    let clicksToday =
+      Number(
+        localStorage.getItem("fortuneCatClicks") || 0
+      );
+
+    let fortuneCount = clicksToday;
+
+    function seededNumber(text) {
+      let total = 0;
+
+      for (let i = 0; i < text.length; i++) {
+        total += text.charCodeAt(i);
+      }
+
+      return total;
+    }
+
+    const openingIndex =
+      seededNumber(today) %
+      dailyOpenings.length;
+
+    subtitle.textContent =
+      dailyOpenings[openingIndex];
+
+    topicButtons.forEach((button) => {
+
+      button.addEventListener("click", () => {
+
+        topicButtons.forEach((otherButton) => {
+          otherButton.classList.remove("selected");
+        });
+
+        button.classList.add("selected");
+
+        selectedTopic =
+          button.dataset.topic;
+
+        fortunePaper.classList.remove("show");
+        againButton.classList.remove("show");
+
+        const topicLabels = {
+          partner: "okay... what did they do",
+          crush: "ohhh okay 👀",
+          ex: "girl...",
+          friends: "okay tell me",
+          life: "hmm okay",
+          idk: "bruh okay"
+        };
+
+        tapLabel.textContent =
+          topicLabels[selectedTopic] +
+          " ~ tap me";
+
+      });
+
+    });
+
+    function getNormalFortune() {
+
+      const pool =
+        fortunes[selectedTopic];
+
+      let index =
+        Math.floor(
+          Math.random() * pool.length
+        );
+
+      let message =
+        pool[index];
+
+      let attempts = 0;
+
+      while (
+        message === lastMessage &&
+        attempts < 10
+      ) {
+
+        index =
+          Math.floor(
+            Math.random() * pool.length
+          );
+
+        message =
+          pool[index];
+
+        attempts++;
+      }
+
+      return message;
+    }
+
+    function getAnnoyedFortune() {
+
+      const annoyanceLevel =
+        clicksToday - 6;
+
+      const index =
+        Math.min(
+          annoyanceLevel,
+          annoyedMessages.length - 1
+        );
+
+      return annoyedMessages[index];
+    }
 
     function giveFortune() {
+
+      if (!selectedTopic) {
+
+        tapLabel.textContent =
+          "girl pick what ur asking about first";
+
+        return;
+      }
 
       fortuneCat.classList.remove("thinking");
 
@@ -533,46 +988,92 @@
 
       tapLabel.textContent = "...";
 
-      let randomIndex;
+      let message;
 
-      do {
-        randomIndex =
-          Math.floor(Math.random() * fortunes.length);
-      } while (
-        randomIndex === lastFortune &&
-        fortunes.length > 1
-      );
+      if (clicksToday >= 6) {
+        message =
+          getAnnoyedFortune();
+      } else {
+        message =
+          getNormalFortune();
+      }
 
-      lastFortune = randomIndex;
+      lastMessage = message;
+
+      clicksToday++;
       fortuneCount++;
 
-      const randomRotation =
+      localStorage.setItem(
+        "fortuneCatClicks",
+        String(clicksToday)
+      );
+
+      localStorage.setItem(
+        "fortuneCatLastMessage",
+        message
+      );
+
+      const rotation =
         rotations[
-          Math.floor(Math.random() * rotations.length)
+          Math.floor(
+            Math.random() * rotations.length
+          )
         ];
 
       setTimeout(() => {
 
         fortune.textContent =
-          fortunes[randomIndex];
+          message;
 
         fortuneNumber.textContent =
           "FORTUNE NO. " +
-          String(fortuneCount).padStart(3, "0");
+          String(fortuneCount)
+            .padStart(3, "0");
 
         fortunePaper.style.setProperty(
           "--fortune-rotation",
-          randomRotation
+          rotation
         );
 
         fortunePaper.classList.add("show");
 
-        againButton.classList.add("show");
+        if (clicksToday <= 18) {
+          againButton.classList.add("show");
+        }
 
-        tapLabel.textContent =
-          "he has spoken";
+        if (clicksToday === 1) {
+          tapLabel.textContent =
+            "there. happy?";
+        }
 
-      }, 500);
+        else if (clicksToday <= 3) {
+          tapLabel.textContent =
+            "he has spoken";
+        }
+
+        else if (clicksToday <= 5) {
+          tapLabel.textContent =
+            "u still asking??";
+        }
+
+        else if (clicksToday <= 8) {
+          tapLabel.textContent =
+            "he's getting annoyed";
+        }
+
+        else {
+          tapLabel.textContent =
+            "yeah he's over u";
+        }
+
+        if (clicksToday >= 18) {
+          againButton.classList.remove("show");
+
+          tapLabel.textContent =
+            "come back tomorrow bruh";
+        }
+
+      }, 520);
     }
 
     fortuneCatButton.addEventListener(
