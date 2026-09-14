@@ -134,7 +134,6 @@
 
     .site-sub {
       margin-top: 19px;
-
       color: var(--soft);
 
       font-family: "Cormorant Garamond", serif;
@@ -177,7 +176,6 @@
       max-height: 565px;
 
       object-fit: contain;
-
       filter: grayscale(100%) contrast(1.07);
 
       position: relative;
@@ -193,7 +191,6 @@
       font-size: 68px;
 
       transform: rotate(-8deg);
-
       z-index: 4;
     }
 
@@ -206,7 +203,6 @@
       font-size: 28px;
 
       transform: rotate(-12deg);
-
       z-index: 4;
     }
 
@@ -216,7 +212,6 @@
       top: 48%;
 
       font-size: 16px;
-
       z-index: 4;
     }
 
@@ -272,7 +267,7 @@
       right: 3%;
       bottom: 18px;
 
-      width: 115px;
+      width: 130px;
 
       display: flex;
       flex-direction: column;
@@ -282,7 +277,7 @@
     }
 
     .cat-message {
-      min-height: 24px;
+      min-height: 28px;
       margin-bottom: 5px;
 
       color: #4c4945;
@@ -301,6 +296,15 @@
       opacity: 1;
     }
 
+    .cat-message a {
+      border-bottom: 1px solid var(--ink);
+      padding-bottom: 2px;
+    }
+
+    .cat-message a:hover {
+      font-style: italic;
+    }
+
     .click-cat-button {
       border: 0;
       background: transparent;
@@ -315,9 +319,7 @@
 
       display: block;
 
-      transition:
-        transform .18s ease,
-        opacity .18s ease;
+      transition: transform .18s ease;
     }
 
     .click-cat-button:hover .click-cat {
@@ -467,7 +469,7 @@
         right: 4%;
         bottom: 20px;
 
-        width: 95px;
+        width: 110px;
       }
 
       .click-cat {
@@ -622,7 +624,9 @@
 
         <div class="current-row">
           <span class="current-label">listening</span>
-          <span class="current-value">wantmetoo (demo) / reiko</span>
+          <span class="current-value">
+            wantmetoo (demo) / reiko
+          </span>
         </div>
 
         <div class="current-row">
@@ -634,12 +638,16 @@
 
         <div class="current-row">
           <span class="current-label">loving</span>
-          <span class="current-value">my RC work ♡</span>
+          <span class="current-value">
+            my RC work ♡
+          </span>
         </div>
 
         <div class="current-row">
           <span class="current-label">making</span>
-          <span class="current-value">this website hehe</span>
+          <span class="current-value">
+            this website hehe
+          </span>
         </div>
 
       </div>
@@ -649,8 +657,13 @@
     <div class="footer-line">
 
       <div class="footer-line-inner">
-        <span>just a girl and her little archive</span>
-        <span>better things ahead ♡</span>
+        <span>
+          just a girl and her little archive
+        </span>
+
+        <span>
+          better things ahead ♡
+        </span>
       </div>
 
     </div>
@@ -658,31 +671,55 @@
   </main>
 
   <script>
-    const catButton = document.getElementById("clickCatButton");
-    const catMessage = document.getElementById("catMessage");
+    const catButton =
+      document.getElementById("clickCatButton");
+
+    const catMessage =
+      document.getElementById("catMessage");
 
     const catMessages = [
       "...hi",
       "why are u clicking me",
-      "okay",
       "again???",
       "ur nosy",
-      "fine keep going"
+      "okay seriously",
+      "...",
+      "fine"
     ];
 
     let catClicks = 0;
+    let secretUnlocked = false;
 
     catButton.addEventListener("click", () => {
+
+      if (secretUnlocked) {
+        return;
+      }
+
       catMessage.classList.remove("show");
 
       setTimeout(() => {
-        catMessage.textContent =
-          catMessages[catClicks % catMessages.length];
+
+        if (catClicks < catMessages.length) {
+
+          catMessage.textContent =
+            catMessages[catClicks];
+
+        } else {
+
+          catMessage.innerHTML =
+            '<a href="secret-room.html">come here →</a>';
+
+          secretUnlocked = true;
+
+        }
 
         catMessage.classList.add("show");
 
         catClicks++;
+
       }, 80);
+
     });
   </script>
 
