@@ -44,66 +44,31 @@
       text-decoration: none;
     }
 
-    /* TOP AREA */
+    /* NAV */
 
     nav {
       max-width: 1420px;
       margin: auto;
       min-height: 115px;
-      padding: 22px 5%;
+      padding: 20px 5%;
       display: flex;
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid var(--ink);
       position: relative;
-      z-index: 5;
+      z-index: 10;
     }
 
     .logo-wrap {
-      position: relative;
       width: 390px;
-      height: 74px;
       display: flex;
       align-items: center;
     }
 
-    .logo {
-      position: relative;
-      z-index: 2;
-      font-family: "Cormorant Garamond", serif;
-      font-size: 56px;
-      font-weight: 500;
-      letter-spacing: -3px;
-      line-height: 1;
-    }
-
-    .logo-star {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 30px;
-      position: absolute;
-      right: 20px;
-      top: 0;
-      transform: rotate(10deg);
-      z-index: 3;
-    }
-
-    .logo-est {
-      position: absolute;
-      left: 79px;
-      bottom: 0;
-      font-size: 8px;
-      letter-spacing: 1.4px;
-      color: #4c4945;
-      z-index: 3;
-    }
-
-    .logo-swish {
-      position: absolute;
-      inset: 0;
+    .logo-image {
       width: 100%;
-      height: 100%;
-      z-index: 1;
-      pointer-events: none;
+      height: auto;
+      display: block;
     }
 
     .nav-links {
@@ -116,30 +81,34 @@
       font-size: 17px;
     }
 
-    /* PAGE DECORATION */
+    .nav-links a:hover {
+      font-style: italic;
+    }
+
+    /* DECORATIONS */
 
     .decor {
       position: absolute;
       pointer-events: none;
       z-index: 0;
-      opacity: .95;
+      opacity: .9;
     }
 
     .decor-left {
-      width: 260px;
-      left: -20px;
-      top: 570px;
-      transform: rotate(-7deg);
+      width: 230px;
+      left: -25px;
+      top: 585px;
+      transform: rotate(-8deg);
     }
 
     .decor-right {
-      width: 360px;
-      right: -55px;
-      top: 125px;
-      transform: rotate(4deg);
+      width: 270px;
+      right: -35px;
+      top: 240px;
+      transform: rotate(2deg);
     }
 
-    /* HERO */
+    /* MAIN HERO */
 
     .home {
       max-width: 1420px;
@@ -171,9 +140,8 @@
     }
 
     .tiny-list {
-      margin-top: 62px;
-      line-height: 1.9;
-      font-size: 10px;
+      margin-top: 58px;
+      line-height: 1.75;
       color: #4c4945;
       border-left: 1px solid var(--ink);
       padding-left: 15px;
@@ -185,6 +153,8 @@
     .tiny-list span {
       display: block;
     }
+
+    /* GIRL + CAT */
 
     .art-wrap {
       height: 565px;
@@ -223,6 +193,8 @@
       top: 48%;
       font-size: 18px;
     }
+
+    /* ARCHIVE */
 
     .right-side {
       padding-left: 28px;
@@ -315,6 +287,8 @@
       color: #403d39;
     }
 
+    /* FOOTER */
+
     .footer-line {
       max-width: 1420px;
       margin: 0 auto 40px;
@@ -332,6 +306,8 @@
       font-size: 17px;
     }
 
+    /* MOBILE */
+
     @media (max-width: 900px) {
       nav {
         flex-direction: column;
@@ -340,11 +316,12 @@
       }
 
       .logo-wrap {
-        width: 330px;
+        width: 320px;
       }
 
-      .logo {
-        font-size: 48px;
+      .nav-links {
+        gap: 20px;
+        flex-wrap: wrap;
       }
 
       .home {
@@ -361,16 +338,16 @@
 
       .art-wrap {
         height: auto;
-        margin: 25px 0;
+        margin: 30px 0;
       }
 
       .right-side {
         padding-left: 0;
+        margin-top: 20px;
       }
 
-      .decor-left,
-      .decor-right {
-        opacity: .35;
+      .decor {
+        opacity: .3;
       }
     }
   </style>
@@ -378,113 +355,84 @@
 
 <body>
 
-  <!-- RIGHT FLORAL DRAWING -->
-  <svg class="decor decor-right" viewBox="0 0 300 520" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g stroke="#111" stroke-width="2.1" stroke-linecap="round">
-      <path d="M173 515 C171 430 211 375 198 295 C187 230 145 203 152 143 C159 91 208 69 252 94"/>
-      <path d="M198 302 C245 283 272 249 269 208"/>
-      <path d="M177 229 C128 213 104 176 116 137"/>
-      <path d="M217 394 C250 378 275 352 284 320"/>
-      <path d="M155 143 C139 111 110 98 80 106 C51 114 45 145 61 160 C74 172 96 165 94 147"/>
-      <path d="M254 94 C281 88 300 67 296 47 C292 27 269 19 254 30 C242 39 247 55 259 57"/>
-      <path d="M268 208 C293 190 299 162 282 146"/>
-      <path d="M116 137 C99 119 77 117 62 126"/>
-      <path d="M200 298 C219 319 241 328 264 321"/>
-      <path d="M217 395 C198 378 190 360 191 340"/>
-
-      <ellipse cx="205" cy="170" rx="28" ry="20"/>
-      <ellipse cx="232" cy="185" rx="26" ry="18" transform="rotate(34 232 185)"/>
-      <ellipse cx="214" cy="207" rx="25" ry="18" transform="rotate(70 214 207)"/>
-      <ellipse cx="181" cy="200" rx="26" ry="18" transform="rotate(-40 181 200)"/>
-      <ellipse cx="178" cy="174" rx="25" ry="18" transform="rotate(-15 178 174)"/>
-      <circle cx="205" cy="188" r="10"/>
-
-      <ellipse cx="245" cy="333" rx="31" ry="21"/>
-      <ellipse cx="268" cy="355" rx="28" ry="19" transform="rotate(45 268 355)"/>
-      <ellipse cx="249" cy="381" rx="27" ry="19" transform="rotate(82 249 381)"/>
-      <ellipse cx="216" cy="371" rx="28" ry="19" transform="rotate(-45 216 371)"/>
-      <ellipse cx="215" cy="341" rx="28" ry="19" transform="rotate(-18 215 341)"/>
-      <circle cx="242" cy="358" r="11"/>
-
-      <path d="M160 107 C172 85 193 72 216 74"/>
-      <path d="M139 109 C125 92 107 84 88 88"/>
-      <path d="M222 258 C242 247 252 229 250 211"/>
-      <path d="M176 258 C154 245 145 228 146 209"/>
-    </g>
-
-    <g fill="#111">
-      <circle cx="205" cy="188" r="6"/>
-      <circle cx="242" cy="358" r="7"/>
-      <circle cx="151" cy="82" r="3"/>
-      <circle cx="280" cy="120" r="3"/>
-      <circle cx="110" cy="228" r="2.5"/>
-      <circle cx="286" cy="288" r="2.5"/>
-      <path d="M135 61 l5 12 12 5 -12 5 -5 12 -5-12 -12-5 12-5z"/>
-    </g>
-  </svg>
-
-
-  <!-- LEFT FLORAL DRAWING -->
-  <svg class="decor decor-left" viewBox="0 0 300 390" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g stroke="#111" stroke-width="2.1" stroke-linecap="round">
+  <!-- LEFT DECORATION -->
+  <svg
+    class="decor decor-left"
+    viewBox="0 0 300 390"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <g stroke="#111" stroke-width="2" stroke-linecap="round">
       <path d="M34 371 C79 335 94 285 78 234 C62 184 75 142 117 119 C148 101 185 101 212 118"/>
       <path d="M77 235 C42 224 20 198 17 165"/>
       <path d="M92 188 C123 178 145 156 153 128"/>
       <path d="M103 304 C132 291 153 268 161 241"/>
       <path d="M35 371 C28 343 39 323 60 318"/>
-
       <ellipse cx="78" cy="259" rx="31" ry="20" transform="rotate(-20 78 259)"/>
       <ellipse cx="105" cy="273" rx="28" ry="19" transform="rotate(35 105 273)"/>
       <ellipse cx="95" cy="302" rx="26" ry="18" transform="rotate(78 95 302)"/>
       <ellipse cx="62" cy="299" rx="27" ry="18" transform="rotate(-45 62 299)"/>
       <ellipse cx="52" cy="272" rx="26" ry="18" transform="rotate(-70 52 272)"/>
       <circle cx="79" cy="281" r="10"/>
-
       <path d="M161 241 C181 219 204 211 228 216"/>
       <path d="M117 119 C130 92 156 78 182 82"/>
-      <path d="M153 128 C170 107 191 100 211 104"/>
-      <path d="M18 165 C9 145 14 126 30 115"/>
     </g>
 
     <g fill="#111">
       <circle cx="79" cy="281" r="7"/>
       <circle cx="155" cy="107" r="3"/>
-      <circle cx="210" cy="217" r="3"/>
       <path d="M231 119 l5 11 11 5 -11 5 -5 11 -5-11 -11-5 11-5z"/>
     </g>
   </svg>
 
 
+  <!-- RIGHT DECORATION -->
+  <svg
+    class="decor decor-right"
+    viewBox="0 0 300 520"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <g stroke="#111" stroke-width="2" stroke-linecap="round">
+      <path d="M173 515 C171 430 211 375 198 295 C187 230 145 203 152 143 C159 91 208 69 252 94"/>
+      <path d="M198 302 C245 283 272 249 269 208"/>
+      <path d="M177 229 C128 213 104 176 116 137"/>
+      <path d="M217 394 C250 378 275 352 284 320"/>
+      <path d="M155 143 C139 111 110 98 80 106 C51 114 45 145 61 160"/>
+      <ellipse cx="205" cy="170" rx="28" ry="20"/>
+      <ellipse cx="232" cy="185" rx="26" ry="18" transform="rotate(34 232 185)"/>
+      <ellipse cx="214" cy="207" rx="25" ry="18" transform="rotate(70 214 207)"/>
+      <ellipse cx="181" cy="200" rx="26" ry="18" transform="rotate(-40 181 200)"/>
+      <ellipse cx="178" cy="174" rx="25" ry="18" transform="rotate(-15 178 174)"/>
+      <circle cx="205" cy="188" r="10"/>
+      <ellipse cx="245" cy="333" rx="31" ry="21"/>
+      <ellipse cx="268" cy="355" rx="28" ry="19" transform="rotate(45 268 355)"/>
+      <ellipse cx="249" cy="381" rx="27" ry="19" transform="rotate(82 249 381)"/>
+      <ellipse cx="216" cy="371" rx="28" ry="19" transform="rotate(-45 216 371)"/>
+      <ellipse cx="215" cy="341" rx="28" ry="19" transform="rotate(-18 215 341)"/>
+      <circle cx="242" cy="358" r="11"/>
+    </g>
+
+    <g fill="#111">
+      <circle cx="205" cy="188" r="6"/>
+      <circle cx="242" cy="358" r="7"/>
+      <path d="M135 61 l5 12 12 5 -12 5 -5 12 -5-12 -12-5 12-5z"/>
+    </g>
+  </svg>
+
+
+  <!-- NAV -->
+
   <nav>
 
     <div class="logo-wrap">
-
-      <svg class="logo-swish" viewBox="0 0 390 74" fill="none">
-        <path
-          d="M4 39
-             C44 8 99 6 149 29
-             C193 49 241 68 285 49
-             C317 36 327 15 313 8
-             C299 1 287 16 294 27"
-          stroke="#111"
-          stroke-width="1.4"
-        />
-
-        <path
-          d="M90 56
-             C123 66 159 69 185 58
-             C208 48 216 59 204 67"
-          stroke="#111"
-          stroke-width="1.2"
-        />
-      </svg>
-
-      <a href="index.html" class="logo">enokiecloud</a>
-
-      <span class="logo-star">*</span>
-
-      <span class="logo-est">est. 2026</span>
-
+      <a href="index.html">
+        <img
+          src="images/enokiecloud-logo.png"
+          alt="enokiecloud"
+          class="logo-image"
+        >
+      </a>
     </div>
 
     <div class="nav-links">
