@@ -15,8 +15,8 @@
     :root {
       --paper: #fdfcf9;
       --ink: #111111;
-      --soft: #77736e;
-      --line: #c9c6c0;
+      --soft: #74706b;
+      --line: #cfcac4;
     }
 
     * {
@@ -41,12 +41,12 @@
       text-decoration: none;
     }
 
-    /* ---------- NAV ---------- */
+    /* NAV */
 
     nav {
       max-width: 1420px;
       margin: auto;
-      min-height: 85px;
+      min-height: 82px;
       padding: 22px 5%;
       display: grid;
       grid-template-columns: 1fr auto;
@@ -64,7 +64,6 @@
     .nav-links {
       display: flex;
       gap: 34px;
-      align-items: center;
     }
 
     .nav-links a {
@@ -84,11 +83,12 @@
       transition: width .2s ease;
     }
 
-    .nav-links a:hover::after {
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
       width: 100%;
     }
 
-    /* ---------- HOME ---------- */
+    /* HOME */
 
     .home {
       max-width: 1420px;
@@ -98,12 +98,6 @@
       display: grid;
       grid-template-columns: 1fr 1.45fr 1fr;
       align-items: center;
-      position: relative;
-    }
-
-    .left-side {
-      align-self: center;
-      padding-bottom: 40px;
     }
 
     .site-title {
@@ -124,7 +118,7 @@
 
     .tiny-list {
       margin-top: 70px;
-      line-height: 1.85;
+      line-height: 1.9;
       font-size: 11px;
       color: #4c4945;
     }
@@ -139,7 +133,7 @@
       transform: translateX(6px);
     }
 
-    /* ---------- CENTER ART ---------- */
+    /* ART */
 
     .art-wrap {
       height: 590px;
@@ -159,7 +153,7 @@
     }
 
     .girl-art:hover {
-      transform: translateY(-6px) rotate(-.5deg);
+      transform: translateY(-5px) rotate(-.4deg);
     }
 
     .scribble-heart {
@@ -169,7 +163,6 @@
       font-family: "Cormorant Garamond", serif;
       font-size: 70px;
       transform: rotate(-8deg);
-      font-weight: 300;
     }
 
     .star-one {
@@ -177,7 +170,6 @@
       left: 16%;
       top: 18%;
       font-size: 30px;
-      transform: rotate(12deg);
     }
 
     .star-two {
@@ -187,7 +179,7 @@
       font-size: 23px;
     }
 
-    /* ---------- RIGHT ---------- */
+    /* ARCHIVE */
 
     .right-side {
       padding-left: 25px;
@@ -212,7 +204,6 @@
       padding: 12px 0;
       display: flex;
       justify-content: space-between;
-      gap: 20px;
       font-family: "Cormorant Garamond", serif;
       font-size: 20px;
       transition: padding .2s ease;
@@ -223,107 +214,99 @@
       font-style: italic;
     }
 
-    .arrow {
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 12px;
-    }
-
-    /* ---------- CURRENT ---------- */
+    /* CURRENTLY */
 
     .current {
       max-width: 1420px;
       margin: auto;
+      padding: 70px 5% 80px;
       border-top: 1px solid var(--ink);
       border-bottom: 1px solid var(--ink);
-      padding: 42px 5%;
     }
 
-    .current-top {
+    .current-header {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      margin-bottom: 48px;
+    }
+
+    .current-number {
+      font-size: 10px;
+      color: var(--soft);
+      padding-top: 13px;
+    }
+
+    .current-title-wrap {
       display: flex;
       align-items: baseline;
-      gap: 25px;
-      margin-bottom: 30px;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 15px;
     }
 
     .current h2 {
       font-family: "Cormorant Garamond", serif;
-      font-size: 43px;
+      font-size: 50px;
       font-weight: 500;
     }
 
-    .current-top span {
-      color: var(--soft);
+    .date {
       font-size: 9px;
-      letter-spacing: 2px;
+      letter-spacing: 1.5px;
+      color: var(--soft);
     }
 
-    .current-grid {
+    .current-list {
+      max-width: 900px;
+      margin-left: 140px;
+    }
+
+    .current-row {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      border-top: 1px solid var(--line);
+      grid-template-columns: 160px 1fr 30px;
+      align-items: center;
+      min-height: 78px;
+      border-bottom: 1px solid var(--line);
+      transition: padding .2s ease;
     }
 
-    .current-item {
-      min-height: 145px;
-      padding: 24px 25px;
-      border-right: 1px solid var(--line);
-      position: relative;
-      transition: background .2s ease;
+    .current-row:hover {
+      padding-left: 8px;
     }
 
-    .current-item:first-child {
-      padding-left: 0;
-    }
-
-    .current-item:last-child {
-      border-right: none;
-    }
-
-    .current-item:hover {
-      background: #f5f3ef;
-    }
-
-    .current-item small {
-      display: block;
-      font-size: 9px;
-      letter-spacing: 1.4px;
-      text-transform: uppercase;
-      color: var(--soft);
-      margin-bottom: 24px;
-    }
-
-    .current-item p {
+    .current-label {
       font-family: "Cormorant Garamond", serif;
-      font-size: 20px;
-      line-height: 1.25;
+      font-size: 23px;
     }
 
-    .current-item em {
-      font-size: 11px;
-      display: block;
-      margin-top: 7px;
-      color: var(--soft);
-      font-style: normal;
+    .current-value {
+      font-size: 12px;
+      line-height: 1.7;
     }
 
-    /* ---------- DIRECTORY ---------- */
+    .current-arrow {
+      font-size: 13px;
+      text-align: right;
+    }
+
+    /* DIRECTORY */
 
     .directory {
       max-width: 1420px;
       margin: auto;
-      padding: 55px 5%;
+      padding: 70px 5%;
     }
 
     .directory-heading {
       display: flex;
       align-items: center;
       gap: 25px;
-      margin-bottom: 28px;
+      margin-bottom: 35px;
     }
 
     .directory-heading h2 {
       font-family: "Cormorant Garamond", serif;
-      font-size: 42px;
+      font-size: 44px;
       font-weight: 500;
     }
 
@@ -334,42 +317,38 @@
       flex: 1;
     }
 
-    .directory-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
+    .directory-list {
       border-top: 1px solid var(--ink);
-      border-bottom: 1px solid var(--ink);
     }
 
     .directory-link {
-      min-height: 150px;
-      padding: 27px 22px;
-      border-right: 1px solid var(--line);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: all .2s ease;
-    }
-
-    .directory-link:last-child {
-      border-right: none;
+      min-height: 85px;
+      display: grid;
+      grid-template-columns: 60px 1fr auto;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      transition: padding .2s ease;
     }
 
     .directory-link:hover {
-      background: var(--ink);
-      color: var(--paper);
+      padding-left: 10px;
     }
 
-    .directory-link span:first-child {
+    .directory-num {
+      font-size: 9px;
+      color: var(--soft);
+    }
+
+    .directory-name {
       font-family: "Cormorant Garamond", serif;
-      font-size: 27px;
+      font-size: 30px;
     }
 
-    .directory-link span:last-child {
-      font-size: 11px;
+    .directory-arrow {
+      font-size: 13px;
     }
 
-    /* ---------- FOOTER ---------- */
+    /* FOOTER */
 
     footer {
       max-width: 1420px;
@@ -387,11 +366,7 @@
       font-size: 22px;
     }
 
-    .footer-star {
-      font-size: 20px;
-    }
-
-    /* ---------- MOBILE ---------- */
+    /* MOBILE */
 
     @media (max-width: 900px) {
       nav {
@@ -406,11 +381,6 @@
 
       .home {
         grid-template-columns: 1fr;
-        padding-top: 45px;
-      }
-
-      .left-side {
-        padding-bottom: 15px;
       }
 
       .tiny-list {
@@ -422,74 +392,39 @@
         margin: 30px 0;
       }
 
-      .girl-art {
-        max-height: 520px;
-      }
-
       .right-side {
         padding-left: 0;
-        margin-top: 25px;
       }
 
-      .current-grid {
-        grid-template-columns: 1fr 1fr;
+      .current-header {
+        grid-template-columns: 1fr;
+        gap: 15px;
       }
 
-      .current-item:nth-child(2) {
-        border-right: none;
-      }
-
-      .current-item:first-child {
-        padding-left: 20px;
-      }
-
-      .current-item {
-        border-bottom: 1px solid var(--line);
-      }
-
-      .directory-row {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .directory-link:nth-child(2) {
-        border-right: none;
-      }
-
-      .directory-link:nth-child(-n+2) {
-        border-bottom: 1px solid var(--line);
+      .current-list {
+        margin-left: 0;
       }
     }
 
     @media (max-width: 560px) {
-      .logo {
-        font-size: 29px;
-      }
-
-      .nav-links {
-        font-size: 14px;
-      }
-
       .site-title {
         font-size: 62px;
       }
 
-      .current-grid,
-      .directory-row {
-        grid-template-columns: 1fr;
+      .current-row {
+        grid-template-columns: 110px 1fr 20px;
       }
 
-      .current-item,
-      .directory-link {
-        border-right: none;
+      .current-label {
+        font-size: 20px;
       }
 
-      .directory-link {
-        border-bottom: 1px solid var(--line);
+      .current-value {
+        font-size: 10px;
       }
 
-      footer {
-        align-items: flex-start;
-        gap: 20px;
+      .directory-name {
+        font-size: 25px;
       }
     }
   </style>
@@ -501,14 +436,13 @@
     <a href="#home" class="logo">enokiecloud ♡</a>
 
     <div class="nav-links">
-      <a href="#home">home</a>
-      <a href="#current">lately</a>
-      <a href="#archive">archive</a>
-      <a href="#directory">collections</a>
-      <a href="#about">about</a>
+      <a href="#home" class="nav-link active">home</a>
+      <a href="#current" class="nav-link">lately</a>
+      <a href="#archive" class="nav-link">archive</a>
+      <a href="#directory" class="nav-link">collections</a>
+      <a href="#about" class="nav-link">about</a>
     </div>
   </nav>
-
 
   <main>
 
@@ -520,9 +454,7 @@
           enokie<br>cloud
         </h1>
 
-        <p class="site-sub">
-          personal archive / 2026
-        </p>
+        <p class="site-sub">personal archive / 2026</p>
 
         <div class="tiny-list">
           <a href="#">cats</a>
@@ -535,9 +467,7 @@
 
       </div>
 
-
       <div class="art-wrap">
-
         <span class="star-one">✦</span>
         <span class="scribble-heart">♡</span>
         <span class="star-two">✧</span>
@@ -547,141 +477,104 @@
           src="./images/enokiecloud%20-%201.png"
           alt="black and white illustrated girl with cat"
         >
-
       </div>
-
 
       <div class="right-side" id="archive">
 
         <p class="section-label">FROM THE ARCHIVE</p>
 
         <ul class="archive-list">
-
-          <li>
-            <a href="#">
-              <span>archie comics</span>
-              <span class="arrow">↗</span>
-            </a>
-          </li>
-
-          <li>
-            <a href="#">
-              <span>valorant</span>
-              <span class="arrow">↗</span>
-            </a>
-          </li>
-
-          <li>
-            <a href="#">
-              <span>childhood</span>
-              <span class="arrow">↗</span>
-            </a>
-          </li>
-
-          <li>
-            <a href="#">
-              <span>old games</span>
-              <span class="arrow">↗</span>
-            </a>
-          </li>
-
-          <li>
-            <a href="#">
-              <span>school eras</span>
-              <span class="arrow">↗</span>
-            </a>
-          </li>
-
-          <li>
-            <a href="#">
-              <span>random things</span>
-              <span class="arrow">↗</span>
-            </a>
-          </li>
-
+          <li><a href="#"><span>archie comics</span><span>↗</span></a></li>
+          <li><a href="#"><span>valorant</span><span>↗</span></a></li>
+          <li><a href="#"><span>childhood</span><span>↗</span></a></li>
+          <li><a href="#"><span>old games</span><span>↗</span></a></li>
+          <li><a href="#"><span>school eras</span><span>↗</span></a></li>
+          <li><a href="#"><span>random things</span><span>↗</span></a></li>
         </ul>
 
       </div>
 
     </section>
 
-
     <section class="current" id="current">
 
-      <div class="current-top">
-        <h2>currently</h2>
-        <span>09.2026</span>
+      <div class="current-header">
+        <div class="current-number">01</div>
+
+        <div class="current-title-wrap">
+          <h2>currently</h2>
+          <span class="date">SEPTEMBER 2026</span>
+        </div>
       </div>
 
-      <div class="current-grid">
+      <div class="current-list">
 
-        <div class="current-item">
-          <small>listening</small>
-
-          <p>wantmetoo (demo)</p>
-          <em>reiko</em>
+        <div class="current-row">
+          <div class="current-label">listening</div>
+          <div class="current-value">
+            wantmetoo (demo) / reiko
+          </div>
+          <div class="current-arrow">↗</div>
         </div>
 
-
-        <div class="current-item">
-          <small>watching</small>
-
-          <p>
-            police body cams<br>
-            + crime videos
-          </p>
-
-          <em>youtube</em>
+        <div class="current-row">
+          <div class="current-label">watching</div>
+          <div class="current-value">
+            police body cams + crime videos on youtube
+          </div>
+          <div class="current-arrow">↗</div>
         </div>
 
-
-        <div class="current-item">
-          <small>loving</small>
-
-          <p>my RC work</p>
-          <em>aKDPhi ♡</em>
+        <div class="current-row">
+          <div class="current-label">loving</div>
+          <div class="current-value">
+            my RC work ♡
+          </div>
+          <div class="current-arrow">↗</div>
         </div>
 
-
-        <div class="current-item">
-          <small>working on</small>
-
-          <p>this website hehe</p>
-          <em>enokiecloud</em>
+        <div class="current-row">
+          <div class="current-label">making</div>
+          <div class="current-value">
+            this website hehe
+          </div>
+          <div class="current-arrow">↗</div>
         </div>
 
       </div>
 
     </section>
 
-
     <section class="directory" id="directory">
 
       <div class="directory-heading">
-        <h2>elsewhere</h2>
+        <h2>more</h2>
       </div>
 
-
-      <div class="directory-row">
+      <div class="directory-list">
 
         <a href="#current" class="directory-link">
-          <span>lately</span>
-          <span>01 ↗</span>
+          <span class="directory-num">01</span>
+          <span class="directory-name">lately</span>
+          <span class="directory-arrow">↗</span>
         </a>
 
         <a href="#archive" class="directory-link">
-          <span>archive</span>
-          <span>02 ↗</span>
+          <span class="directory-num">02</span>
+          <span class="directory-name">archive</span>
+          <span class="directory-arrow">↗</span>
         </a>
 
         <a href="#" class="directory-link">
-          <span>favorites</span>
-          <span>03 ↗</span>
+          <span class="directory-num">03</span>
+          <span class="directory-name">favorites</span>
+          <span class="directory-arrow">↗</span>
         </a>
 
         <a href="#" class="directory-link">
-          <span>photo roll</span>
-          <span>04 ↗</span>
+          <span class="directory-num">04</span>
+          <span class="directory-name">photo roll</span>
+          <span class="directory-arrow">↗</span>
         </a>
 
       </div>
@@ -690,17 +583,39 @@
 
   </main>
 
-
   <footer id="about">
-
     <div>
       <div class="footer-logo">enokiecloud ♡</div>
       <div>est. 2026</div>
     </div>
 
-    <div class="footer-star">✦</div>
-
+    <div>✦</div>
   </footer>
+
+  <script>
+    const navLinks = document.querySelectorAll(".nav-link");
+    const sections = document.querySelectorAll("section, footer");
+
+    window.addEventListener("scroll", () => {
+      let current = "home";
+
+      sections.forEach(section => {
+        const top = section.offsetTop - 180;
+
+        if (window.scrollY >= top) {
+          current = section.id;
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove("active");
+
+        if (link.getAttribute("href") === "#" + current) {
+          link.classList.add("active");
+        }
+      });
+    });
+  </script>
 
 </body>
 </html>
