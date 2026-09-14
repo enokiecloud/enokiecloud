@@ -65,7 +65,7 @@
     }
 
     main {
-      max-width: 1050px;
+      max-width: 1100px;
       margin: auto;
       padding: 70px 5% 90px;
     }
@@ -82,7 +82,7 @@
       font-style: italic;
       color: var(--soft);
       font-size: 17px;
-      margin-bottom: 55px;
+      margin-bottom: 48px;
     }
 
     .comic-grid {
@@ -98,14 +98,9 @@
     .comic-cover {
       width: 100%;
       aspect-ratio: 3 / 4;
+      object-fit: cover;
+      display: block;
       border: 1px solid var(--line);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: "Cormorant Garamond", serif;
-      font-style: italic;
-      color: var(--soft);
-      background: #f8f6f2;
       transition: transform .2s ease;
     }
 
@@ -114,16 +109,9 @@
     }
 
     .comic-title {
-      margin-top: 12px;
+      margin-top: 10px;
       font-family: "Cormorant Garamond", serif;
-      font-size: 20px;
-    }
-
-    .comic-note {
-      margin-top: 4px;
-      font-size: 9px;
-      color: var(--soft);
-      line-height: 1.5;
+      font-size: 19px;
     }
 
     .back {
@@ -166,27 +154,54 @@
     <h1>archie comics</h1>
 
     <p class="sub">
-      some of the volumes i loved growing up
+      some of the comics i loved growing up
     </p>
 
     <div class="comic-grid">
 
       <div class="comic">
-        <div class="comic-cover">cover goes here</div>
-        <div class="comic-title">volume one</div>
-        <div class="comic-note">little note about why i loved it</div>
+        <img class="comic-cover" src="images/archie1" alt="archie comic cover">
+        <div class="comic-title">archie 01</div>
       </div>
 
       <div class="comic">
-        <div class="comic-cover">cover goes here</div>
-        <div class="comic-title">volume two</div>
-        <div class="comic-note">little note about why i loved it</div>
+        <img class="comic-cover" src="images/archie2" alt="archie comic cover">
+        <div class="comic-title">archie 02</div>
       </div>
 
       <div class="comic">
-        <div class="comic-cover">cover goes here</div>
-        <div class="comic-title">volume three</div>
-        <div class="comic-note">little note about why i loved it</div>
+        <img class="comic-cover" src="images/archie3" alt="archie comic cover">
+        <div class="comic-title">archie 03</div>
+      </div>
+
+      <div class="comic">
+        <img class="comic-cover" src="images/archie4" alt="archie comic cover">
+        <div class="comic-title">archie 04</div>
+      </div>
+
+      <div class="comic">
+        <img class="comic-cover" src="images/archie5" alt="archie comic cover">
+        <div class="comic-title">archie 05</div>
+      </div>
+
+      <div class="comic">
+        <img class="comic-cover" src="images/archie6" alt="archie comic cover">
+        <div class="comic-title">archie 06</div>
+      </div>
+
+      <div class="comic">
+        <img class="comic-cover" src="images/archie7" alt="archie comic cover">
+        <div class="comic-title">archie 07</div>
+      </div>
+
+      <div class="comic">
+        <img class="comic-cover" src="images/archie8" alt="archie comic cover">
+        <div class="comic-title">archie 08</div>
+      </div>
+
+      <div class="comic">
+        <img class="comic-cover" src="images/archie9" alt="archie comic cover">
+        <div class="comic-title">archie 09</div>
       </div>
 
     </div>
