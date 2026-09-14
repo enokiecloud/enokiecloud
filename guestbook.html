@@ -115,7 +115,7 @@
     }
 
     .field {
-      margin-bottom: 24px;
+      margin-bottom: 26px;
     }
 
     .form-label {
@@ -125,6 +125,17 @@
       font-family: "Cormorant Garamond", serif;
       font-size: 18px;
       font-weight: 500;
+    }
+
+    .helper {
+      margin-top: -2px;
+      margin-bottom: 9px;
+
+      color: var(--soft);
+
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 7px;
+      line-height: 1.6;
     }
 
     input,
@@ -152,7 +163,7 @@
     }
 
     textarea {
-      min-height: 105px;
+      min-height: 120px;
 
       border: 1px solid var(--line);
 
@@ -165,46 +176,8 @@
       border-color: var(--ink);
     }
 
-    .symbols {
-      display: flex;
-      gap: 6px;
-      margin-top: 2px;
-    }
-
-    .symbol {
-      width: 34px;
-      height: 31px;
-
-      border: 1px solid var(--line);
-      background: transparent;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      font-family: "Cormorant Garamond", serif;
-      font-size: 17px;
-
-      cursor: pointer;
-    }
-
-    .symbol:hover {
-      border-color: var(--ink);
-    }
-
-    .symbol.selected {
-      background: var(--ink);
-      color: var(--paper);
-      border-color: var(--ink);
-    }
-
     .sign-row {
       margin-top: 30px;
-
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
     }
 
     .sign-button {
@@ -225,6 +198,8 @@
     }
 
     .status {
+      margin-top: 10px;
+
       color: var(--soft);
 
       font-family: "IBM Plex Mono", monospace;
@@ -232,7 +207,7 @@
     }
 
     .entries {
-      margin-top: 50px;
+      margin-top: 52px;
 
       border-top: 1px solid var(--ink);
     }
@@ -261,11 +236,6 @@
       font-family: "Cormorant Garamond", serif;
       font-size: 22px;
       font-weight: 500;
-    }
-
-    .entry-symbol {
-      margin-left: 4px;
-      font-size: 16px;
     }
 
     .entry-date {
@@ -319,10 +289,8 @@
         padding-top: 52px;
       }
 
-      .sign-row {
+      .entry-top {
         align-items: flex-start;
-        flex-direction: column;
-        gap: 12px;
       }
     }
   </style>
@@ -390,63 +358,14 @@
           leave me something
         </label>
 
+        <p class="helper">
+          say hi, tell me something random, leave advice... whatever u want
+        </p>
+
         <textarea
           id="message"
           maxlength="300"
         ></textarea>
-
-      </div>
-
-
-      <div class="field">
-
-        <span class="form-label">
-          pick a little thing
-        </span>
-
-        <div class="symbols">
-
-          <button
-            type="button"
-            class="symbol selected"
-            data-symbol="♡"
-          >
-            ♡
-          </button>
-
-          <button
-            type="button"
-            class="symbol"
-            data-symbol="♥"
-          >
-            ♥
-          </button>
-
-          <button
-            type="button"
-            class="symbol"
-            data-symbol="☁"
-          >
-            ☁
-          </button>
-
-          <button
-            type="button"
-            class="symbol"
-            data-symbol="♫"
-          >
-            ♫
-          </button>
-
-          <button
-            type="button"
-            class="symbol"
-            data-symbol="?"
-          >
-            ?
-          </button>
-
-        </div>
 
       </div>
 
@@ -464,9 +383,7 @@
         <p
           class="status"
           id="status"
-        >
-          don't be weird pls
-        </p>
+        ></p>
 
       </div>
 
@@ -513,10 +430,6 @@
     const entries =
       document.getElementById("entries");
 
-    const symbolButtons =
-      document.querySelectorAll(".symbol");
-
-    let selectedSymbol = "♡";
 
     const savedEntries =
       JSON.parse(
@@ -575,9 +488,6 @@
 
                   <p class="entry-name">
                     ${escapeHTML(entry.name)}
-                    <span class="entry-symbol">
-                      ${escapeHTML(entry.symbol)}
-                    </span>
                   </p>
 
                   <span class="entry-date">
@@ -596,23 +506,6 @@
           })
           .join("");
     }
-
-
-    symbolButtons.forEach((button) => {
-
-      button.addEventListener("click", () => {
-
-        symbolButtons.forEach((other) => {
-          other.classList.remove("selected");
-        });
-
-        button.classList.add("selected");
-
-        selectedSymbol =
-          button.dataset.symbol;
-      });
-
-    });
 
 
     signButton.addEventListener("click", () => {
@@ -649,7 +542,6 @@
       savedEntries.push({
         name: name,
         message: message,
-        symbol: selectedSymbol,
         date: getDate()
       });
 
@@ -666,7 +558,7 @@
       messageInput.value = "";
 
       status.textContent =
-        "ur officially part of the archive now ♡";
+        "signed ♡";
     });
 
 
