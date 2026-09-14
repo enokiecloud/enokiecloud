@@ -558,14 +558,103 @@
       );
 
 
-    const COOLDOWN_MS =
-      60 * 1000;
+    const COOLDOWN_STEPS = [
+      10 * 1000,
+      15 * 1000,
+      20 * 1000,
+      60 * 1000
+    ];
 
     const COOLDOWN_KEY =
       "enokiecloudGuestbookLastSignedAt";
 
+    const COOLDOWN_STEP_KEY =
+      "enokiecloudGuestbookCooldownStep";
+
+    const COOLDOWN_DAY_KEY =
+      "enokiecloudGuestbookCooldownDay";
+
     let cooldownTimer =
       null;
+
+
+    function getTodayKey() {
+      const now =
+        new Date();
+
+      return [
+        now.getFullYear(),
+        String(now.getMonth() + 1).padStart(2, "0"),
+        String(now.getDate()).padStart(2, "0")
+      ].join("-");
+    }
+
+
+    function resetCooldownStepIfNewDay() {
+
+      const today =
+        getTodayKey();
+
+      const savedDay =
+        localStorage.getItem(
+          COOLDOWN_DAY_KEY
+        );
+
+      if (savedDay !== today) {
+        localStorage.setItem(
+          COOLDOWN_DAY_KEY,
+          today
+        );
+
+        localStorage.setItem(
+          COOLDOWN_STEP_KEY,
+          "0"
+        );
+
+        localStorage.removeItem(
+          COOLDOWN_KEY
+        );
+      }
+    }
+
+
+    function getCooldownStep() {
+
+      resetCooldownStepIfNewDay();
+
+      const step =
+        Number(
+          localStorage.getItem(
+            COOLDOWN_STEP_KEY
+          ) || 0
+        );
+
+      return Math.max(
+        0,
+        Math.min(
+          step,
+          COOLDOWN_STEPS.length - 1
+        )
+      );
+    }
+
+
+    function advanceCooldownStep() {
+
+      const current =
+        getCooldownStep();
+
+      const next =
+        Math.min(
+          current + 1,
+          COOLDOWN_STEPS.length - 1
+        );
+
+      localStorage.setItem(
+        COOLDOWN_STEP_KEY,
+        String(next)
+      );
+    }
 
 
     const nameInput =
@@ -922,6 +1011,8 @@
 
     function getCooldownRemaining() {
 
+      resetCooldownStepIfNewDay();
+
       const lastSignedAt =
         Number(
           localStorage.getItem(
@@ -929,12 +1020,32 @@
           ) || 0
         );
 
+      if (!lastSignedAt) {
+        return 0;
+      }
+
+      const storedStep =
+        Number(
+          localStorage.getItem(
+            COOLDOWN_STEP_KEY
+          ) || 0
+        );
+
+      const cooldownIndex =
+        Math.max(
+          0,
+          Math.min(
+            storedStep - 1,
+            COOLDOWN_STEPS.length - 1
+          )
+        );
+
       const elapsed =
         Date.now() - lastSignedAt;
 
       return Math.max(
         0,
-        COOLDOWN_MS - elapsed
+        COOLDOWN_STEPS[cooldownIndex] - elapsed
       );
     }
 
@@ -1108,10 +1219,14 @@
         signedMessage
       );
 
+      resetCooldownStepIfNewDay();
+
       localStorage.setItem(
         COOLDOWN_KEY,
         String(Date.now())
       );
+
+      advanceCooldownStep();
 
       startCooldownTimer();
 
@@ -1125,6 +1240,8 @@
       signGuestbook
     );
 
+
+    resetCooldownStepIfNewDay();
 
     loadEntries();
 
