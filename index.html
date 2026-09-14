@@ -1,10 +1,551 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>enokiecloud ♡</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Instrument+Serif:ital@0;1&family=Caveat:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: #f7f4ef;
+      color: #292826;
+      font-family: "DM Sans", sans-serif;
+      font-weight: 300;
+    }
+
+    /* NAVIGATION */
+
+    nav {
+      height: 75px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 7%;
+      border-bottom: 1px solid #ded9d3;
+      background: rgba(247, 244, 239, .95);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: "Instrument Serif", serif;
+      font-size: 28px;
+      letter-spacing: 1px;
+    }
+
+    .logo span {
+      font-family: "DM Sans", sans-serif;
+      font-size: 22px;
+      margin-left: 5px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+    }
+
+    .nav-links a {
+      color: #292826;
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: .7px;
+      transition: opacity .2s;
+    }
+
+    .nav-links a:hover {
+      opacity: .45;
+    }
+
+    /* HERO */
+
+    .hero {
+      min-height: 76vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      max-width: 1250px;
+      margin: auto;
+      padding: 80px 7%;
+      align-items: center;
+      gap: 80px;
+    }
+
+    .tiny-note {
+      font-family: "Caveat", cursive;
+      font-size: 19px;
+      margin-bottom: 16px;
+      transform: rotate(-2deg);
+    }
+
+    .hero h1 {
+      font-family: "Instrument Serif", serif;
+      font-weight: 400;
+      font-size: clamp(65px, 8vw, 115px);
+      line-height: .85;
+      letter-spacing: -3px;
+    }
+
+    .hero h1 span {
+      font-family: "DM Sans", sans-serif;
+      font-size: .38em;
+      vertical-align: top;
+      margin-left: 8px;
+    }
+
+    .tagline {
+      margin-top: 26px;
+      font-family: "Caveat", cursive;
+      font-size: 23px;
+      color: #77716b;
+    }
+
+    .intro {
+      max-width: 420px;
+      margin-top: 24px;
+      line-height: 1.8;
+      font-size: 14px;
+      color: #625f5a;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .button {
+      padding: 12px 22px;
+      border-radius: 100px;
+      border: 1px solid #292826;
+      text-decoration: none;
+      color: #292826;
+      font-size: 13px;
+      transition: .25s;
+    }
+
+    .button.dark {
+      background: #292826;
+      color: #f7f4ef;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    /* LITTLE WINDOW */
+
+    .cloud-card {
+      background: #ede7e1;
+      min-height: 430px;
+      border-radius: 35px 35px 110px 35px;
+      position: relative;
+      padding: 45px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+    }
+
+    .cloud {
+      font-size: 110px;
+      position: absolute;
+      top: 55px;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: .9;
+    }
+
+    .floating-heart {
+      position: absolute;
+      font-size: 25px;
+    }
+
+    .heart-one {
+      top: 40px;
+      right: 45px;
+      transform: rotate(10deg);
+    }
+
+    .heart-two {
+      bottom: 120px;
+      left: 35px;
+      transform: rotate(-15deg);
+    }
+
+    .cloud-card p {
+      font-family: "Caveat", cursive;
+      font-size: 22px;
+      line-height: 1.3;
+      position: relative;
+      z-index: 2;
+    }
+
+    .cloud-card small {
+      margin-top: 10px;
+      opacity: .55;
+    }
+
+    /* CATEGORY STRIP */
+
+    .categories {
+      border-top: 1px solid #ded9d3;
+      border-bottom: 1px solid #ded9d3;
+      min-height: 65px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 35px;
+      flex-wrap: wrap;
+      padding: 18px;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .categories span::after {
+      content: "♡";
+      margin-left: 35px;
+      opacity: .35;
+    }
+
+    .categories span:last-child::after {
+      display: none;
+    }
+
+    /* LITTLE THINGS */
+
+    .little-things {
+      max-width: 1100px;
+      margin: auto;
+      padding: 100px 7%;
+    }
+
+    .section-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      margin-bottom: 40px;
+    }
+
+    .section-top h2 {
+      font-family: "Instrument Serif", serif;
+      font-size: 48px;
+      font-weight: 400;
+    }
+
+    .section-top p {
+      font-family: "Caveat", cursive;
+      font-size: 19px;
+      transform: rotate(-2deg);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: #eeebe6;
+      border-radius: 18px;
+      min-height: 260px;
+      padding: 25px;
+      position: relative;
+      transition: transform .25s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card-number {
+      font-size: 11px;
+      opacity: .45;
+    }
+
+    .card h3 {
+      font-family: "Instrument Serif", serif;
+      font-weight: 400;
+      font-size: 28px;
+      margin-top: 75px;
+    }
+
+    .card p {
+      font-family: "Caveat", cursive;
+      margin-top: 8px;
+      font-size: 18px;
+      color: #746f69;
+    }
+
+    .card-heart {
+      position: absolute;
+      right: 20px;
+      top: 18px;
+      font-size: 18px;
+    }
+
+    /* CURRENTLY */
+
+    .currently {
+      max-width: 1100px;
+      margin: 0 auto 100px;
+      padding: 45px;
+      border: 1px solid #d8d2cc;
+      border-radius: 22px;
+      display: grid;
+      grid-template-columns: 1.2fr repeat(4, 1fr);
+      gap: 25px;
+      align-items: center;
+    }
+
+    .currently h2 {
+      font-family: "Instrument Serif", serif;
+      font-size: 35px;
+      font-weight: 400;
+    }
+
+    .current-item small {
+      display: block;
+      text-transform: uppercase;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      opacity: .45;
+      margin-bottom: 6px;
+    }
+
+    .current-item p {
+      font-family: "Caveat", cursive;
+      font-size: 18px;
+    }
+
+    /* FOOTER */
+
+    footer {
+      padding: 35px 7%;
+      border-top: 1px solid #ded9d3;
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+    }
+
+    footer .footer-note {
+      font-family: "Caveat", cursive;
+      font-size: 17px;
+    }
+
+    /* PHONE */
+
+    @media (max-width: 760px) {
+      nav {
+        padding: 0 6%;
+      }
+
+      .nav-links {
+        gap: 14px;
+      }
+
+      .nav-links a:nth-child(3),
+      .nav-links a:nth-child(4) {
+        display: none;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding-top: 60px;
+        gap: 45px;
+      }
+
+      .hero h1 {
+        font-size: 68px;
+      }
+
+      .cloud-card {
+        min-height: 350px;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .currently {
+        margin: 0 7% 70px;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .currently h2 {
+        grid-column: 1 / -1;
+      }
+
+      footer {
+        gap: 20px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-  <h1>enokiecloud ♡</h1>
-  <p>something cute is coming ~</p>
+
+  <nav>
+    <div class="logo">enokiecloud <span>♡</span></div>
+
+    <div class="nav-links">
+      <a href="#home">home</a>
+      <a href="#about">about</a>
+      <a href="#things">things</a>
+      <a href="#gallery">gallery</a>
+      <a href="#contact">contact</a>
+    </div>
+  </nav>
+
+
+  <main>
+
+    <section class="hero" id="home">
+
+      <div>
+        <p class="tiny-note">welcome to my little corner of the internet ~</p>
+
+        <h1>
+          enokie<br>cloud<span>♡</span>
+        </h1>
+
+        <p class="tagline">simple things, softer days</p>
+
+        <p class="intro">
+          a little space for the things i like, things i'm working on,
+          random thoughts, photos, and the little moments i want to keep.
+        </p>
+
+        <div class="buttons">
+          <a class="button dark" href="#things">explore ♡</a>
+          <a class="button" href="#about">about me</a>
+        </div>
+      </div>
+
+
+      <div class="cloud-card">
+
+        <div class="cloud">☁︎</div>
+
+        <span class="floating-heart heart-one">♡</span>
+        <span class="floating-heart heart-two">♡</span>
+
+        <p>
+          same girl,<br>
+          different day ~
+        </p>
+
+        <small>currently somewhere in my own little world</small>
+
+      </div>
+
+    </section>
+
+
+    <section class="categories">
+      <span>life</span>
+      <span>school</span>
+      <span>cats</span>
+      <span>self care</span>
+      <span>creative things</span>
+      <span>random</span>
+    </section>
+
+
+    <section class="little-things" id="things">
+
+      <div class="section-top">
+        <h2>little things ♡</h2>
+        <p>bits & pieces of my life ~</p>
+      </div>
+
+
+      <div class="cards">
+
+        <div class="card">
+          <span class="card-number">01</span>
+          <span class="card-heart">♡</span>
+
+          <h3>life lately</h3>
+          <p>little updates, thoughts & moments</p>
+        </div>
+
+
+        <div class="card">
+          <span class="card-number">02</span>
+          <span class="card-heart">♡</span>
+
+          <h3>things i love</h3>
+          <p>things that make life a little nicer</p>
+        </div>
+
+
+        <div class="card">
+          <span class="card-number">03</span>
+          <span class="card-heart">♡</span>
+
+          <h3>my gallery</h3>
+          <p>photos worth keeping</p>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section class="currently">
+
+      <h2>currently ~</h2>
+
+      <div class="current-item">
+        <small>listening</small>
+        <p>my playlists ♡</p>
+      </div>
+
+      <div class="current-item">
+        <small>loving</small>
+        <p>little things</p>
+      </div>
+
+      <div class="current-item">
+        <small>learning</small>
+        <p>as i go ~</p>
+      </div>
+
+      <div class="current-item">
+        <small>mood</small>
+        <p>☁︎ + ♡</p>
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <footer>
+    <span>enokiecloud ♡</span>
+
+    <span class="footer-note">
+      turn your little joys into a bigger, brighter world ~
+    </span>
+
+    <span>est. 2026</span>
+  </footer>
+
 </body>
 </html>
