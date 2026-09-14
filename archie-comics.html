@@ -89,16 +89,18 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 34px 28px;
+      align-items: start;
     }
 
     .comic {
-      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
     }
 
     .comic-cover {
       width: 100%;
-      aspect-ratio: 3 / 4;
-      object-fit: cover;
+      height: auto;
       display: block;
       border: 1px solid var(--line);
       transition:
