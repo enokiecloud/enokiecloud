@@ -16,11 +16,11 @@
 
   <style>
     :root {
-      --paper: #fdfcf9;
-      --ink: #111111;
-      --soft: #6f6b66;
-      --line: #d7d2cb;
-      --faint: #ece8e1;
+      --paper: #050505;
+      --ink: #f5f2ec;
+      --soft: #aaa59e;
+      --line: #66615b;
+      --faint: #171717;
     }
 
     * {
@@ -37,6 +37,10 @@
       background: var(--paper);
       color: var(--ink);
       font-family: "IBM Plex Mono", monospace;
+    }
+
+    .logo-image {
+      filter: invert(1);
     }
 
     a {
@@ -144,6 +148,7 @@
 
     .found-object:hover {
       transform: translateY(-4px) rotate(-1deg);
+      filter: drop-shadow(0 0 7px rgba(255,255,255,.12));
     }
 
     .found-object:focus-visible {
@@ -357,7 +362,7 @@
       border: 1px solid var(--line);
 
       background:
-        linear-gradient(to bottom, #f7f5f0 0 50%, #ebe6de 50% 100%);
+        linear-gradient(to bottom, #101010 0 50%, #1b1b1b 50% 100%);
     }
 
     .photo-inner::before {
@@ -612,7 +617,7 @@
 
       transform: translate(-50%, -50%);
 
-      background: rgba(253, 252, 249, .98);
+      background: rgba(5, 5, 5, .98);
       border: 1px solid var(--ink);
       padding: 28px 26px 24px;
 
