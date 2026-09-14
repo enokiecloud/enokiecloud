@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>memory box ~ enokiecloud</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@300;400&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --paper: #fdfcf9;
+      --ink: #111111;
+      --soft: #77736e;
+      --line: #d2cec8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "IBM Plex Mono", monospace;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    nav {
+      max-width: 1200px;
+      margin: auto;
+      padding: 24px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--ink);
+    }
+
+    .logo {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 32px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 17px;
+    }
+
+    main {
+      max-width: 950px;
+      margin: auto;
+      padding: 80px 5%;
+    }
+
+    h1 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 64px;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+
+    .sub {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      color: var(--soft);
+      margin-bottom: 55px;
+    }
+
+    .memory-list {
+      border-top: 1px solid var(--ink);
+    }
+
+    .memory-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--line);
+      font-family: "Cormorant Garamond", serif;
+      font-size: 24px;
+    }
+
+    .memory-item:hover {
+      font-style: italic;
+      padding-left: 8px;
+    }
+
+    .back {
+      display: inline-block;
+      margin-top: 45px;
+      font-size: 11px;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 48px;
+      }
+
+      .memory-item {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">enokiecloud ♡</a>
+
+    <div class="nav-links">
+      <a href="index.html">home</a>
+      <a href="memory-box.html">memory box</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <h1>memory box</h1>
+
+    <p class="sub">
+      little things i used to love, remember, or still think about
+    </p>
+
+    <div class="memory-list">
+
+      <a href="#" class="memory-item">
+        <span>archie comics</span>
+        <span>↗</span>
+      </a>
+
+      <a href="#" class="memory-item">
+        <span>valorant</span>
+        <span>↗</span>
+      </a>
+
+      <a href="#" class="memory-item">
+        <span>childhood</span>
+        <span>↗</span>
+      </a>
+
+      <a href="#" class="memory-item">
+        <span>old games</span>
+        <span>↗</span>
+      </a>
+
+      <a href="#" class="memory-item">
+        <span>school eras</span>
+        <span>↗</span>
+      </a>
+
+      <a href="#" class="memory-item">
+        <span>random things</span>
+        <span>↗</span>
+      </a>
+
+    </div>
+
+    <a class="back" href="index.html">← back home</a>
+
+  </main>
+
+</body>
+</html>
