@@ -41,7 +41,7 @@
     nav {
       width: min(1200px, 90%);
       margin: auto;
-      padding: 25px 0;
+      padding: 18px 0;
 
       display: flex;
       justify-content: space-between;
@@ -50,9 +50,15 @@
       border-bottom: 1px solid var(--ink);
     }
 
-    .logo {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 31px;
+    .logo-wrap {
+      width: 245px;
+      max-width: 42vw;
+    }
+
+    .logo-image {
+      width: 100%;
+      height: auto;
+      display: block;
     }
 
     .nav-links {
@@ -152,6 +158,11 @@
         gap: 14px;
       }
 
+      .logo-wrap {
+        width: 220px;
+        max-width: 90%;
+      }
+
       main {
         padding-top: 55px;
       }
@@ -168,8 +179,12 @@
 
   <nav>
 
-    <a href="index.html" class="logo">
-      enokiecloud ♡
+    <a href="index.html" class="logo-wrap">
+      <img
+        src="images/enokiecloud-logo.png"
+        alt="enokiecloud"
+        class="logo-image"
+      >
     </a>
 
     <div class="nav-links">
