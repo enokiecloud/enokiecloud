@@ -47,10 +47,13 @@
       width: min(1420px, 92%);
       margin: auto;
       min-height: 120px;
+
       display: flex;
       justify-content: space-between;
       align-items: center;
+
       border-bottom: 1px solid var(--ink);
+
       position: relative;
       z-index: 10;
     }
@@ -131,7 +134,9 @@
 
     .site-sub {
       margin-top: 19px;
+
       color: var(--soft);
+
       font-family: "Cormorant Garamond", serif;
       font-size: 18px;
       font-style: italic;
@@ -141,6 +146,7 @@
       width: max-content;
       margin-top: 58px;
       padding-left: 15px;
+
       border-left: 1px solid var(--ink);
 
       color: #4c4945;
@@ -169,8 +175,11 @@
     .girl-art {
       width: min(560px, 100%);
       max-height: 565px;
+
       object-fit: contain;
+
       filter: grayscale(100%) contrast(1.07);
+
       position: relative;
       z-index: 2;
     }
@@ -184,6 +193,7 @@
       font-size: 68px;
 
       transform: rotate(-8deg);
+
       z-index: 4;
     }
 
@@ -196,6 +206,7 @@
       font-size: 28px;
 
       transform: rotate(-12deg);
+
       z-index: 4;
     }
 
@@ -205,18 +216,22 @@
       top: 48%;
 
       font-size: 16px;
+
       z-index: 4;
     }
 
     .right-side {
       padding-left: 28px;
+
       position: relative;
       z-index: 5;
     }
 
     .section-label {
       margin-bottom: 22px;
+
       color: var(--soft);
+
       font-size: 9px;
       letter-spacing: 2px;
     }
@@ -247,8 +262,70 @@
 
     .archive-arrow {
       margin-left: 20px;
+
       font-family: "IBM Plex Mono", monospace;
       font-size: 11px;
+    }
+
+    .click-cat-wrap {
+      position: absolute;
+      right: 3%;
+      bottom: 18px;
+
+      width: 115px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      z-index: 8;
+    }
+
+    .cat-message {
+      min-height: 24px;
+      margin-bottom: 5px;
+
+      color: #4c4945;
+
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 8px;
+      line-height: 1.4;
+      text-align: center;
+
+      opacity: 0;
+
+      transition: opacity .2s ease;
+    }
+
+    .cat-message.show {
+      opacity: 1;
+    }
+
+    .click-cat-button {
+      border: 0;
+      background: transparent;
+      padding: 0;
+
+      cursor: pointer;
+    }
+
+    .click-cat {
+      width: 105px;
+      height: auto;
+
+      display: block;
+
+      transition:
+        transform .18s ease,
+        opacity .18s ease;
+    }
+
+    .click-cat-button:hover .click-cat {
+      transform: translateY(-3px);
+    }
+
+    .click-cat-button:active .click-cat {
+      transform: translateY(0) scale(.96);
     }
 
     .current {
@@ -266,6 +343,7 @@
       display: flex;
       align-items: baseline;
       justify-content: space-between;
+
       margin-bottom: 27px;
     }
 
@@ -277,6 +355,7 @@
 
     .current-date {
       color: var(--soft);
+
       font-size: 8px;
       letter-spacing: 1.5px;
     }
@@ -300,6 +379,7 @@
 
     .current-value {
       color: #403d39;
+
       font-size: 10px;
       line-height: 1.6;
     }
@@ -307,12 +387,14 @@
     .footer-line {
       width: min(1420px, 92%);
       margin: 0 auto 40px;
+
       position: relative;
       z-index: 5;
     }
 
     .footer-line-inner {
       padding-top: 18px;
+
       border-top: 1px solid var(--ink);
 
       display: flex;
@@ -325,6 +407,7 @@
     @media (max-width: 900px) {
       nav {
         padding: 18px 0;
+
         flex-direction: column;
         align-items: flex-start;
         gap: 16px;
@@ -343,6 +426,7 @@
       .home {
         grid-template-columns: 1fr;
         padding-top: 45px;
+        padding-bottom: 120px;
       }
 
       .site-title {
@@ -367,6 +451,7 @@
         width: 300px;
         left: -140px;
         bottom: 40px;
+
         opacity: .6;
       }
 
@@ -374,7 +459,23 @@
         width: 280px;
         right: -140px;
         top: 260px;
+
         opacity: .55;
+      }
+
+      .click-cat-wrap {
+        right: 4%;
+        bottom: 20px;
+
+        width: 95px;
+      }
+
+      .click-cat {
+        width: 85px;
+      }
+
+      .cat-message {
+        font-size: 7px;
       }
 
       .current {
@@ -486,6 +587,28 @@
 
       </div>
 
+      <div class="click-cat-wrap">
+
+        <div
+          class="cat-message"
+          id="catMessage"
+        ></div>
+
+        <button
+          class="click-cat-button"
+          id="clickCatButton"
+          type="button"
+          aria-label="click the cat"
+        >
+          <img
+            src="images/click-cat.png"
+            alt="little black cat"
+            class="click-cat"
+          >
+        </button>
+
+      </div>
+
     </section>
 
     <section class="current" id="current">
@@ -504,7 +627,9 @@
 
         <div class="current-row">
           <span class="current-label">watching</span>
-          <span class="current-value">police body cams + crime videos on youtube</span>
+          <span class="current-value">
+            police body cams + crime videos on youtube
+          </span>
         </div>
 
         <div class="current-row">
@@ -531,6 +656,35 @@
     </div>
 
   </main>
+
+  <script>
+    const catButton = document.getElementById("clickCatButton");
+    const catMessage = document.getElementById("catMessage");
+
+    const catMessages = [
+      "...hi",
+      "why are u clicking me",
+      "okay",
+      "again???",
+      "ur nosy",
+      "fine keep going"
+    ];
+
+    let catClicks = 0;
+
+    catButton.addEventListener("click", () => {
+      catMessage.classList.remove("show");
+
+      setTimeout(() => {
+        catMessage.textContent =
+          catMessages[catClicks % catMessages.length];
+
+        catMessage.classList.add("show");
+
+        catClicks++;
+      }, 80);
+    });
+  </script>
 
 </body>
 </html>
