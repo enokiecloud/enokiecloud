@@ -58,7 +58,7 @@ button{color:inherit}
 /* windows */
 .window{
   position:absolute;display:none;
-  width:min(720px,88vw);max-width:88vw;
+  width:min(660px,88vw);max-width:88vw;
   min-height:420px;max-height:calc(100vh - 92px);
   overflow:hidden;border-radius:12px;
   background:rgba(248,249,250,.96);
@@ -303,7 +303,7 @@ button{color:inherit}
   </div>
 </section>
 
-<section id="photo-window" class="window" style="left:16vw;top:6vh;width:min(680px,84vw)">
+<section id="photo-window" class="window" style="left:12vw;top:6vh;width:min(610px,84vw)">
   <div class="window-top">
     <div class="traffic"><button class="dot red" onclick="closeWindow('photo-window')"></button><button class="dot yellow"></button><button class="dot green"></button></div>
     <div class="window-title">Preview</div>
@@ -315,7 +315,7 @@ button{color:inherit}
 </section>
 
 <!-- Messages -->
-<section id="messages-window" class="window" style="left:14vw;top:8vh">
+<section id="messages-window" class="window" style="left:10vw;top:7vh;width:min(650px,86vw)">
   <div class="window-top">
     <div class="traffic"><button class="dot red" onclick="closeWindow('messages-window')"></button><button class="dot yellow"></button><button class="dot green"></button></div>
     <div class="window-title">Messages</div>
@@ -339,7 +339,7 @@ button{color:inherit}
 </section>
 
 <!-- Safari -->
-<section id="safari-window" class="window" style="left:12vw;top:7vh">
+<section id="safari-window" class="window" style="left:8vw;top:7vh;width:min(650px,86vw)">
   <div class="window-top">
     <div class="traffic"><button class="dot red" onclick="closeWindow('safari-window')"></button><button class="dot yellow"></button><button class="dot green"></button></div>
     <div class="window-title">Safari</div>
@@ -354,15 +354,17 @@ button{color:inherit}
     </div>
     <div class="history">
       <h3>Recently visited</h3>
-      <div class="history-row">how to check recent logins on mac <small>Sep 3 · 1:42 AM</small></div>
-      <div class="history-row">can someone remotely control your computer <small>Sep 3 · 1:58 AM</small></div>
+      <div class="history-row">HCA 125 - course portal <small>Sep 3 · 4:26 PM</small></div>
+      <div class="history-row">pancit bihon recipe <small>Sep 3 · 6:11 PM</small></div>
+      <div class="history-row">No Text To Speech - YouTube <small>Sep 3 · 9:37 PM</small></div>
+      <div id="history-login" class="history-row" style="display:none">macbook activity history <small>Sep 4 · 1:42 AM</small></div>
       <div id="history-hidden" class="history-row" style="display:none">find my device last location <small>Sep 4 · 2:08 AM</small></div>
     </div>
   </div>
 </section>
 
 <!-- Music -->
-<section id="music-window" class="window" style="left:13vw;top:8vh">
+<section id="music-window" class="window" style="left:10vw;top:8vh;width:min(640px,86vw)">
   <div class="window-top">
     <div class="traffic"><button class="dot red" onclick="closeWindow('music-window')"></button><button class="dot yellow"></button><button class="dot green"></button></div>
     <div class="window-title">Music</div>
@@ -388,7 +390,10 @@ button{color:inherit}
   <div class="facetime">
     <h2 style="font-size:19px;margin-bottom:14px">Recents</h2>
     <div class="call-row"><span>Mami</span><span class="when">Sep 2 · 8:12 PM</span></div>
-    <div class="call-row"><span>3asians</span><span class="when">Sep 3 · 11:47 PM</span></div>
+    <div class="call-row"><span>jadabae</span><span class="when">Sep 2 · 10:04 PM</span></div>
+    <div class="call-row"><span>noemibae</span><span class="when">Sep 3 · 3:36 PM</span></div>
+    <div class="call-row"><span>kyle</span><span class="when">Sep 3 · 9:18 PM</span></div>
+    <div class="call-row"><span>Mami</span><span class="when">Sep 3 · 11:47 PM</span></div>
     <div id="unknown-call-row" class="call-row" style="display:none"><span>Unknown</span><span class="when">Sep 4 · 2:17 AM</span></div>
   </div>
 </section>
@@ -400,9 +405,10 @@ button{color:inherit}
     <div class="window-title">System Settings</div>
   </div>
   <div class="settings">
-    <div class="setting"><strong>Apple Account</strong><span>enokie</span></div>
-    <div class="setting"><strong>Last successful login</strong><span id="settings-login">Sep 3, 2026 · 11:58 PM</span></div>
-    <div id="guest-setting" class="setting" style="display:none"><strong>Guest User</strong><span>Active session detected</span></div>
+    <div class="setting"><strong>Apple Account</strong><span>k••••@icloud.com</span></div>
+    <div class="setting"><strong>Device Name</strong><span>MacBook Air</span></div>
+    <div class="setting"><strong>Last Backup</strong><span>Sep 4, 2026 · 2:18 AM</span></div>
+    <div id="guest-setting" class="setting" style="display:none"><strong>Guest User</strong><span>Session activity detected</span></div>
     <div class="setting"><strong>Appearance</strong><span>Dark</span></div>
     <div class="setting"><strong>Desktop & Dock</strong><span>Customized</span></div>
     <button class="reset" onclick="resetStory()">Reset story progress</button>
@@ -455,8 +461,18 @@ button{color:inherit}
 
 <script>
 let topZ=500;
-const KEY="enokieStoryV1";
-let state=JSON.parse(localStorage.getItem(KEY)||'{"phase":0,"unknownOpen":false,"windowMoved":false,"callSeen":false}');
+const KEY="enokieStoryV2";
+const DEFAULT_STATE={
+  phase:0,
+  metaSeen:false,
+  sessionSeen:false,
+  draftSeen:false,
+  unknownOpen:false,
+  windowMoved:false,
+  callSeen:false,
+  unknownMsgs:[]
+};
+let state={...DEFAULT_STATE,...JSON.parse(localStorage.getItem(KEY)||"{}")};
 function save(){localStorage.setItem(KEY,JSON.stringify(state));syncStory()}
 function advance(n){if(state.phase<n){state.phase=n;save()}}
 function flash(){const f=document.getElementById("screen-flash");f.classList.remove("flash");void f.offsetWidth;f.classList.add("flash")}
@@ -469,14 +485,29 @@ function clock(){
 }
 clock();setInterval(clock,1000);
 
+function fitWindow(w){
+  requestAnimationFrame(()=>{
+    const r=w.getBoundingClientRect();
+    const pad=10, dockSpace=74;
+    if(r.right>innerWidth-pad) w.style.left=Math.max(pad,innerWidth-r.width-pad)+"px";
+    if(r.left<pad) w.style.left=pad+"px";
+    if(r.bottom>innerHeight-dockSpace) w.style.top=Math.max(35,innerHeight-r.height-dockSpace)+"px";
+    if(r.top<35) w.style.top="35px";
+  });
+}
 function openApp(id,name,btn=null){
-  const w=document.getElementById(id);w.classList.add("active");w.style.zIndex=++topZ;
-  document.getElementById("active-app").textContent=name;if(btn)run(btn);
+  const w=document.getElementById(id);
+  w.classList.add("active");
+  w.style.zIndex=++topZ;
+  document.getElementById("active-app").textContent=name;
+  if(btn)run(btn);
+  fitWindow(w);
 }
 function closeWindow(id){document.getElementById(id).classList.remove("active");document.getElementById("active-app").textContent="Finder"}
 function run(btn){btn.classList.add("running")}
 
 document.querySelectorAll(".window").forEach(win=>{
+  win.addEventListener("mousedown",()=>{win.style.zIndex=++topZ});
   const bar=win.querySelector(".window-top");let drag=false,ox=0,oy=0;
   bar.addEventListener("mousedown",e=>{
     if(e.target.classList.contains("dot"))return;
@@ -487,12 +518,13 @@ document.querySelectorAll(".window").forEach(win=>{
     if(!drag||innerWidth<760)return;
     win.style.left=Math.max(0,Math.min(innerWidth-win.offsetWidth,e.clientX-ox))+"px";
     win.style.top=Math.max(29,Math.min(innerHeight-win.offsetHeight-60,e.clientY-oy))+"px";
-    if(state.phase>=4 && !state.windowMoved){
+    if(state.phase>=5 && !state.windowMoved){
       state.windowMoved=true;save();
-      setTimeout(()=>pushUnknown("wait"),450);
-      setTimeout(()=>pushUnknown("you can move the windows?"),1600);
-      setTimeout(()=>pushUnknown("i haven't been able to do that"),3300);
-      setTimeout(()=>triggerCall(),5200);
+      setTimeout(()=>pushUnknown("wait"),500);
+      setTimeout(()=>pushUnknown("you can move those?"),1700);
+      setTimeout(()=>pushUnknown("i can't"),3200);
+      setTimeout(()=>pushUnknown("don't close it"),4500);
+      setTimeout(()=>triggerCall(),6500);
     }
   });
   document.addEventListener("mouseup",()=>drag=false);
@@ -507,42 +539,60 @@ function docTile(name,action,type="TXT",meta=""){
 function openFinder(folder){
   openApp("finder-window","Finder");
   const t=document.getElementById("finder-title"),g=document.getElementById("finder-grid"),c=document.getElementById("finder-count");
+
   if(folder==="desktop"){
-    t.textContent="Desktop";g.innerHTML=
+    t.textContent="Desktop";
+    g.innerHTML=
       folderTile("school","openFinder('school')")+
       folderTile("pictures","openPhotos()")+
       folderTile("downloads","openFinder('downloads')")+
-      (state.phase>=2?folderTile("recovered","openFinder('recovered')","modified today"):"");
+      docTile("health-admin-notes.txt","","TXT","Sep 3")+
+      docTile("receipt.pdf","","PDF","Sep 2")+
+      docTile("IMG_5708.jpeg","","JPG","Aug 28")+
+      (state.phase>=2?folderTile("Recovered Files","openFinder('recovered')","system restored"):"");
   }
+
   if(folder==="school"){
-    t.textContent="school";g.innerHTML=
+    t.textContent="school";
+    g.innerHTML=
       docTile("syllabus.pdf","openApp('pdf-window','Preview')","PDF","Fall 2026")+
-      folderTile("assignments","")+
-      folderTile("readings","");
+      docTile("HCA125-week3.pdf","","PDF","Sep 2")+
+      docTile("discussion-notes.txt","","TXT","Sep 3")+
+      folderTile("group project","")+
+      folderTile("readings","")+
+      docTile("assignment-2.docx","","DOC","Sep 1");
   }
+
   if(folder==="downloads"){
     t.textContent="Downloads";
-    g.innerHTML=docTile("Screenshot 2026-09-03 at 1.51 AM.png","","PNG","Sep 3")+
-      docTile("receipt.pdf","","PDF","Sep 2")+
-      docTile("image (1).png","","PNG","Sep 3")+
-      (state.phase>=1?docTile("photo-info.txt","openText('photo-info')","TXT","modified after last login"):"");
-    if(state.phase>=1)advance(2);
-  }
-  if(folder==="recovered"){
-    t.textContent="recovered";
     g.innerHTML=
-      docTile("last-session.txt","openText('session')","TXT","recovered")+
-      docTile("unsent.txt","openText('unsent')","TXT","recovered")+
-      (state.phase>=5?docTile("system-log.txt","openText('system')","TXT","today"):"");
+      docTile("Screenshot 2026-09-03 at 1.51 AM.png","","PNG","Sep 3")+
+      docTile("receipt-0902.pdf","","PDF","Sep 2")+
+      docTile("cover.jpg","","JPG","Aug 30")+
+      docTile("archive.zip","","ZIP","Aug 29")+
+      docTile("untitled.pdf","","PDF","Sep 1")+
+      docTile("IMG_4409.jpeg","","JPG","Sep 2")+
+      (state.phase>=1?docTile("IMG_4409-info.txt","openText('photo-info')","TXT","cache file"):"");
   }
+
+  if(folder==="recovered"){
+    t.textContent="Recovered Files";
+    g.innerHTML=
+      docTile("session-cache.txt","openText('session')","TXT","recovered")+
+      docTile("draft-17.txt","openText('unsent')","TXT","recovered")+
+      docTile("messages-index.db","","DB","recovered")+
+      docTile("window-state.plist","","PLIST","recovered")+
+      (state.phase>=7?docTile("system-log.txt","openText('system')","TXT","today"):"");
+  }
+
   c.textContent=g.children.length+" items";
 }
 
 const photoMeta={
-  1:["IMG_4072.jpeg","Aug 29, 2026 · 7:14 PM","iPhone 15","Sacramento, CA"],
-  2:["IMG_4218.jpeg","Aug 31, 2026 · 11:08 PM","iPhone 15",""],
-  3:["IMG_4361.jpeg","Sep 2, 2026 · 12:43 AM","iPhone 15",""],
-  4:["IMG_4409.jpeg","Sep 11, 2026 · 2:13 AM","Unknown device","metadata changed"]
+  1:["IMG_4072.jpeg","Aug 29, 2026 · 7:14 PM","iPhone 15","Imported Aug 29"],
+  2:["IMG_4218.jpeg","Aug 31, 2026 · 11:08 PM","iPhone 15","Imported Sep 1"],
+  3:["IMG_4361.jpeg","Sep 2, 2026 · 12:43 AM","iPhone 15","Imported Sep 2"],
+  4:["IMG_4409.jpeg","Sep 2, 2026 · 12:43 AM","iPhone 15","Edited Sep 11 · 2:13 AM"]
 };
 function openPhotos(btn=null){openApp("photos-window","Photos",btn)}
 function showPhoto(n){
@@ -553,40 +603,87 @@ function showPhoto(n){
     <div class="meta-row"><span>Device</span><span>${m[2]}</span></div>
     <div class="meta-row"><span>Info</span><span>${m[3]||"—"}</span></div>`;
   openApp("photo-window","Preview");
-  if(n===4 && state.phase<1){advance(1);flash();setTimeout(()=>{document.getElementById("photo-meta").classList.add("glitch-label")},250)}
+  if(n===4 && state.phase<1){advance(1)}
 }
 
-const baseChats={
-  "3asians":[
+const normalChats={
+  "jadabae":[
+    ["jadabae","where are u"],["me","girl im coming 😭"],["jadabae","you said that 20 mins ago"],
+    ["jadabae","bring the charger pls"],["me","I HAVE IT"],["jadabae","okay good bc noemi is at 4%"]
+  ],
+  "noemibae":[
+    ["noemibae","look at what i just sent u"],["me","LMFAOOO STOP"],["noemibae","i knew youd get it"],
+    ["me","why would u send that while im in class"],["noemibae","timing was important"],["me","blocked"]
+  ],
+  "kyle":[
+    ["kyle","yall still going out"],["me","yes unfortunately"],["kyle","crazy"],
+    ["kyle","what time"],["me","idk ask jada"],["kyle","useless"]
+  ],
+  "lil sis ava":[
+    ["lil sis ava","are u home later"],["me","yeah why"],["lil sis ava","i need to tell u something lol"],
+    ["me","that sounds threatening"],["lil sis ava","its not 😭"],["me","okayyy"]
+  ],
+  "kiddo jas":[
+    ["kiddo jas","can i ask u something"],["me","ofc whats up"],["kiddo jas","nvm i figured it out"],
+    ["me","girl 😭"],["kiddo jas","SORRY"],["me","ur good lol"]
+  ],
+  "mami":[
+    ["mami","anak did you eat"],["me","yes ma"],["mami","what did you eat"],["me","rice and chicken"],
+    ["mami","okay text me when you get home"],["me","i will"]
+  ]
+};
+
+function groupChatData(){
+  const chat=[
     ["jadabae","are we still going out friday"],
     ["noemibae","i can after 8"],
     ["kyle","same"],
-    ["kels","okay ill text when im leaving"],
-    ["jadabae","did enokie ever answer"],
-    ["noemibae","no"],
-    ["kyle","she said she was going home"],
-    ["system","1 message unavailable"],
-    ["jadabae","has anyone heard from her since then"]
-  ],
-  "jadabae":[["jadabae","where are u"],["kels","girl im coming 😭"],["jadabae","you said that 20 mins ago"]],
-  "noemibae":[["noemibae","look at what i just sent u"],["kels","LMFAOOO STOP"],["noemibae","i knew youd get it"]],
-  "kyle":[["kyle","yall still going out"],["kels","yes unfortunately"],["kyle","crazy"]],
-  "lil sis ava":[["lil sis ava","are u home later"],["kels","yeah why"],["lil sis ava","i need to tell u something lol"]],
-  "kiddo jas":[["kiddo jas","can i ask u something"],["kels","ofc whats up"]],
-  "mami":[["mami","anak text me when you get home"],["kels","okay ma i will"],["mami","dont forget"]]
-};
-let unknownMsgs=[];
+    ["me","okay ill text when im leaving"],
+    ["jadabae","bring the charger pls"],
+    ["me","yes mother"]
+  ];
+  if(state.phase>=2){
+    chat.push(["jadabae","did she ever text u back"]);
+    chat.push(["noemibae","no"]);
+    chat.push(["kyle","she said she was going home"]);
+    chat.push(["system","1 message unavailable"]);
+  }
+  if(state.phase>=3){
+    chat.push(["jadabae","kyle you were literally the last one with her"]);
+    chat.push(["kyle","i dropped her off"]);
+    chat.push(["noemibae","then why did she call me at 2"]);
+    chat.push(["kyle","i don't know"]);
+  }
+  return chat;
+}
+
+function kyleChatData(){
+  const chat=[...normalChats["kyle"]];
+  if(state.phase>=3){
+    chat.push(["kyle","for the last time i dropped her off"]);
+    chat.push(["me","i didnt say anything"]);
+    chat.push(["kyle","everyone keeps acting like i know something"]);
+    chat.push(["me","do you"]);
+    chat.push(["kyle","no"]);
+  }
+  return chat;
+}
+
+function unknownMsgs(){
+  return state.unknownMsgs||[];
+}
 function contactNames(){
   const names=["3asians","jadabae","noemibae","kyle","lil sis ava","kiddo jas","mami"];
-  if(state.phase>=3)names.unshift("unknown");
+  if(state.phase>=4)names.unshift("unknown");
   return names;
 }
 function renderContacts(active="3asians"){
   const box=document.getElementById("contacts");box.innerHTML="";
   contactNames().forEach(name=>{
     const d=document.createElement("div");d.className="contact"+(name===active?" active":"");
-    const preview=name==="unknown"?(unknownMsgs.at(-1)||"hello?"):(name==="mami"?"mom":name==="3asians"?"group chat":"");
-    d.innerHTML=`<strong>${name}${name==="unknown"&&state.phase===3?'<span class="unread"></span>':""}</strong><small>${preview}</small>`;
+    const u=unknownMsgs();
+    const preview=name==="unknown"?(u.at(-1)||"hello?"):(name==="mami"?"mom":name==="3asians"?"group chat":"");
+    d.innerHTML=`<strong>${name}${name==="unknown"&&!state.unknownOpen?'<span class="unread"></span>':""}</strong><small>${preview}</small>`;
     d.onclick=()=>{renderContacts(name);renderChat(name)};
     box.appendChild(d);
   });
@@ -594,21 +691,33 @@ function renderContacts(active="3asians"){
 function renderChat(name){
   document.getElementById("chat-title").textContent=name;
   const body=document.getElementById("chat-body");body.innerHTML="";
-  const data=name==="unknown"?unknownMsgs.map(t=>["unknown",t]):baseChats[name];
+  let data;
+  if(name==="unknown") data=unknownMsgs().map(t=>["unknown",t]);
+  else if(name==="3asians") data=groupChatData();
+  else if(name==="kyle") data=kyleChatData();
+  else data=normalChats[name];
+
   data.forEach(([sender,text])=>{
     if(sender==="system"){body.insertAdjacentHTML("beforeend",`<div class="system-line">${text}</div>`);return}
-    body.insertAdjacentHTML("beforeend",`<div class="msg ${sender==="kels"?"me":""}"><div class="sender">${sender}</div><div class="bubble">${text}</div></div>`);
+    body.insertAdjacentHTML("beforeend",`<div class="msg ${sender==="me"?"me":""}"><div class="sender">${sender}</div><div class="bubble">${text}</div></div>`);
   });
   body.scrollTop=body.scrollHeight;
-  if(name==="unknown" && state.phase===3){
-    state.unknownOpen=true;advance(4);
-    setTimeout(()=>pushUnknown("can you see this"),900);
-    setTimeout(()=>pushUnknown("are you at my desk"),2400);
+
+  if(name==="unknown" && state.phase===4 && !state.unknownOpen){
+    state.unknownOpen=true;
+    advance(5);
+    setTimeout(()=>pushUnknown("can you see this"),1100);
+    setTimeout(()=>pushUnknown("are you using this computer"),2800);
   }
 }
-function openMessages(btn=null){openApp("messages-window","Messages",btn);renderContacts();renderChat(state.phase>=3?"unknown":"3asians")}
+function openMessages(btn=null){
+  openApp("messages-window","Messages",btn);
+  const target=state.phase>=4?"unknown":"3asians";
+  renderContacts(target);renderChat(target);
+}
 function pushUnknown(text){
-  if(!unknownMsgs.includes(text))unknownMsgs.push(text);
+  state.unknownMsgs=state.unknownMsgs||[];
+  if(!state.unknownMsgs.includes(text)){state.unknownMsgs.push(text);save()}
   if(document.getElementById("messages-window").classList.contains("active")){
     renderContacts("unknown");renderChat("unknown");
   }
@@ -633,12 +742,16 @@ const notes={
 photos
 music
 fix mobile later
-remember to back everything up`
+remember to back everything up`,
+  "school":`HCA 125
+- discussion post
+- chapter 4 reading
+- email prof about quiz`
 };
 function renderNotes(name="grocery list"){
   const list=document.getElementById("notes-list");list.innerHTML="";
-  const names=["grocery list","website stuff"];
-  if(state.phase>=4)names.unshift("untitled");
+  const names=["grocery list","school","website stuff"];
+  if(state.phase>=7)names.unshift("untitled");
   names.forEach(n=>{
     const r=document.createElement("div");r.className="note-row"+(n===name?" active":"");
     r.innerHTML=`<strong>${n}</strong><small>${n==="untitled"?"now":"Sep 3"}</small>`;
@@ -647,81 +760,19 @@ function renderNotes(name="grocery list"){
   document.getElementById("note-title").textContent=name;
   let text=notes[name]||"";
   if(name==="untitled"){
-    text=state.windowMoved?`you can move the windows?
+    text=`what date is it
 
-i haven't been able to do that
+the clock says september 15
 
-please don't close this`:`are you there
+mine stopped at 2:17
 
-i can see the desktop change
-
-but i can't click anything`;
-    if(state.phase<5)advance(5);
+please leave this open`;
   }
   document.getElementById("note-text").textContent=text;
 }
-function openNotes(btn=null){openApp("notes-window","Notes",btn);renderNotes(state.phase>=4?"untitled":"grocery list")}
-
-function openText(kind){
-  let title="",content="";
-  if(kind==="photo-info"){
-    title="photo-info.txt";
-    content=`IMG_4409.jpeg
-created: Sep 2, 2026 12:48 AM
-modified: Sep 11, 2026 2:13 AM
-
-last account login:
-Sep 3, 2026 11:58 PM
-
-<span class="warn">the file was modified 7 days after the last successful login.</span>`;
-    advance(3);setTimeout(()=>{renderContacts();},400);
-  }
-  if(kind==="session"){
-    title="last-session.txt";
-    content=`session recovery
------------------------------
-user: enokie
-last foreground activity: Sep 4 2026 02:14:03
-network: disconnected
-camera: requested
-messages: background process active
-session end: unavailable
-
-recovery note:
-session was never closed normally.`;
-    advance(3);
-  }
-  if(kind==="unsent"){
-    title="unsent.txt";
-    content=`i keep thinking someone is opening things after i close them
-
-maybe i'm just tired
-
-if this is still here tomorrow remind me to change my password
-
-don't tell them yet`;
-    advance(3);
-  }
-  if(kind==="system"){
-    title="system-log.txt";
-    content=`Sep 03 23:58:17  user=enokie login success
-Sep 04 02:14:03  user=enokie session suspended
-Sep 04 02:17:31  camera request / no response
-Sep 11 02:13:09  photo metadata updated
-Sep 15 ${new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})}  user=guest session active
-
-process:
-cloud.restore.enokie       running
-messages.bridge            running
-windowserver               running
-
-owner session:
-<span class="warn">state: unresolved</span>`;
-    advance(6);
-  }
-  document.getElementById("text-title").textContent=title;
-  document.getElementById("text-content").innerHTML=content;
-  openApp("text-window","TextEdit");
+function openNotes(btn=null){
+  openApp("notes-window","Notes",btn);
+  renderNotes(state.phase>=7?"untitled":"grocery list");
 }
 
 function playSong(which){
@@ -737,27 +788,36 @@ function triggerCall(){
 }
 function declineCall(){
   document.getElementById("incoming").classList.remove("show");
-  pushUnknown("please don't do that again");
-  advance(6);
+  setTimeout(()=>pushUnknown("did that ring for you"),900);
+  setTimeout(()=>pushUnknown("okay"),2200);
+  advance(7);
 }
 function acceptCall(){
   document.getElementById("incoming").classList.remove("show");
   openApp("facetime-window","FaceTime");
-  setTimeout(()=>pushUnknown("i can't see you"),1000);
-  setTimeout(()=>pushUnknown("but i know you're there"),2400);
-  setTimeout(()=>pushUnknown("i think i'm still here"),4500);
-  advance(6);
+  setTimeout(()=>pushUnknown("did that ring for you"),900);
+  setTimeout(()=>pushUnknown("i can't hear anything"),2300);
+  setTimeout(()=>pushUnknown("what date is it"),4300);
+  advance(7);
 }
 function syncStory(){
   const rec=state.phase>=2;
   document.getElementById("recovered-desktop").style.display=rec?"block":"none";
   document.getElementById("recovered-side").style.display=rec?"block":"none";
-  document.getElementById("history-hidden").style.display=state.phase>=2?"block":"none";
-  document.getElementById("unknown-call-row").style.display=state.phase>=5?"flex":"none";
-  document.getElementById("guest-setting").style.display=state.phase>=6?"block":"none";
-  document.getElementById("lp-one").textContent=state.phase>=2?"last played Sep 4 · 2:13 AM":"";
-  document.getElementById("lp-two").textContent=state.phase>=2?"last played Sep 3 · 11:51 PM":"";
-  if(state.phase>=3 && unknownMsgs.length===0)unknownMsgs=["hello?"];
+
+  document.getElementById("history-login").style.display=state.phase>=2?"block":"none";
+  document.getElementById("history-hidden").style.display=state.phase>=3?"block":"none";
+  document.getElementById("unknown-call-row").style.display=state.phase>=6?"flex":"none";
+  document.getElementById("guest-setting").style.display=state.phase>=7?"block":"none";
+
+  document.getElementById("lp-one").textContent=state.phase>=3?"last played Sep 4 · 2:13 AM":"";
+  document.getElementById("lp-two").textContent=state.phase>=3?"last played Sep 3 · 11:51 PM":"";
+
+  if(state.phase>=4 && (!state.unknownMsgs || state.unknownMsgs.length===0)){
+    state.unknownMsgs=["hello?"];
+    localStorage.setItem(KEY,JSON.stringify(state));
+  }
+
   renderContacts();
 }
 function resetStory(){
