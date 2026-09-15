@@ -23,15 +23,17 @@
       --taskbar: #e9cbd2;
     }
 
+    html,
     body {
-      height: 100vh;
-      width: 100vw;
+      width: 100%;
+      height: 100%;
       overflow: hidden;
+    }
+
+    body {
       font-family: "Courier New", monospace;
       color: var(--brown);
-      background:
-        radial-gradient(circle at 20% 20%, rgba(255,255,255,.6), transparent 25%),
-        linear-gradient(145deg, #d8cce7, #e8cbd5 50%, #c8d4ca);
+      background: #cfc1d7;
       user-select: none;
     }
 
@@ -40,7 +42,9 @@
       font: inherit;
     }
 
-    /* ---------------- BOOT SCREEN ---------------- */
+    /* =========================
+       BOOT
+    ========================= */
 
     #boot-screen {
       position: fixed;
@@ -63,9 +67,23 @@
     }
 
     #boot-screen p {
-      font-size: 12px;
-      opacity: .6;
-      margin-top: 13px;
+      font-size: 11px;
+      opacity: .55;
+      margin-top: 14px;
+    }
+
+    #boot-warning {
+      margin-top: 7px;
+      font-size: 9px;
+      opacity: 0;
+      color: #d59aa7;
+      animation: bootWarning 1s 1.4s forwards;
+    }
+
+    @keyframes bootWarning {
+      to {
+        opacity: .65;
+      }
     }
 
     .loading-track {
@@ -79,42 +97,95 @@
       height: 100%;
       width: 0;
       background: #e3b4c5;
-      animation: load 2.2s forwards;
+      animation: load 2.5s forwards;
     }
 
     @keyframes load {
-      to {
-        width: 100%;
-      }
+      0% { width: 0; }
+      35% { width: 38%; }
+      55% { width: 64%; }
+      65% { width: 64%; }
+      100% { width: 100%; }
     }
 
-    /* ---------------- DESKTOP ---------------- */
+    /* =========================
+       DESKTOP
+    ========================= */
 
     #desktop {
       position: relative;
       height: calc(100vh - 42px);
       padding: 22px;
       overflow: hidden;
+
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,.6), transparent 25%),
+        radial-gradient(circle at 80% 75%, rgba(255,255,255,.25), transparent 22%),
+        linear-gradient(145deg, #d8cce7, #e8cbd5 50%, #c8d4ca);
+
+      transition:
+        filter .4s ease,
+        background .5s ease;
     }
 
-    #desktop.cursed {
-      filter: saturate(.75) contrast(1.08);
-    }
-
-    #desktop.cursed::before {
+    #desktop::after {
       content: "";
       position: absolute;
       inset: 0;
+      z-index: 9990;
       pointer-events: none;
+      opacity: .08;
+
       background:
         repeating-linear-gradient(
           0deg,
-          rgba(40, 20, 30, .04) 0,
-          rgba(40, 20, 30, .04) 1px,
+          rgba(0,0,0,.14) 0,
+          rgba(0,0,0,.14) 1px,
           transparent 1px,
           transparent 4px
         );
-      z-index: 10000;
+    }
+
+    #desktop.cursed {
+      filter:
+        saturate(.72)
+        contrast(1.09)
+        brightness(.94);
+    }
+
+    #desktop.deep-cursed {
+      background:
+        radial-gradient(circle at 30% 20%, rgba(255,255,255,.15), transparent 22%),
+        linear-gradient(145deg, #8f849e, #af929d 45%, #85928b);
+    }
+
+    #desktop.glitch {
+      animation: screenGlitch .18s linear 2;
+    }
+
+    @keyframes screenGlitch {
+      0% {
+        transform: translate(0,0);
+        filter: hue-rotate(0deg);
+      }
+
+      25% {
+        transform: translate(4px,-1px);
+        filter: hue-rotate(25deg);
+      }
+
+      50% {
+        transform: translate(-5px,2px);
+        filter: hue-rotate(-25deg);
+      }
+
+      75% {
+        transform: translate(2px,1px);
+      }
+
+      100% {
+        transform: translate(0,0);
+      }
     }
 
     .desktop-title {
@@ -124,6 +195,7 @@
       text-align: right;
       opacity: .38;
       pointer-events: none;
+      z-index: 2;
     }
 
     .desktop-title h1 {
@@ -137,13 +209,34 @@
       letter-spacing: 2px;
     }
 
-    /* ---------------- ICONS ---------------- */
+    #background-message {
+      position: absolute;
+      left: 50%;
+      bottom: 90px;
+      transform: translateX(-50%);
+      font-size: 10px;
+      color: rgba(61, 43, 54, .32);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1s ease;
+      z-index: 4;
+    }
+
+    #background-message.visible {
+      opacity: 1;
+    }
+
+    /* =========================
+       ICONS
+    ========================= */
 
     .icons {
       display: grid;
       grid-template-columns: repeat(2, 92px);
       gap: 28px 18px;
       width: fit-content;
+      position: relative;
+      z-index: 10;
     }
 
     .desktop-icon {
@@ -154,14 +247,18 @@
       cursor: pointer;
       text-align: center;
       padding: 4px;
+      position: relative;
+      transition:
+        transform .25s ease,
+        left .4s ease,
+        top .4s ease;
     }
 
     .desktop-icon:hover .icon-picture {
       transform: translateY(-3px) rotate(-2deg);
-      filter: brightness(1.05);
+      filter: brightness(1.06);
     }
 
-    .desktop-icon:focus .icon-label,
     .desktop-icon:hover .icon-label {
       background: rgba(255,255,255,.55);
     }
@@ -187,14 +284,32 @@
       text-shadow: 0 1px rgba(255,255,255,.5);
     }
 
-    #secret-icon {
+    #secret-icon,
+    #visitor-icon,
+    #user-two-icon {
       display: none;
       position: absolute;
-      left: 235px;
-      bottom: 45px;
+      z-index: 30;
     }
 
-    #secret-icon.visible {
+    #secret-icon {
+      left: 225px;
+      bottom: 50px;
+    }
+
+    #visitor-icon {
+      right: 180px;
+      bottom: 85px;
+    }
+
+    #user-two-icon {
+      right: 55px;
+      top: 160px;
+    }
+
+    #secret-icon.visible,
+    #visitor-icon.visible,
+    #user-two-icon.visible {
       display: block;
       animation: flickerIn .7s;
     }
@@ -203,16 +318,19 @@
       0% { opacity: 0; }
       15% { opacity: 1; }
       30% { opacity: 0; }
-      45% { opacity: .5; }
+      45% { opacity: .35; }
+      60% { opacity: 0; }
       100% { opacity: 1; }
     }
 
-    /* ---------------- WINDOWS ---------------- */
+    /* =========================
+       WINDOWS
+    ========================= */
 
     .window {
       display: none;
       position: absolute;
-      width: min(460px, calc(100vw - 30px));
+      width: min(470px, calc(100vw - 30px));
       min-height: 220px;
       background: var(--window);
       border: 2px solid #705c65;
@@ -248,6 +366,7 @@
       cursor: move;
       color: #4c3c43;
       border-bottom: 2px solid #705c65;
+
       background:
         repeating-linear-gradient(
           0deg,
@@ -313,29 +432,70 @@
       font-size: 10px;
     }
 
-    /* ---------------- NOTE ---------------- */
+    .danger-text {
+      color: #8c5866;
+    }
+
+    .muted {
+      opacity: .5;
+    }
+
+    /* =========================
+       NOTEPAD
+    ========================= */
 
     .notepad {
-      min-height: 190px;
+      min-height: 210px;
       padding: 13px;
+
       background:
         repeating-linear-gradient(
           #fffdf7,
           #fffdf7 23px,
           #ded6cc 24px
         );
+
       border: 1px solid #c7b8b1;
       color: #56494d;
       line-height: 24px;
       white-space: pre-line;
     }
 
-    /* ---------------- ERROR POPUP ---------------- */
+    /* =========================
+       CHAT WINDOW
+    ========================= */
+
+    .chat-box {
+      border: 1px solid #bfaeb5;
+      background: #fffaf8;
+      min-height: 165px;
+      padding: 12px;
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    .chat-line {
+      margin-bottom: 6px;
+    }
+
+    .chat-name {
+      font-weight: bold;
+      color: #82606e;
+    }
+
+    #typing-indicator {
+      opacity: .45;
+      font-style: italic;
+    }
+
+    /* =========================
+       ERROR POPUP
+    ========================= */
 
     #error-popup {
       display: none;
       position: fixed;
-      width: min(330px, calc(100vw - 30px));
+      width: min(340px, calc(100vw - 30px));
       left: 50%;
       top: 48%;
       transform: translate(-50%, -50%);
@@ -372,7 +532,9 @@
       cursor: pointer;
     }
 
-    /* ---------------- START MENU ---------------- */
+    /* =========================
+       START MENU
+    ========================= */
 
     #start-menu {
       display: none;
@@ -421,7 +583,9 @@
       background: #efd4dc;
     }
 
-    /* ---------------- TASKBAR ---------------- */
+    /* =========================
+       TASKBAR
+    ========================= */
 
     #taskbar {
       position: fixed;
@@ -468,9 +632,26 @@
       color: #4f4147;
     }
 
-    /* ---------------- MOBILE ---------------- */
+    /* =========================
+       FLICKER
+    ========================= */
+
+    .flicker {
+      animation: flicker .12s linear 3;
+    }
+
+    @keyframes flicker {
+      0% { opacity: 1; }
+      50% { opacity: .1; }
+      100% { opacity: 1; }
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
 
     @media (max-width: 600px) {
+
       #desktop {
         padding: 15px;
       }
@@ -512,6 +693,17 @@
         right: 20px;
         bottom: 70px;
       }
+
+      #visitor-icon {
+        right: 105px;
+        bottom: 70px;
+      }
+
+      #user-two-icon {
+        right: 10px;
+        top: 220px;
+      }
+
     }
   </style>
 </head>
@@ -519,9 +711,12 @@
 
 <body>
 
-  <!-- BOOT SCREEN -->
+  <!-- =========================
+       BOOT SCREEN
+  ========================== -->
 
   <div id="boot-screen">
+
     <h1>enokiecloud.exe</h1>
 
     <div class="loading-track">
@@ -529,10 +724,17 @@
     </div>
 
     <p>please do not turn off your computer</p>
+
+    <div id="boot-warning">
+      another session may already be active
+    </div>
+
   </div>
 
 
-  <!-- DESKTOP -->
+  <!-- =========================
+       DESKTOP
+  ========================== -->
 
   <main id="desktop">
 
@@ -541,13 +743,18 @@
       <p>personal computer / definitely normal</p>
     </div>
 
+    <div id="background-message">
+      don't turn around
+    </div>
 
-    <!-- ICONS -->
+
+    <!-- NORMAL ICONS -->
 
     <div class="icons">
 
       <button
         class="desktop-icon"
+        id="documents-icon"
         onclick="openWindow('files-window')"
       >
         <span class="icon-picture">📁</span>
@@ -591,6 +798,15 @@
       </button>
 
 
+      <button
+        class="desktop-icon"
+        onclick="openWindow('chat-window')"
+      >
+        <span class="icon-picture">💬</span>
+        <span class="icon-label">messenger.exe</span>
+      </button>
+
+
       <a
         class="desktop-icon"
         href="index.html"
@@ -603,7 +819,8 @@
     </div>
 
 
-    <!-- SECRET ICON -->
+
+    <!-- SECRET FILE -->
 
     <button
       class="desktop-icon"
@@ -611,21 +828,64 @@
       onclick="openSecret()"
     >
       <span class="icon-picture">◼️</span>
-      <span class="icon-label">dont-open.exe</span>
+      <span class="icon-label" id="secret-label">
+        dont-open.exe
+      </span>
     </button>
 
 
 
-    <!-- MY DOCUMENTS -->
+    <!-- VISITOR LOG -->
 
-    <section class="window" id="files-window" style="left:180px; top:90px;">
+    <button
+      class="desktop-icon"
+      id="visitor-icon"
+      onclick="openWindow('visitor-window')"
+    >
+      <span class="icon-picture">📜</span>
+      <span class="icon-label">
+        visitor_log.txt
+      </span>
+    </button>
+
+
+
+    <!-- USER TWO -->
+
+    <button
+      class="desktop-icon"
+      id="user-two-icon"
+      onclick="openWindow('user-two-window')"
+    >
+      <span class="icon-picture">📁</span>
+      <span class="icon-label">
+        user_02
+      </span>
+    </button>
+
+
+    <!-- =========================
+         DOCUMENTS
+    ========================== -->
+
+    <section
+      class="window"
+      id="files-window"
+      style="left:180px; top:90px;"
+    >
 
       <div class="titlebar">
-        <span class="titlebar-name">📁 C:\Users\kels\Documents</span>
+
+        <span class="titlebar-name">
+          📁 C:\Users\kels\Documents
+        </span>
 
         <div class="window-buttons">
-          <button onclick="closeWindow('files-window')">×</button>
+          <button onclick="closeWindow('files-window')">
+            ×
+          </button>
         </div>
+
       </div>
 
       <div class="window-content">
@@ -633,18 +893,27 @@
         <h2>my documents</h2>
 
         <p class="tiny">
-          4 objects found
+          <span id="file-count">5</span> objects found
         </p>
 
-        <a class="window-link" href="memory-box.html">
+        <a
+          class="window-link"
+          href="memory-box.html"
+        >
           📦 memory box
         </a>
 
-        <a class="window-link" href="fortune-cat.html">
+        <a
+          class="window-link"
+          href="fortune-cat.html"
+        >
           🐈 fortune cat
         </a>
 
-        <a class="window-link" href="guestbook.html">
+        <a
+          class="window-link"
+          href="guestbook.html"
+        >
           💌 guestbook
         </a>
 
@@ -656,27 +925,59 @@
           📄 i_dont_remember_making_this.txt
         </div>
 
+        <div
+          class="window-link"
+          onclick="missingPhoto()"
+          style="cursor:pointer;"
+        >
+          🖼 IMG_0000.jpg
+        </div>
+
+        <div
+          class="window-link"
+          id="hidden-document"
+          onclick="hiddenDocument()"
+          style="cursor:pointer; display:none;"
+        >
+          📄 you_were_here.txt
+        </div>
+
       </div>
 
     </section>
 
 
 
-    <!-- NOTES -->
+    <!-- =========================
+         NOTES
+    ========================== -->
 
-    <section class="window" id="note-window" style="left:330px; top:135px;">
+    <section
+      class="window"
+      id="note-window"
+      style="left:330px; top:135px;"
+    >
 
       <div class="titlebar">
-        <span class="titlebar-name">notes.txt - Notepad</span>
+
+        <span class="titlebar-name">
+          notes.txt - Notepad
+        </span>
 
         <div class="window-buttons">
-          <button onclick="closeWindow('note-window')">×</button>
+          <button onclick="closeWindow('note-window')">
+            ×
+          </button>
         </div>
+
       </div>
 
       <div class="window-content">
 
-        <div class="notepad" id="note-text">things to remember:
+        <div
+          class="notepad"
+          id="note-text"
+        >things to remember:
 
 - update website
 - feed cat
@@ -693,16 +994,28 @@ why does this computer keep saying i've been here before?</div>
 
 
 
-    <!-- FORTUNE CAT -->
+    <!-- =========================
+         FORTUNE CAT
+    ========================== -->
 
-    <section class="window" id="fortune-window" style="left:250px; top:70px;">
+    <section
+      class="window"
+      id="fortune-window"
+      style="left:250px; top:70px;"
+    >
 
       <div class="titlebar">
-        <span class="titlebar-name">fortune-cat.exe</span>
+
+        <span class="titlebar-name">
+          fortune-cat.exe
+        </span>
 
         <div class="window-buttons">
-          <button onclick="closeWindow('fortune-window')">×</button>
+          <button onclick="closeWindow('fortune-window')">
+            ×
+          </button>
         </div>
+
       </div>
 
       <div class="window-content">
@@ -710,14 +1023,18 @@ why does this computer keep saying i've been here before?</div>
         <h2>🐈 fortune-cat.exe</h2>
 
         <p>
-          an unidentified program is asking permission to predict your future.
+          an unidentified program is asking permission
+          to predict your future.
         </p>
 
         <p class="tiny">
           publisher: probably trustworthy
         </p>
 
-        <a class="window-link" href="fortune-cat.html">
+        <a
+          class="window-link"
+          href="fortune-cat.html"
+        >
           run fortune-cat.exe →
         </a>
 
@@ -727,16 +1044,28 @@ why does this computer keep saying i've been here before?</div>
 
 
 
-    <!-- GUESTBOOK -->
+    <!-- =========================
+         GUESTBOOK
+    ========================== -->
 
-    <section class="window" id="guest-window" style="left:400px; top:175px;">
+    <section
+      class="window"
+      id="guest-window"
+      style="left:400px; top:175px;"
+    >
 
       <div class="titlebar">
-        <span class="titlebar-name">guestbook.exe</span>
+
+        <span class="titlebar-name">
+          guestbook.exe
+        </span>
 
         <div class="window-buttons">
-          <button onclick="closeWindow('guest-window')">×</button>
+          <button onclick="closeWindow('guest-window')">
+            ×
+          </button>
         </div>
+
       </div>
 
       <div class="window-content">
@@ -747,7 +1076,17 @@ why does this computer keep saying i've been here before?</div>
           leave something behind before you go.
         </p>
 
-        <a class="window-link" href="guestbook.html">
+        <p
+          class="tiny"
+          id="guestbook-subtext"
+        >
+          1 connection active
+        </p>
+
+        <a
+          class="window-link"
+          href="guestbook.html"
+        >
           connect to guestbook →
         </a>
 
@@ -757,16 +1096,28 @@ why does this computer keep saying i've been here before?</div>
 
 
 
-    <!-- RECYCLE BIN -->
+    <!-- =========================
+         RECYCLE BIN
+    ========================== -->
 
-    <section class="window" id="trash-window" style="left:150px; top:210px;">
+    <section
+      class="window"
+      id="trash-window"
+      style="left:150px; top:210px;"
+    >
 
       <div class="titlebar">
-        <span class="titlebar-name">Recycle Bin</span>
+
+        <span class="titlebar-name">
+          Recycle Bin
+        </span>
 
         <div class="window-buttons">
-          <button onclick="closeWindow('trash-window')">×</button>
+          <button onclick="closeWindow('trash-window')">
+            ×
+          </button>
         </div>
+
       </div>
 
       <div class="window-content">
@@ -774,15 +1125,31 @@ why does this computer keep saying i've been here before?</div>
         <h2>recycle bin</h2>
 
         <p class="tiny">
-          3 deleted objects
+          5 deleted objects
         </p>
 
         <div class="window-link">
-          🗑️ embarrassing_photo_final_FINAL.jpg
+          🗑 embarrassing_photo_final_FINAL.jpg
         </div>
 
         <div class="window-link">
-          🗑️ bad_decision.txt
+          🗑 bad_decision.txt
+        </div>
+
+        <div
+          class="window-link"
+          onclick="deletedMessage()"
+          style="cursor:pointer;"
+        >
+          🗑 message_from_unknown.txt
+        </div>
+
+        <div
+          class="window-link"
+          onclick="deletedUser()"
+          style="cursor:pointer;"
+        >
+          🗑 user_02
         </div>
 
         <div
@@ -790,7 +1157,173 @@ why does this computer keep saying i've been here before?</div>
           style="cursor:pointer;"
           onclick="restoreFile()"
         >
-          🗑️ unknown.exe
+          🗑 unknown.exe
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         CHAT
+    ========================== -->
+
+    <section
+      class="window"
+      id="chat-window"
+      style="left:520px; top:115px;"
+    >
+
+      <div class="titlebar">
+
+        <span class="titlebar-name">
+          messenger.exe
+        </span>
+
+        <div class="window-buttons">
+          <button onclick="closeWindow('chat-window')">
+            ×
+          </button>
+        </div>
+
+      </div>
+
+      <div class="window-content">
+
+        <h2>messages</h2>
+
+        <div
+          class="chat-box"
+          id="chat-box"
+        >
+
+          <div class="chat-line">
+            <span class="chat-name">
+              system:
+            </span>
+            connected.
+          </div>
+
+          <div
+            class="chat-line"
+            id="chat-message-one"
+          >
+            <span class="chat-name">
+              unknown:
+            </span>
+            hi
+          </div>
+
+          <div
+            class="chat-line"
+            id="typing-indicator"
+          >
+            unknown is typing...
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         VISITOR LOG
+    ========================== -->
+
+    <section
+      class="window"
+      id="visitor-window"
+      style="left:360px; top:160px;"
+    >
+
+      <div class="titlebar">
+
+        <span class="titlebar-name">
+          visitor_log.txt
+        </span>
+
+        <div class="window-buttons">
+          <button onclick="closeWindow('visitor-window')">
+            ×
+          </button>
+        </div>
+
+      </div>
+
+      <div class="window-content">
+
+        <div
+          class="notepad"
+          id="visitor-log-text"
+        >
+loading...
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         USER 02
+    ========================== -->
+
+    <section
+      class="window"
+      id="user-two-window"
+      style="left:480px; top:90px;"
+    >
+
+      <div class="titlebar">
+
+        <span class="titlebar-name">
+          C:\Users\user_02
+        </span>
+
+        <div class="window-buttons">
+          <button onclick="closeWindow('user-two-window')">
+            ×
+          </button>
+        </div>
+
+      </div>
+
+      <div class="window-content">
+
+        <h2>user_02</h2>
+
+        <p class="tiny">
+          account status: unavailable
+        </p>
+
+        <div
+          class="window-link"
+          onclick="userTwoFileOne()"
+          style="cursor:pointer;"
+        >
+          📄 note_to_kels.txt
+        </div>
+
+        <div
+          class="window-link"
+          onclick="userTwoFileTwo()"
+          style="cursor:pointer;"
+        >
+          📄 last_session.txt
+        </div>
+
+        <div
+          class="window-link"
+          onclick="userTwoPhoto()"
+          style="cursor:pointer;"
+        >
+          🖼 desktop_capture.png
         </div>
 
       </div>
@@ -801,18 +1334,27 @@ why does this computer keep saying i've been here before?</div>
 
 
 
-  <!-- ERROR POPUP -->
+  <!-- =========================
+       ERROR POPUP
+  ========================== -->
 
   <div id="error-popup">
 
     <div class="titlebar">
-      <span class="titlebar-name" id="error-title">
+
+      <span
+        class="titlebar-name"
+        id="error-title"
+      >
         system message
       </span>
 
       <div class="window-buttons">
-        <button onclick="closeError()">×</button>
+        <button onclick="closeError()">
+          ×
+        </button>
       </div>
+
     </div>
 
     <div class="error-body">
@@ -838,32 +1380,47 @@ why does this computer keep saying i've been here before?</div>
 
 
 
-  <!-- START MENU -->
+  <!-- =========================
+       START MENU
+  ========================== -->
 
   <div id="start-menu">
 
     <div class="start-header">
-      <strong>kels</strong>
-      <span>enokiecloud administrator</span>
+      <strong id="start-user">
+        kels
+      </strong>
+
+      <span id="start-subtitle">
+        enokiecloud administrator
+      </span>
     </div>
 
     <button
       class="start-item"
-      onclick="openWindow('files-window'); closeStart();"
+      onclick="
+        openWindow('files-window');
+        closeStart();
+      "
     >
       📁 my documents
     </button>
 
     <button
       class="start-item"
-      onclick="openWindow('note-window'); closeStart();"
+      onclick="
+        openWindow('note-window');
+        closeStart();
+      "
     >
       📝 notepad
     </button>
 
     <button
       class="start-item"
-      onclick="location.href='index.html'"
+      onclick="
+        location.href='index.html'
+      "
     >
       🏠 enokiecloud home
     </button>
@@ -879,7 +1436,9 @@ why does this computer keep saying i've been here before?</div>
 
 
 
-  <!-- TASKBAR -->
+  <!-- =========================
+       TASKBAR
+  ========================== -->
 
   <footer id="taskbar">
 
@@ -897,7 +1456,6 @@ why does this computer keep saying i've been here before?</div>
     <button
       id="clock"
       onclick="clockClick()"
-      title=""
     >
       12:00 AM
     </button>
@@ -909,73 +1467,290 @@ why does this computer keep saying i've been here before?</div>
   <script>
 
     let zIndex = 100;
+
     let clockClicks = 0;
     let interactionCount = 0;
     let noteOpened = 0;
+    let shutdownCount = 0;
+    let chatOpened = 0;
+    let secretOpened = false;
 
-
-    /* BOOT */
-
-    window.addEventListener("load", () => {
-
-      const boot = document.getElementById("boot-screen");
-
-      setTimeout(() => {
-        boot.style.opacity = "0";
-
-        setTimeout(() => {
-          boot.style.display = "none";
-        }, 800);
-
-      }, 2200);
-
-
-      /* VISIT MEMORY */
-
-      let visits =
-        Number(localStorage.getItem("enokieDesktopVisits") || 0);
-
-      visits++;
-
-      localStorage.setItem(
-        "enokieDesktopVisits",
-        visits
+    let desktopVisits =
+      Number(
+        localStorage.getItem(
+          "enokieDesktopVisits"
+        ) || 0
       );
 
-      if (visits > 1) {
-        document.getElementById("task-message").textContent =
-          "welcome back.";
+
+
+    /* =========================
+       BOOT
+    ========================== */
+
+    window.addEventListener(
+      "load",
+      () => {
+
+        desktopVisits++;
+
+        localStorage.setItem(
+          "enokieDesktopVisits",
+          desktopVisits
+        );
+
+
+        const boot =
+          document.getElementById(
+            "boot-screen"
+          );
+
+
+        if (desktopVisits > 1) {
+
+          document.getElementById(
+            "boot-warning"
+          ).textContent =
+            "previous session was not closed properly";
+
+        }
+
+
+        setTimeout(
+          () => {
+
+            boot.style.opacity = "0";
+
+            setTimeout(
+              () => {
+                boot.style.display = "none";
+              },
+              800
+            );
+
+          },
+          2600
+        );
+
+
+        updateClock();
+
+        setInterval(
+          updateClock,
+          1000
+        );
+
+
+        makeWindowsDraggable();
+
+        setupVisitorLog();
+
+        scheduleWeirdness();
+
       }
-
-
-      updateClock();
-      setInterval(updateClock, 1000);
-
-      makeWindowsDraggable();
-
-    });
+    );
 
 
 
-    /* WINDOWS */
+    /* =========================
+       WINDOW CONTROL
+    ========================== */
 
     function openWindow(id) {
 
       interactionCount++;
 
-      const windowEl = document.getElementById(id);
+      const el =
+        document.getElementById(id);
 
-      windowEl.classList.add("active");
+      el.classList.add("active");
 
-      bringToFront(windowEl);
+      bringToFront(el);
 
 
-      if (id === "note-window") {
+      if (
+        id === "note-window"
+      ) {
+        updateNotes();
+      }
 
-        noteOpened++;
 
-        if (noteOpened >= 2) {
-          document.getElementById("note-text").textContent =
+      if (
+        id === "chat-window"
+      ) {
+        runChat();
+      }
+
+
+      if (
+        interactionCount >= 5
+      ) {
+        maybeRandomEvent();
+      }
+
+    }
+
+
+
+    function closeWindow(id) {
+
+      document
+        .getElementById(id)
+        .classList.remove("active");
+
+    }
+
+
+
+    function bringToFront(el) {
+
+      zIndex++;
+
+      el.style.zIndex =
+        zIndex;
+
+    }
+
+
+
+    /* =========================
+       DRAG WINDOWS
+    ========================== */
+
+    function makeWindowsDraggable() {
+
+      document
+        .querySelectorAll(".window")
+        .forEach(
+          windowEl => {
+
+            const titlebar =
+              windowEl
+                .querySelector(
+                  ".titlebar"
+                );
+
+            let dragging = false;
+
+            let offsetX = 0;
+            let offsetY = 0;
+
+
+            titlebar.addEventListener(
+              "mousedown",
+              event => {
+
+                if (
+                  event.target.tagName
+                    .toLowerCase()
+                    === "button"
+                ) {
+                  return;
+                }
+
+                dragging = true;
+
+                bringToFront(
+                  windowEl
+                );
+
+                const rect =
+                  windowEl
+                    .getBoundingClientRect();
+
+                offsetX =
+                  event.clientX
+                  - rect.left;
+
+                offsetY =
+                  event.clientY
+                  - rect.top;
+
+              }
+            );
+
+
+            document.addEventListener(
+              "mousemove",
+              event => {
+
+                if (!dragging) {
+                  return;
+                }
+
+                if (
+                  window.innerWidth
+                  <= 600
+                ) {
+                  return;
+                }
+
+                windowEl.style.left =
+                  event.clientX
+                  - offsetX
+                  + "px";
+
+                windowEl.style.top =
+                  event.clientY
+                  - offsetY
+                  + "px";
+
+              }
+            );
+
+
+            document.addEventListener(
+              "mouseup",
+              () => {
+                dragging = false;
+              }
+            );
+
+          }
+        );
+
+    }
+
+
+
+    /* =========================
+       NOTES CHANGE
+    ========================== */
+
+    function updateNotes() {
+
+      noteOpened++;
+
+      const note =
+        document.getElementById(
+          "note-text"
+        );
+
+
+      if (
+        noteOpened === 1
+      ) {
+
+        note.textContent =
+`things to remember:
+
+- update website
+- feed cat
+- do homework
+- stop opening random files
+
+also...
+
+why does this computer keep saying i've been here before?`;
+
+      }
+
+
+      if (
+        noteOpened === 2
+      ) {
+
+        note.textContent =
 `things to remember:
 
 - update website
@@ -988,113 +1763,91 @@ why does this computer keep saying i've been here before?</div>
 you already read this.
 
 why did you open it again?`;
-        }
 
       }
 
 
-      randomGlitch();
+      if (
+        noteOpened === 3
+      ) {
 
-    }
+        note.textContent =
+`stop.
 
+i didn't write this.
 
-    function closeWindow(id) {
-      document
-        .getElementById(id)
-        .classList.remove("active");
-    }
+you didn't write this.
 
+so who did?`;
 
-    function bringToFront(el) {
-      zIndex++;
-      el.style.zIndex = zIndex;
-    }
+        revealVisitorLog();
 
-
-
-    /* DRAGGING */
-
-    function makeWindowsDraggable() {
-
-      document
-        .querySelectorAll(".window")
-        .forEach(windowEl => {
-
-          const titlebar =
-            windowEl.querySelector(".titlebar");
-
-          let dragging = false;
-          let offsetX = 0;
-          let offsetY = 0;
+      }
 
 
-          titlebar.addEventListener(
-            "mousedown",
-            event => {
+      if (
+        noteOpened >= 4
+      ) {
 
-              if (
-                event.target.tagName.toLowerCase()
-                === "button"
-              ) {
-                return;
-              }
+        note.textContent =
+`close the window.
 
-              dragging = true;
+please.`;
 
-              bringToFront(windowEl);
-
-              const rect =
-                windowEl.getBoundingClientRect();
-
-              offsetX =
-                event.clientX - rect.left;
-
-              offsetY =
-                event.clientY - rect.top;
-
-            }
+        document
+          .getElementById(
+            "desktop"
+          )
+          .classList
+          .add(
+            "cursed"
           );
 
-
-          document.addEventListener(
-            "mousemove",
-            event => {
-
-              if (!dragging) return;
-
-              if (window.innerWidth <= 600) return;
-
-              windowEl.style.left =
-                event.clientX - offsetX + "px";
-
-              windowEl.style.top =
-                event.clientY - offsetY + "px";
-
-            }
-          );
-
-
-          document.addEventListener(
-            "mouseup",
-            () => {
-              dragging = false;
-            }
-          );
-
-        });
+      }
 
     }
 
 
 
-    /* CLOCK */
+    /* =========================
+       CLOCK
+    ========================== */
 
     function updateClock() {
 
       const clock =
-        document.getElementById("clock");
+        document.getElementById(
+          "clock"
+        );
 
-      const now = new Date();
+      const now =
+        new Date();
+
+
+      if (
+        secretOpened
+        && Math.random() < .06
+      ) {
+
+        const fakeTimes = [
+          "3:33 AM",
+          "00:00",
+          "13:72",
+          "--:--",
+          "yesterday"
+        ];
+
+        clock.textContent =
+          fakeTimes[
+            Math.floor(
+              Math.random()
+              * fakeTimes.length
+            )
+          ];
+
+        return;
+      }
+
 
       clock.textContent =
         now.toLocaleTimeString(
@@ -1108,11 +1861,15 @@ why did you open it again?`;
     }
 
 
+
     function clockClick() {
 
       clockClicks++;
 
-      if (clockClicks === 3) {
+
+      if (
+        clockClicks === 3
+      ) {
 
         showError(
           "clock.exe",
@@ -1122,14 +1879,37 @@ why did you open it again?`;
       }
 
 
-      if (clockClicks >= 6) {
+      if (
+        clockClicks === 5
+      ) {
 
         document
-          .getElementById("secret-icon")
-          .classList.add("visible");
+          .getElementById(
+            "clock"
+          )
+          .textContent =
+          "3:33 AM";
+
+      }
+
+
+      if (
+        clockClicks >= 6
+      ) {
 
         document
-          .getElementById("task-message")
+          .getElementById(
+            "secret-icon"
+          )
+          .classList
+          .add(
+            "visible"
+          );
+
+        document
+          .getElementById(
+            "task-message"
+          )
           .textContent =
           "1 new file found.";
 
@@ -1139,7 +1919,9 @@ why did you open it again?`;
 
 
 
-    /* STRANGE FILE */
+    /* =========================
+       DOCUMENT FILES
+    ========================== */
 
     function weirdFile() {
 
@@ -1148,81 +1930,406 @@ why did you open it again?`;
         "last modified: tomorrow"
       );
 
+      revealHiddenDocument();
+
     }
 
 
 
-    /* RECYCLE BIN SECRET */
+    function missingPhoto() {
+
+      glitchScreen();
+
+      showError(
+        "IMG_0000.jpg",
+        "preview unavailable. image dimensions: 1920 x 1080. created while computer was inactive."
+      );
+
+    }
+
+
+
+    function hiddenDocument() {
+
+      showError(
+        "you_were_here.txt",
+        "you were here before this file existed."
+      );
+
+    }
+
+
+
+    function revealHiddenDocument() {
+
+      document
+        .getElementById(
+          "hidden-document"
+        )
+        .style
+        .display =
+        "block";
+
+      document
+        .getElementById(
+          "file-count"
+        )
+        .textContent =
+        "6";
+
+    }
+
+
+
+    /* =========================
+       RECYCLE BIN
+    ========================== */
+
+    function deletedMessage() {
+
+      showError(
+        "message_from_unknown.txt",
+        "\"i can still see the desktop.\""
+      );
+
+    }
+
+
+
+    function deletedUser() {
+
+      showError(
+        "user_02",
+        "folder cannot be permanently deleted because it is currently in use."
+      );
+
+      document
+        .getElementById(
+          "user-two-icon"
+        )
+        .classList
+        .add(
+          "visible"
+        );
+
+    }
+
+
 
     function restoreFile() {
 
       document
-        .getElementById("secret-icon")
-        .classList.add("visible");
+        .getElementById(
+          "secret-icon"
+        )
+        .classList
+        .add(
+          "visible"
+        );
 
       document
-        .getElementById("task-message")
+        .getElementById(
+          "task-message"
+        )
         .textContent =
         "unknown.exe restored.";
 
-      closeWindow("trash-window");
+      closeWindow(
+        "trash-window"
+      );
+
+      setTimeout(
+        () => {
+
+          showError(
+            "restore complete",
+            "1 object restored to a location that no longer exists."
+          );
+
+        },
+        700
+      );
 
     }
 
 
 
-    /* SECRET */
+    /* =========================
+       SECRET
+    ========================== */
 
     function openSecret() {
 
+      secretOpened = true;
+
       document
-        .getElementById("desktop")
-        .classList.add("cursed");
+        .getElementById(
+          "desktop"
+        )
+        .classList
+        .add(
+          "cursed"
+        );
+
 
       showError(
         "dont-open.exe",
         "you restored something that was deleted for a reason."
       );
 
+
       document
-        .getElementById("task-message")
+        .getElementById(
+          "task-message"
+        )
         .textContent =
         "it noticed you.";
+
+
+      document
+        .getElementById(
+          "secret-label"
+        )
+        .textContent =
+        "too_late.exe";
+
+
+      revealVisitorLog();
+
+
+      setTimeout(
+        () => {
+
+          document
+            .getElementById(
+              "user-two-icon"
+            )
+            .classList
+            .add(
+              "visible"
+            );
+
+        },
+        2200
+      );
 
     }
 
 
 
-    /* RANDOM LITTLE WEIRDNESS */
+    /* =========================
+       CHAT
+    ========================== */
 
-    function randomGlitch() {
+    function runChat() {
 
-      if (interactionCount < 5) return;
+      chatOpened++;
 
-      const chance = Math.random();
+      const typing =
+        document.getElementById(
+          "typing-indicator"
+        );
 
-      if (chance < .12) {
+      const box =
+        document.getElementById(
+          "chat-box"
+        );
+
+
+      typing.style.display =
+        "block";
+
+
+      setTimeout(
+        () => {
+
+          typing.style.display =
+            "none";
+
+
+          if (
+            chatOpened === 1
+          ) {
+
+            box.innerHTML += `
+              <div class="chat-line">
+                <span class="chat-name">
+                  unknown:
+                </span>
+                can you see this?
+              </div>
+            `;
+
+          }
+
+
+          else if (
+            chatOpened === 2
+          ) {
+
+            box.innerHTML += `
+              <div class="chat-line">
+                <span class="chat-name">
+                  unknown:
+                </span>
+                you closed this last time.
+              </div>
+            `;
+
+          }
+
+
+          else {
+
+            box.innerHTML += `
+              <div class="chat-line">
+                <span class="chat-name">
+                  unknown:
+                </span>
+                don't close the laptop.
+              </div>
+            `;
+
+          }
+
+        },
+        2200
+      );
+
+    }
+
+
+
+    /* =========================
+       VISITOR LOG
+    ========================== */
+
+    function setupVisitorLog() {
+
+      const now =
+        new Date();
+
+      const log =
+        document.getElementById(
+          "visitor-log-text"
+        );
+
+      log.textContent =
+`visitor log
+
+session count: ${desktopVisits}
+
+last access:
+${now.toLocaleDateString()} ${now.toLocaleTimeString()}
+
+current user:
+kels
+
+other users:
+1
+
+status:
+active`;
+
+    }
+
+
+
+    function revealVisitorLog() {
+
+      document
+        .getElementById(
+          "visitor-icon"
+        )
+        .classList
+        .add(
+          "visible"
+        );
+
+    }
+
+
+
+    /* =========================
+       USER 02
+    ========================== */
+
+    function userTwoFileOne() {
+
+      showError(
+        "note_to_kels.txt",
+        "you keep calling this your computer."
+      );
+
+    }
+
+
+
+    function userTwoFileTwo() {
+
+      showError(
+        "last_session.txt",
+        "session ended unexpectedly. user_02 remained connected."
+      );
+
+    }
+
+
+
+    function userTwoPhoto() {
+
+      glitchScreen();
+
+      setTimeout(
+        () => {
+
+          showError(
+            "desktop_capture.png",
+            "capture timestamp matches your current session."
+          );
+
+        },
+        200
+      );
+
+    }
+
+
+
+    /* =========================
+       RANDOM EVENTS
+    ========================== */
+
+    function maybeRandomEvent() {
+
+      const chance =
+        Math.random();
+
+
+      if (
+        chance < .15
+      ) {
 
         const messages = [
           "file moved while you weren't looking.",
           "user already logged in.",
-          "this folder was empty yesterday.",
           "connection established.",
           "you have 1 unread message from: unknown",
-          "nothing happened.",
-          "please ignore this message."
+          "this folder did not exist yesterday.",
+          "background process: observing",
+          "camera unavailable.",
+          "nothing happened."
         ];
 
-        const randomMessage =
-          messages[
-            Math.floor(
-              Math.random() * messages.length
-            )
-          ];
 
         showError(
           "enokiecloud",
-          randomMessage
+          messages[
+            Math.floor(
+              Math.random()
+              * messages.length
+            )
+          ]
         );
 
       }
@@ -1231,66 +2338,337 @@ why did you open it again?`;
 
 
 
-    /* ERROR */
+    function scheduleWeirdness() {
 
-    function showError(title, message) {
+      setTimeout(
+        () => {
 
-      document
-        .getElementById("error-title")
-        .textContent = title;
+          if (
+            document.hidden
+          ) {
+            return;
+          }
 
-      document
-        .getElementById("error-message")
-        .textContent = message;
+          document
+            .getElementById(
+              "task-message"
+            )
+            .textContent =
+            "background process started.";
 
-      document
-        .getElementById("error-popup")
-        .classList.add("show");
+        },
+        10000
+      );
+
+
+      setTimeout(
+        () => {
+
+          moveDocumentsIcon();
+
+        },
+        17000
+      );
+
+
+      setTimeout(
+        () => {
+
+          showBackgroundMessage();
+
+        },
+        26000
+      );
+
+
+      setTimeout(
+        () => {
+
+          if (
+            interactionCount >= 2
+          ) {
+
+            revealVisitorLog();
+
+          }
+
+        },
+        33000
+      );
+
+
+      setTimeout(
+        () => {
+
+          if (
+            interactionCount >= 4
+          ) {
+
+            document
+              .getElementById(
+                "user-two-icon"
+              )
+              .classList
+              .add(
+                "visible"
+              );
+
+          }
+
+        },
+        47000
+      );
 
     }
+
+
+
+    function moveDocumentsIcon() {
+
+      const icon =
+        document.getElementById(
+          "documents-icon"
+        );
+
+      icon.style.left =
+        "18px";
+
+      icon.style.top =
+        "9px";
+
+
+      setTimeout(
+        () => {
+
+          icon.style.left =
+            "0px";
+
+          icon.style.top =
+            "0px";
+
+        },
+        3000
+      );
+
+    }
+
+
+
+    function showBackgroundMessage() {
+
+      const message =
+        document.getElementById(
+          "background-message"
+        );
+
+      message.classList.add(
+        "visible"
+      );
+
+
+      setTimeout(
+        () => {
+
+          message.classList.remove(
+            "visible"
+          );
+
+        },
+        1800
+      );
+
+    }
+
+
+
+    /* =========================
+       GLITCH
+    ========================== */
+
+    function glitchScreen() {
+
+      const desktop =
+        document.getElementById(
+          "desktop"
+        );
+
+      desktop.classList.add(
+        "glitch"
+      );
+
+
+      setTimeout(
+        () => {
+
+          desktop.classList.remove(
+            "glitch"
+          );
+
+        },
+        500
+      );
+
+    }
+
+
+
+    /* =========================
+       ERRORS
+    ========================== */
+
+    function showError(
+      title,
+      message
+    ) {
+
+      document
+        .getElementById(
+          "error-title"
+        )
+        .textContent =
+        title;
+
+
+      document
+        .getElementById(
+          "error-message"
+        )
+        .textContent =
+        message;
+
+
+      document
+        .getElementById(
+          "error-popup"
+        )
+        .classList
+        .add(
+          "show"
+        );
+
+    }
+
 
 
     function closeError() {
 
       document
-        .getElementById("error-popup")
-        .classList.remove("show");
+        .getElementById(
+          "error-popup"
+        )
+        .classList
+        .remove(
+          "show"
+        );
 
     }
 
 
 
-    /* START MENU */
+    /* =========================
+       START MENU
+    ========================== */
 
     function toggleStart() {
 
       document
-        .getElementById("start-menu")
-        .classList.toggle("open");
+        .getElementById(
+          "start-menu"
+        )
+        .classList
+        .toggle(
+          "open"
+        );
 
     }
+
 
 
     function closeStart() {
 
       document
-        .getElementById("start-menu")
-        .classList.remove("open");
+        .getElementById(
+          "start-menu"
+        )
+        .classList
+        .remove(
+          "open"
+        );
 
     }
 
 
 
-    /* FAKE SHUTDOWN */
+    /* =========================
+       SHUTDOWN
+    ========================== */
 
     function fakeShutdown() {
 
+      shutdownCount++;
+
       closeStart();
 
-      showError(
-        "Shut Down Windows",
-        "nice try. enokiecloud is still using you."
-      );
+
+      if (
+        shutdownCount === 1
+      ) {
+
+        showError(
+          "Shut Down Windows",
+          "nice try. enokiecloud is still using you."
+        );
+
+      }
+
+
+      else if (
+        shutdownCount === 2
+      ) {
+
+        showError(
+          "Shut Down Windows",
+          "another user is currently logged in."
+        );
+
+        document
+          .getElementById(
+            "user-two-icon"
+          )
+          .classList
+          .add(
+            "visible"
+          );
+
+      }
+
+
+      else {
+
+        document
+          .getElementById(
+            "desktop"
+          )
+          .classList
+          .add(
+            "deep-cursed"
+          );
+
+
+        document
+          .getElementById(
+            "task-message"
+          )
+          .textContent =
+          "shutdown cancelled by user_02";
+
+
+        showError(
+          "user_02",
+          "i'm not finished."
+        );
+
+      }
 
     }
 
