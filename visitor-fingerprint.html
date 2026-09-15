@@ -441,7 +441,9 @@ main{width:min(930px,91%);margin:38px auto 85px}
 </main>
 
 <script>
-const STORAGE_KEY = "enokiecloud_cat_pass_v1";
+const STORAGE_KEY = "enokiecloud_cat_pass_v2";
+const SUPABASE_URL = "https://szezeozsmdhlyibxhwqv.supabase.co";
+const SUPABASE_KEY = "sb_publishable_k40X-XyTfxJ97f4_kkMTPQ_epBOcFAh";
 
 const catTypes = [
   "cloud cat",
@@ -509,7 +511,7 @@ const captions = [
   "yup that's u"
 ];
 
-const pick = a => a[Math.floor(Math.random()*a.length)];
+const pick = a => a[Math.floor(Math.random() * a.length)];
 
 function dateStamp(){
   const d = new Date();
@@ -520,7 +522,7 @@ function dateStamp(){
 
 function makeIdentity(){
   return {
-    number: 1,
+    number: null,
     catType: pick(catTypes),
     vibe: pick(vibes),
     firstSeen: dateStamp(),
@@ -531,40 +533,84 @@ function makeIdentity(){
   };
 }
 
-let identity;
-let returning = false;
+async function getNewVisitorNumber(){
+  const response = await fetch(SUPABASE_URL + "/rest/v1/visitors?select=id", {
+    method: "POST",
+    headers: {
+      "apikey": SUPABASE_KEY,
+      "Authorization": "Bearer " + SUPABASE_KEY,
+      "Content-Type": "application/json",
+      "Prefer": "return=representation"
+    },
+    body: JSON.stringify({})
+  });
 
-try{
-  const saved = localStorage.getItem(STORAGE_KEY);
-
-  if(saved){
-    identity = JSON.parse(saved);
-    identity.visits = (identity.visits || 1) + 1;
-    identity.currently = pick(statuses);
-    returning = true;
-  }else{
-    identity = makeIdentity();
+  if(!response.ok){
+    throw new Error("visitor number request failed");
   }
 
-  localStorage.setItem(STORAGE_KEY,JSON.stringify(identity));
-}catch(e){
-  identity = makeIdentity();
+  const rows = await response.json();
+
+  if(!rows.length || !rows[0].id){
+    throw new Error("no visitor number returned");
+  }
+
+  return rows[0].id;
 }
 
-document.getElementById("visitorNo").textContent = "#" + identity.number;
-document.getElementById("catType").textContent = identity.catType;
-document.getElementById("vibe").textContent = identity.vibe;
-document.getElementById("firstSeen").textContent = identity.firstSeen;
-document.getElementById("currently").textContent = identity.currently;
-document.getElementById("littleMessage").textContent = identity.message;
-document.getElementById("caption").textContent = identity.caption;
-document.getElementById("approval").innerHTML =
-  identity.catType.toUpperCase() + "<br>APPROVED";
+function showIdentity(identity, returning){
+  document.getElementById("visitorNo").textContent =
+    identity.number ? "#" + identity.number : "#?";
 
-if(returning){
-  document.getElementById("hello").textContent = "oh ur back";
-  document.getElementById("hello2").textContent = "i remember u";
+  document.getElementById("catType").textContent = identity.catType;
+  document.getElementById("vibe").textContent = identity.vibe;
+  document.getElementById("firstSeen").textContent = identity.firstSeen;
+  document.getElementById("currently").textContent = identity.currently;
+  document.getElementById("littleMessage").textContent = identity.message;
+  document.getElementById("caption").textContent = identity.caption;
+
+  document.getElementById("approval").innerHTML =
+    identity.catType.toUpperCase() + "<br>APPROVED";
+
+  if(returning){
+    document.getElementById("hello").textContent = "oh ur back";
+    document.getElementById("hello2").textContent = "i remember u";
+  } else {
+    document.getElementById("hello").textContent = "oh hi";
+    document.getElementById("hello2").textContent = "lemme see...";
+  }
 }
+
+async function start(){
+  let identity = null;
+  let returning = false;
+
+  try{
+    const saved = localStorage.getItem(STORAGE_KEY);
+
+    if(saved){
+      identity = JSON.parse(saved);
+      returning = true;
+      identity.visits = (identity.visits || 1) + 1;
+      identity.currently = pick(statuses);
+    } else {
+      identity = makeIdentity();
+      identity.number = await getNewVisitorNumber();
+    }
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(identity));
+  } catch(error){
+    console.error(error);
+
+    if(!identity){
+      identity = makeIdentity();
+    }
+  }
+
+  showIdentity(identity, returning);
+}
+
+start();
 </script>
 </body>
 </html>
