@@ -812,15 +812,13 @@ button{color:inherit}
 
 <script>
 let topZ=500;
-const KEY="enokieStoryV13";
-const PREVIOUS_KEY="enokieStoryV12";
+const KEY="enokieStoryV14";
 
 /* Testing shortcut:
    open desktop.html?reset=1 to clear story progress without exposing a reset button to visitors. */
 const resetParams=new URLSearchParams(location.search);
 if(resetParams.get("reset")==="1"){
   localStorage.removeItem(KEY);
-  localStorage.removeItem(PREVIOUS_KEY);
   history.replaceState({},document.title,location.pathname);
 }
 
@@ -875,9 +873,6 @@ const DEFAULT_STATE={
   unknownPingCount:0,
   unknownMsgs:[]
 };
-if(!localStorage.getItem(KEY) && localStorage.getItem(PREVIOUS_KEY)){
-  localStorage.setItem(KEY,localStorage.getItem(PREVIOUS_KEY));
-}
 let state={...DEFAULT_STATE,...JSON.parse(localStorage.getItem(KEY)||"{}")};
 function save(){localStorage.setItem(KEY,JSON.stringify(state));syncStory()}
 function advance(n){if(state.phase<n){state.phase=n;save()}}
@@ -1076,35 +1071,47 @@ function openFinder(folder){
       docTile("archive.zip","","ZIP","Aug 29")+
       docTile("untitled.pdf","openText('oldpdf')","PDF","Sep 1")+
       docTile("IMG_4409.jpeg","showPhoto(4)","JPG","Sep 2")+
-      (state.phase>=1?docTile("IMG_4409-info.txt","openText('photo-info')","TXT","cache file"):"");
+      (state.phase>=1?docTile("photo-details.txt","openText('photo-info')","TXT","NEW"):"");
   }
 
   if(folder==="recovered"){
     t.textContent="Recovered Files";
+
+    const firstNew=!state.sessionSeen;
+    const secondNew=state.sessionSeen&&!state.draftSeen;
+    const thirdNew=state.sessionSeen&&state.draftSeen&&!state.messagesDbSeen;
+
     g.innerHTML=
-      docTile("session-cache.txt","openText('session')","TXT","recovered")+
-      docTile("draft-17.txt","openText('unsent')","TXT","recovered")+
-      docTile("messages-index.db","openText('messagesdb')","DB","recovered")+
-      docTile("window-state.plist","openText('windowstate')","PLIST","recovered")+
+      docTile("last-session.txt","openText('session')","TXT",firstNew?"NEW":state.sessionSeen?"opened":"recovered")+
+      docTile("unsent-note.txt","openText('unsent')","TXT",secondNew?"NEW":state.draftSeen?"opened":"recovered")+
+      docTile("message-records.txt","openText('messagesdb')","TXT",thirdNew?"NEW":state.messagesDbSeen?"opened":"recovered")+
+      docTile("last-open-apps.txt","openText('windowstate')","TXT","optional")+
+
       (state.deletedAvailable
-        ?docTile("deleted-message-cache.txt","openText('deleted')","TXT",state.deletedSeen?"opened":"NEW")
+        ?docTile("deleted-message.txt","openText('deleted')","TXT",state.deletedSeen?"opened":"NEW")
         :"")+
+
       (state.callHistoryAvailable
         ?docTile("call-history.txt","openText('calls')","TXT",state.callLogSeen?"opened":"NEW")
         :"")+
+
       (state.secondInvestigation
-        ?docTile("device-state.txt","openText('device')","TXT",state.deviceSeen?"opened":"NEW")
+        ?docTile("device-status.txt","openText('device')","TXT",state.deviceSeen?"opened":"NEW")
         :"")+
+
       (state.thirdInvestigation
-        ?docTile("location-cache.txt","openText('location')","TXT",state.locationSeen?"opened":"NEW")
+        ?docTile("phone-location.txt","openText('location')","TXT",state.locationSeen?"opened":"NEW")
         :"")+
-      (state.thirdInvestigation
+
+      (state.thirdInvestigation && state.locationSeen
         ?docTile("wifi-history.txt","openText('wifi')","TXT",state.wifiSeen?"opened":"NEW")
         :"")+
+
       (state.recentItemsAvailable
-        ?docTile("recent-items.plist","openText('recentitems')","PLIST",state.recentItemsSeen?"opened":"NEW")
+        ?docTile("recent-apps.txt","openText('recentitems')","TXT",state.recentItemsSeen?"opened":"NEW")
         :"")+
-      (state.phase>=8?docTile("system-log.txt","openText('system')","TXT","today"):"");
+
+      (state.phase>=8?docTile("system-log.txt","openText('system')","TXT","optional"):"");
   }
 
   c.textContent=g.children.length+" items";
@@ -1333,9 +1340,19 @@ function contactNames(){
   return names;
 }
 
+function nextRecoveredContact(){
+  if(!state.backstoryUnlocked) return null;
+  if(!state.readGroupLate) return "3asians";
+  if(!state.readKyleLate) return "kyle";
+  if(!state.readNoemiLate) return "noemibae";
+  return null;
+}
+
 function renderContacts(active="3asians"){
   const box=document.getElementById("contacts");
   box.innerHTML="";
+
+  const nextContact=nextRecoveredContact();
 
   contactNames().forEach(name=>{
     const d=document.createElement("div");
@@ -1348,28 +1365,25 @@ function renderContacts(active="3asians"){
     if(name==="unknown"){
       preview=lastUnknownText();
       unread=!state.unknownOpen;
-    }else if(name==="mami"){
-      preview=state.backstoryUnlocked&&!state.readMamiLate ? "recovered messages" : "mom";
-      unread=state.backstoryUnlocked&&!state.readMamiLate;
-      badge=unread;
     }else if(name==="3asians"){
-      preview=state.backstoryUnlocked&&!state.readGroupLate ? "recovered messages" : "group chat";
-      unread=state.backstoryUnlocked&&!state.readGroupLate;
-      badge=unread;
+      preview=name===nextContact ? "recovered messages" : "group chat";
     }else if(name==="kyle"){
-      preview=state.backstoryUnlocked&&!state.readKyleLate ? "recovered messages" : "then drive better";
-      unread=state.backstoryUnlocked&&!state.readKyleLate;
-      badge=unread;
+      preview=name===nextContact ? "recovered messages" : "then drive better";
     }else if(name==="noemibae"){
-      preview=state.backstoryUnlocked&&!state.readNoemiLate ? "recovered messages" : "blocked";
-      unread=state.backstoryUnlocked&&!state.readNoemiLate;
-      badge=unread;
+      preview=name===nextContact ? "recovered messages" : "blocked";
+    }else if(name==="mami"){
+      preview="mom";
     }else if(name==="jadabae"){
       preview="WAIT FOR ME";
     }else if(name==="lil sis ava"){
       preview="have faith in me pls";
     }else if(name==="kiddo jas"){
       preview="NOW U HAVE ME CURIOUS";
+    }
+
+    if(name===nextContact){
+      unread=true;
+      badge=true;
     }
 
     d.innerHTML=`<strong>${name}${unread?'<span class="unread"></span>':""}${badge?'<span class="new-badge">NEW</span>':""}</strong><small>${preview}</small>`;
@@ -1580,21 +1594,11 @@ function unlockSecondInvestigation(){
     showNotification(
       "Finder",
       "Recovered Files",
-      "device-state.txt was recovered.",
+      "device-status.txt was recovered.",
       "recovered",
       "images/icons/folder.png"
     );
   },800);
-
-  setTimeout(()=>{
-    showNotification(
-      "Safari",
-      "History",
-      "1 late-night history item was recovered.",
-      "safari",
-      "images/icons/safari.png"
-    );
-  },3100);
 }
 
 function unlockThirdInvestigation(){
@@ -1608,11 +1612,11 @@ function unlockThirdInvestigation(){
     showNotification(
       "Finder",
       "Recovered Files",
-      "2 device records were recovered.",
+      "phone-location.txt was recovered.",
       "recovered",
       "images/icons/folder.png"
     );
-  },850);
+  },800);
 }
 
 function unlockRecentItems(){
@@ -1626,7 +1630,7 @@ function unlockRecentItems(){
     showNotification(
       "Finder",
       "Recovered Files",
-      "recent-items.plist was recovered.",
+      "recent-apps.txt was recovered.",
       "recovered",
       "images/icons/folder.png"
     );
@@ -1798,9 +1802,14 @@ function openIncomingText(){
 /* Once both recovered files have been read, the late-night messages quietly
    become visible. The impossible contact does NOT arrive immediately. */
 function maybeUnlockBackstory(){
-  const foundRecoveredClue=state.sessionSeen || state.draftSeen || state.messagesDbSeen;
+  /* Keep the opening easy: three short recovered files establish
+     the date + E + the weird Mac behavior before Messages changes. */
+  const ready=
+    state.sessionSeen &&
+    state.draftSeen &&
+    state.messagesDbSeen;
 
-  if(foundRecoveredClue && !state.backstoryUnlocked){
+  if(ready && !state.backstoryUnlocked){
     state.backstoryUnlocked=true;
     state.phase=Math.max(state.phase,3);
     save();
@@ -1808,23 +1817,33 @@ function maybeUnlockBackstory(){
     setTimeout(()=>{
       showNotification(
         "Messages",
-        "Recovered conversations",
-        "New messages were found in 3 conversations.",
-        "messages",
+        "3asians",
+        "Recovered messages are unread.",
+        "contact:3asians",
         "images/icons/messages.png"
       );
-    },1000);
+    },700);
   }
 
   maybeAdvanceInvestigation();
 }
 
 function maybeAdvanceInvestigation(){
-  /* Reading both the group timeline and Kyle's late messages is what creates
-     the suspicion. Only THEN expose the missing message fragment. */
+  /* After each recovered conversation, the next one becomes the only NEW one. */
+  if(state.backstoryUnlocked && state.readGroupLate && !state.readKyleLate){
+    renderContacts("3asians");
+  }
+
+  if(state.backstoryUnlocked && state.readGroupLate && state.readKyleLate && !state.readNoemiLate){
+    renderContacts("kyle");
+  }
+
+  /* Only after all 3 key threads have been read do we reveal Kyle's
+     missing group-chat message. */
   if(state.backstoryUnlocked &&
      state.readGroupLate &&
      state.readKyleLate &&
+     state.readNoemiLate &&
      !state.deletedAvailable){
 
     state.deletedAvailable=true;
@@ -1835,15 +1854,13 @@ function maybeAdvanceInvestigation(){
       showNotification(
         "Finder",
         "Recovered Files",
-        "A message fragment was recovered.",
+        "1 new recovered message.",
         "recovered",
         "images/icons/folder.png"
       );
-    },600);
+    },650);
   }
 
-  /* The call log comes only after the Kyle fragment has been inspected.
-     It complicates the suspicion instead of arriving before it exists. */
   if(state.deletedSeen && !state.callHistoryAvailable){
     state.callHistoryAvailable=true;
     localStorage.setItem(KEY,JSON.stringify(state));
@@ -1853,14 +1870,13 @@ function maybeAdvanceInvestigation(){
       showNotification(
         "Finder",
         "Recovered Files",
-        "call-history.txt was recovered.",
+        "1 new call record.",
         "recovered",
         "images/icons/folder.png"
       );
     },650);
   }
 
-  /* Reading Kyle's recovered calls exposes late Safari history. */
   if(state.callLogSeen && !state.safariHistoryAvailable){
     state.safariHistoryAvailable=true;
     localStorage.setItem(KEY,JSON.stringify(state));
@@ -1870,22 +1886,18 @@ function maybeAdvanceInvestigation(){
       showNotification(
         "Safari",
         "History",
-        "2 late-night history items were recovered.",
+        "A late-night Find My search was recovered.",
         "safari",
         "images/icons/safari.png"
       );
     },700);
   }
 
-  /* Unknown does not exist for the player until they've seen:
-     - Kyle's late thread
-     - Noemi's silent-call thread
-     - Kyle's call log
-     - the Find My browser record
-     This guarantees the human mystery happens before the supernatural one. */
   const readyForUnknown=
+    state.readGroupLate &&
     state.readKyleLate &&
     state.readNoemiLate &&
+    state.deletedSeen &&
     state.callLogSeen &&
     state.sawSafariFind;
 
@@ -1894,7 +1906,7 @@ function maybeAdvanceInvestigation(){
     setTimeout(()=>{
       window.__unknownQueued=false;
       beginUnknownPings();
-    },1100);
+    },1000);
   }
 }
 
@@ -1981,7 +1993,7 @@ function renderNotes(name="grocery list"){
   list.innerHTML="";
 
   const names=["grocery list","school","friday","random","website stuff"];
-  if(state.secondInvestigation) names.unshift("untitled");
+  if(state.sawSafariDevices) names.unshift("untitled");
 
   names.forEach(n=>{
     const r=document.createElement("div");
@@ -2211,14 +2223,17 @@ why does this keep exporting as untitled`;
 
   /* ---------- first anomaly ---------- */
   if(kind==="photo-info"){
-    title="IMG_4409-info.txt";
-    body=`file: IMG_4409.jpeg
-created: Sep 2, 2026 · 12:43 AM
-last opened: Sep 3, 2026 · 11:56 PM
-modified: Sep 11, 2026 · 2:13 AM
+    title="photo-details.txt";
+    body=`IMG_4409.jpeg
 
-source device: iPhone 15
-modification source: local user process`;
+Taken:
+Sep 2 · 12:43 AM
+
+Last opened:
+Sep 3 · 11:56 PM
+
+Changed:
+Sep 11 · 2:13 AM`;
 
     state.photoInfoSeen=true;
     state.phase=Math.max(state.phase,2);
@@ -2235,99 +2250,83 @@ modification source: local user process`;
   }
 
   if(kind==="session"){
-    title="session-cache.txt";
-    body=`session recovery
------------------------------
+    title="last-session.txt";
+    body=`LAST MAC ACTIVITY
 
-account: e.cloud
-local user: e
+User: E
 
-last foreground activity:
-Sep 4, 2026 · 2:14:03 AM
+2:14 AM
+Messages was open
 
-network state: disconnected
-camera request: Sep 4 · 2:17:31 AM
-messages process: active
-session end: unavailable`;
+2:17 AM
+FaceTime tried to use the camera
+
+No normal shutdown was found.`;
 
     state.sessionSeen=true;
     state.phase=Math.max(state.phase,2);
   }
 
   if(kind==="unsent"){
-    title="draft-17.txt";
+    title="unsent-note.txt";
     body=`Sep 3 · 11:34 PM
 
-i keep thinking something is opening after i close it
+something keeps opening
+after i close it
 
 probably just the laptop being weird
 
-kyle said it was nothing but it happened again
+kyle said it's nothing
 
-if this is still here tomorrow remind me to change my password
-
-don't tell everyone yet`;
+if it happens again
+i'm changing my password`;
 
     state.draftSeen=true;
     state.phase=Math.max(state.phase,2);
   }
 
   if(kind==="messagesdb"){
-    title="messages-index.db";
-    body=`messages index
-partial recovery
------------------------------
+    title="message-records.txt";
+    body=`RECOVERED MESSAGES
 
-3asians     last record  Sep 4 · 1:37 AM
-jadabae     last record  Sep 4 · 1:48 AM
-kyle        last record  Sep 4 · 1:41 AM
-noemibae    last record  Sep 4 · 2:22 AM
-mami        last record  Sep 4 · 1:26 AM
+3asians   last message 1:37 AM
+kyle      last message 1:41 AM
+jada      last message 1:48 AM
+mami      last message 1:26 AM
+noemi     last message 2:22 AM
 
-1 deleted record
-payload unavailable`;
+1 message is missing.`;
 
     state.messagesDbSeen=true;
     state.phase=Math.max(state.phase,2);
   }
 
   if(kind==="windowstate"){
-    title="window-state.plist";
-    body=`last saved desktop state
-Sep 4, 2026 · 2:14 AM
+    title="last-open-apps.txt";
+    body=`Sep 4 · 2:14 AM
 
-open:
+Open apps:
 Messages
 Safari
 Notes
 
-frontmost:
+Last app used:
 Safari
 
-screen locked:
-false
-
-shutdown record:
-none`;
+The Mac was not shut down.`;
   }
 
   /* ---------- Kyle suspicion ---------- */
   if(kind==="deleted"){
-    title="deleted-message-cache.txt";
-    body=`messages-index.db
-partial recovery
------------------------------
-
-thread: 3asians
-Sep 4, 2026 · 12:52 AM
+    title="deleted-message.txt";
+    body=`3asians
+Sep 4 · 12:52 AM
 
 kyle:
-don't tell jada we stopped there
+don't tell jada
+we stopped there
 
-[fragment unavailable]
-
-next record: 1:04 AM
-data incomplete`;
+[rest of message missing]`;
 
     state.deletedSeen=true;
     state.phase=Math.max(state.phase,3);
@@ -2335,19 +2334,14 @@ data incomplete`;
 
   if(kind==="calls"){
     title="call-history.txt";
-    body=`call_history.cache
-partial recovery
------------------------------
+    body=`KYLE'S CALLS · SEP 4
 
-Sep 4 · 1:41 AM   kyle → e           missed
-Sep 4 · 1:44 AM   kyle → e           missed
-Sep 4 · 1:49 AM   kyle → jadabae     03:12
-Sep 4 · 1:53 AM   kyle → noemibae    01:47
-Sep 4 · 2:02 AM   kyle → e           missed
-Sep 4 · 2:09 AM   kyle → e           missed
-
-location data: unavailable
-end of recovered records`;
+1:41 AM  called E — MISSED
+1:44 AM  called E — MISSED
+1:49 AM  called Jada — 3 min
+1:53 AM  called Noemi — 1 min
+2:02 AM  called E — MISSED
+2:09 AM  called E — MISSED`;
 
     state.callLogSeen=true;
     state.phase=Math.max(state.phase,3);
@@ -2355,68 +2349,88 @@ end of recovered records`;
 
   /* ---------- post-FaceTime second investigation ---------- */
   if(kind==="device"){
-    title="device-state.txt";
-    body=`device sync state
------------------------------
-
-MacBook Air
-owner session: unresolved
+    title="device-status.txt";
+    body=`E'S DEVICES
 
 iPhone 15
-last sync: Sep 4 · 2:16:42 AM
-connection lost: Sep 4 · 2:17:03 AM
 
-local bridge:
-active now`;
+Last connected:
+2:16 AM
+
+Connection lost:
+2:17 AM
+
+MacBook:
+still active`;
 
     state.deviceSeen=true;
     localStorage.setItem(KEY,JSON.stringify(state));
+    syncStory();
+
+    if(!state.sawSafariDevices){
+      setTimeout(()=>{
+        showNotification(
+          "Safari",
+          "History",
+          "A new iCloud Devices page was recovered.",
+          "safari",
+          "images/icons/safari.png"
+        );
+      },650);
+    }
+
     renderReplyChoices("unknown");
   }
 
   if(kind==="location"){
-    title="location-cache.txt";
-    body=`location cache
-partial recovery
------------------------------
+    title="phone-location.txt";
+    body=`E'S PHONE · SEP 4
 
-device: iPhone 15
+12:46 AM
+arrived home
 
-Sep 4 · 12:46:18 AM
-home geofence entered
+12:48 AM
+phone stopped moving
 
-Sep 4 · 12:48:02 AM
-device stationary
-
-Sep 4 · 2:16:51 AM
+2:16 AM
 last location update
 
-Sep 4 · 2:17:03 AM
+2:17 AM
 location unavailable`;
 
     state.locationSeen=true;
     localStorage.setItem(KEY,JSON.stringify(state));
+    syncStory();
+
+    if(!state.wifiSeen){
+      setTimeout(()=>{
+        showNotification(
+          "Finder",
+          "Recovered Files",
+          "wifi-history.txt was recovered.",
+          "recovered",
+          "images/icons/folder.png"
+        );
+      },650);
+    }
+
     renderReplyChoices("unknown");
   }
 
   if(kind==="wifi"){
     title="wifi-history.txt";
-    body=`known network history
------------------------------
+    body=`HOME WI-FI · SEP 4
 
-network: home_5G
+12:47 AM
+E's phone connected
 
-connected:
-Sep 4 · 12:47:09 AM
+2:16 AM
+last activity
 
-last traffic:
-Sep 4 · 2:16:58 AM
+2:17 AM
+phone disconnected
 
-disconnect:
-Sep 4 · 2:17:04 AM
-
-next connection:
-none`;
+It did not reconnect.`;
 
     state.wifiSeen=true;
     localStorage.setItem(KEY,JSON.stringify(state));
@@ -2424,22 +2438,17 @@ none`;
   }
 
   if(kind==="recentitems"){
-    title="recent-items.plist";
-    body=`recent items
-Sep 4, 2026
------------------------------
+    title="recent-apps.txt";
+    body=`LAST ACTIVITY · SEP 4
 
-2:11:44 AM   Safari
-2:13:07 AM   Music
-2:14:03 AM   Messages
-2:15:26 AM   Notes
-2:17:31 AM   FaceTime camera request
+2:11 AM  Safari
+2:13 AM  Music
+2:14 AM  Messages
+2:15 AM  Notes
+2:17 AM  FaceTime camera
 
-frontmost application:
-unknown
-
-user input after 2:17:
-none recorded`;
+After 2:17 AM:
+no clicks or typing were recorded.`;
 
     state.recentItemsSeen=true;
     localStorage.setItem(KEY,JSON.stringify(state));
@@ -2483,47 +2492,62 @@ function openSafariDetail(kind){
   document.getElementById("text-content").className="textfile recovered";
 
   if(kind==="activity"){
-    title="Recovered Safari History";
-    body=`Sep 4, 2026 · 1:42 AM
+    title="Safari History";
+    body=`Sep 4 · 1:42 AM
 
-search:
+Search:
 macbook activity history
 
-cached visit:
-Apple Support — See login and device activity`;
+Opened:
+Apple Support
+"See login and device activity"`;
 
     state.sawSafariActivity=true;
   }
 
   if(kind==="find"){
-    title="Recovered Safari History";
-    body=`Sep 4, 2026 · 2:08 AM
+    title="Safari History";
+    body=`Sep 4 · 2:08 AM
 
-search:
+Search:
 find my device last location
 
-cached query:
+Device:
 iPhone 15
 
-cached result:
+Result:
 location unavailable`;
 
     state.sawSafariFind=true;
   }
 
   if(kind==="devices"){
-    title="Recovered Safari History";
-    body=`Sep 4, 2026 · 2:19 AM
+    title="Safari History";
+    body=`Sep 4 · 2:19 AM
 
-icloud account · devices
+iCloud Devices
 
 MacBook Air
 iPhone 15
 
-device page loaded
-session ended before details finished loading`;
+The page closed
+before the details loaded.`;
 
     state.sawSafariDevices=true;
+    syncStory();
+
+    if(!state.sawUntitled){
+      setTimeout(()=>{
+        showNotification(
+          "Notes",
+          "untitled",
+          "A new note appeared.",
+          "notes",
+          "images/icons/notes.png"
+        );
+      },650);
+    }
+
     renderReplyChoices("unknown");
   }
 
@@ -2717,7 +2741,7 @@ function syncStory(){
 
   document.getElementById("history-login").style.display=state.safariHistoryAvailable?"block":"none";
   document.getElementById("history-hidden").style.display=state.safariHistoryAvailable?"block":"none";
-  document.getElementById("history-second").style.display=state.secondInvestigation?"block":"none";
+  document.getElementById("history-second").style.display=state.deviceSeen?"block":"none";
 
   document.getElementById("unknown-call-row").style.display=state.callSeen?"flex":"none";
   document.getElementById("guest-setting").style.display=state.phase>=8?"block":"none";
@@ -2751,145 +2775,78 @@ function scheduleStoryGuide(){
 }
 
 function guideNextHardStep(){
-  /* First anomaly: Finder already surfaces this naturally, so no extra hint. */
+  /* The opening is already obvious enough. */
   if(state.phase<=1) return;
 
-  /* Recovered conversations are obvious through NEW badges.
-     Only point to a specific thread if the visitor has been stuck. */
-  if(state.backstoryUnlocked && !state.readGroupLate){
+  /* Recovered folder opening sequence. */
+  if(state.phase>=2 && !state.sessionSeen){
+    showNotification("Finder","Recovered Files","Open the file marked NEW.","recovered","images/icons/folder.png");
+    return;
+  }
+  if(state.sessionSeen && !state.draftSeen){
+    showNotification("Finder","Recovered Files","There is another NEW file.","recovered","images/icons/folder.png");
+    return;
+  }
+  if(state.sessionSeen && state.draftSeen && !state.messagesDbSeen){
+    showNotification("Finder","Recovered Files","There is one more NEW file.","recovered","images/icons/folder.png");
+    return;
+  }
+
+  /* Only one Messages thread is ever marked NEW. */
+  const nextContact=nextRecoveredContact();
+  if(nextContact){
     showNotification(
       "Messages",
-      "3asians",
+      nextContact,
       "Recovered messages are unread.",
-      "contact:3asians",
+      "contact:"+nextContact,
       "images/icons/messages.png"
     );
     return;
   }
 
-  if(state.readGroupLate && !state.readKyleLate){
-    showNotification(
-      "Messages",
-      "kyle",
-      "Recovered messages are unread.",
-      "contact:kyle",
-      "images/icons/messages.png"
-    );
-    return;
-  }
-
-  /* This is the first genuinely hidden clue, so guide them toward it. */
   if(state.deletedAvailable && !state.deletedSeen){
-    showNotification(
-      "Finder",
-      "Recovered Files",
-      "1 unread recovered item.",
-      "recovered",
-      "images/icons/folder.png"
-    );
+    showNotification("Finder","Recovered Files","1 new recovered message.","recovered","images/icons/folder.png");
     return;
   }
 
   if(state.callHistoryAvailable && !state.callLogSeen){
-    showNotification(
-      "Finder",
-      "Recovered Files",
-      "1 unread recovered item.",
-      "recovered",
-      "images/icons/folder.png"
-    );
+    showNotification("Finder","Recovered Files","1 new call record.","recovered","images/icons/folder.png");
     return;
   }
 
   if(state.safariHistoryAvailable && !state.sawSafariFind){
-    showNotification(
-      "Safari",
-      "History",
-      "Recovered history is unread.",
-      "safari",
-      "images/icons/safari.png"
-    );
+    showNotification("Safari","History","A Find My search is unread.","safari","images/icons/safari.png");
     return;
   }
 
-  /* Noemi is needed to connect the 2:17 call. Only nudge here if everything
-     else is ready but this one thread was skipped. */
-  if(state.readKyleLate && state.callLogSeen && state.sawSafariFind && !state.readNoemiLate){
-    showNotification(
-      "Messages",
-      "noemibae",
-      "Recovered messages are unread.",
-      "contact:noemibae",
-      "images/icons/messages.png"
-    );
-    return;
-  }
-
-  /* Post-FaceTime: these are deliberately exploration-heavy, but each hard
-     transition gets one gentle nudge if the visitor stalls. */
   if(state.secondInvestigation && !state.deviceSeen){
-    showNotification(
-      "Finder",
-      "Recovered Files",
-      "device-state.txt is unread.",
-      "recovered",
-      "images/icons/folder.png"
-    );
+    showNotification("Finder","Recovered Files","Open device-status.txt.","recovered","images/icons/folder.png");
     return;
   }
 
-  if(state.secondInvestigation && state.deviceSeen && !state.sawSafariDevices){
-    showNotification(
-      "Safari",
-      "History",
-      "1 new recovered history item.",
-      "safari",
-      "images/icons/safari.png"
-    );
+  if(state.deviceSeen && !state.sawSafariDevices){
+    showNotification("Safari","History","A new iCloud Devices page is unread.","safari","images/icons/safari.png");
     return;
   }
 
-  if(state.secondInvestigation && state.deviceSeen && state.sawSafariDevices && !state.sawUntitled){
-    showNotification(
-      "Notes",
-      "untitled",
-      "A new note appeared.",
-      "notes",
-      "images/icons/notes.png"
-    );
+  if(state.sawSafariDevices && !state.sawUntitled){
+    showNotification("Notes","untitled","A new note appeared.","notes","images/icons/notes.png");
     return;
   }
 
   if(state.thirdInvestigation && !state.locationSeen){
-    showNotification(
-      "Finder",
-      "Recovered Files",
-      "location-cache.txt is unread.",
-      "recovered",
-      "images/icons/folder.png"
-    );
+    showNotification("Finder","Recovered Files","Open phone-location.txt.","recovered","images/icons/folder.png");
     return;
   }
 
-  if(state.thirdInvestigation && state.locationSeen && !state.wifiSeen){
-    showNotification(
-      "Finder",
-      "Recovered Files",
-      "wifi-history.txt is unread.",
-      "recovered",
-      "images/icons/folder.png"
-    );
+  if(state.locationSeen && !state.wifiSeen){
+    showNotification("Finder","Recovered Files","Open wifi-history.txt.","recovered","images/icons/folder.png");
     return;
   }
 
   if(state.recentItemsAvailable && !state.recentItemsSeen){
-    showNotification(
-      "Finder",
-      "Recovered Files",
-      "recent-items.plist is unread.",
-      "recovered",
-      "images/icons/folder.png"
-    );
+    showNotification("Finder","Recovered Files","Open recent-apps.txt.","recovered","images/icons/folder.png");
   }
 }
 
@@ -2904,7 +2861,7 @@ function startStoryWatchdog(){
       showNotification(
         "Finder",
         "Recovered Item",
-        "A cached file appeared in Downloads.",
+        "A new file appeared in Downloads.",
         "downloads",
         "images/icons/folder.png"
       );
@@ -2916,7 +2873,7 @@ function startStoryWatchdog(){
       showNotification(
         "Finder",
         "Downloads",
-        "IMG_4409-info.txt was recovered.",
+        "photo-details.txt is new.",
         "downloads",
         "images/icons/folder.png"
       );
@@ -2931,7 +2888,7 @@ function startStoryWatchdog(){
       showNotification(
         "Messages",
         "Recovered conversations",
-        "There are unread messages from Sep 4.",
+        "One recovered conversation is unread.",
         "messages",
         "images/icons/messages.png"
       );
