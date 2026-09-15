@@ -198,8 +198,22 @@ button{color:inherit}
 
 /* facetime */
 .facetime{height:400px;background:linear-gradient(145deg,#eef0f4,#d8dce3);padding:20px;overflow:auto}
-.call-row{display:flex;align-items:center;justify-content:space-between;padding:12px 10px;border-bottom:1px solid rgba(0,0,0,.08);font-size:12px}
-.call-row .when{font-size:10px;color:#777}
+.call-row{display:flex;align-items:center;justify-content:space-between;padding:11px 10px;border-bottom:1px solid rgba(0,0,0,.08);font-size:12px}
+.call-person{display:flex;flex-direction:column;gap:2px}
+.call-person strong{font-size:12px;font-weight:600}
+.call-person small{font-size:10px;color:#6f7278}
+.call-person small.missed{color:#d93b35}
+.call-person small.outgoing{color:#5f6368}
+.call-person small.incoming{color:#4d7a55}
+.call-row .when{font-size:10px;color:#777;text-align:right}
+.history-row.clickable{cursor:pointer;border-radius:7px;padding-left:7px;padding-right:7px;margin-left:-7px;margin-right:-7px}
+.history-row.clickable:hover{background:#f1f3f6}
+.history-row.recovered-history{background:#fff8dd}
+.history-tag{display:inline-block;margin-left:6px;padding:1px 5px;border-radius:7px;background:#ece4b8;color:#6f6534;font-size:8px;vertical-align:1px}
+.removed-message{
+  display:block;margin:10px auto;border:0;background:transparent;color:#8f9197;
+  font-size:10px;cursor:pointer;text-decoration:underline;text-decoration-style:dotted
+}
 .call-actions button{border:0;border-radius:7px;padding:6px 9px;background:#fff;cursor:pointer}
 .incoming{
   position:absolute;left:50%;top:70px;transform:translateX(-50%);
@@ -416,9 +430,21 @@ button{color:inherit}
       <div class="history-row">HCA 125 - course portal <small>Sep 3 · 4:26 PM</small></div>
       <div class="history-row">pancit bihon recipe <small>Sep 3 · 6:11 PM</small></div>
       <div class="history-row">No Text To Speech - YouTube <small>Sep 3 · 9:37 PM</small></div>
-      <div id="history-login" class="history-row" style="display:none">macbook activity history <small>Sep 4 · 1:42 AM</small></div>
-      <div id="history-hidden" class="history-row" style="display:none">find my device last location <small>Sep 4 · 2:08 AM</small></div>
-      <div id="history-second" class="history-row" style="display:none">icloud account · devices <small>Sep 4 · 2:19 AM</small></div>
+
+      <div id="history-login" class="history-row clickable recovered-history" style="display:none" onclick="openSafariDetail('activity')">
+        macbook activity history <span class="history-tag">recovered</span>
+        <small>Sep 4 · 1:42 AM</small>
+      </div>
+
+      <div id="history-hidden" class="history-row clickable recovered-history" style="display:none" onclick="openSafariDetail('find')">
+        find my device last location <span class="history-tag">recovered</span>
+        <small>Sep 4 · 2:08 AM</small>
+      </div>
+
+      <div id="history-second" class="history-row clickable recovered-history" style="display:none" onclick="openSafariDetail('devices')">
+        icloud account · devices <span class="history-tag">new</span>
+        <small>Sep 4 · 2:19 AM</small>
+      </div>
     </div>
   </div>
 </section>
@@ -449,12 +475,32 @@ button{color:inherit}
   </div>
   <div class="facetime">
     <h2 style="font-size:19px;margin-bottom:14px">Recents</h2>
-    <div class="call-row"><span>mami</span><span class="when">Sep 2 · 8:12 PM</span></div>
-    <div class="call-row"><span>jadabae</span><span class="when">Sep 2 · 10:04 PM</span></div>
-    <div class="call-row"><span>noemibae</span><span class="when">Sep 3 · 3:36 PM</span></div>
-    <div class="call-row"><span>kyle</span><span class="when">Sep 3 · 9:18 PM</span></div>
-    <div class="call-row"><span>mami</span><span class="when">Sep 3 · 11:47 PM</span></div>
-    <div id="unknown-call-row" class="call-row" style="display:none"><span>Unknown</span><span class="when">Sep 4 · 2:17 AM</span></div>
+
+    <div class="call-row">
+      <div class="call-person"><strong>mami</strong><small class="incoming">Incoming · 18:04</small></div>
+      <span class="when">Sep 2 · 8:12 PM</span>
+    </div>
+    <div class="call-row">
+      <div class="call-person"><strong>jadabae</strong><small class="outgoing">Outgoing · 4:11</small></div>
+      <span class="when">Sep 2 · 10:04 PM</span>
+    </div>
+    <div class="call-row">
+      <div class="call-person"><strong>noemibae</strong><small class="missed">Missed</small></div>
+      <span class="when">Sep 3 · 3:36 PM</span>
+    </div>
+    <div class="call-row">
+      <div class="call-person"><strong>kyle</strong><small class="outgoing">Outgoing · 1:52</small></div>
+      <span class="when">Sep 3 · 9:18 PM</span>
+    </div>
+    <div class="call-row">
+      <div class="call-person"><strong>mami</strong><small class="incoming">Incoming · 2:06</small></div>
+      <span class="when">Sep 3 · 11:47 PM</span>
+    </div>
+
+    <div id="unknown-call-row" class="call-row" style="display:none">
+      <div class="call-person"><strong>Unknown</strong><small id="unknown-call-status" class="missed">Ringing…</small></div>
+      <span id="unknown-call-when" class="when">Today · now</span>
+    </div>
   </div>
 </section>
 
@@ -530,7 +576,7 @@ button{color:inherit}
 
 <script>
 let topZ=500;
-const KEY="enokieStoryV7";
+const KEY="enokieStoryV8";
 
 /* Testing shortcut:
    open desktop.html?reset=1 to clear story progress without exposing a reset button to visitors. */
@@ -546,6 +592,7 @@ const DEFAULT_STATE={
   photoInfoSeen:false,
   sessionSeen:false,
   draftSeen:false,
+  messagesDbSeen:false,
   backstoryUnlocked:false,
   notificationShown:false,
   unknownOpen:false,
@@ -553,15 +600,33 @@ const DEFAULT_STATE={
   callSeen:false,
   normalPingSeen:false,
   normalPingOpened:false,
+
+  readGroupLate:false,
+  readKyleLate:false,
+  readNoemiLate:false,
+  readMamiLate:false,
+
+  deletedAvailable:false,
   deletedSeen:false,
+  callHistoryAvailable:false,
   callLogSeen:false,
-  unknownPingCount:0,
+
+  safariHistoryAvailable:false,
+  sawSafariActivity:false,
+  sawSafariFind:false,
+  sawSafariDevices:false,
+
   ringQuestionSent:false,
   answeredRing:false,
   askedIdentity:false,
   askedHappened:false,
+
   secondInvestigation:false,
+  deviceSeen:false,
+  sawUntitled:false,
+
   replyBusy:false,
+  unknownPingCount:0,
   unknownMsgs:[]
 };
 let state={...DEFAULT_STATE,...JSON.parse(localStorage.getItem(KEY)||"{}")};
@@ -694,7 +759,9 @@ function docTile(name,action,type="TXT",meta=""){
 }
 function openFinder(folder){
   openApp("finder-window","Finder");
-  const t=document.getElementById("finder-title"),g=document.getElementById("finder-grid"),c=document.getElementById("finder-count");
+  const t=document.getElementById("finder-title"),
+        g=document.getElementById("finder-grid"),
+        c=document.getElementById("finder-count");
 
   if(folder==="desktop"){
     t.textContent="Desktop";
@@ -702,32 +769,53 @@ function openFinder(folder){
       folderTile("school","openFinder('school')")+
       folderTile("pictures","openPhotos()")+
       folderTile("downloads","openFinder('downloads')")+
-      docTile("health-admin-notes.txt","","TXT","Sep 3")+
-      docTile("receipt.pdf","","PDF","Sep 2")+
-      docTile("IMG_5708.jpeg","","JPG","Aug 28")+
-      (state.phase>=2?folderTile("Recovered Files","openFinder('recovered')","system restored"):"");
+      docTile("health-admin-notes.txt","openText('healthnotes')","TXT","Sep 3")+
+      docTile("receipt.pdf","openText('receipt')","PDF","Sep 3")+
+      docTile("IMG_5708.jpeg","openPhotos()","JPG","Aug 28")+
+      (state.phase>=2
+        ?folderTile(
+          "Recovered Files",
+          "openFinder('recovered')",
+          state.callHistoryAvailable||state.deletedAvailable ? "new items" : "system restored"
+        )
+        :"");
   }
 
   if(folder==="school"){
     t.textContent="school";
     g.innerHTML=
       docTile("syllabus.pdf","openApp('pdf-window','Preview')","PDF","Fall 2026")+
-      docTile("HCA125-week3.pdf","","PDF","Sep 2")+
-      docTile("discussion-notes.txt","","TXT","Sep 3")+
-      folderTile("group project","")+
-      folderTile("readings","")+
-      docTile("assignment-2.docx","","DOC","Sep 1");
+      docTile("HCA125-week3.pdf","openText('week3')","PDF","Sep 2")+
+      docTile("discussion-post-draft.txt","openText('intro')","TXT","Sep 1")+
+      folderTile("group project","openFinder('project')","3 items")+
+      folderTile("readings","openFinder('readings')","2 items")+
+      docTile("assignment-2.docx","openText('assignment')","DOC","Sep 1");
+  }
+
+  if(folder==="project"){
+    t.textContent="school / group project";
+    g.innerHTML=
+      docTile("presentation-outline.txt","openText('project-outline')","TXT","Sep 2")+
+      docTile("source-list.txt","openText('project-sources')","TXT","Sep 2")+
+      docTile("meeting-notes.txt","openText('project-meeting')","TXT","Sep 3");
+  }
+
+  if(folder==="readings"){
+    t.textContent="school / readings";
+    g.innerHTML=
+      docTile("chapter-4-notes.txt","openText('chapter4')","TXT","Sep 2")+
+      docTile("access-to-care-summary.txt","openText('article')","TXT","Sep 3");
   }
 
   if(folder==="downloads"){
     t.textContent="Downloads";
     g.innerHTML=
-      docTile("Screenshot 2026-09-03 at 1.51 AM.png","","PNG","Sep 3")+
-      docTile("receipt-0902.pdf","","PDF","Sep 2")+
+      docTile("Screenshot 2026-09-03 at 1.51 AM.png","openText('screenshot')","PNG","Sep 3")+
+      docTile("receipt-0902.pdf","openText('receipt2')","PDF","Sep 2")+
       docTile("cover.jpg","","JPG","Aug 30")+
       docTile("archive.zip","","ZIP","Aug 29")+
-      docTile("untitled.pdf","","PDF","Sep 1")+
-      docTile("IMG_4409.jpeg","","JPG","Sep 2")+
+      docTile("untitled.pdf","openText('oldpdf')","PDF","Sep 1")+
+      docTile("IMG_4409.jpeg","showPhoto(4)","JPG","Sep 2")+
       (state.phase>=1?docTile("IMG_4409-info.txt","openText('photo-info')","TXT","cache file"):"");
   }
 
@@ -736,11 +824,18 @@ function openFinder(folder){
     g.innerHTML=
       docTile("session-cache.txt","openText('session')","TXT","recovered")+
       docTile("draft-17.txt","openText('unsent')","TXT","recovered")+
-      docTile("messages-index.db","","DB","recovered")+
-      docTile("window-state.plist","","PLIST","recovered")+
-      (state.backstoryUnlocked?docTile("deleted-message-cache.txt","openText('deleted')","TXT","partial"):"")+
-      ((state.deletedSeen||state.secondInvestigation)?docTile("call-history.txt","openText('calls')","TXT","recovered"):"")+
-      (state.phase>=7?docTile("system-log.txt","openText('system')","TXT","today"):"");
+      docTile("messages-index.db","openText('messagesdb')","DB","recovered")+
+      docTile("window-state.plist","openText('windowstate')","PLIST","recovered")+
+      (state.deletedAvailable
+        ?docTile("deleted-message-cache.txt","openText('deleted')","TXT",state.deletedSeen?"opened":"new")
+        :"")+
+      (state.callHistoryAvailable
+        ?docTile("call-history.txt","openText('calls')","TXT",state.callLogSeen?"opened":"new")
+        :"")+
+      (state.secondInvestigation
+        ?docTile("device-state.txt","openText('device')","TXT",state.deviceSeen?"opened":"new")
+        :"")+
+      (state.phase>=8?docTile("system-log.txt","openText('system')","TXT","today"):"");
   }
 
   c.textContent=g.children.length+" items";
@@ -782,47 +877,99 @@ function showPhoto(n){
 
 const normalChats={
   "jadabae":[
-    ["jadabae","where are u"],["me","girl im coming 😭"],["jadabae","you said that 20 mins ago"],
-    ["jadabae","bring the charger pls"],["me","I HAVE IT"],["jadabae","okay good bc noemi is at 4%"],
-    ["me","im outside"],["jadabae","WAIT FOR ME"],
-    ["me","u have 30 seconds"],["jadabae","ur so dramatic"]
+    ["system","Sep 2, 2026 · 4:18 PM"],
+    ["jadabae","did u submit ur discussion post"],
+    ["me","no pls dont remind me"],
+    ["jadabae","girl its due tonight"],
+    ["me","i knowww im doing it after dinner"],
+    ["system","Sep 3, 2026 · 7:42 PM"],
+    ["jadabae","where are u"],
+    ["me","girl im coming 😭"],
+    ["jadabae","you said that 20 mins ago"],
+    ["jadabae","bring the charger pls"],
+    ["me","I HAVE IT"],
+    ["jadabae","okay good bc noemi is at 4%"],
+    ["me","im outside"],
+    ["jadabae","WAIT FOR ME"]
   ],
+
   "noemibae":[
-    ["noemibae","look at what i just sent u"],["me","LMFAOOO STOP"],["noemibae","i knew youd get it"],
-    ["me","why would u send that while im in class"],["noemibae","timing was important"],["me","blocked"],
-    ["noemibae","also do u still have my black top"],["me","probably 😭"],
-    ["noemibae","THIEF"],["me","finders keepers"]
+    ["system","Sep 1, 2026 · 9:14 PM"],
+    ["noemibae","also do u still have my black top"],
+    ["me","probably 😭"],
+    ["noemibae","THIEF"],
+    ["me","finders keepers"],
+    ["system","Sep 3, 2026 · 2:06 PM"],
+    ["noemibae","look at what i just sent u"],
+    ["me","LMFAOOO STOP"],
+    ["noemibae","i knew youd get it"],
+    ["me","why would u send that while im in class"],
+    ["noemibae","timing was important"],
+    ["me","blocked"]
   ],
+
   "kyle":[
-    ["kyle","yall still going out"],["me","yes unfortunately"],["kyle","crazy"],
-    ["kyle","what time"],["me","idk ask jada"],["kyle","useless"],
-    ["me","are u driving friday"],["kyle","probably"],["me","kk"],
-    ["kyle","no backseat driving this time"],["me","then drive better"]
+    ["system","Sep 2, 2026 · 8:31 PM"],
+    ["kyle","did u ever fix that website thing"],
+    ["me","kind of"],
+    ["kyle","so no"],
+    ["me","shut up 😭"],
+    ["system","Sep 3, 2026 · 6:48 PM"],
+    ["kyle","yall still going out"],
+    ["me","yes unfortunately"],
+    ["kyle","what time"],
+    ["me","idk ask jada"],
+    ["me","are u driving friday"],
+    ["kyle","probably"],
+    ["kyle","no backseat driving this time"],
+    ["me","then drive better"]
   ],
+
   "lil sis ava":[
-    ["lil sis ava","are u home later"],["me","yeah why"],["lil sis ava","i need to tell u something lol"],
-    ["me","that sounds threatening"],["lil sis ava","its not 😭"],["me","okayyy"],
-    ["lil sis ava","dont forget what u promised"],["me","i didnttt"],
-    ["lil sis ava","you literally always say that"],["me","have faith in me pls"]
+    ["system","Sep 2, 2026 · 6:02 PM"],
+    ["lil sis ava","are u home later"],
+    ["me","yeah why"],
+    ["lil sis ava","i need to tell u something lol"],
+    ["me","that sounds threatening"],
+    ["lil sis ava","its not 😭"],
+    ["lil sis ava","dont forget what u promised"],
+    ["me","i didnttt"],
+    ["lil sis ava","you literally always say that"],
+    ["me","have faith in me pls"]
   ],
+
   "kiddo jas":[
-    ["kiddo jas","can i ask u something"],["me","ofc whats up"],["kiddo jas","nvm i figured it out"],
-    ["me","girl 😭"],["kiddo jas","SORRY"],["me","ur good lol"],
-    ["kiddo jas","ill tell u tomorrow"],["me","okie"],
-    ["kiddo jas","wait dont forget"],["me","NOW U HAVE ME CURIOUS"]
+    ["system","Sep 3, 2026 · 12:24 PM"],
+    ["kiddo jas","can i ask u something"],
+    ["me","ofc whats up"],
+    ["kiddo jas","nvm i figured it out"],
+    ["me","girl 😭"],
+    ["kiddo jas","SORRY"],
+    ["kiddo jas","ill tell u tomorrow"],
+    ["me","okie"],
+    ["kiddo jas","wait dont forget"],
+    ["me","NOW U HAVE ME CURIOUS"]
   ],
+
   "mami":[
-    ["mami","anak did you eat"],["me","yes ma"],["mami","what did you eat"],["me","rice and chicken"],
-    ["mami","okay text me when you get home"],["me","i will"],["mami","before 1 please"],["me","yes ma"],
-    ["mami","and bring the container"],["me","😭 okay"]
+    ["system","Sep 3, 2026 · 5:37 PM"],
+    ["mami","anak did you eat"],
+    ["me","yes ma"],
+    ["mami","what did you eat"],
+    ["me","rice and chicken"],
+    ["system","Sep 3, 2026 · 10:52 PM"],
+    ["mami","okay text me when you get home"],
+    ["me","i will"],
+    ["mami","before 1 please"],
+    ["me","yes ma"],
+    ["mami","and bring the container"],
+    ["me","😭 okay"]
   ]
 };
 
-/* These aren't shown at first. Think of them as messages that become readable
-   after the restored Messages index is discovered. They give backstory without
-   immediately announcing "Enokie disappeared." */
 function groupChatData(){
   const chat=[
+    ["system","Sep 3, 2026 · 7:03 PM"],
     ["jadabae","are we still going out friday"],
     ["noemibae","i can after 8"],
     ["kyle","same"],
@@ -836,7 +983,7 @@ function groupChatData(){
   ];
 
   if(state.backstoryUnlocked){
-    chat.push(["system","Sep 4 · 1:31 AM"]);
+    chat.push(["system","Sep 4, 2026 · 1:31 AM"]);
     chat.push(["jadabae","did she ever text u back"]);
     chat.push(["noemibae","no"]);
     chat.push(["kyle","she said she was going home"]);
@@ -855,23 +1002,21 @@ function personChatData(name){
   const chat=[...(normalChats[name]||[])];
 
   if(name==="mami" && state.normalPingSeen){
-    chat.push(["system","Sep 15 · now"]);
+    chat.push(["system","Sep 15, 2026 · now"]);
     chat.push(["mami","anak please call me when you see this"]);
   }
 
   if(!state.backstoryUnlocked) return chat;
 
-  /* Messages sent to the owner after she stopped replying. No blue replies
-     are added here, which keeps the timeline believable. */
   if(name==="jadabae"){
-    chat.push(["system","Sep 4 · 1:46 AM"]);
+    chat.push(["system","Sep 4, 2026 · 1:46 AM"]);
     chat.push(["jadabae","where are u"]);
     chat.push(["jadabae","pls answer"]);
     chat.push(["jadabae","noemi said ur phone rang once then stopped"]);
   }
 
   if(name==="noemibae"){
-    chat.push(["system","Sep 4 · 2:18 AM"]);
+    chat.push(["system","Sep 4, 2026 · 2:18 AM"]);
     chat.push(["noemibae","girl why did u call me"]);
     chat.push(["noemibae","hello??"]);
     chat.push(["noemibae","u literally didnt say anything"]);
@@ -879,7 +1024,7 @@ function personChatData(name){
   }
 
   if(name==="kyle"){
-    chat.push(["system","Sep 4 · 1:38 AM"]);
+    chat.push(["system","Sep 4, 2026 · 1:38 AM"]);
     chat.push(["kyle","did u make it inside"]);
     chat.push(["kyle","answer me"]);
     chat.push(["kyle","everyone keeps asking me where u are"]);
@@ -887,7 +1032,7 @@ function personChatData(name){
   }
 
   if(name==="mami"){
-    chat.push(["system","Sep 4 · 1:21 AM"]);
+    chat.push(["system","Sep 4, 2026 · 1:21 AM"]);
     chat.push(["mami","anak are you home"]);
     chat.push(["mami","call me please"]);
     chat.push(["mami","i am awake"]);
@@ -927,13 +1072,27 @@ function renderContacts(active="3asians"){
     const d=document.createElement("div");
     d.className="contact"+(name===active?" active":"");
 
-    const u=unknownMsgs();
     let preview="";
-    if(name==="unknown") preview=lastUnknownText();
-    else if(name==="mami") preview="mom";
-    else if(name==="3asians") preview=state.backstoryUnlocked?"noemibae: she called and didn't say anything":"group chat";
+    let unread=false;
 
-    d.innerHTML=`<strong>${name}${name==="unknown"&&!state.unknownOpen?'<span class="unread"></span>':""}</strong><small>${preview}</small>`;
+    if(name==="unknown"){
+      preview=lastUnknownText();
+      unread=!state.unknownOpen;
+    }else if(name==="mami"){
+      preview=state.backstoryUnlocked?"mami: call me please":"mom";
+      unread=state.backstoryUnlocked&&!state.readMamiLate;
+    }else if(name==="3asians"){
+      preview=state.backstoryUnlocked?"noemibae: she called and didn't say anything":"group chat";
+      unread=state.backstoryUnlocked&&!state.readGroupLate;
+    }else if(name==="kyle"){
+      preview=state.backstoryUnlocked?"kyle: i told them i dropped u off":"";
+      unread=state.backstoryUnlocked&&!state.readKyleLate;
+    }else if(name==="noemibae"){
+      preview=state.backstoryUnlocked?"noemibae: why did u call me":"";
+      unread=state.backstoryUnlocked&&!state.readNoemiLate;
+    }
+
+    d.innerHTML=`<strong>${name}${unread?'<span class="unread"></span>':""}</strong><small>${preview}</small>`;
     d.onclick=()=>{renderContacts(name);renderChat(name)};
     box.appendChild(d);
   });
@@ -955,7 +1114,14 @@ function renderChat(name){
 
   data.forEach(([sender,msg])=>{
     if(sender==="system"){
-      body.insertAdjacentHTML("beforeend",`<div class="system-line">${msg}</div>`);
+      if(msg==="Message removed" && state.deletedAvailable){
+        body.insertAdjacentHTML(
+          "beforeend",
+          `<button class="removed-message" onclick="openFinder('recovered')">Message removed · recovered fragment available</button>`
+        );
+      }else{
+        body.insertAdjacentHTML("beforeend",`<div class="system-line">${msg}</div>`);
+      }
       return;
     }
 
@@ -969,10 +1135,20 @@ function renderChat(name){
   });
 
   body.scrollTop=body.scrollHeight;
+
+  if(state.backstoryUnlocked){
+    if(name==="3asians") state.readGroupLate=true;
+    if(name==="kyle") state.readKyleLate=true;
+    if(name==="noemibae") state.readNoemiLate=true;
+    if(name==="mami") state.readMamiLate=true;
+
+    localStorage.setItem(KEY,JSON.stringify(state));
+    maybeAdvanceInvestigation();
+    renderContacts(name);
+  }
+
   renderReplyChoices(name);
 
-  /* Opening Unknown only confirms that someone is actively on the other side.
-     From here on, the visitor's actions drive the story. */
   if(name==="unknown" && state.phase>=4 && !state.unknownOpen){
     state.unknownOpen=true;
     state.phase=Math.max(state.phase,5);
@@ -1023,6 +1199,10 @@ function setReplyBusy(value){
   renderReplyChoices("unknown");
 }
 
+function secondClueCount(){
+  return [state.deviceSeen,state.sawSafariDevices,state.sawUntitled].filter(Boolean).length;
+}
+
 function renderReplyChoices(name){
   const panel=document.getElementById("reply-panel");
   if(!panel) return;
@@ -1034,9 +1214,19 @@ function renderReplyChoices(name){
 
   const choices=[];
 
-  if(!state.answeredRing) choices.push(["yes","yes"]);
-  if(!state.askedIdentity) choices.push(["who are you?","identity"]);
-  if(!state.askedHappened) choices.push(["what happened to you?","happened"]);
+  /* First answer the literal FaceTime question. */
+  if(!state.answeredRing){
+    choices.push(["yes","yes"]);
+  }
+  /* Only after investigating at least two NEW post-call clues can the
+     visitor ask who is speaking. */
+  else if(state.secondInvestigation && secondClueCount()>=2 && !state.askedIdentity){
+    choices.push(["who are you?","identity"]);
+  }
+  /* "what happened" is held until all three post-call clues have been seen. */
+  else if(state.askedIdentity && secondClueCount()>=3 && !state.askedHappened){
+    choices.push(["what happened to you?","happened"]);
+  }
 
   if(!choices.length) return;
 
@@ -1058,17 +1248,25 @@ function unlockSecondInvestigation(){
   localStorage.setItem(KEY,JSON.stringify(state));
   syncStory();
 
-  /* Quietly add material for the next investigation beat instead of
-     having Unknown explain the mystery. */
   setTimeout(()=>{
     showNotification(
       "Finder",
       "Recovered Files",
-      "1 recovered item added.",
+      "device-state.txt was recovered.",
       "recovered",
       "images/icons/folder.png"
     );
-  },900);
+  },800);
+
+  setTimeout(()=>{
+    showNotification(
+      "Safari",
+      "History",
+      "1 late-night history item was recovered.",
+      "safari",
+      "images/icons/safari.png"
+    );
+  },3100);
 }
 
 function finishUnknownReply(delay=2600){
@@ -1096,8 +1294,8 @@ function chooseUnknownReply(key,label){
 
     setTimeout(()=>pushUnknown("okay"),700);
     setTimeout(()=>pushUnknown("so it's only me that can't hear it"),1700);
-    setTimeout(()=>unlockSecondInvestigation(),2100);
-    finishUnknownReply(2800);
+    setTimeout(()=>unlockSecondInvestigation(),2200);
+    finishUnknownReply(2900);
     return;
   }
 
@@ -1107,11 +1305,11 @@ function chooseUnknownReply(key,label){
     renderReplyChoices("unknown");
 
     setTimeout(()=>pushUnknown("i don't know"),700);
-    setTimeout(()=>pushUnknown("i know that sounds stupid"),1600);
-    setTimeout(()=>pushUnknown("the name here is enokie"),2700);
-    setTimeout(()=>pushUnknown("i don't know if that's mine"),3900);
-    setTimeout(()=>unlockSecondInvestigation(),4300);
-    finishUnknownReply(5000);
+    setTimeout(()=>pushUnknown("there's a name everywhere"),1700);
+    setTimeout(()=>pushUnknown("enokie"),2600);
+    setTimeout(()=>pushUnknown("i think it's supposed to be me"),3600);
+    setTimeout(()=>pushUnknown("but i don't remember it"),4700);
+    finishUnknownReply(5400);
     return;
   }
 
@@ -1123,8 +1321,7 @@ function chooseUnknownReply(key,label){
     setTimeout(()=>pushUnknown("i remember getting home"),700);
     setTimeout(()=>pushUnknown("i remember opening this"),1800);
     setTimeout(()=>pushUnknown("after that it's pieces"),3100);
-    setTimeout(()=>unlockSecondInvestigation(),3500);
-    finishUnknownReply(4300);
+    finishUnknownReply(3900);
   }
 }
 
@@ -1170,6 +1367,16 @@ function openIncomingText(){
     return;
   }
 
+  if(notificationTarget==="safari"){
+    openApp("safari-window","Safari");
+    return;
+  }
+
+  if(notificationTarget==="messages"){
+    openMessages();
+    return;
+  }
+
   openApp("messages-window","Messages");
 
   if(notificationTarget==="unknown"){
@@ -1187,16 +1394,103 @@ function openIncomingText(){
 /* Once both recovered files have been read, the late-night messages quietly
    become visible. The impossible contact does NOT arrive immediately. */
 function maybeUnlockBackstory(){
-  const foundRecoveredClue=state.sessionSeen || state.draftSeen;
+  const foundRecoveredClue=state.sessionSeen || state.draftSeen || state.messagesDbSeen;
 
   if(foundRecoveredClue && !state.backstoryUnlocked){
     state.backstoryUnlocked=true;
     state.phase=Math.max(state.phase,3);
     save();
 
-    /* The visitor found enough to know the timeline is wrong.
-       Don't make them hunt for every single file before the computer responds. */
-    setTimeout(()=>beginUnknownPings(),1800);
+    setTimeout(()=>{
+      showNotification(
+        "Messages",
+        "Recovered conversations",
+        "New messages were found in 3 conversations.",
+        "messages",
+        "images/icons/messages.png"
+      );
+    },1000);
+  }
+
+  maybeAdvanceInvestigation();
+}
+
+function maybeAdvanceInvestigation(){
+  /* Reading both the group timeline and Kyle's late messages is what creates
+     the suspicion. Only THEN expose the missing message fragment. */
+  if(state.backstoryUnlocked &&
+     state.readGroupLate &&
+     state.readKyleLate &&
+     !state.deletedAvailable){
+
+    state.deletedAvailable=true;
+    localStorage.setItem(KEY,JSON.stringify(state));
+    syncStory();
+
+    setTimeout(()=>{
+      showNotification(
+        "Finder",
+        "Recovered Files",
+        "A message fragment was recovered.",
+        "recovered",
+        "images/icons/folder.png"
+      );
+    },600);
+  }
+
+  /* The call log comes only after the Kyle fragment has been inspected.
+     It complicates the suspicion instead of arriving before it exists. */
+  if(state.deletedSeen && !state.callHistoryAvailable){
+    state.callHistoryAvailable=true;
+    localStorage.setItem(KEY,JSON.stringify(state));
+    syncStory();
+
+    setTimeout(()=>{
+      showNotification(
+        "Finder",
+        "Recovered Files",
+        "call-history.txt was recovered.",
+        "recovered",
+        "images/icons/folder.png"
+      );
+    },650);
+  }
+
+  /* Reading Kyle's recovered calls exposes late Safari history. */
+  if(state.callLogSeen && !state.safariHistoryAvailable){
+    state.safariHistoryAvailable=true;
+    localStorage.setItem(KEY,JSON.stringify(state));
+    syncStory();
+
+    setTimeout(()=>{
+      showNotification(
+        "Safari",
+        "History",
+        "2 late-night history items were recovered.",
+        "safari",
+        "images/icons/safari.png"
+      );
+    },700);
+  }
+
+  /* Unknown does not exist for the player until they've seen:
+     - Kyle's late thread
+     - Noemi's silent-call thread
+     - Kyle's call log
+     - the Find My browser record
+     This guarantees the human mystery happens before the supernatural one. */
+  const readyForUnknown=
+    state.readKyleLate &&
+    state.readNoemiLate &&
+    state.callLogSeen &&
+    state.sawSafariFind;
+
+  if(readyForUnknown && state.phase<4 && !state.unknownOpen && !window.__unknownQueued){
+    window.__unknownQueued=true;
+    setTimeout(()=>{
+      window.__unknownQueued=false;
+      beginUnknownPings();
+    },1100);
   }
 }
 
@@ -1298,6 +1592,12 @@ function renderNotes(name="grocery list"){
 
   if(name==="untitled"){
     body=`can you see this too?`;
+
+    if(!state.sawUntitled){
+      state.sawUntitled=true;
+      localStorage.setItem(KEY,JSON.stringify(state));
+      renderReplyChoices("unknown");
+    }
   }
 
   document.getElementById("note-text").textContent=body;
@@ -1313,6 +1613,178 @@ function openText(kind){
   let title="";
   let body="";
 
+  /* ---------- ordinary life / school ---------- */
+  if(kind==="healthnotes"){
+    title="health-admin-notes.txt";
+    body=`enokie — HCA 125
+week 3
+
+health administration:
+- access to care isn't the same as availability
+- insurance status changes how/when people seek treatment
+- remember: quality + cost + access are connected
+
+quiz friday
+finish discussion response before going out`;
+  }
+
+  if(kind==="intro"){
+    title="discussion-post-draft.txt";
+    body=`HCA 125 · introduction draft
+
+hi! i'm enokie. i'm studying health administration because i like the behind-the-scenes side of healthcare and how policy/operations affect patients.
+
+outside of school i spend way too much time fixing random website stuff, taking pictures, and going out with my friends even when i say i'm staying home.
+
+need to make this sound less awkward before submitting lol`;
+  }
+
+  if(kind==="week3"){
+    title="HCA125-week3.pdf";
+    body=`HCA 125 — Week 3
+Healthcare Organizations & Access
+
+notes:
+• organizational structure
+• inpatient vs outpatient care
+• barriers to access
+• patient experience
+• discussion due Sep 3, 11:59 PM`;
+  }
+
+  if(kind==="assignment"){
+    title="assignment-2.docx";
+    body=`Assignment 2 — Healthcare Organization Profile
+
+due: Sep 8
+
+pick one organization
+describe:
+1. ownership / structure
+2. services offered
+3. target population
+4. access barriers
+5. one operational challenge
+
+draft started: 9/1`;
+  }
+
+  if(kind==="project-outline"){
+    title="presentation-outline.txt";
+    body=`group presentation
+
+enokie:
+- intro slide
+- patient access section
+- clean up citations
+
+mia:
+- org overview
+
+jordan:
+- finance slide
+
+meet again monday after 6`;
+  }
+
+  if(kind==="project-sources"){
+    title="source-list.txt";
+    body=`sources to check
+
+- cms overview
+- county health rankings
+- hospital annual report
+- class reading ch. 4
+
+need 2 more scholarly sources`;
+  }
+
+  if(kind==="project-meeting"){
+    title="meeting-notes.txt";
+    body=`Sep 3 · group meeting
+
+everyone finally showed up lol
+presentation should be 8-10 mins
+i said i'd fix formatting because apparently i do that now`;
+  }
+
+  if(kind==="chapter4"){
+    title="chapter-4-notes.txt";
+    body=`chapter 4
+
+healthcare delivery system
+- primary / secondary / tertiary care
+- referral patterns
+- fragmentation
+- continuity matters
+
+review figure 4.3`;
+  }
+
+  if(kind==="article"){
+    title="access-to-care-summary.txt";
+    body=`article summary
+
+main point:
+access isn't just distance. cost, transportation, scheduling, language, and trust all affect whether people can actually use care.
+
+add citation later`;
+  }
+
+  if(kind==="receipt"){
+    title="receipt.pdf";
+    body=`MILA'S KITCHEN
+Sep 3, 2026 · 11:56 PM
+
+Table 18
+Guests: 4
+
+noodles ............ 14.50
+wings .............. 13.00
+fries ............... 7.00
+drinks ............. 11.00
+
+subtotal ........... 45.50
+tip ................. 9.10
+total .............. 54.60
+
+card •••• 4412`;
+  }
+
+  if(kind==="screenshot"){
+    title="Screenshot 2026-09-03 at 1.51 AM.png";
+    body=`Course Portal
+
+HCA 125
+Discussion 3 — submitted
+Sep 3, 2026 · 1:49 AM
+
+Grade status: pending`;
+  }
+
+  if(kind==="receipt2"){
+    title="receipt-0902.pdf";
+    body=`QuickMart
+Sep 2, 2026 · 8:42 PM
+
+mango juice
+chips
+gum
+phone cable
+
+total: $18.74`;
+  }
+
+  if(kind==="oldpdf"){
+    title="untitled.pdf";
+    body=`printer test
+
+page 1 of 1
+
+why does this keep exporting as untitled`;
+  }
+
+  /* ---------- first anomaly ---------- */
   if(kind==="photo-info"){
     title="IMG_4409-info.txt";
     body=`file: IMG_4409.jpeg
@@ -1321,9 +1793,7 @@ last opened: Sep 3, 2026 · 11:56 PM
 modified: Sep 11, 2026 · 2:13 AM
 
 source device: iPhone 15
-modification source: local user process
-
-the file changed after the last normal activity on this account.`;
+modification source: local user process`;
 
     state.photoInfoSeen=true;
     state.phase=Math.max(state.phase,2);
@@ -1332,27 +1802,28 @@ the file changed after the last normal activity on this account.`;
       showNotification(
         "Finder",
         "Recovered Files",
-        "4 recovered items were found.",
+        "A recovery folder was added to Desktop.",
         "recovered",
         "images/icons/folder.png"
       );
-    },850);
+    },700);
   }
 
   if(kind==="session"){
     title="session-cache.txt";
     body=`session recovery
 -----------------------------
+
 account: e.cloud
 local user: enokie
-last foreground activity: Sep 4, 2026 · 2:14:03 AM
+
+last foreground activity:
+Sep 4, 2026 · 2:14:03 AM
+
 network state: disconnected
 camera request: Sep 4 · 2:17:31 AM
 messages process: active
-session end: unavailable
-
-recovery note:
-the owner session was never closed normally.`;
+session end: unavailable`;
 
     state.sessionSeen=true;
     state.phase=Math.max(state.phase,2);
@@ -1360,7 +1831,9 @@ the owner session was never closed normally.`;
 
   if(kind==="unsent"){
     title="draft-17.txt";
-    body=`i keep thinking something is opening after i close it
+    body=`Sep 3 · 11:34 PM
+
+i keep thinking something is opening after i close it
 
 probably just the laptop being weird
 
@@ -1374,6 +1847,46 @@ don't tell everyone yet`;
     state.phase=Math.max(state.phase,2);
   }
 
+  if(kind==="messagesdb"){
+    title="messages-index.db";
+    body=`messages index
+partial recovery
+-----------------------------
+
+3asians     last record  Sep 4 · 1:37 AM
+jadabae     last record  Sep 4 · 1:48 AM
+kyle        last record  Sep 4 · 1:41 AM
+noemibae    last record  Sep 4 · 2:22 AM
+mami        last record  Sep 4 · 1:26 AM
+
+1 deleted record
+payload unavailable`;
+
+    state.messagesDbSeen=true;
+    state.phase=Math.max(state.phase,2);
+  }
+
+  if(kind==="windowstate"){
+    title="window-state.plist";
+    body=`last saved desktop state
+Sep 4, 2026 · 2:14 AM
+
+open:
+Messages
+Safari
+Notes
+
+frontmost:
+Safari
+
+screen locked:
+false
+
+shutdown record:
+none`;
+  }
+
+  /* ---------- Kyle suspicion ---------- */
   if(kind==="deleted"){
     title="deleted-message-cache.txt";
     body=`messages-index.db
@@ -1415,6 +1928,27 @@ end of recovered records`;
     state.phase=Math.max(state.phase,3);
   }
 
+  /* ---------- post-FaceTime second investigation ---------- */
+  if(kind==="device"){
+    title="device-state.txt";
+    body=`device sync state
+-----------------------------
+
+MacBook Air
+owner session: unresolved
+
+iPhone 15
+last sync: Sep 4 · 2:16:42 AM
+connection lost: Sep 4 · 2:17:03 AM
+
+local bridge:
+active now`;
+
+    state.deviceSeen=true;
+    localStorage.setItem(KEY,JSON.stringify(state));
+    renderReplyChoices("unknown");
+  }
+
   if(kind==="system"){
     title="system-log.txt";
     body=`Sep 03 23:58:17  user=enokie login success
@@ -1437,6 +1971,64 @@ state: unresolved`;
   localStorage.setItem(KEY,JSON.stringify(state));
   syncStory();
   maybeUnlockBackstory();
+  maybeAdvanceInvestigation();
+
+  document.getElementById("text-title").textContent=title;
+  document.getElementById("text-content").textContent=body;
+  openApp("text-window","TextEdit");
+}
+
+function openSafariDetail(kind){
+  let title="Safari History";
+  let body="";
+
+  if(kind==="activity"){
+    title="Recovered Safari History";
+    body=`Sep 4, 2026 · 1:42 AM
+
+search:
+macbook activity history
+
+cached visit:
+Apple Support — See login and device activity`;
+
+    state.sawSafariActivity=true;
+  }
+
+  if(kind==="find"){
+    title="Recovered Safari History";
+    body=`Sep 4, 2026 · 2:08 AM
+
+search:
+find my device last location
+
+cached query:
+iPhone 15
+
+cached result:
+location unavailable`;
+
+    state.sawSafariFind=true;
+  }
+
+  if(kind==="devices"){
+    title="Recovered Safari History";
+    body=`Sep 4, 2026 · 2:19 AM
+
+icloud account · devices
+
+MacBook Air
+iPhone 15
+
+device page loaded
+session ended before details finished loading`;
+
+    state.sawSafariDevices=true;
+    renderReplyChoices("unknown");
+  }
+
+  localStorage.setItem(KEY,JSON.stringify(state));
+  maybeAdvanceInvestigation();
 
   document.getElementById("text-title").textContent=title;
   document.getElementById("text-content").textContent=body;
@@ -1450,12 +2042,30 @@ function playSong(which){
 }
 function triggerCall(){
   if(state.callSeen)return;
-  state.callSeen=true;save();
+
+  state.callSeen=true;
+  save();
+
+  const status=document.getElementById("unknown-call-status");
+  if(status){
+    status.textContent="Ringing…";
+    status.className="";
+  }
+
+  document.getElementById("unknown-call-when").textContent="Today · now";
   document.getElementById("incoming").classList.add("show");
   document.getElementById("unknown-call-row").style.display="flex";
 }
+
 function declineCall(){
   document.getElementById("incoming").classList.remove("show");
+
+  const status=document.getElementById("unknown-call-status");
+  if(status){
+    status.textContent="Missed";
+    status.className="missed";
+  }
+
   state.phase=Math.max(state.phase,7);
   save();
 
@@ -1464,11 +2074,20 @@ function declineCall(){
     localStorage.setItem(KEY,JSON.stringify(state));
     pushUnknown("did that ring for you");
     showIncomingText("Unknown","did that ring for you","unknown");
-  },1000);
+  },900);
 }
+
 function acceptCall(){
   document.getElementById("incoming").classList.remove("show");
+
+  const status=document.getElementById("unknown-call-status");
+  if(status){
+    status.textContent="Incoming · 0:00";
+    status.className="incoming";
+  }
+
   openApp("facetime-window","FaceTime");
+
   state.phase=Math.max(state.phase,7);
   save();
 
@@ -1477,17 +2096,19 @@ function acceptCall(){
     localStorage.setItem(KEY,JSON.stringify(state));
     pushUnknown("did that ring for you");
     showIncomingText("Unknown","did that ring for you","unknown");
-  },1000);
+  },900);
 }
+
 function syncStory(){
   const recovered=state.phase>=2;
 
   document.getElementById("recovered-desktop").style.display=recovered?"block":"none";
   document.getElementById("recovered-side").style.display=recovered?"block":"none";
 
-  document.getElementById("history-login").style.display=state.phase>=2?"block":"none";
-  document.getElementById("history-hidden").style.display=state.backstoryUnlocked?"block":"none";
+  document.getElementById("history-login").style.display=state.safariHistoryAvailable?"block":"none";
+  document.getElementById("history-hidden").style.display=state.safariHistoryAvailable?"block":"none";
   document.getElementById("history-second").style.display=state.secondInvestigation?"block":"none";
+
   document.getElementById("unknown-call-row").style.display=state.callSeen?"flex":"none";
   document.getElementById("guest-setting").style.display=state.phase>=8?"block":"none";
 
@@ -1495,15 +2116,6 @@ function syncStory(){
   document.getElementById("lp-two").textContent=state.backstoryUnlocked?"last played Sep 3 · 11:51 PM":"";
 
   renderContacts();
-
-  /* Safety net for phase-3 saves where the original timer was interrupted. */
-  if(state.backstoryUnlocked && state.phase===3 && !state.unknownOpen && !window.__unknownQueued){
-    window.__unknownQueued=true;
-    setTimeout(()=>{
-      window.__unknownQueued=false;
-      beginUnknownPings();
-    },1200);
-  }
 }
 
 /* Kept for console/testing, but no visible reset control is shown to visitors. */
@@ -1513,8 +2125,7 @@ function resetStory(){
 }
 
 function startStoryWatchdog(){
-  /* Nudge #1: If the visitor hasn't found the photo clue, create a reason
-     to look in Downloads instead of letting the page sit dead forever. */
+  /* Give visitors a quick reason to investigate, but do not skip the mystery. */
   setTimeout(()=>{
     if(state.phase===0){
       state.phase=1;
@@ -1524,15 +2135,13 @@ function startStoryWatchdog(){
       showNotification(
         "Finder",
         "Recovered Item",
-        "A cached file was restored to Downloads.",
+        "A cached file appeared in Downloads.",
         "downloads",
         "images/icons/folder.png"
       );
     }
-  },9000);
+  },8500);
 
-  /* Nudge #2: If they opened Downloads but didn't notice the cache file,
-     remind them once. */
   setTimeout(()=>{
     if(state.phase===1 && !state.photoInfoSeen){
       showNotification(
@@ -1543,52 +2152,29 @@ function startStoryWatchdog(){
         "images/icons/folder.png"
       );
     }
-  },13500);
+  },14000);
 
-  /* Nudge #3: Once recovered files exist, don't require the exact right file.
-     If the visitor has been exploring for a while, let the contact begin. */
+  /* If the recovered late messages exist but have not been explored,
+     point to Messages instead of advancing the story for them. */
   setTimeout(()=>{
-    if(state.phase>=2 && state.phase<4 && !state.unknownOpen){
-      state.backstoryUnlocked=true;
-      state.phase=3;
-      localStorage.setItem(KEY,JSON.stringify(state));
-      syncStory();
-      setTimeout(()=>beginUnknownPings(),900);
-    }
-  },17500);
-
-  /* Absolute fallback: the Mac may surface hello?, but nothing after that
-     advances without the visitor interacting with it. */
-  setTimeout(()=>{
-    if(state.phase<4 && !state.unknownOpen){
-      state.backstoryUnlocked=true;
-      state.phase=3;
-      localStorage.setItem(KEY,JSON.stringify(state));
-      syncStory();
-      beginUnknownPings();
+    if(state.backstoryUnlocked &&
+       !(state.readGroupLate&&state.readKyleLate&&state.readNoemiLate)){
+      showNotification(
+        "Messages",
+        "Recovered conversations",
+        "There are unread messages from Sep 4.",
+        "messages",
+        "images/icons/messages.png"
+      );
     }
   },21000);
 }
 
 window.addEventListener("load",()=>{
-  /* Repair any saved state where the visitor found both recovered clues
-     but refreshed before the Unknown timer could fire. */
-  if(state.sessionSeen && state.draftSeen && !state.backstoryUnlocked){
+  /* Repair old partially-saved V8 states without skipping investigation. */
+  if((state.sessionSeen||state.draftSeen||state.messagesDbSeen) && !state.backstoryUnlocked){
     state.backstoryUnlocked=true;
     state.phase=Math.max(state.phase,3);
-    localStorage.setItem(KEY,JSON.stringify(state));
-  }
-
-  /* This was the v4 bug: a refresh during phase 3 destroyed the pending
-     setTimeout, leaving Unknown permanently locked. Requeue it on load. */
-  if(state.backstoryUnlocked && state.phase===3 && !state.unknownOpen){
-    setTimeout(()=>beginUnknownPings(),800);
-  }
-
-  /* Repair an incomplete saved phase-4 state too. */
-  if(state.phase>=4 && (!state.unknownMsgs || state.unknownMsgs.length===0)){
-    state.unknownMsgs=["hello?"];
-    state.unknownPingCount=Math.max(state.unknownPingCount||0,1);
     localStorage.setItem(KEY,JSON.stringify(state));
   }
 
@@ -1598,9 +2184,8 @@ window.addEventListener("load",()=>{
 
   scheduleNormalPing();
   startStoryWatchdog();
+  maybeAdvanceInvestigation();
 
-  /* If Unknown already unlocked on a previous visit, surface the latest
-     message again so the visitor doesn't have to guess that a new contact exists. */
   if(state.phase>=4 && !state.unknownOpen && state.unknownMsgs?.length){
     setTimeout(()=>showIncomingText("Unknown",lastUnknownText(),"unknown"),900);
   }
