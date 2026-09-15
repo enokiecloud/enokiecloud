@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>enokiecloud.exe</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>enokiecloud desktop</title>
 
   <style>
     * {
@@ -14,11 +13,20 @@
     }
 
     :root {
-      --window: #f8eee5;
-      --brown: #554349;
-      --pink: #e8c1cb;
-      --pink2: #f0d4da;
-      --border: #705c65;
+      --win-bg: #d9dde3;
+      --taskbar: #1f232a;
+      --taskbar-light: #2a2f37;
+      --taskbar-border: #404753;
+      --window-bg: #f2f4f7;
+      --window-border: #798291;
+      --titlebar1: #dfe5ee;
+      --titlebar2: #c8d1de;
+      --text: #1f232a;
+      --muted: #5f6773;
+      --shadow: rgba(0, 0, 0, 0.25);
+      --blue: #3578e5;
+      --hover: rgba(255,255,255,.18);
+      --selection: rgba(90,140,220,.35);
     }
 
     html,
@@ -26,12 +34,9 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-    }
-
-    body {
-      font-family: "Courier New", monospace;
-      color: var(--brown);
-      background: #cfc1d7;
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+      color: var(--text);
+      background: #0e1116;
       user-select: none;
     }
 
@@ -39,72 +44,61 @@
     input,
     a {
       font: inherit;
-    }
-
-    button {
       color: inherit;
     }
 
     /* =========================
-       BOOT SCREEN
+       BOOT
     ========================= */
 
     #boot-screen {
       position: fixed;
       inset: 0;
-      z-index: 99999;
-
+      background: #07090d;
+      color: #d8dee9;
+      z-index: 999999;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
       align-items: center;
-
-      background: #17131b;
-      color: #f1dce5;
-
+      justify-content: center;
+      flex-direction: column;
       transition: opacity .8s ease;
     }
 
     #boot-screen h1 {
-      margin-bottom: 22px;
-      font-size: clamp(25px, 5vw, 44px);
-      font-weight: normal;
-      letter-spacing: 4px;
+      font-size: clamp(26px, 4vw, 44px);
+      font-weight: 500;
+      letter-spacing: 1px;
+      margin-bottom: 18px;
     }
 
-    .loading-track {
-      width: min(280px, 75vw);
-      height: 14px;
-      padding: 2px;
-      border: 1px solid #d4bbc5;
-    }
-
-    .loading-bar {
-      height: 100%;
-      width: 0;
-      background: #e0aebe;
-      animation: loading 2.5s forwards;
-    }
-
-    @keyframes loading {
-      0% { width: 0; }
-      30% { width: 34%; }
-      52% { width: 62%; }
-      64% { width: 62%; }
-      100% { width: 100%; }
-    }
-
-    #boot-text {
+    #boot-screen p {
       margin-top: 14px;
-      font-size: 10px;
-      opacity: .55;
+      font-size: 12px;
+      color: #98a2b3;
     }
 
-    #boot-warning {
-      margin-top: 6px;
-      font-size: 9px;
-      color: #d195a4;
-      opacity: .65;
+    .boot-track {
+      width: min(320px, 70vw);
+      height: 10px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #1a1f27;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+    }
+
+    .boot-bar {
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, #6d86b9, #b8c7e6);
+      animation: bootFill 2.4s ease forwards;
+    }
+
+    @keyframes bootFill {
+      0% { width: 0%; }
+      25% { width: 20%; }
+      50% { width: 47%; }
+      68% { width: 61%; }
+      100% { width: 100%; }
     }
 
     /* =========================
@@ -113,226 +107,149 @@
 
     #desktop {
       position: relative;
-
       width: 100vw;
-      height: calc(100vh - 42px);
-
-      padding: 22px;
+      height: calc(100vh - 44px);
       overflow: hidden;
-
-      background:
-        radial-gradient(circle at 20% 20%, rgba(255,255,255,.55), transparent 25%),
-        radial-gradient(circle at 78% 70%, rgba(255,255,255,.24), transparent 22%),
-        linear-gradient(
-          145deg,
-          #d8cce7,
-          #e8cbd5 50%,
-          #c8d4ca
-        );
-
-      transition:
-        background 1.3s ease,
-        filter .5s ease;
+      background-color: #0f141b;
+      background-image:
+        linear-gradient(rgba(10, 14, 18, 0.35), rgba(10, 14, 18, 0.58)),
+        url("wallpaper-creepy.jpg"),
+        radial-gradient(circle at 55% 22%, rgba(220, 227, 238, .10), transparent 18%),
+        radial-gradient(circle at 48% 30%, rgba(255,255,255,.04), transparent 28%),
+        linear-gradient(160deg, #18202a 0%, #111720 50%, #1d2530 100%);
+      background-size: cover, cover, auto, auto, cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      transition: filter .5s ease, background-image .7s ease;
     }
 
     #desktop::after {
       content: "";
       position: absolute;
       inset: 0;
-      z-index: 9000;
       pointer-events: none;
-
-      opacity: .07;
-
+      opacity: .05;
       background:
         repeating-linear-gradient(
           0deg,
-          rgba(0,0,0,.14) 0,
-          rgba(0,0,0,.14) 1px,
+          rgba(255,255,255,.25) 0px,
+          rgba(255,255,255,.25) 1px,
           transparent 1px,
           transparent 4px
         );
+      z-index: 2;
     }
 
     #desktop.cursed {
-      filter:
-        saturate(.75)
-        contrast(1.07)
-        brightness(.95);
+      filter: contrast(1.08) saturate(.82) brightness(.9);
     }
 
-    #desktop.wallpaper-two {
-      background:
-        radial-gradient(
-          circle at 50% 32%,
-          rgba(238,220,225,.28),
-          transparent 13%
-        ),
-        radial-gradient(
-          circle at 50% 32%,
-          rgba(46,33,44,.24),
-          transparent 21%
-        ),
-        linear-gradient(
-          150deg,
-          #8a8496,
-          #9f8a95 50%,
-          #7b8984
-        );
-    }
-
-    #desktop.wallpaper-two .desktop-title p {
-      opacity: 0;
-    }
-
-    #desktop.wallpaper-two .desktop-title::after {
-      content: "you left this running.";
-      display: block;
-
-      font-size: 10px;
-      letter-spacing: 1px;
-
-      opacity: .65;
+    #desktop.wallpaper-shift {
+      background-image:
+        linear-gradient(rgba(6, 8, 12, 0.45), rgba(6, 8, 12, 0.7)),
+        url("wallpaper-creepy-2.jpg"),
+        radial-gradient(circle at 52% 22%, rgba(245,245,245,.06), transparent 14%),
+        radial-gradient(circle at 48% 30%, rgba(255,255,255,.03), transparent 24%),
+        linear-gradient(160deg, #11161d 0%, #0d1117 48%, #171d26 100%);
     }
 
     #desktop.glitch {
-      animation: glitch .13s linear 3;
+      animation: glitch 0.18s linear 2;
     }
 
     @keyframes glitch {
-      0% {
-        transform: translate(0);
-        filter: hue-rotate(0);
-      }
-
-      25% {
-        transform: translate(4px,-2px);
-        filter: hue-rotate(20deg);
-      }
-
-      50% {
-        transform: translate(-5px,1px);
-      }
-
-      75% {
-        transform: translate(2px,2px);
-        filter: hue-rotate(-20deg);
-      }
-
-      100% {
-        transform: translate(0);
-      }
+      0%   { transform: translate(0,0); filter: hue-rotate(0deg); }
+      25%  { transform: translate(3px,-2px); filter: hue-rotate(20deg); }
+      50%  { transform: translate(-4px,1px); }
+      75%  { transform: translate(2px,2px); filter: hue-rotate(-10deg); }
+      100% { transform: translate(0,0); filter: hue-rotate(0deg); }
     }
 
-    .desktop-title {
+    #background-whisper {
       position: absolute;
-      top: 26px;
-      right: 30px;
-
-      text-align: right;
-      pointer-events: none;
-
-      opacity: .38;
-    }
-
-    .desktop-title h1 {
-      font-size: clamp(32px, 7vw, 75px);
-      font-weight: normal;
-      letter-spacing: -5px;
-    }
-
-    .desktop-title p {
-      font-size: 10px;
-      letter-spacing: 2px;
-    }
-
-    #background-message {
-      position: absolute;
+      bottom: 72px;
       left: 50%;
-      bottom: 90px;
-
       transform: translateX(-50%);
-
-      font-size: 9px;
+      font-size: 11px;
+      color: rgba(255,255,255,.16);
+      letter-spacing: .5px;
       opacity: 0;
-
-      transition: opacity 1s ease;
+      transition: opacity .8s ease;
+      z-index: 4;
+      pointer-events: none;
     }
 
-    #background-message.show {
-      opacity: .34;
+    #background-whisper.show {
+      opacity: 1;
     }
 
     /* =========================
-       ICONS
+       DESKTOP ICONS
     ========================= */
 
-    .icons {
-      position: relative;
-      z-index: 20;
-
+    #icon-grid {
+      position: absolute;
+      top: 18px;
+      left: 18px;
       display: grid;
-      grid-template-columns: repeat(2, 95px);
-
-      gap: 24px 14px;
-
-      width: fit-content;
+      grid-template-columns: repeat(2, 92px);
+      grid-auto-rows: 95px;
+      gap: 10px 14px;
+      z-index: 10;
     }
 
     .desktop-icon {
-      width: 95px;
-
-      padding: 4px;
-
-      border: none;
+      width: 92px;
+      height: 92px;
+      border: 1px solid transparent;
       background: transparent;
-
+      color: #eef3fb;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
       text-align: center;
-      text-decoration: none;
-
+      padding-top: 5px;
+      position: relative;
       cursor: pointer;
-
-      transition:
-        left .3s ease,
-        top .3s ease,
-        transform .2s ease;
+      text-decoration: none;
+      transition: background .15s ease, border-color .15s ease, transform .15s ease;
     }
 
     .desktop-icon:hover {
-      transform: translateY(-2px);
+      background: rgba(255,255,255,.08);
+      border-color: rgba(255,255,255,.12);
     }
 
-    .desktop-icon:hover .icon-label {
-      background: rgba(255,255,255,.48);
+    .desktop-icon.selected {
+      background: var(--selection);
+      border-color: rgba(255,255,255,.15);
     }
 
-    .icon-picture {
+    .desktop-icon:hover .icon-glyph {
+      transform: translateY(-1px);
+    }
+
+    .icon-glyph {
+      width: 42px;
+      height: 42px;
       display: flex;
-
-      width: 56px;
-      height: 56px;
-
-      margin: auto;
-
-      justify-content: center;
       align-items: center;
-
-      font-size: 39px;
-
-      filter:
-        drop-shadow(
-          2px 4px 2px rgba(50,30,40,.15)
-        );
+      justify-content: center;
+      font-size: 30px;
+      margin-bottom: 6px;
+      transition: transform .15s ease;
+      filter: drop-shadow(0 3px 3px rgba(0,0,0,.35));
     }
 
     .icon-label {
       display: inline-block;
-
-      margin-top: 4px;
-      padding: 2px 4px;
-
-      font-size: 10px;
+      max-width: 86px;
+      font-size: 12px;
       line-height: 1.2;
+      padding: 2px 4px;
+      text-shadow: 0 1px 3px rgba(0,0,0,.55);
+      word-break: break-word;
     }
 
     #secret-icon,
@@ -341,43 +258,41 @@
     #pictures-icon {
       display: none;
       position: absolute;
-      z-index: 40;
+      z-index: 15;
     }
 
     #secret-icon {
-      left: 230px;
-      bottom: 50px;
+      left: 240px;
+      bottom: 52px;
     }
 
     #visitor-icon {
-      right: 190px;
-      bottom: 75px;
+      right: 178px;
+      bottom: 78px;
     }
 
     #user-two-icon {
-      right: 55px;
-      top: 150px;
+      right: 64px;
+      top: 72px;
     }
 
     #pictures-icon {
-      right: 55px;
-      top: 265px;
+      right: 64px;
+      top: 176px;
     }
 
     #secret-icon.visible,
     #visitor-icon.visible,
     #user-two-icon.visible,
     #pictures-icon.visible {
-      display: block;
-      animation: appear .7s;
+      display: flex;
+      animation: secretPop .6s ease;
     }
 
-    @keyframes appear {
-      0% { opacity: 0; }
-      20% { opacity: 1; }
-      35% { opacity: 0; }
-      55% { opacity: .4; }
-      100% { opacity: 1; }
+    @keyframes secretPop {
+      0% { opacity: 0; transform: scale(.92); }
+      60% { opacity: 1; transform: scale(1.03); }
+      100% { opacity: 1; transform: scale(1); }
     }
 
     /* =========================
@@ -386,92 +301,90 @@
 
     .window {
       display: none;
-
       position: absolute;
-
-      width: min(470px, calc(100vw - 30px));
-      min-height: 220px;
-
+      width: min(560px, calc(100vw - 36px));
+      min-height: 260px;
+      background: var(--window-bg);
+      border: 1px solid var(--window-border);
+      box-shadow: 0 12px 28px rgba(0,0,0,.30);
       z-index: 100;
-
-      background: var(--window);
-
-      border: 2px solid var(--border);
-
-      box-shadow:
-        5px 7px 0 rgba(70,50,60,.17),
-        inset 0 0 0 1px #fff;
+      overflow: hidden;
     }
 
     .window.active {
       display: block;
-      animation: window-open .12s ease;
+      animation: windowOpen .13s ease;
     }
 
-    @keyframes window-open {
-      from {
-        transform: scale(.97);
-        opacity: .4;
-      }
-
-      to {
-        transform: scale(1);
-        opacity: 1;
-      }
+    @keyframes windowOpen {
+      from { transform: scale(.98); opacity: .4; }
+      to   { transform: scale(1); opacity: 1; }
     }
 
     .titlebar {
+      height: 34px;
+      background: linear-gradient(180deg, var(--titlebar1), var(--titlebar2));
+      border-bottom: 1px solid #aab3c2;
       display: flex;
       align-items: center;
       justify-content: space-between;
-
-      height: 31px;
-
-      padding-left: 9px;
-
+      padding-left: 10px;
       cursor: move;
-
-      border-bottom: 2px solid var(--border);
-
-      background:
-        repeating-linear-gradient(
-          0deg,
-          #e3b7c4,
-          #e3b7c4 2px,
-          #efccd5 2px,
-          #efccd5 4px
-        );
+      user-select: none;
     }
 
     .title-name {
-      font-size: 11px;
-      font-weight: bold;
+      font-size: 12px;
+      font-weight: 600;
+      color: #273142;
     }
 
-    .close-button {
-      width: 27px;
+    .window-controls {
+      display: flex;
       height: 100%;
+    }
 
+    .window-control {
+      width: 42px;
+      height: 100%;
       border: 0;
-      border-left: 1px solid #8c737c;
-
-      background: rgba(255,255,255,.2);
-
+      background: transparent;
+      border-left: 1px solid rgba(70,80,95,.12);
       cursor: pointer;
+      font-size: 14px;
+    }
+
+    .window-control:hover {
+      background: rgba(0,0,0,.06);
+    }
+
+    .window-control.close:hover {
+      background: #e15d5d;
+      color: white;
+    }
+
+    .window-toolbar {
+      background: #edf1f6;
+      border-bottom: 1px solid #d4d9e2;
+      padding: 8px 10px;
+      font-size: 12px;
+      color: #495263;
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
     }
 
     .window-content {
-      padding: 18px;
-
-      font-size: 12px;
-      line-height: 1.7;
+      padding: 16px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #202630;
     }
 
     .window-content h2 {
+      font-size: 20px;
+      font-weight: 600;
       margin-bottom: 10px;
-
-      font-size: 17px;
-      font-weight: normal;
     }
 
     .window-content p {
@@ -479,52 +392,82 @@
     }
 
     .tiny {
-      font-size: 9px;
-      opacity: .55;
+      font-size: 11px;
+      color: var(--muted);
     }
 
-    .window-link {
+    .window-link,
+    .file-row {
       display: block;
-
-      margin: 5px 0;
-      padding: 7px 8px;
-
-      border: 1px dashed #c399a4;
-
-      background: rgba(255,255,255,.38);
-
-      color: inherit;
-
+      width: 100%;
+      margin: 6px 0;
+      padding: 9px 10px;
+      background: white;
+      border: 1px solid #dbe2ea;
       text-decoration: none;
-
       cursor: pointer;
+      border-radius: 4px;
     }
 
-    .window-link:hover {
-      background: #f0d7dd;
+    .window-link:hover,
+    .file-row:hover {
+      background: #eef5ff;
+      border-color: #c7d5ea;
+    }
+
+    .notepad {
+      min-height: 220px;
+      padding: 12px 14px;
+      white-space: pre-line;
+      line-height: 1.75;
+      font-size: 13px;
+      background:
+        repeating-linear-gradient(
+          #ffffff,
+          #ffffff 27px,
+          #e8edf4 28px
+        );
+      border: 1px solid #d3dbe6;
+      color: #1f2430;
     }
 
     /* =========================
-       NOTEPAD
+       EXPLORER / GRID
     ========================= */
 
-    .notepad {
-      min-height: 205px;
+    .explorer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 8px;
+    }
 
-      padding: 13px;
+    .explorer-tile {
+      background: #fff;
+      border: 1px solid #d8e0ea;
+      border-radius: 6px;
+      padding: 14px 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: background .12s ease, transform .12s ease;
+    }
 
-      white-space: pre-line;
+    .explorer-tile:hover {
+      background: #eef5ff;
+      transform: translateY(-1px);
+    }
 
-      border: 1px solid #c7b8b1;
+    .explorer-tile .emoji {
+      font-size: 34px;
+      display: block;
+      margin-bottom: 6px;
+    }
 
-      background:
-        repeating-linear-gradient(
-          #fffdf7,
-          #fffdf7 23px,
-          #ded6cc 24px
-        );
-
-      line-height: 24px;
+    .explorer-tile small {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
     }
 
     /* =========================
@@ -533,170 +476,50 @@
 
     .login-box {
       text-align: center;
-      padding: 12px 10px 5px;
+      padding-top: 8px;
     }
 
     .login-avatar {
-      font-size: 55px;
-      margin-bottom: 8px;
+      font-size: 58px;
+      margin-bottom: 10px;
     }
 
     .login-name {
-      font-size: 15px;
-      margin-bottom: 15px;
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 14px;
+      color: #1c2430;
     }
 
     #password-input {
-      width: 210px;
-      max-width: 90%;
-
-      padding: 7px;
-
-      border: 1px solid #806b74;
-      background: #fffaf7;
-
+      width: min(260px, 95%);
+      padding: 10px 12px;
+      border: 1px solid #bcc7d7;
+      border-radius: 4px;
+      background: #fff;
       outline: none;
+      font-size: 14px;
+    }
+
+    #password-input:focus {
+      border-color: #5f95e8;
+      box-shadow: 0 0 0 3px rgba(53,120,229,.14);
     }
 
     .login-button {
       margin-top: 10px;
-      padding: 6px 20px;
-
-      border: 1px solid #806b74;
-      background: #ead2d8;
-
+      padding: 9px 18px;
+      border: 1px solid #b4c1d4;
+      background: linear-gradient(#ffffff, #e8edf4);
+      border-radius: 4px;
       cursor: pointer;
     }
 
     #login-message {
-      min-height: 25px;
-
-      margin-top: 13px;
-
-      font-size: 10px;
-      opacity: .6;
-    }
-
-    /* =========================
-       PHOTO FOLDER
-    ========================= */
-
-    .photo-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-
-      gap: 10px;
-    }
-
-    .photo-file {
-      padding: 10px 5px;
-
-      border: 1px solid transparent;
-      background: transparent;
-
-      text-align: center;
-
-      cursor: pointer;
-    }
-
-    .photo-file:hover {
-      border-color: #c6aab3;
-      background: rgba(255,255,255,.45);
-    }
-
-    .photo-file span {
-      display: block;
-      font-size: 32px;
-    }
-
-    .photo-file small {
-      font-size: 8px;
-    }
-
-    /* =========================
-       PHOTO VIEWER
-    ========================= */
-
-    #photo-viewer {
-      width: min(520px, calc(100vw - 30px));
-    }
-
-    .photo-preview {
-      position: relative;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      min-height: 290px;
-
-      overflow: hidden;
-
-      background: #231e22;
-      color: #e9dfe3;
-    }
-
-    .photo-preview.normal {
-      background:
-        linear-gradient(
-          140deg,
-          #cfc9dd,
-          #d8bfc9,
-          #bdcbc5
-        );
-    }
-
-    .photo-preview.corrupt {
-      background:
-        repeating-linear-gradient(
-          90deg,
-          #261d24 0 18px,
-          #6e5361 18px 23px,
-          #27202a 23px 49px,
-          #baa0aa 49px 53px
-        );
-    }
-
-    .photo-preview.corrupt::before {
-      content: "";
-
-      position: absolute;
-      inset: 0;
-
-      background:
-        repeating-linear-gradient(
-          0deg,
-          transparent 0 7px,
-          rgba(255,255,255,.08) 7px 8px
-        );
-    }
-
-    .photo-preview.future {
-      background:
-        radial-gradient(
-          circle at center,
-          #b4a4ae 0 15%,
-          #493a44 16% 17%,
-          #171216 40%
-        );
-    }
-
-    #photo-text {
-      z-index: 2;
-
-      padding: 20px;
-
+      min-height: 26px;
+      margin-top: 12px;
       font-size: 12px;
-      text-align: center;
-
-      white-space: pre-line;
-    }
-
-    #photo-meta {
-      margin-top: 9px;
-
-      font-size: 9px;
-      opacity: .55;
+      color: var(--muted);
     }
 
     /* =========================
@@ -704,51 +527,119 @@
     ========================= */
 
     .chat-box {
-      min-height: 170px;
-
+      min-height: 180px;
       padding: 12px;
+      background: #fff;
+      border: 1px solid #d9e0e8;
+      border-radius: 4px;
+      font-size: 13px;
+      line-height: 1.7;
+    }
 
-      border: 1px solid #c1adb5;
-      background: #fffaf7;
-
-      font-size: 10px;
-      line-height: 1.8;
+    .chat-line {
+      margin-bottom: 7px;
     }
 
     .chat-name {
-      color: #8b6472;
-      font-weight: bold;
+      font-weight: 700;
+      color: #40516c;
     }
 
     #typing {
-      opacity: .45;
+      color: #6b7382;
       font-style: italic;
     }
 
     /* =========================
-       ERROR
+       PHOTO VIEWER
+    ========================= */
+
+    #photo-viewer {
+      width: min(640px, calc(100vw - 30px));
+    }
+
+    .photo-preview {
+      position: relative;
+      min-height: 320px;
+      border: 1px solid #d5dde8;
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #10141a;
+      color: #eef2f7;
+    }
+
+    .photo-preview.normal {
+      background:
+        linear-gradient(rgba(0,0,0,.28), rgba(0,0,0,.38)),
+        radial-gradient(circle at 55% 28%, rgba(214,214,214,.08), transparent 13%),
+        linear-gradient(160deg, #2a313d, #1f2630 48%, #343c49);
+    }
+
+    .photo-preview.corrupt {
+      background:
+        repeating-linear-gradient(
+          90deg,
+          #171b21 0 18px,
+          #6c5562 18px 24px,
+          #1f252d 24px 55px,
+          #b39aa5 55px 60px
+        );
+    }
+
+    .photo-preview.corrupt::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent 0 8px,
+          rgba(255,255,255,.08) 8px 9px
+        );
+    }
+
+    .photo-preview.future {
+      background:
+        radial-gradient(circle at center, #b1a2aa 0 12%, #4e4149 13% 15%, #161418 40%),
+        #111;
+    }
+
+    #photo-text {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      white-space: pre-line;
+      padding: 18px;
+      font-size: 13px;
+      line-height: 1.6;
+      max-width: 90%;
+    }
+
+    #photo-meta {
+      margin-top: 10px;
+      font-size: 11px;
+      color: #5f6773;
+    }
+
+    /* =========================
+       ERROR POPUP
     ========================= */
 
     #error-popup {
       display: none;
-
       position: fixed;
-
       top: 48%;
       left: 50%;
-
-      width: min(340px, calc(100vw - 30px));
-
       transform: translate(-50%, -50%);
-
+      width: min(380px, calc(100vw - 24px));
       z-index: 99999;
-
-      border: 2px solid #64525b;
-
-      background: #f6ebe6;
-
-      box-shadow:
-        7px 8px 0 rgba(45,30,40,.2);
+      background: #f3f5f8;
+      border: 1px solid #7d8795;
+      box-shadow: 0 16px 30px rgba(0,0,0,.34);
+      overflow: hidden;
     }
 
     #error-popup.show {
@@ -757,115 +648,47 @@
 
     .error-body {
       display: flex;
-      gap: 15px;
-
-      padding: 20px;
-
-      font-size: 11px;
+      gap: 14px;
+      padding: 18px 16px;
+      font-size: 13px;
       line-height: 1.5;
     }
 
     .error-symbol {
       font-size: 28px;
+      line-height: 1;
+    }
+
+    .error-footer {
+      padding: 0 16px 14px;
+      display: flex;
+      justify-content: center;
     }
 
     .error-ok {
-      display: block;
-
-      margin: 0 auto 15px;
-      padding: 5px 18px;
-
-      border: 2px outset #decfd0;
-
-      background: #faf1ed;
-
+      min-width: 78px;
+      padding: 8px 14px;
+      border: 1px solid #b9c4d4;
+      background: linear-gradient(#ffffff, #ebeff5);
+      border-radius: 4px;
       cursor: pointer;
     }
 
     /* =========================
-       TASKBAR + START
+       START MENU
     ========================= */
-
-    #taskbar {
-      position: fixed;
-
-      bottom: 0;
-      left: 0;
-      right: 0;
-
-      z-index: 8000;
-
-      display: flex;
-      align-items: center;
-
-      height: 42px;
-
-      padding: 5px;
-      gap: 5px;
-
-      background: #e8cbd2;
-
-      border-top: 2px solid rgba(255,255,255,.6);
-    }
-
-    #start-button {
-      height: 31px;
-
-      min-width: 82px;
-
-      padding: 0 12px;
-
-      border: 2px outset #f5e6e9;
-
-      background: #ecd3d8;
-
-      cursor: pointer;
-    }
-
-    #task-message {
-      flex: 1;
-
-      padding-left: 8px;
-
-      overflow: hidden;
-
-      font-size: 9px;
-      opacity: .6;
-
-      white-space: nowrap;
-    }
-
-    #clock {
-      min-width: 88px;
-      height: 30px;
-
-      border: 2px inset rgba(255,255,255,.6);
-
-      background: rgba(255,255,255,.18);
-
-      font-size: 10px;
-
-      cursor: pointer;
-    }
 
     #start-menu {
       display: none;
-
       position: fixed;
-
-      left: 5px;
-      bottom: 42px;
-
-      width: 235px;
-
-      z-index: 7000;
-
-      border: 2px solid #6d5962;
-
-      background: #f5e7e3;
-
-      box-shadow:
-        5px 5px rgba(50,30,40,.16);
+      left: 8px;
+      bottom: 46px;
+      width: 260px;
+      background: #eff3f8;
+      border: 1px solid #798390;
+      box-shadow: 0 16px 26px rgba(0,0,0,.35);
+      z-index: 8000;
+      overflow: hidden;
     }
 
     #start-menu.open {
@@ -873,377 +696,327 @@
     }
 
     .start-header {
-      padding: 12px;
-
-      background: #d7aeb9;
-
-      border-bottom: 1px solid #806a73;
+      padding: 14px 14px 12px;
+      background: linear-gradient(180deg, #cad4e1, #b5c2d5);
+      border-bottom: 1px solid #95a3b7;
     }
 
     .start-header strong {
       display: block;
-
-      font-size: 14px;
+      font-size: 15px;
+      color: #1d2634;
     }
 
     .start-header span {
-      font-size: 9px;
-      opacity: .6;
+      display: block;
+      margin-top: 3px;
+      font-size: 11px;
+      color: #4d5c72;
+    }
+
+    .start-list {
+      padding: 6px 0;
     }
 
     .start-item {
       width: 100%;
-
-      padding: 10px 12px;
-
-      border: none;
-      border-bottom: 1px solid rgba(80,60,70,.1);
-
+      padding: 10px 14px;
       background: transparent;
-
+      border: 0;
       text-align: left;
-
       cursor: pointer;
+      font-size: 13px;
     }
 
     .start-item:hover {
-      background: #edd1d8;
+      background: #dfe9f8;
+    }
+
+    /* =========================
+       TASKBAR
+    ========================= */
+
+    #taskbar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 44px;
+      background: linear-gradient(180deg, var(--taskbar-light), var(--taskbar));
+      border-top: 1px solid var(--taskbar-border);
+      display: flex;
+      align-items: center;
+      padding: 5px 6px;
+      gap: 6px;
+      z-index: 7000;
+    }
+
+    #start-button {
+      height: 34px;
+      min-width: 86px;
+      border: 1px solid #4d5563;
+      border-radius: 4px;
+      background: linear-gradient(180deg, #384150, #222933);
+      color: #eef3fb;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0 14px;
+    }
+
+    #start-button:hover {
+      background: linear-gradient(180deg, #414b5b, #29313c);
+    }
+
+    #task-message {
+      flex: 1;
+      color: #d3d9e2;
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-left: 4px;
+    }
+
+    #clock {
+      min-width: 92px;
+      height: 34px;
+      border: 1px solid #4c5664;
+      border-radius: 4px;
+      background: rgba(255,255,255,.06);
+      color: #eef3fb;
+      font-size: 12px;
+      cursor: pointer;
+      padding: 0 10px;
     }
 
     /* =========================
        MOBILE
     ========================= */
 
-    @media (max-width: 600px) {
-
-      #desktop {
-        padding: 14px;
-      }
-
-      .desktop-title {
-        top: 13px;
-        right: 13px;
-      }
-
-      .desktop-title h1 {
-        font-size: 34px;
-        letter-spacing: -3px;
-      }
-
-      .desktop-title p {
-        display: none;
-      }
-
-      .icons {
-        margin-top: 58px;
-
-        grid-template-columns: repeat(2, 85px);
-
-        gap: 18px 7px;
+    @media (max-width: 700px) {
+      #icon-grid {
+        top: 14px;
+        left: 12px;
+        grid-template-columns: repeat(2, 86px);
+        grid-auto-rows: 90px;
+        gap: 8px;
       }
 
       .desktop-icon {
-        width: 85px;
+        width: 86px;
+        height: 88px;
+      }
+
+      .icon-label {
+        font-size: 11px;
       }
 
       .window {
         position: fixed !important;
-
-        top: 62px !important;
-        left: 15px !important;
-
-        max-height:
-          calc(100vh - 120px);
-
+        left: 12px !important;
+        top: 58px !important;
+        max-height: calc(100vh - 116px);
         overflow: auto;
       }
 
-      #secret-icon {
-        left: auto;
-        right: 15px;
-        bottom: 65px;
-      }
-
-      #visitor-icon {
-        right: 100px;
-        bottom: 65px;
-      }
-
       #user-two-icon {
-        top: 250px;
-        right: 5px;
+        right: 10px;
+        top: 62px;
       }
 
       #pictures-icon {
-        top: 350px;
-        right: 5px;
+        right: 10px;
+        top: 162px;
       }
 
+      #visitor-icon {
+        right: 98px;
+        bottom: 70px;
+      }
+
+      #secret-icon {
+        right: 10px;
+        left: auto;
+        bottom: 70px;
+      }
     }
   </style>
 </head>
-
-
 <body>
 
   <!-- BOOT -->
-
   <div id="boot-screen">
-
-    <h1>enokiecloud.exe</h1>
-
-    <div class="loading-track">
-      <div class="loading-bar"></div>
+    <h1>enokiecloud</h1>
+    <div class="boot-track">
+      <div class="boot-bar"></div>
     </div>
-
-    <div id="boot-text">
-      please do not turn off your computer
-    </div>
-
-    <div id="boot-warning">
-      another session may already be active
-    </div>
-
+    <p>loading desktop...</p>
   </div>
 
-
-
   <!-- DESKTOP -->
-
   <main id="desktop">
+    <div id="background-whisper">someone is already here</div>
 
-    <div class="desktop-title">
-      <h1>enokiecloud</h1>
-      <p>personal computer / definitely normal</p>
-    </div>
-
-    <div id="background-message">
-      don't turn around
-    </div>
-
-
-    <div class="icons">
-
-      <button
-        class="desktop-icon"
-        id="documents-icon"
-        onclick="openWindow('documents-window')"
-      >
-        <span class="icon-picture">📁</span>
-        <span class="icon-label">my documents</span>
+    <div id="icon-grid">
+      <button class="desktop-icon" id="documents-icon" onclick="openWindow('explorer-window')">
+        <span class="icon-glyph">📁</span>
+        <span class="icon-label">File Explorer</span>
       </button>
 
+      <button class="desktop-icon" onclick="openWindow('computer-window')">
+        <span class="icon-glyph">🖥️</span>
+        <span class="icon-label">My Computer</span>
+      </button>
 
-      <button
-        class="desktop-icon"
-        onclick="openWindow('notes-window')"
-      >
-        <span class="icon-picture">📝</span>
+      <button class="desktop-icon" onclick="openWindow('notes-window')">
+        <span class="icon-glyph">📝</span>
         <span class="icon-label">notes.txt</span>
       </button>
 
-
-      <button
-        class="desktop-icon"
-        onclick="openWindow('fortune-window')"
-      >
-        <span class="icon-picture">🐈‍⬛</span>
-        <span class="icon-label">fortune-cat.exe</span>
+      <button class="desktop-icon" onclick="openWindow('tube-window')">
+        <span class="icon-glyph">📺</span>
+        <span class="icon-label">EnokieTube</span>
       </button>
 
-
-      <button
-        class="desktop-icon"
-        onclick="openWindow('guest-window')"
-      >
-        <span class="icon-picture">💌</span>
-        <span class="icon-label">guestbook.exe</span>
+      <button class="desktop-icon" onclick="openWindow('store-window')">
+        <span class="icon-glyph">🎮</span>
+        <span class="icon-label">Cloud Store</span>
       </button>
 
-
-      <button
-        class="desktop-icon"
-        onclick="openWindow('trash-window')"
-      >
-        <span class="icon-picture">🗑️</span>
-        <span class="icon-label">recycle bin</span>
+      <button class="desktop-icon" onclick="openWindow('music-window')">
+        <span class="icon-glyph">🎵</span>
+        <span class="icon-label">Cloud Player</span>
       </button>
 
-
-      <button
-        class="desktop-icon"
-        onclick="openWindow('chat-window')"
-      >
-        <span class="icon-picture">💬</span>
-        <span class="icon-label">messenger.exe</span>
+      <button class="desktop-icon" onclick="openWindow('fortune-window')">
+        <span class="icon-glyph">🐈‍⬛</span>
+        <span class="icon-label">Fortune Cat</span>
       </button>
 
+      <button class="desktop-icon" onclick="openWindow('guest-window')">
+        <span class="icon-glyph">💌</span>
+        <span class="icon-label">Guestbook</span>
+      </button>
 
-      <a
-        class="desktop-icon"
-        href="index.html"
-      >
-        <span class="icon-picture">🏠</span>
-        <span class="icon-label">return home</span>
+      <button class="desktop-icon" onclick="openWindow('trash-window')">
+        <span class="icon-glyph">🗑️</span>
+        <span class="icon-label">Recycle Bin</span>
+      </button>
+
+      <a class="desktop-icon" href="index.html">
+        <span class="icon-glyph">🏠</span>
+        <span class="icon-label">Home</span>
       </a>
-
     </div>
 
-
-    <!-- hidden -->
-
-    <button
-      id="secret-icon"
-      class="desktop-icon"
-      onclick="openSecret()"
-    >
-      <span class="icon-picture">◼️</span>
-      <span
-        class="icon-label"
-        id="secret-label"
-      >
-        dont-open.exe
-      </span>
+    <!-- hidden icons -->
+    <button id="secret-icon" class="desktop-icon" onclick="openSecret()">
+      <span class="icon-glyph">◼️</span>
+      <span class="icon-label" id="secret-label">unknown.exe</span>
     </button>
 
-
-    <button
-      id="visitor-icon"
-      class="desktop-icon"
-      onclick="openWindow('visitor-window')"
-    >
-      <span class="icon-picture">📜</span>
+    <button id="visitor-icon" class="desktop-icon" onclick="openWindow('visitor-window')">
+      <span class="icon-glyph">📜</span>
       <span class="icon-label">visitor_log.txt</span>
     </button>
 
-
-    <button
-      id="user-two-icon"
-      class="desktop-icon"
-      onclick="openWindow('login-window')"
-    >
-      <span class="icon-picture">👤</span>
+    <button id="user-two-icon" class="desktop-icon" onclick="openWindow('login-window')">
+      <span class="icon-glyph">👤</span>
       <span class="icon-label">user_02</span>
     </button>
 
-
-    <button
-      id="pictures-icon"
-      class="desktop-icon"
-      onclick="openWindow('pictures-window')"
-    >
-      <span class="icon-picture">📷</span>
-      <span class="icon-label">pictures</span>
+    <button id="pictures-icon" class="desktop-icon" onclick="openWindow('pictures-window')">
+      <span class="icon-glyph">🖼️</span>
+      <span class="icon-label">Pictures</span>
     </button>
 
-
-
-    <!-- DOCUMENTS -->
-
-    <section
-      class="window"
-      id="documents-window"
-      style="left:180px; top:85px;"
-    >
-
+    <!-- FILE EXPLORER -->
+    <section class="window" id="explorer-window" style="left:150px; top:70px;">
       <div class="titlebar">
-        <span class="title-name">
-          📁 C:\Users\kels\Documents
-        </span>
-
-        <button
-          class="close-button"
-          onclick="closeWindow('documents-window')"
-        >
-          ×
-        </button>
+        <span class="title-name">File Explorer</span>
+        <div class="window-controls">
+          <button class="window-control">—</button>
+          <button class="window-control">□</button>
+          <button class="window-control close" onclick="closeWindow('explorer-window')">×</button>
+        </div>
       </div>
-
+      <div class="window-toolbar">File &nbsp; Edit &nbsp; View &nbsp; Tools &nbsp; Help</div>
       <div class="window-content">
+        <h2>Quick Access</h2>
+        <div class="explorer-grid">
+          <div class="explorer-tile" onclick="location.href='memory-box.html'">
+            <span class="emoji">📦</span>
+            Memory Box
+            <small>opens page</small>
+          </div>
 
-        <h2>my documents</h2>
+          <div class="explorer-tile" onclick="location.href='guestbook.html'">
+            <span class="emoji">💌</span>
+            Guestbook
+            <small>opens page</small>
+          </div>
 
-        <p class="tiny">
-          <span id="file-count">5</span> objects found
-        </p>
+          <div class="explorer-tile" onclick="location.href='fortune-cat.html'">
+            <span class="emoji">🐈</span>
+            Fortune Cat
+            <small>opens page</small>
+          </div>
 
-        <a
-          class="window-link"
-          href="memory-box.html"
-        >
-          📦 memory box
-        </a>
+          <div class="explorer-tile" onclick="weirdFile()">
+            <span class="emoji">📄</span>
+            i_dont_remember_making_this.txt
+            <small>modified tomorrow</small>
+          </div>
 
-        <a
-          class="window-link"
-          href="fortune-cat.html"
-        >
-          🐈 fortune cat
-        </a>
+          <div class="explorer-tile" onclick="missingPhoto()">
+            <span class="emoji">🖼️</span>
+            IMG_0000.jpg
+            <small>preview unavailable</small>
+          </div>
 
-        <a
-          class="window-link"
-          href="guestbook.html"
-        >
-          💌 guestbook
-        </a>
-
-        <div
-          class="window-link"
-          onclick="weirdFile()"
-        >
-          📄 i_dont_remember_making_this.txt
+          <div class="explorer-tile" id="hidden-document" onclick="hiddenDocument()" style="display:none;">
+            <span class="emoji">📄</span>
+            you_were_here.txt
+            <small>new item</small>
+          </div>
         </div>
-
-        <div
-          class="window-link"
-          onclick="missingPhoto()"
-        >
-          🖼 IMG_0000.jpg
-        </div>
-
-        <div
-          class="window-link"
-          id="hidden-document"
-          onclick="hiddenDocument()"
-          style="display:none;"
-        >
-          📄 you_were_here.txt
-        </div>
-
       </div>
-
     </section>
 
-
+    <!-- MY COMPUTER -->
+    <section class="window" id="computer-window" style="left:220px; top:110px;">
+      <div class="titlebar">
+        <span class="title-name">My Computer</span>
+        <div class="window-controls">
+          <button class="window-control">—</button>
+          <button class="window-control">□</button>
+          <button class="window-control close" onclick="closeWindow('computer-window')">×</button>
+        </div>
+      </div>
+      <div class="window-toolbar">System &nbsp; Devices &nbsp; Network</div>
+      <div class="window-content">
+        <h2>System Summary</h2>
+        <p><strong>Device Name:</strong> enokiecloud-pc</p>
+        <p><strong>Storage:</strong> 128 GB / 128 GB used</p>
+        <p><strong>Status:</strong> running</p>
+        <p><strong>Other sessions:</strong> <span id="connection-count">1</span></p>
+        <p class="tiny">last update completed successfully.</p>
+      </div>
+    </section>
 
     <!-- NOTES -->
-
-    <section
-      class="window"
-      id="notes-window"
-      style="left:320px; top:130px;"
-    >
-
+    <section class="window" id="notes-window" style="left:340px; top:90px;">
       <div class="titlebar">
-        <span class="title-name">
-          notes.txt - Notepad
-        </span>
-
-        <button
-          class="close-button"
-          onclick="closeWindow('notes-window')"
-        >
-          ×
-        </button>
+        <span class="title-name">notes.txt - Notepad</span>
+        <div class="window-controls">
+          <button class="window-control">—</button>
+          <button class="window-control">□</button>
+          <button class="window-control close" onclick="closeWindow('notes-window')">×</button>
+        </div>
       </div>
-
+      <div class="window-toolbar">File &nbsp; Edit &nbsp; Format &nbsp; View &nbsp; Help</div>
       <div class="window-content">
-
-        <div
-          class="notepad"
-          id="note-text"
-        >things to remember:
+        <div class="notepad" id="note-text">things to remember:
 
 - update website
 - feed cat
@@ -1253,675 +1026,321 @@
 also...
 
 why does this computer keep saying i've been here before?</div>
-
       </div>
-
     </section>
 
-
-
-    <!-- FORTUNE -->
-
-    <section
-      class="window"
-      id="fortune-window"
-      style="left:255px; top:75px;"
-    >
-
+    <!-- ENOKIETUBE -->
+    <section class="window" id="tube-window" style="left:250px; top:70px;">
       <div class="titlebar">
-
-        <span class="title-name">
-          fortune-cat.exe
-        </span>
-
-        <button
-          class="close-button"
-          onclick="closeWindow('fortune-window')"
-        >
-          ×
-        </button>
-
+        <span class="title-name">EnokieTube</span>
+        <div class="window-controls">
+          <button class="window-control">—</button>
+          <button class="window-control">□</button>
+          <button class="window-control close" onclick="closeWindow('tube-window')">×</button>
+        </div>
       </div>
-
+      <div class="window-toolbar">Home &nbsp; Trending &nbsp; Watch Later &nbsp; History</div>
       <div class="window-content">
-
-        <h2>🐈 fortune-cat.exe</h2>
-
-        <p>
-          an unidentified program wants permission
-          to predict your future.
-        </p>
-
-        <p class="tiny">
-          publisher: probably trustworthy
-        </p>
-
-        <a
-          href="fortune-cat.html"
-          class="window-link"
-        >
-          run fortune-cat.exe →
-        </a>
-
+        <h2>recommended</h2>
+        <div class="file-row">▶ 02:13 ~ “how to stop your desktop from watching you”</div>
+        <div class="file-row">▶ 11:42 ~ “night drive ambience”</div>
+        <div class="file-row">▶ 06:01 ~ “you have seen this before”</div>
+        <p class="tiny">last watched: unknown.</p>
       </div>
-
     </section>
 
+    <!-- CLOUD STORE -->
+    <section class="window" id="store-window" style="left:300px; top:110px;">
+      <div class="titlebar">
+        <span class="title-name">Cloud Store</span>
+        <div class="window-controls">
+          <button class="window-control">—</button>
+          <button class="window-control">□</button>
+          <button class="window-control close" onclick="closeWindow('store-window')">×</button>
+        </div>
+      </div>
+      <div class="window-toolbar">Store &nbsp; Library &nbsp; Friends &nbsp; Downloads</div>
+      <div class="window-content">
+        <h2>library</h2>
+        <div class="file-row">🎮 enokie simulator</div>
+        <div class="file-row">🎮 sleep schedule manager</div>
+        <div class="file-row">🎮 cat.exe</div>
+        <div class="file-row">🎮 session_02</div>
+        <p class="tiny">1 item failed to uninstall.</p>
+      </div>
+    </section>
 
+    <!-- CLOUD PLAYER -->
+    <section class="window" id="music-window" style="left:370px; top:140px;">
+      <div class="titlebar">
+        <span class="title-name">Cloud Player</span>
+        <div class="window-controls">
+          <button class="window-control">—</button>
+          <button class="window-control">□</button>
+          <button class="window-control close" onclick="closeWindow('music-window')">×</button>
+        </div>
+      </div>
+      <div class="window-toolbar">Library &nbsp; Playlist &nbsp; Queue &nbsp; Devices</div>
+      <div class="window-content">
+        <h2>now playing</h2>
+        <p><strong>Track:</strong> static_in_the_hallway.mp3</p>
+        <p><strong>Artist:</strong> unknown</p>
+        <p><strong>Status:</strong> paused</p>
+        <div class="file-row">⏮ previous</div>
+        <div class="file-row">⏯ play / pause</div>
+        <div class="file-row">⏭ next</div>
+      </div>
+    </section>
+
+    <!-- FORTUNE CAT -->
+    <section class="window" id="fortune-window" style="left:230px; top:130px;">
+      <div class="titlebar">
+        <span class="title-name">Fortune Cat</span>
+        <div class="window-controls">
+          <button class="window-control">—</button>
+          <button class="window-control">□</button>
+          <button class="window-control close" onclick="closeWindow('fortune-window')">×</button>
+        </div>
+      </div>
+      <div class="window-toolbar">Program &nbsp; Open &nbsp; Run</div>
+      <div class="window-content">
+        <h2>fortune cat</h2>
+        <p>launch program?</p>
+        <a href="fortune-cat.html" class="window-link">open fortune-cat.html</a>
+      </div>
+    </section>
 
     <!-- GUESTBOOK -->
-
-    <section
-      class="window"
-      id="guest-window"
-      style="left:420px; top:170px;"
-    >
-
+    <section class="window" id="guest-window" style="left:430px; top:180px;">
       <div class="titlebar">
-
-        <span class="title-name">
-          guestbook.exe
-        </span>
-
-        <button
-          class="close-button"
-          onclick="closeWindow('guest-window')"
-        >
-          ×
-        </button>
-
+        <span class="title-name">Guestbook</span>
+        <div class="window-controls">
+          <button class="window-control">—</button>
+          <button class="window-control">□</button>
+          <button class="window-control close" onclick="closeWindow('guest-window')">×</button>
+        </div>
       </div>
-
+      <div class="window-toolbar">Program &nbsp; Connect</div>
       <div class="window-content">
-
-        <h2>💌 guestbook.exe</h2>
-
-        <p>
-          leave something behind before you go.
-        </p>
-
-        <p class="tiny">
-          connections active:
-          <span id="connection-count">1</span>
-        </p>
-
-        <a
-          href="guestbook.html"
-          class="window-link"
-        >
-          connect →
-        </a>
-
+        <h2>guestbook</h2>
+        <p>leave something behind before you go.</p>
+        <a href="guestbook.html" class="window-link">open guestbook.html</a>
       </div>
-
     </section>
 
-
-
-    <!-- TRASH -->
-
-    <section
-      class="window"
-      id="trash-window"
-      style="left:150px; top:205px;"
-    >
-
+    <!-- RECYCLE BIN -->
+    <section class="window" id="trash-window" style="left:160px; top:210px;">
       <div class="titlebar">
-
-        <span class="title-name">
-          Recycle Bin
-        </span>
-
-        <button
-          class="close-button"
-          onclick="closeWindow('trash-window')"
-        >
-          ×
-        </button>
-
+        <span class="title-name">Recycle Bin</span>
+        <div class="window-controls">
+          <button class="window-control">—</button>
+          <button class="window-control">□</button>
+          <button class="window-control close" onclick="closeWindow('trash-window')">×</button>
+        </div>
       </div>
-
+      <div class="window-toolbar">Restore &nbsp; Empty Recycle Bin</div>
       <div class="window-content">
-
-        <h2>recycle bin</h2>
-
-        <p class="tiny">
-          5 deleted objects
-        </p>
-
-        <div class="window-link">
-          🗑 embarrassing_photo_FINAL.jpg
-        </div>
-
-        <div class="window-link">
-          🗑 bad_decision.txt
-        </div>
-
-        <div
-          class="window-link"
-          onclick="deletedMessage()"
-        >
-          🗑 message_from_unknown.txt
-        </div>
-
-        <div
-          class="window-link"
-          onclick="deletedUser()"
-        >
-          🗑 user_02
-        </div>
-
-        <div
-          class="window-link"
-          onclick="restoreUnknown()"
-        >
-          🗑 unknown.exe
-        </div>
-
+        <h2>deleted items</h2>
+        <div class="file-row">🗑 embarrassing_photo_FINAL.jpg</div>
+        <div class="file-row">🗑 bad_decision.txt</div>
+        <div class="file-row" onclick="deletedMessage()">🗑 message_from_unknown.txt</div>
+        <div class="file-row" onclick="deletedUser()">🗑 user_02</div>
+        <div class="file-row" onclick="restoreUnknown()">🗑 unknown.exe</div>
       </div>
-
     </section>
-
-
-
-    <!-- CHAT -->
-
-    <section
-      class="window"
-      id="chat-window"
-      style="left:500px; top:110px;"
-    >
-
-      <div class="titlebar">
-
-        <span class="title-name">
-          messenger.exe
-        </span>
-
-        <button
-          class="close-button"
-          onclick="closeWindow('chat-window')"
-        >
-          ×
-        </button>
-
-      </div>
-
-      <div class="window-content">
-
-        <h2>messages</h2>
-
-        <div
-          class="chat-box"
-          id="chat-box"
-        >
-
-          <div>
-            <span class="chat-name">
-              system:
-            </span>
-            connected.
-          </div>
-
-          <div>
-            <span class="chat-name">
-              unknown:
-            </span>
-            hi
-          </div>
-
-          <div id="typing">
-            unknown is typing...
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
 
     <!-- VISITOR LOG -->
-
-    <section
-      class="window"
-      id="visitor-window"
-      style="left:350px; top:145px;"
-    >
-
+    <section class="window" id="visitor-window" style="left:350px; top:150px;">
       <div class="titlebar">
-
-        <span class="title-name">
-          visitor_log.txt
-        </span>
-
-        <button
-          class="close-button"
-          onclick="closeWindow('visitor-window')"
-        >
-          ×
-        </button>
-
-      </div>
-
-      <div class="window-content">
-
-        <div
-          class="notepad"
-          id="visitor-log"
-        >
-loading...
+        <span class="title-name">visitor_log.txt</span>
+        <div class="window-controls">
+          <button class="window-control">—</button>
+          <button class="window-control">□</button>
+          <button class="window-control close" onclick="closeWindow('visitor-window')">×</button>
         </div>
-
       </div>
-
+      <div class="window-toolbar">File &nbsp; View</div>
+      <div class="window-content">
+        <div class="notepad" id="visitor-log">loading...</div>
+      </div>
     </section>
 
-
-
-    <!-- USER 02 LOGIN -->
-
-    <section
-      class="window"
-      id="login-window"
-      style="left:430px; top:90px;"
-    >
-
+    <!-- MESSENGER -->
+    <section class="window" id="chat-window" style="left:500px; top:90px;">
       <div class="titlebar">
-
-        <span class="title-name">
-          Log On to enokiecloud
-        </span>
-
-        <button
-          class="close-button"
-          onclick="closeWindow('login-window')"
-        >
-          ×
-        </button>
-
+        <span class="title-name">Messenger</span>
+        <div class="window-controls">
+          <button class="window-control">—</button>
+          <button class="window-control">□</button>
+          <button class="window-control close" onclick="closeWindow('chat-window')">×</button>
+        </div>
       </div>
+      <div class="window-toolbar">Inbox &nbsp; Contacts &nbsp; Settings</div>
+      <div class="window-content">
+        <h2>messages</h2>
+        <div class="chat-box" id="chat-box">
+          <div class="chat-line"><span class="chat-name">system:</span> connected.</div>
+          <div class="chat-line"><span class="chat-name">unknown:</span> hi</div>
+          <div class="chat-line" id="typing">unknown is typing...</div>
+        </div>
+      </div>
+    </section>
 
+    <!-- LOGIN -->
+    <section class="window" id="login-window" style="left:410px; top:80px;">
+      <div class="titlebar">
+        <span class="title-name">Windows Security</span>
+        <div class="window-controls">
+          <button class="window-control">—</button>
+          <button class="window-control">□</button>
+          <button class="window-control close" onclick="closeWindow('login-window')">×</button>
+        </div>
+      </div>
+      <div class="window-toolbar">User Authentication</div>
       <div class="window-content login-box">
-
-        <div class="login-avatar">
-          👤
-        </div>
-
-        <div class="login-name">
-          user_02
-        </div>
-
-        <input
-          type="password"
-          id="password-input"
-          placeholder="password"
-          autocomplete="off"
-          onkeydown="
-            if(event.key === 'Enter'){
-              tryLogin();
-            }
-          "
-        >
-
+        <div class="login-avatar">👤</div>
+        <div class="login-name">user_02</div>
+        <input type="password" id="password-input" placeholder="Enter password" autocomplete="off" onkeydown="if(event.key==='Enter'){tryLogin();}">
         <br>
-
-        <button
-          class="login-button"
-          onclick="tryLogin()"
-        >
-          log in
-        </button>
-
-        <div id="login-message">
-          password required
-        </div>
-
+        <button class="login-button" onclick="tryLogin()">Log In</button>
+        <div id="login-message">password required</div>
       </div>
-
     </section>
 
-
-
-    <!-- USER 02 FILES -->
-
-    <section
-      class="window"
-      id="user-two-window"
-      style="left:420px; top:100px;"
-    >
-
+    <!-- USER 02 -->
+    <section class="window" id="user-two-window" style="left:400px; top:90px;">
       <div class="titlebar">
-
-        <span class="title-name">
-          C:\Users\user_02
-        </span>
-
-        <button
-          class="close-button"
-          onclick="closeWindow('user-two-window')"
-        >
-          ×
-        </button>
-
+        <span class="title-name">C:\Users\user_02</span>
+        <div class="window-controls">
+          <button class="window-control">—</button>
+          <button class="window-control">□</button>
+          <button class="window-control close" onclick="closeWindow('user-two-window')">×</button>
+        </div>
       </div>
-
+      <div class="window-toolbar">File &nbsp; Edit &nbsp; View</div>
       <div class="window-content">
-
         <h2>user_02</h2>
-
-        <p class="tiny">
-          account status: active
-        </p>
-
-        <div
-          class="window-link"
-          onclick="userNote()"
-        >
-          📄 note_to_kels.txt
-        </div>
-
-        <div
-          class="window-link"
-          onclick="lastSession()"
-        >
-          📄 last_session.txt
-        </div>
-
-        <div
-          class="window-link"
-          onclick="revealPictures()"
-        >
-          📁 pictures
-        </div>
-
-        <div
-          class="window-link"
-          onclick="desktopCapture()"
-        >
-          🖼 desktop_capture.png
-        </div>
-
+        <div class="file-row" onclick="userNote()">📄 note_to_kels.txt</div>
+        <div class="file-row" onclick="lastSession()">📄 last_session.txt</div>
+        <div class="file-row" onclick="revealPictures()">📁 Pictures</div>
+        <div class="file-row" onclick="desktopCapture()">🖼 desktop_capture.png</div>
       </div>
-
     </section>
-
-
 
     <!-- PICTURES -->
-
-    <section
-      class="window"
-      id="pictures-window"
-      style="left:290px; top:120px;"
-    >
-
+    <section class="window" id="pictures-window" style="left:260px; top:90px;">
       <div class="titlebar">
-
-        <span class="title-name">
-          C:\Users\user_02\Pictures
-        </span>
-
-        <button
-          class="close-button"
-          onclick="closeWindow('pictures-window')"
-        >
-          ×
-        </button>
-
-      </div>
-
-      <div class="window-content">
-
-        <p class="tiny">
-          6 objects found
-        </p>
-
-        <div class="photo-grid">
-
-          <button
-            class="photo-file"
-            onclick="openPhoto('room')"
-          >
-            <span>🖼️</span>
-            <small>IMG_2009.jpg</small>
-          </button>
-
-
-          <button
-            class="photo-file"
-            onclick="openPhoto('corrupt')"
-          >
-            <span>🖼️</span>
-            <small>IMG_0000.jpg</small>
-          </button>
-
-
-          <button
-            class="photo-file"
-            onclick="openPhoto('capture')"
-          >
-            <span>🖥️</span>
-            <small>desktop_capture.png</small>
-          </button>
-
-
-          <button
-            class="photo-file"
-            onclick="openPhoto('future')"
-          >
-            <span>🖼️</span>
-            <small>tomorrow.jpg</small>
-          </button>
-
-
-          <button
-            class="photo-file"
-            onclick="openPhoto('missing')"
-          >
-            <span>❓</span>
-            <small>???</small>
-          </button>
-
-
-          <button
-            class="photo-file"
-            onclick="openPhoto('wallpaper')"
-          >
-            <span>🌫️</span>
-            <small>wallpaper_old.jpg</small>
-          </button>
-
+        <span class="title-name">C:\Users\user_02\Pictures</span>
+        <div class="window-controls">
+          <button class="window-control">—</button>
+          <button class="window-control">□</button>
+          <button class="window-control close" onclick="closeWindow('pictures-window')">×</button>
         </div>
-
       </div>
-
-    </section>
-
-
-
-    <!-- PHOTO VIEWER -->
-
-    <section
-      class="window"
-      id="photo-viewer"
-      style="left:350px; top:85px;"
-    >
-
-      <div class="titlebar">
-
-        <span
-          class="title-name"
-          id="photo-title"
-        >
-          Image Viewer
-        </span>
-
-        <button
-          class="close-button"
-          onclick="closeWindow('photo-viewer')"
-        >
-          ×
-        </button>
-
-      </div>
-
+      <div class="window-toolbar">Organize &nbsp; Share &nbsp; Slideshow</div>
       <div class="window-content">
-
-        <div
-          class="photo-preview"
-          id="photo-preview"
-        >
-
-          <div id="photo-text">
-            loading...
+        <div class="explorer-grid">
+          <div class="explorer-tile" onclick="openPhoto('room')">
+            <span class="emoji">🖼️</span>
+            IMG_2009.jpg
+            <small>faded room</small>
           </div>
 
-        </div>
+          <div class="explorer-tile" onclick="openPhoto('corrupt')">
+            <span class="emoji">🖼️</span>
+            IMG_0000.jpg
+            <small>corrupted</small>
+          </div>
 
-        <div id="photo-meta">
-        </div>
+          <div class="explorer-tile" onclick="openPhoto('capture')">
+            <span class="emoji">🖥️</span>
+            desktop_capture.png
+            <small>current session</small>
+          </div>
 
+          <div class="explorer-tile" onclick="openPhoto('future')">
+            <span class="emoji">🖼️</span>
+            tomorrow.jpg
+            <small>preview hidden</small>
+          </div>
+
+          <div class="explorer-tile" onclick="openPhoto('missing')">
+            <span class="emoji">❓</span>
+            untitled
+            <small>owner mismatch</small>
+          </div>
+
+          <div class="explorer-tile" onclick="openPhoto('wallpaper')">
+            <span class="emoji">🌫️</span>
+            wallpaper_old.jpg
+            <small>set as wallpaper</small>
+          </div>
+        </div>
       </div>
-
     </section>
 
+    <!-- PHOTO VIEWER -->
+    <section class="window" id="photo-viewer" style="left:300px; top:70px;">
+      <div class="titlebar">
+        <span class="title-name" id="photo-title">Image Viewer</span>
+        <div class="window-controls">
+          <button class="window-control">—</button>
+          <button class="window-control">□</button>
+          <button class="window-control close" onclick="closeWindow('photo-viewer')">×</button>
+        </div>
+      </div>
+      <div class="window-toolbar">File &nbsp; Print &nbsp; Email &nbsp; Burn</div>
+      <div class="window-content">
+        <div class="photo-preview" id="photo-preview">
+          <div id="photo-text">loading...</div>
+        </div>
+        <div id="photo-meta"></div>
+      </div>
+    </section>
   </main>
 
-
-
-  <!-- ERROR -->
-
+  <!-- ERROR POPUP -->
   <div id="error-popup">
-
     <div class="titlebar">
-
-      <span
-        class="title-name"
-        id="error-title"
-      >
-        system message
-      </span>
-
-      <button
-        class="close-button"
-        onclick="closeError()"
-      >
-        ×
-      </button>
-
+      <span class="title-name" id="error-title">System Message</span>
+      <div class="window-controls">
+        <button class="window-control close" onclick="closeError()">×</button>
+      </div>
     </div>
-
     <div class="error-body">
-
-      <div class="error-symbol">
-        ⚠️
-      </div>
-
-      <div id="error-message">
-        something went wrong.
-      </div>
-
+      <div class="error-symbol">⚠️</div>
+      <div id="error-message">something went wrong.</div>
     </div>
-
-    <button
-      class="error-ok"
-      onclick="closeError()"
-    >
-      OK
-    </button>
-
+    <div class="error-footer">
+      <button class="error-ok" onclick="closeError()">OK</button>
+    </div>
   </div>
 
-
-
-  <!-- START -->
-
+  <!-- START MENU -->
   <div id="start-menu">
-
     <div class="start-header">
-
-      <strong id="start-user">
-        kels
-      </strong>
-
-      <span id="start-subtitle">
-        enokiecloud administrator
-      </span>
-
+      <strong id="start-user">kels</strong>
+      <span id="start-subtitle">desktop session active</span>
     </div>
-
-    <button
-      class="start-item"
-      onclick="
-        openWindow('documents-window');
-        closeStart();
-      "
-    >
-      📁 my documents
-    </button>
-
-    <button
-      class="start-item"
-      onclick="
-        openWindow('notes-window');
-        closeStart();
-      "
-    >
-      📝 notepad
-    </button>
-
-    <button
-      class="start-item"
-      onclick="
-        location.href='index.html'
-      "
-    >
-      🏠 enokiecloud home
-    </button>
-
-    <button
-      class="start-item"
-      onclick="fakeShutdown()"
-    >
-      ⏻ shut down...
-    </button>
-
+    <div class="start-list">
+      <button class="start-item" onclick="openWindow('explorer-window'); closeStart();">📁 File Explorer</button>
+      <button class="start-item" onclick="openWindow('tube-window'); closeStart();">📺 EnokieTube</button>
+      <button class="start-item" onclick="openWindow('store-window'); closeStart();">🎮 Cloud Store</button>
+      <button class="start-item" onclick="openWindow('music-window'); closeStart();">🎵 Cloud Player</button>
+      <button class="start-item" onclick="location.href='index.html'">🏠 Home</button>
+      <button class="start-item" onclick="fakeShutdown()">⏻ Shut Down...</button>
+    </div>
   </div>
-
-
 
   <!-- TASKBAR -->
-
   <footer id="taskbar">
-
-    <button
-      id="start-button"
-      onclick="toggleStart()"
-    >
-      ♡ start
-    </button>
-
-    <div id="task-message">
-      enokiecloud.exe
-    </div>
-
-    <button
-      id="clock"
-      onclick="clockClick()"
-    >
-      12:00 AM
-    </button>
-
+    <button id="start-button" onclick="toggleStart()">Start</button>
+    <div id="task-message">desktop ready.</div>
+    <button id="clock" onclick="clockClick()">12:00 AM</button>
   </footer>
 
-
-
   <script>
-
     let zIndex = 100;
-
     let interactions = 0;
     let noteCount = 0;
     let clockClicks = 0;
@@ -1932,267 +1351,94 @@ loading...
     let secretOpened = false;
     let wallpaperChanged = false;
 
-    let visits =
-      Number(
-        localStorage.getItem(
-          "enokieDesktopVisits"
-        ) || 0
-      );
+    let visits = Number(localStorage.getItem("enokieDesktopVisits") || 0);
 
+    window.addEventListener("load", () => {
+      visits++;
+      localStorage.setItem("enokieDesktopVisits", visits);
 
-    /* =========================
-       STARTUP
-    ========================= */
+      setTimeout(() => {
+        const boot = document.getElementById("boot-screen");
+        boot.style.opacity = "0";
+        setTimeout(() => {
+          boot.style.display = "none";
+        }, 800);
+      }, 2400);
 
-    window.addEventListener(
-      "load",
-      () => {
-
-        visits++;
-
-        localStorage.setItem(
-          "enokieDesktopVisits",
-          visits
-        );
-
-
-        if (visits > 1) {
-
-          document
-            .getElementById(
-              "boot-warning"
-            )
-            .textContent =
-            "previous session was not closed properly";
-
-        }
-
-
-        setTimeout(
-          () => {
-
-            const boot =
-              document.getElementById(
-                "boot-screen"
-              );
-
-            boot.style.opacity = "0";
-
-            setTimeout(
-              () => {
-                boot.style.display =
-                  "none";
-              },
-              800
-            );
-
-          },
-          2600
-        );
-
-
-        setupVisitorLog();
-
-        updateClock();
-
-        setInterval(
-          updateClock,
-          1000
-        );
-
-        makeWindowsDraggable();
-
-        scheduleEvents();
-
-      }
-    );
-
+      setupVisitorLog();
+      updateClock();
+      setInterval(updateClock, 1000);
+      makeWindowsDraggable();
+      scheduleEvents();
+    });
 
     /* =========================
-       WINDOWS
+       WINDOW CONTROL
     ========================= */
 
     function openWindow(id) {
-
       interactions++;
 
-      const windowEl =
-        document.getElementById(id);
+      const el = document.getElementById(id);
+      el.classList.add("active");
+      bringToFront(el);
 
-      windowEl.classList.add(
-        "active"
-      );
-
-      bringToFront(
-        windowEl
-      );
-
-
-      if (
-        id === "notes-window"
-      ) {
-        changeNotes();
-      }
-
-
-      if (
-        id === "chat-window"
-      ) {
-        updateChat();
-      }
-
-
-      if (
-        interactions >= 5
-      ) {
-        randomEvent();
-      }
-
+      if (id === "notes-window") changeNotes();
+      if (id === "chat-window") updateChat();
+      if (interactions >= 5) randomEvent();
     }
-
 
     function closeWindow(id) {
-
-      document
-        .getElementById(id)
-        .classList.remove(
-          "active"
-        );
-
+      document.getElementById(id).classList.remove("active");
     }
-
 
     function bringToFront(el) {
-
       zIndex++;
-
-      el.style.zIndex =
-        zIndex;
-
+      el.style.zIndex = zIndex;
     }
-
-
-    /* =========================
-       DRAGGING
-    ========================= */
 
     function makeWindowsDraggable() {
+      document.querySelectorAll(".window").forEach(windowEl => {
+        const bar = windowEl.querySelector(".titlebar");
+        let dragging = false;
+        let offsetX = 0;
+        let offsetY = 0;
 
-      document
-        .querySelectorAll(".window")
-        .forEach(
-          windowEl => {
+        bar.addEventListener("mousedown", event => {
+          if (event.target.classList.contains("window-control")) return;
 
-            const bar =
-              windowEl.querySelector(
-                ".titlebar"
-              );
+          dragging = true;
+          bringToFront(windowEl);
 
-            let dragging = false;
-            let offsetX = 0;
-            let offsetY = 0;
+          const rect = windowEl.getBoundingClientRect();
+          offsetX = event.clientX - rect.left;
+          offsetY = event.clientY - rect.top;
+        });
 
+        document.addEventListener("mousemove", event => {
+          if (!dragging) return;
+          if (window.innerWidth <= 700) return;
 
-            bar.addEventListener(
-              "mousedown",
-              event => {
+          windowEl.style.left = event.clientX - offsetX + "px";
+          windowEl.style.top = event.clientY - offsetY + "px";
+        });
 
-                if (
-                  event.target
-                    .classList
-                    .contains(
-                      "close-button"
-                    )
-                ) {
-                  return;
-                }
-
-
-                dragging = true;
-
-                bringToFront(
-                  windowEl
-                );
-
-
-                const rect =
-                  windowEl
-                    .getBoundingClientRect();
-
-
-                offsetX =
-                  event.clientX
-                  - rect.left;
-
-                offsetY =
-                  event.clientY
-                  - rect.top;
-
-              }
-            );
-
-
-            document.addEventListener(
-              "mousemove",
-              event => {
-
-                if (!dragging) {
-                  return;
-                }
-
-
-                if (
-                  window.innerWidth <= 600
-                ) {
-                  return;
-                }
-
-
-                windowEl.style.left =
-                  event.clientX
-                  - offsetX
-                  + "px";
-
-                windowEl.style.top =
-                  event.clientY
-                  - offsetY
-                  + "px";
-
-              }
-            );
-
-
-            document.addEventListener(
-              "mouseup",
-              () => {
-                dragging = false;
-              }
-            );
-
-          }
-        );
-
+        document.addEventListener("mouseup", () => {
+          dragging = false;
+        });
+      });
     }
-
 
     /* =========================
        NOTES
     ========================= */
 
     function changeNotes() {
-
       noteCount++;
-
-      const note =
-        document.getElementById(
-          "note-text"
-        );
-
+      const note = document.getElementById("note-text");
 
       if (noteCount === 1) {
-
-        note.textContent =
-`things to remember:
+        note.textContent = `things to remember:
 
 - update website
 - feed cat
@@ -2202,16 +1448,8 @@ loading...
 also...
 
 why does this computer keep saying i've been here before?`;
-
-      }
-
-
-      else if (
-        noteCount === 2
-      ) {
-
-        note.textContent =
-`things to remember:
+      } else if (noteCount === 2) {
+        note.textContent = `things to remember:
 
 - update website
 - feed cat
@@ -2223,388 +1461,152 @@ why does this computer keep saying i've been here before?`;
 you already read this.
 
 why did you open it again?`;
-
-      }
-
-
-      else if (
-        noteCount === 3
-      ) {
-
-        note.textContent =
-`stop.
+      } else if (noteCount === 3) {
+        note.textContent = `stop.
 
 i didn't write this.
 
 you didn't write this.
 
 so who did?`;
-
         revealVisitorLog();
-
-      }
-
-
-      else {
-
-        note.textContent =
-`close the window.
+      } else {
+        note.textContent = `close the window.
 
 please.`;
-
-        document
-          .getElementById(
-            "desktop"
-          )
-          .classList.add(
-            "cursed"
-          );
-
+        document.getElementById("desktop").classList.add("cursed");
       }
-
     }
 
-
     /* =========================
-       DOCUMENT FILES
+       FILE EVENTS
     ========================= */
 
     function weirdFile() {
-
-      showError(
-        "i_dont_remember_making_this.txt",
-        "last modified: tomorrow"
-      );
-
-      document
-        .getElementById(
-          "hidden-document"
-        )
-        .style.display =
-        "block";
-
-      document
-        .getElementById(
-          "file-count"
-        )
-        .textContent =
-        "6";
-
+      showError("i_dont_remember_making_this.txt", "last modified: tomorrow");
+      document.getElementById("hidden-document").style.display = "block";
+      revealUserTwo();
     }
-
 
     function missingPhoto() {
-
       glitch();
-
-      showError(
-        "IMG_0000.jpg",
-        "created while the computer was inactive."
-      );
-
+      showError("IMG_0000.jpg", "created while the computer was inactive.");
     }
-
 
     function hiddenDocument() {
-
-      showError(
-        "you_were_here.txt",
-        "you were here before this file existed."
-      );
-
+      showError("you_were_here.txt", "you were here before this file existed.");
       revealUserTwo();
-
     }
-
 
     /* =========================
        CLOCK
     ========================= */
 
     function updateClock() {
+      const clock = document.getElementById("clock");
 
-      const clock =
-        document.getElementById(
-          "clock"
-        );
-
-
-      if (
-        secretOpened
-        && Math.random() < .05
-      ) {
-
-        const badTimes = [
-          "3:33 AM",
-          "00:00",
-          "13:72",
-          "--:--",
-          "yesterday"
-        ];
-
-        clock.textContent =
-          badTimes[
-            Math.floor(
-              Math.random()
-              * badTimes.length
-            )
-          ];
-
+      if (secretOpened && Math.random() < 0.05) {
+        const badTimes = ["3:33 AM", "00:00", "13:72", "--:--", "yesterday"];
+        clock.textContent = badTimes[Math.floor(Math.random() * badTimes.length)];
         return;
       }
 
-
-      const now =
-        new Date();
-
-      clock.textContent =
-        now.toLocaleTimeString(
-          [],
-          {
-            hour: "numeric",
-            minute: "2-digit"
-          }
-        );
-
+      const now = new Date();
+      clock.textContent = now.toLocaleTimeString([], {
+        hour: "numeric",
+        minute: "2-digit"
+      });
     }
-
 
     function clockClick() {
-
       clockClicks++;
 
-
-      if (
-        clockClicks === 3
-      ) {
-
-        showError(
-          "clock.exe",
-          "please stop touching the clock."
-        );
-
+      if (clockClicks === 3) {
+        showError("clock.exe", "please stop touching the clock.");
       }
 
-
-      if (
-        clockClicks >= 6
-      ) {
-
-        document
-          .getElementById(
-            "secret-icon"
-          )
-          .classList.add(
-            "visible"
-          );
-
-        setTask(
-          "1 new file found."
-        );
-
+      if (clockClicks >= 6) {
+        document.getElementById("secret-icon").classList.add("visible");
+        setTask("1 new file found.");
       }
-
     }
-
 
     /* =========================
        CHAT
     ========================= */
 
     function updateChat() {
-
       chatCount++;
 
-      const box =
-        document.getElementById(
-          "chat-box"
-        );
+      const box = document.getElementById("chat-box");
+      const typing = document.getElementById("typing");
+      typing.style.display = "block";
 
-      const typing =
-        document.getElementById(
-          "typing"
-        );
+      setTimeout(() => {
+        typing.style.display = "none";
 
-      typing.style.display =
-        "block";
+        let message = "can you see this?";
+        if (chatCount === 2) message = "you closed this last time.";
+        if (chatCount >= 3) message = "don't close the laptop.";
 
+        box.innerHTML += `
+          <div class="chat-line">
+            <span class="chat-name">unknown:</span>
+            ${message}
+          </div>
+        `;
 
-      setTimeout(
-        () => {
-
-          typing.style.display =
-            "none";
-
-
-          let message =
-            "can you see this?";
-
-
-          if (
-            chatCount === 2
-          ) {
-            message =
-              "you closed this last time.";
-          }
-
-
-          if (
-            chatCount >= 3
-          ) {
-            message =
-              "don't close the laptop.";
-          }
-
-
-          box.innerHTML += `
-            <div>
-              <span class="chat-name">
-                unknown:
-              </span>
-              ${message}
-            </div>
-          `;
-
-
-          if (
-            chatCount >= 2
-          ) {
-            revealUserTwo();
-          }
-
-        },
-        1800
-      );
-
+        if (chatCount >= 2) revealUserTwo();
+      }, 1800);
     }
 
-
     /* =========================
-       TRASH
+       RECYCLE BIN
     ========================= */
 
     function deletedMessage() {
-
-      showError(
-        "message_from_unknown.txt",
-        "\"i can still see the desktop.\""
-      );
-
+      showError("message_from_unknown.txt", `"i can still see the desktop."`);
     }
-
 
     function deletedUser() {
-
-      showError(
-        "user_02",
-        "folder cannot be deleted because it is currently in use."
-      );
-
+      showError("user_02", "folder cannot be deleted because it is currently in use.");
       revealUserTwo();
-
     }
-
 
     function restoreUnknown() {
+      document.getElementById("secret-icon").classList.add("visible");
+      setTask("unknown.exe restored.");
+      closeWindow("trash-window");
 
-      document
-        .getElementById(
-          "secret-icon"
-        )
-        .classList.add(
-          "visible"
-        );
-
-      setTask(
-        "unknown.exe restored."
-      );
-
-
-      closeWindow(
-        "trash-window"
-      );
-
-
-      setTimeout(
-        () => {
-
-          showError(
-            "restore complete",
-            "object restored to a location that no longer exists."
-          );
-
-        },
-        600
-      );
-
+      setTimeout(() => {
+        showError("restore complete", "object restored to a location that no longer exists.");
+      }, 600);
     }
 
-
     /* =========================
-       SECRET
+       SECRET FILE
     ========================= */
 
     function openSecret() {
-
       secretOpened = true;
-
-      const desktop =
-        document.getElementById(
-          "desktop"
-        );
-
-
-      desktop.classList.add(
-        "cursed"
-      );
-
-
-      document
-        .getElementById(
-          "secret-label"
-        )
-        .textContent =
-        "too_late.exe";
-
-
-      setTask(
-        "it noticed you."
-      );
-
-
-      showError(
-        "dont-open.exe",
-        "you restored something that was deleted for a reason."
-      );
-
-
+      document.getElementById("desktop").classList.add("cursed");
+      document.getElementById("secret-label").textContent = "too_late.exe";
+      setTask("it noticed you.");
+      showError("unknown.exe", "you restored something that was deleted for a reason.");
       revealVisitorLog();
 
-
-      setTimeout(
-        revealUserTwo,
-        1700
-      );
-
+      setTimeout(() => {
+        revealUserTwo();
+      }, 1500);
     }
-
 
     /* =========================
        VISITOR LOG
     ========================= */
 
     function setupVisitorLog() {
-
-      const now =
-        new Date();
-
-
-      document
-        .getElementById(
-          "visitor-log"
-        )
-        .textContent =
-`visitor log
+      const now = new Date();
+      document.getElementById("visitor-log").textContent = `visitor log
 
 session count: ${visits}
 
@@ -2620,596 +1622,226 @@ other users:
 
 status:
 active`;
-
     }
-
 
     function revealVisitorLog() {
-
-      document
-        .getElementById(
-          "visitor-icon"
-        )
-        .classList.add(
-          "visible"
-        );
-
+      document.getElementById("visitor-icon").classList.add("visible");
     }
-
 
     /* =========================
        USER 02
     ========================= */
 
     function revealUserTwo() {
-
-      document
-        .getElementById(
-          "user-two-icon"
-        )
-        .classList.add(
-          "visible"
-        );
-
-      document
-        .getElementById(
-          "connection-count"
-        )
-        .textContent =
-        "2";
-
+      document.getElementById("user-two-icon").classList.add("visible");
+      document.getElementById("connection-count").textContent = "2";
     }
-
 
     function tryLogin() {
-
       loginAttempts++;
+      const input = document.getElementById("password-input");
+      const message = document.getElementById("login-message");
 
-      const input =
-        document.getElementById(
-          "password-input"
-        );
+      if (userLoggedIn) return;
 
-      const message =
-        document.getElementById(
-          "login-message"
-        );
-
-
-      if (
-        userLoggedIn
-      ) {
-        return;
-      }
-
-
-      if (
-        loginAttempts === 1
-      ) {
-
-        message.textContent =
-          "incorrect password.";
-
+      if (loginAttempts === 1) {
+        message.textContent = "incorrect password.";
         input.value = "";
-
-      }
-
-
-      else if (
-        loginAttempts === 2
-      ) {
-
-        message.textContent =
-          "hint: you already know it.";
-
+      } else if (loginAttempts === 2) {
+        message.textContent = "hint: you already know it.";
         input.value = "";
+      } else if (loginAttempts === 3) {
+        message.textContent = "logging in...";
+        input.value = "••••••••";
+        input.disabled = true;
 
+        setTimeout(() => {
+          loginUserTwo();
+        }, 1500);
       }
-
-
-      else if (
-        loginAttempts === 3
-      ) {
-
-        message.textContent =
-          "incorrect.";
-
-        input.value =
-          "••••••••";
-
-        input.disabled =
-          true;
-
-
-        setTimeout(
-          () => {
-
-            message.textContent =
-              "logging in...";
-
-          },
-          700
-        );
-
-
-        setTimeout(
-          loginUserTwo,
-          1900
-        );
-
-      }
-
     }
-
 
     function loginUserTwo() {
-
       userLoggedIn = true;
 
-
-      closeWindow(
-        "login-window"
-      );
-
-
+      closeWindow("login-window");
       glitch();
 
+      document.getElementById("start-user").textContent = "user_02";
+      document.getElementById("start-subtitle").textContent = "session resumed";
 
-      document
-        .getElementById(
-          "start-user"
-        )
-        .textContent =
-        "user_02";
+      setTask("user_02 logged in.");
 
-
-      document
-        .getElementById(
-          "start-subtitle"
-        )
-        .textContent =
-        "session resumed";
-
-
-      setTask(
-        "user_02 logged in."
-      );
-
-
-      setTimeout(
-        () => {
-
-          openWindow(
-            "user-two-window"
-          );
-
-        },
-        500
-      );
-
+      setTimeout(() => {
+        openWindow("user-two-window");
+      }, 400);
     }
-
 
     function userNote() {
-
-      showError(
-        "note_to_kels.txt",
-        "you keep calling this your computer."
-      );
-
+      showError("note_to_kels.txt", "you keep calling this your computer.");
     }
-
 
     function lastSession() {
-
-      showError(
-        "last_session.txt",
-        "session ended unexpectedly. user_02 remained connected."
-      );
-
+      showError("last_session.txt", "session ended unexpectedly. user_02 remained connected.");
     }
-
 
     function desktopCapture() {
-
-      openPhoto(
-        "capture"
-      );
-
+      openPhoto("capture");
     }
-
 
     /* =========================
        PICTURES
     ========================= */
 
     function revealPictures() {
-
-      document
-        .getElementById(
-          "pictures-icon"
-        )
-        .classList.add(
-          "visible"
-        );
-
-      closeWindow(
-        "user-two-window"
-      );
-
-      openWindow(
-        "pictures-window"
-      );
-
+      document.getElementById("pictures-icon").classList.add("visible");
+      closeWindow("user-two-window");
+      openWindow("pictures-window");
     }
 
-
     function openPhoto(type) {
+      openWindow("photo-viewer");
 
-      openWindow(
-        "photo-viewer"
-      );
+      const preview = document.getElementById("photo-preview");
+      const text = document.getElementById("photo-text");
+      const title = document.getElementById("photo-title");
+      const meta = document.getElementById("photo-meta");
 
+      preview.className = "photo-preview";
 
-      const preview =
-        document.getElementById(
-          "photo-preview"
-        );
+      if (type === "room") {
+        preview.classList.add("normal");
+        title.textContent = "IMG_2009.jpg";
+        text.textContent = `the room is almost too dark to make out.
 
-      const text =
-        document.getElementById(
-          "photo-text"
-        );
-
-      const title =
-        document.getElementById(
-          "photo-title"
-        );
-
-      const meta =
-        document.getElementById(
-          "photo-meta"
-        );
-
-
-      preview.className =
-        "photo-preview";
-
-
-      if (
-        type === "room"
-      ) {
-
-        preview.classList.add(
-          "normal"
-        );
-
-        title.textContent =
-          "IMG_2009.jpg";
-
-        text.textContent =
-`the image is too faded to make out.
-
-there seems to be someone
-standing near the edge of the frame.`;
-
-        meta.textContent =
-          "date taken: unavailable";
-
+there looks like there is
+someone standing near the doorway.`;
+        meta.textContent = "date taken: unavailable";
       }
 
-
-      if (
-        type === "corrupt"
-      ) {
-
-        preview.classList.add(
-          "corrupt"
-        );
-
-        title.textContent =
-          "IMG_0000.jpg";
-
-        text.textContent =
-`IMAGE DATA CORRUPTED
-
-recovering...
+      if (type === "corrupt") {
+        preview.classList.add("corrupt");
+        title.textContent = "IMG_0000.jpg";
+        text.textContent = `IMAGE DATA CORRUPTED
 
 recovering...
 
 subject detected: 1`;
-
-        meta.textContent =
-          "created while computer was inactive";
-
+        meta.textContent = "created while computer was inactive";
         glitch();
-
       }
 
-
-      if (
-        type === "capture"
-      ) {
-
-        preview.classList.add(
-          "normal"
-        );
-
-        title.textContent =
-          "desktop_capture.png";
-
-        text.textContent =
-`this looks like the desktop
-you are currently viewing.
+      if (type === "capture") {
+        preview.classList.add("normal");
+        title.textContent = "desktop_capture.png";
+        text.textContent = `this looks like the desktop
+you are using right now.
 
 one window is open.
 
 you didn't open it.`;
-
-        meta.textContent =
-          "timestamp: current session";
-
+        meta.textContent = "timestamp: current session";
       }
 
-
-      if (
-        type === "future"
-      ) {
-
-        preview.classList.add(
-          "future"
-        );
-
-        title.textContent =
-          "tomorrow.jpg";
-
-        text.textContent =
-`no preview available.
+      if (type === "future") {
+        preview.classList.add("future");
+        title.textContent = "tomorrow.jpg";
+        text.textContent = `no preview available.
 
 facial recognition:
 1 person detected`;
-
-        meta.textContent =
-          "date taken: tomorrow";
-
+        meta.textContent = "date taken: tomorrow";
         revealVisitorLog();
-
       }
 
-
-      if (
-        type === "missing"
-      ) {
-
-        preview.classList.add(
-          "corrupt"
-        );
-
-        title.textContent =
-          "untitled";
-
-        text.textContent =
-`FILE NAME REMOVED
+      if (type === "missing") {
+        preview.classList.add("corrupt");
+        title.textContent = "untitled";
+        text.textContent = `FILE NAME REMOVED
 
 location:
 C:\\Users\\kels\\Desktop
 
 owner:
 user_02`;
-
-        meta.textContent =
-          "accessed 3 seconds ago";
-
+        meta.textContent = "accessed 3 seconds ago";
         revealUserTwo();
-
       }
 
-
-      if (
-        type === "wallpaper"
-      ) {
-
-        preview.classList.add(
-          "normal"
-        );
-
-        title.textContent =
-          "wallpaper_old.jpg";
-
-        text.textContent =
-`it looks almost exactly
-like your current wallpaper.
+      if (type === "wallpaper") {
+        preview.classList.add("normal");
+        title.textContent = "wallpaper_old.jpg";
+        text.textContent = `this wallpaper looks almost
+like your current one.
 
 almost.`;
+        meta.textContent = "set as desktop background?";
 
-        meta.textContent =
-          "set as desktop background?";
-
-
-        if (
-          !wallpaperChanged
-        ) {
-
-          wallpaperChanged =
-            true;
-
-
-          setTimeout(
-            changeWallpaper,
-            1400
-          );
-
+        if (!wallpaperChanged) {
+          wallpaperChanged = true;
+          setTimeout(changeWallpaper, 1200);
         }
-
       }
-
     }
-
-
-    /* =========================
-       WALLPAPER CHANGE
-    ========================= */
 
     function changeWallpaper() {
-
       glitch();
+      document.getElementById("desktop").classList.add("wallpaper-shift");
+      setTask("desktop background changed by another user.");
 
-
-      document
-        .getElementById(
-          "desktop"
-        )
-        .classList.add(
-          "wallpaper-two"
-        );
-
-
-      setTask(
-        "desktop background changed by user_02"
-      );
-
-
-      setTimeout(
-        () => {
-
-          showError(
-            "Display Properties",
-            "your desktop background was changed by another user."
-          );
-
-        },
-        700
-      );
-
+      setTimeout(() => {
+        showError("Display Settings", "your desktop background was changed by another user.");
+      }, 500);
     }
 
-
     /* =========================
-       RANDOM EVENTS
+       SCHEDULED EERIE STUFF
     ========================= */
 
     function scheduleEvents() {
+      setTimeout(() => {
+        setTask("background process started.");
+      }, 9000);
 
-      setTimeout(
-        () => {
+      setTimeout(() => {
+        moveIcon();
+      }, 17000);
 
-          setTask(
-            "background process started."
-          );
+      setTimeout(() => {
+        showWhisper();
+      }, 25000);
 
-        },
-        9000
-      );
+      setTimeout(() => {
+        if (interactions >= 2) revealVisitorLog();
+      }, 32000);
 
-
-      setTimeout(
-        moveIcon,
-        16000
-      );
-
-
-      setTimeout(
-        showBackgroundMessage,
-        25000
-      );
-
-
-      setTimeout(
-        () => {
-
-          if (
-            interactions >= 2
-          ) {
-            revealVisitorLog();
-          }
-
-        },
-        32000
-      );
-
-
-      setTimeout(
-        () => {
-
-          if (
-            interactions >= 4
-          ) {
-            revealUserTwo();
-          }
-
-        },
-        42000
-      );
-
+      setTimeout(() => {
+        if (interactions >= 4) revealUserTwo();
+      }, 42000);
     }
-
 
     function moveIcon() {
+      const icon = document.getElementById("documents-icon");
+      icon.style.left = "18px";
+      icon.style.top = "8px";
 
-      const icon =
-        document.getElementById(
-          "documents-icon"
-        );
-
-
-      icon.style.left =
-        "20px";
-
-      icon.style.top =
-        "10px";
-
-
-      setTimeout(
-        () => {
-
-          icon.style.left =
-            "0px";
-
-          icon.style.top =
-            "0px";
-
-        },
-        2800
-      );
-
+      setTimeout(() => {
+        icon.style.left = "0px";
+        icon.style.top = "0px";
+      }, 2200);
     }
 
+    function showWhisper() {
+      const whisper = document.getElementById("background-whisper");
+      whisper.classList.add("show");
 
-    function showBackgroundMessage() {
-
-      const message =
-        document.getElementById(
-          "background-message"
-        );
-
-
-      message.classList.add(
-        "show"
-      );
-
-
-      setTimeout(
-        () => {
-
-          message.classList.remove(
-            "show"
-          );
-
-        },
-        1700
-      );
-
+      setTimeout(() => {
+        whisper.classList.remove("show");
+      }, 1600);
     }
-
 
     function randomEvent() {
-
-      if (
-        Math.random() > .15
-      ) {
-        return;
-      }
-
+      if (Math.random() > 0.14) return;
 
       const messages = [
         "file moved while you weren't looking.",
@@ -3222,207 +1854,75 @@ almost.`;
         "nothing happened."
       ];
 
-
-      showError(
-        "enokiecloud",
-        messages[
-          Math.floor(
-            Math.random()
-            * messages.length
-          )
-        ]
-      );
-
+      showError("enokiecloud", messages[Math.floor(Math.random() * messages.length)]);
     }
-
 
     /* =========================
        GLITCH
     ========================= */
 
     function glitch() {
+      const desktop = document.getElementById("desktop");
+      desktop.classList.add("glitch");
 
-      const desktop =
-        document.getElementById(
-          "desktop"
-        );
-
-
-      desktop.classList.add(
-        "glitch"
-      );
-
-
-      setTimeout(
-        () => {
-
-          desktop.classList.remove(
-            "glitch"
-          );
-
-        },
-        500
-      );
-
+      setTimeout(() => {
+        desktop.classList.remove("glitch");
+      }, 450);
     }
-
 
     /* =========================
-       ERROR
+       ERROR POPUP
     ========================= */
 
-    function showError(
-      title,
-      message
-    ) {
-
-      document
-        .getElementById(
-          "error-title"
-        )
-        .textContent =
-        title;
-
-
-      document
-        .getElementById(
-          "error-message"
-        )
-        .textContent =
-        message;
-
-
-      document
-        .getElementById(
-          "error-popup"
-        )
-        .classList.add(
-          "show"
-        );
-
+    function showError(title, message) {
+      document.getElementById("error-title").textContent = title;
+      document.getElementById("error-message").textContent = message;
+      document.getElementById("error-popup").classList.add("show");
     }
-
 
     function closeError() {
-
-      document
-        .getElementById(
-          "error-popup"
-        )
-        .classList.remove(
-          "show"
-        );
-
+      document.getElementById("error-popup").classList.remove("show");
     }
-
 
     /* =========================
        START MENU
     ========================= */
 
     function toggleStart() {
-
-      document
-        .getElementById(
-          "start-menu"
-        )
-        .classList.toggle(
-          "open"
-        );
-
+      document.getElementById("start-menu").classList.toggle("open");
     }
-
 
     function closeStart() {
-
-      document
-        .getElementById(
-          "start-menu"
-        )
-        .classList.remove(
-          "open"
-        );
-
+      document.getElementById("start-menu").classList.remove("open");
     }
-
 
     /* =========================
        SHUTDOWN
     ========================= */
 
     function fakeShutdown() {
-
       shutdownCount++;
-
       closeStart();
 
-
-      if (
-        shutdownCount === 1
-      ) {
-
-        showError(
-          "Shut Down Windows",
-          "nice try. enokiecloud is still using you."
-        );
-
-      }
-
-
-      else if (
-        shutdownCount === 2
-      ) {
-
+      if (shutdownCount === 1) {
+        showError("Shut Down Windows", "shutdown is currently unavailable.");
+      } else if (shutdownCount === 2) {
         revealUserTwo();
-
-        showError(
-          "Shut Down Windows",
-          "another user is currently logged in."
-        );
-
+        showError("Shut Down Windows", "another user is currently logged in.");
+      } else {
+        setTask("shutdown cancelled by user_02");
+        showError("user_02", "i'm not finished.");
+        document.getElementById("desktop").classList.add("wallpaper-shift");
       }
-
-
-      else {
-
-        setTask(
-          "shutdown cancelled by user_02"
-        );
-
-        showError(
-          "user_02",
-          "i'm not finished."
-        );
-
-        document
-          .getElementById(
-            "desktop"
-          )
-          .classList.add(
-            "wallpaper-two"
-          );
-
-      }
-
     }
-
 
     /* =========================
        TASKBAR
     ========================= */
 
     function setTask(text) {
-
-      document
-        .getElementById(
-          "task-message"
-        )
-        .textContent =
-        text;
-
+      document.getElementById("task-message").textContent = text;
     }
-
   </script>
-
 </body>
 </html>
