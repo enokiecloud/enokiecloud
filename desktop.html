@@ -571,7 +571,10 @@ button{color:inherit}
   <div class="messages-layout">
     <aside class="message-list"><div class="search">Search</div><div id="contacts"></div></aside>
     <section class="chat">
-      <div id="chat-title" class="chat-head">3asians</div>
+      <div class="chat-head">
+        <strong id="chat-title">3asians</strong>
+        <small id="chat-date"></small>
+      </div>
       <div id="chat-body" class="chat-body"></div>
       <div id="reply-panel" class="reply-panel"></div>
     </section>
@@ -809,7 +812,7 @@ button{color:inherit}
 
 <script>
 let topZ=500;
-const KEY="enokieStoryV10";
+const KEY="enokieStoryV11";
 
 /* Testing shortcut:
    open desktop.html?reset=1 to clear story progress without exposing a reset button to visitors. */
@@ -1321,17 +1324,23 @@ function renderContacts(active="3asians"){
       preview=lastUnknownText();
       unread=!state.unknownOpen;
     }else if(name==="mami"){
-      preview=state.backstoryUnlocked?"mami: call me please":"mom";
+      preview=state.backstoryUnlocked&&!state.readMamiLate ? "recovered messages" : "mom";
       unread=state.backstoryUnlocked&&!state.readMamiLate;
     }else if(name==="3asians"){
-      preview=state.backstoryUnlocked?"noemibae: she called and didn't say anything":"group chat";
+      preview=state.backstoryUnlocked&&!state.readGroupLate ? "recovered messages" : "group chat";
       unread=state.backstoryUnlocked&&!state.readGroupLate;
     }else if(name==="kyle"){
-      preview=state.backstoryUnlocked?"kyle: i told them i dropped u off":"";
+      preview=state.backstoryUnlocked&&!state.readKyleLate ? "recovered messages" : "then drive better";
       unread=state.backstoryUnlocked&&!state.readKyleLate;
     }else if(name==="noemibae"){
-      preview=state.backstoryUnlocked?"noemibae: why did u call me":"";
+      preview=state.backstoryUnlocked&&!state.readNoemiLate ? "recovered messages" : "blocked";
       unread=state.backstoryUnlocked&&!state.readNoemiLate;
+    }else if(name==="jadabae"){
+      preview="WAIT FOR ME";
+    }else if(name==="lil sis ava"){
+      preview="have faith in me pls";
+    }else if(name==="kiddo jas"){
+      preview="NOW U HAVE ME CURIOUS";
     }
 
     d.innerHTML=`<strong>${name}${unread?'<span class="unread"></span>':""}</strong><small>${preview}</small>`;
@@ -1342,6 +1351,16 @@ function renderContacts(active="3asians"){
 
 function renderChat(name){
   document.getElementById("chat-title").textContent=name;
+
+  const dateEl=document.getElementById("chat-date");
+  if(name==="unknown"){
+    dateEl.textContent="now";
+  }else if(state.backstoryUnlocked && ["3asians","jadabae","noemibae","kyle","mami"].includes(name)){
+    dateEl.textContent="Sep 3–4, 2026";
+  }else{
+    dateEl.textContent="Sep 3, 2026";
+  }
+
   const body=document.getElementById("chat-body");
   body.innerHTML="";
 
@@ -1356,11 +1375,15 @@ function renderChat(name){
 
   data.forEach(([sender,msg])=>{
     if(sender==="system"){
-      if(msg==="Message removed" && state.deletedAvailable){
-        body.insertAdjacentHTML(
-          "beforeend",
-          `<button class="removed-message" onclick="openFinder('recovered')">Message removed · recovered fragment available</button>`
-        );
+      if(msg==="Message removed"){
+        if(state.deletedAvailable){
+          body.insertAdjacentHTML(
+            "beforeend",
+            `<button class="removed-message" title="Open recovered files" onclick="openFinder('recovered')">Message removed</button>`
+          );
+        }else{
+          body.insertAdjacentHTML("beforeend",`<div class="system-line">Message removed</div>`);
+        }
       }else{
         body.insertAdjacentHTML("beforeend",`<div class="system-line">${msg}</div>`);
       }
@@ -1376,17 +1399,14 @@ function renderChat(name){
     );
   });
 
-  body.scrollTop=body.scrollHeight;
-
-  if(state.backstoryUnlocked){
-    if(name==="3asians") state.readGroupLate=true;
-    if(name==="kyle") state.readKyleLate=true;
-    if(name==="noemibae") state.readNoemiLate=true;
-    if(name==="mami") state.readMamiLate=true;
-
-    localStorage.setItem(KEY,JSON.stringify(state));
-    maybeAdvanceInvestigation();
-    renderContacts(name);
+  /* Important pacing fix:
+     ordinary/recovered conversations open at the TOP so the player has to
+     read through E's normal life before reaching the Sep 4 messages.
+     Unknown stays pinned to the newest message because it is live. */
+  if(name==="unknown"){
+    body.scrollTop=body.scrollHeight;
+  }else{
+    body.scrollTop=0;
   }
 
   renderReplyChoices(name);
@@ -1398,6 +1418,29 @@ function renderChat(name){
 
     setTimeout(()=>pushUnknown("is someone there"),1200);
     setTimeout(()=>pushUnknown("can you read this"),3000);
+  }
+}
+
+function markRecoveredThreadReadIfNeeded(){
+  if(!state.backstoryUnlocked) return;
+
+  const body=document.getElementById("chat-body");
+  const name=document.getElementById("chat-title").textContent;
+  const nearBottom=body.scrollTop+body.clientHeight >= body.scrollHeight-40;
+
+  if(!nearBottom) return;
+
+  let changed=false;
+
+  if(name==="3asians"&&!state.readGroupLate){state.readGroupLate=true;changed=true}
+  if(name==="kyle"&&!state.readKyleLate){state.readKyleLate=true;changed=true}
+  if(name==="noemibae"&&!state.readNoemiLate){state.readNoemiLate=true;changed=true}
+  if(name==="mami"&&!state.readMamiLate){state.readMamiLate=true;changed=true}
+
+  if(changed){
+    localStorage.setItem(KEY,JSON.stringify(state));
+    renderContacts(name);
+    maybeAdvanceInvestigation();
   }
 }
 
@@ -2551,6 +2594,12 @@ window.addEventListener("load",()=>{
   syncStory();
   renderContacts();
   renderChat("3asians");
+
+  const chatBody=document.getElementById("chat-body");
+  if(chatBody && !chatBody.dataset.storyScrollBound){
+    chatBody.dataset.storyScrollBound="true";
+    chatBody.addEventListener("scroll",markRecoveredThreadReadIfNeeded);
+  }
 
   scheduleNormalPing();
   startStoryWatchdog();
