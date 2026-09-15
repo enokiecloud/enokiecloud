@@ -16,10 +16,18 @@
       box-sizing: border-box;
     }
 
+    :root {
+      --paper: #fdfcf9;
+      --ink: #111;
+      --soft: #efefec;
+      --line: #d8d7d2;
+      --muted: #777;
+    }
+
     body {
       margin: 0;
-      background: #fdfcf9;
-      color: #111;
+      background: var(--paper);
+      color: var(--ink);
       font-family: "Cormorant Garamond", serif;
     }
 
@@ -33,9 +41,11 @@
       margin: 0 auto;
     }
 
+    /* header */
+
     header {
       padding: 34px 0 18px;
-      border-bottom: 1px solid #111;
+      border-bottom: 1px solid var(--ink);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -54,88 +64,189 @@
       font-size: 11px;
     }
 
+    /* page */
+
     main {
-      min-height: 720px;
+      min-height: calc(100vh - 120px);
       display: flex;
       justify-content: center;
-      padding: 70px 0 90px;
+      align-items: flex-start;
+      padding: 48px 0 70px;
     }
 
-    .text-area {
-      width: min(650px, 100%);
+    .feature {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    .tiny-top {
+    .feature-label {
+      width: 370px;
+      max-width: 100%;
+      margin-bottom: 10px;
+
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
+
       font-family: "IBM Plex Mono", monospace;
-      font-size: 10px;
+      font-size: 9px;
+      letter-spacing: .08em;
     }
+
+    /* actual phone */
 
     .phone {
-      border: 1.5px solid #111;
-      border-radius: 35px;
+      width: 370px;
+      max-width: 100%;
+      height: 650px;
+
+      border: 2px solid var(--ink);
+      border-radius: 42px;
+
       background: #fff;
       overflow: hidden;
-      box-shadow: 5px 6px 0 #e7e6e2;
+
+      box-shadow: 7px 8px 0 #e6e5e0;
+
+      display: flex;
+      flex-direction: column;
     }
 
-    .phone-top {
-      height: 58px;
-      border-bottom: 1px solid #d5d5d2;
+    /* phone status */
+
+    .phone-status {
+      height: 30px;
+      flex-shrink: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 7px 20px 0;
+
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 8px;
+    }
+
+    .phone-icons {
+      letter-spacing: 2px;
+    }
+
+    /* contact header */
+
+    .contact-header {
+      height: 67px;
+      flex-shrink: 0;
+
+      border-bottom: 1px solid var(--line);
+
       display: flex;
       align-items: center;
       justify-content: center;
+
       position: relative;
     }
 
     .back {
       position: absolute;
-      left: 22px;
-      font-size: 17px;
+      left: 20px;
+      top: 18px;
+
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 19px;
     }
 
     .contact {
       text-align: center;
     }
 
+    .avatar {
+      width: 29px;
+      height: 29px;
+      margin: 0 auto 2px;
+
+      border: 1px solid var(--ink);
+      border-radius: 50%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-family: "Cormorant Garamond", serif;
+      font-size: 17px;
+    }
+
     .contact-name {
-      font-size: 19px;
-      font-weight: 500;
+      display: block;
+      font-size: 13px;
+      line-height: 1;
     }
 
     .contact-status {
       display: block;
-      margin-top: -1px;
+      margin-top: 3px;
+
       font-family: "IBM Plex Mono", monospace;
-      font-size: 8px;
-      color: #777;
+      font-size: 7px;
+      color: var(--muted);
     }
 
+    /* message screen */
+
     .messages {
-      min-height: 440px;
-      padding: 35px 28px 28px;
+      flex: 1;
+      min-height: 0;
+
+      overflow-y: auto;
+      overscroll-behavior: contain;
+
+      padding: 22px 15px 18px;
+
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 5px;
+
+      scroll-behavior: smooth;
+    }
+
+    .messages::-webkit-scrollbar {
+      width: 3px;
+    }
+
+    .messages::-webkit-scrollbar-thumb {
+      background: #d1d0cc;
+      border-radius: 10px;
+    }
+
+    .day {
+      text-align: center;
+      margin: 1px 0 15px;
+
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 7px;
+      color: #999;
     }
 
     .message {
-      max-width: 72%;
-      padding: 11px 15px;
-      border-radius: 18px;
+      width: fit-content;
+      max-width: 76%;
+
+      padding: 8px 11px;
+
+      border-radius: 16px;
+
       font-family: "IBM Plex Mono", monospace;
-      font-size: 12px;
-      line-height: 1.55;
+      font-size: 10px;
+      line-height: 1.45;
 
       opacity: 0;
-      transform: translateY(5px);
-      animation: appear .25s ease forwards;
+      transform: translateY(4px);
+
+      animation: messageIn .18s ease forwards;
     }
 
-    @keyframes appear {
+    @keyframes messageIn {
       to {
         opacity: 1;
         transform: translateY(0);
@@ -144,84 +255,122 @@
 
     .them {
       align-self: flex-start;
-      background: #efefec;
+      background: var(--soft);
       border-bottom-left-radius: 5px;
     }
 
     .you {
       align-self: flex-end;
-      background: #111;
+      background: var(--ink);
       color: #fff;
       border-bottom-right-radius: 5px;
     }
 
     .typing {
       align-self: flex-start;
-      color: #777;
+
+      background: var(--soft);
+      border-radius: 16px;
+      border-bottom-left-radius: 5px;
+
+      padding: 7px 11px;
+
       font-family: "IBM Plex Mono", monospace;
-      font-size: 10px;
-      margin: 4px 0 2px 8px;
+      font-size: 9px;
+      color: #777;
     }
 
-    .reply-area {
-      border-top: 1px solid #d5d5d2;
-      padding: 20px 24px 24px;
-      min-height: 130px;
+    /* choices stay at bottom */
+
+    .reply-panel {
+      flex-shrink: 0;
+
+      min-height: 112px;
+      max-height: 160px;
+
+      border-top: 1px solid var(--line);
+      background: #fff;
+
+      padding: 10px 12px 14px;
+
+      overflow-y: auto;
     }
 
     .reply-label {
+      margin-bottom: 8px;
+
+      text-align: center;
+
       font-family: "IBM Plex Mono", monospace;
-      font-size: 9px;
-      letter-spacing: .12em;
-      margin-bottom: 10px;
-      color: #777;
+      font-size: 7px;
+      color: #999;
+      letter-spacing: .08em;
     }
 
     .choices {
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+      flex-direction: column;
+      gap: 5px;
     }
 
     .choice {
+      width: 100%;
+
       appearance: none;
+
       background: #fff;
-      color: #111;
-      border: 1px solid #111;
-      border-radius: 100px;
-      padding: 9px 14px;
+      color: var(--ink);
+
+      border: 1px solid #bdbcb8;
+      border-radius: 15px;
+
+      padding: 7px 10px;
+
       cursor: pointer;
+
       font-family: "IBM Plex Mono", monospace;
-      font-size: 10px;
-      transition: .15s ease;
+      font-size: 9px;
+      text-align: center;
+
+      transition: .12s ease;
     }
 
     .choice:hover {
-      background: #111;
-      color: #fff;
-      transform: translateY(-1px);
+      border-color: var(--ink);
+      background: #f6f5f1;
     }
 
-    .ended {
+    .end-text {
+      text-align: center;
+
+      font-family: "Cormorant Garamond", serif;
+      font-size: 14px;
       font-style: italic;
-      font-size: 16px;
     }
 
     .restart {
-      margin-top: 12px;
-      appearance: none;
+      display: block;
+
+      margin: 10px auto 0;
+
       border: 0;
       background: none;
+
       padding: 0;
-      text-decoration: underline;
+
       cursor: pointer;
+
       font-family: "IBM Plex Mono", monospace;
-      font-size: 9px;
+      font-size: 8px;
+      text-decoration: underline;
     }
 
-    .footer-link {
-      display: inline-block;
-      margin-top: 18px;
+    .leave {
+      width: 370px;
+      max-width: 100%;
+
+      margin-top: 17px;
+
       font-family: "IBM Plex Mono", monospace;
       font-size: 9px;
     }
@@ -232,8 +381,8 @@
       }
 
       header {
-        align-items: flex-start;
         flex-direction: column;
+        align-items: flex-start;
       }
 
       nav {
@@ -242,16 +391,11 @@
       }
 
       main {
-        padding-top: 40px;
+        padding-top: 30px;
       }
 
-      .messages {
-        min-height: 390px;
-        padding: 28px 18px 22px;
-      }
-
-      .message {
-        max-width: 86%;
+      .phone {
+        height: 620px;
       }
     }
   </style>
@@ -281,46 +425,73 @@
 
   <main>
 
-    <div class="text-area">
+    <div class="feature">
 
-      <div class="tiny-top">
+      <div class="feature-label">
         <span>TEXT ME</span>
-        <span id="time">...</span>
+        <span>wrong number</span>
       </div>
 
       <div class="phone">
 
-        <div class="phone-top">
+        <div class="phone-status">
+          <span id="phoneTime">8:23</span>
+          <span class="phone-icons">•••</span>
+        </div>
+
+        <div class="contact-header">
 
           <span class="back">‹</span>
 
           <div class="contact">
-            <span class="contact-name" id="contactName">
+
+            <div class="avatar">?</div>
+
+            <span
+              class="contact-name"
+              id="contactName"
+            >
               unknown
             </span>
 
-            <span class="contact-status" id="status">
-              online
+            <span
+              class="contact-status"
+              id="contactStatus"
+            >
+              unknown number
             </span>
+
           </div>
 
         </div>
 
-        <div class="messages" id="messages"></div>
+        <div
+          class="messages"
+          id="messages"
+        ></div>
 
-        <div class="reply-area">
+        <div class="reply-panel">
 
-          <div class="reply-label" id="replyLabel">
-            pick one
+          <div
+            class="reply-label"
+            id="replyLabel"
+          >
+            reply
           </div>
 
-          <div class="choices" id="choices"></div>
+          <div
+            class="choices"
+            id="choices"
+          ></div>
 
         </div>
 
       </div>
 
-      <a class="footer-link" href="index.html">
+      <a
+        class="leave"
+        href="index.html"
+      >
         ← leave
       </a>
 
@@ -329,6 +500,7 @@
   </main>
 
 </div>
+
 
 <script>
 
@@ -344,15 +516,18 @@ const replyLabel =
 const contactName =
   document.getElementById("contactName");
 
-const status =
-  document.getElementById("status");
+const contactStatus =
+  document.getElementById("contactStatus");
 
 
-let personality = {
-  nice: 0,
-  nosy: 0,
-  weird: 0
-};
+/* utilities */
+
+function scrollDown() {
+  requestAnimationFrame(() => {
+    messages.scrollTop =
+      messages.scrollHeight;
+  });
+}
 
 
 function addMessage(text, side = "them") {
@@ -361,38 +536,70 @@ function addMessage(text, side = "them") {
     document.createElement("div");
 
   bubble.className =
-    `message ${side}`;
+    "message " + side;
 
   bubble.textContent = text;
 
   messages.appendChild(bubble);
 
-  messages.scrollTop =
-    messages.scrollHeight;
+  scrollDown();
 }
 
 
-function typing(callback) {
+function addDay() {
 
-  status.textContent = "typing...";
-
-  const thing =
+  const day =
     document.createElement("div");
 
-  thing.className = "typing";
-  thing.textContent = "...";
+  day.className = "day";
 
-  messages.appendChild(thing);
+  day.textContent = "today";
 
-  setTimeout(() => {
+  messages.appendChild(day);
+}
 
-    thing.remove();
 
-    status.textContent = "online";
+function wait(ms) {
+  return new Promise(resolve =>
+    setTimeout(resolve, ms)
+  );
+}
 
-    callback();
 
-  }, 650);
+async function incoming(lines) {
+
+  choices.innerHTML = "";
+
+  for (const line of lines) {
+
+    const typing =
+      document.createElement("div");
+
+    typing.className = "typing";
+    typing.textContent = "...";
+
+    messages.appendChild(typing);
+
+    contactStatus.textContent =
+      "typing...";
+
+    scrollDown();
+
+    await wait(
+      350 + Math.random() * 300
+    );
+
+    typing.remove();
+
+    contactStatus.textContent =
+      "unknown number";
+
+    addMessage(line);
+
+    await wait(
+      250 + Math.random() * 250
+    );
+  }
 }
 
 
@@ -408,575 +615,1455 @@ function setChoices(options) {
     button.className = "choice";
     button.textContent = option.text;
 
-    button.onclick = () => {
+    button.addEventListener(
+      "click",
+      async () => {
 
-      choices.innerHTML = "";
+        choices.innerHTML = "";
 
-      addMessage(option.text, "you");
+        addMessage(
+          option.text,
+          "you"
+        );
 
-      if (option.trait) {
-        personality[option.trait]++;
+        await wait(300);
+
+        option.next();
       }
-
-      typing(option.next);
-    };
+    );
 
     choices.appendChild(button);
   });
 }
 
 
-/* start */
+/* beginning */
 
-function start() {
+async function start() {
 
   messages.innerHTML = "";
   choices.innerHTML = "";
 
-  personality = {
-    nice: 0,
-    nosy: 0,
-    weird: 0
-  };
+  contactName.textContent =
+    "unknown";
 
-  contactName.textContent = "unknown";
-  status.textContent = "online";
+  contactStatus.textContent =
+    "unknown number";
 
-  replyLabel.textContent = "pick one";
+  replyLabel.textContent =
+    "reply";
 
-  setTimeout(() => {
-    addMessage("hello?");
-  }, 300);
+  addDay();
 
-  setTimeout(() => {
-    addMessage("are u coming or not");
-  }, 850);
+  await wait(400);
 
-  setTimeout(() => {
-    addMessage("mina");
-  }, 1400);
+  await incoming([
+    "bro",
+    "answer me",
+    "are u still coming"
+  ]);
 
-  setTimeout(() => {
-
-    setChoices([
-      {
-        text: "who is mina",
-        trait: "nosy",
-        next: whoMina
-      },
-      {
-        text: "wrong number lol",
-        trait: "nice",
-        next: wrongNumber
-      },
-      {
-        text: "yeah im almost there",
-        trait: "weird",
-        next: pretendMina
-      }
-    ]);
-
-  }, 1750);
-}
-
-
-/* who is mina */
-
-function whoMina() {
-
-  addMessage("...");
-
-  setTimeout(() => {
-    addMessage("wait");
-  }, 350);
-
-  setTimeout(() => {
-    addMessage("ur not mina");
-  }, 700);
-
-  setTimeout(() => {
-
-    setChoices([
-      {
-        text: "apparently not",
-        trait: "nice",
-        next: awkward
-      },
-      {
-        text: "depends. who are u",
-        trait: "nosy",
-        next: whoAreYou
-      },
-      {
-        text: "maybe i am",
-        trait: "weird",
-        next: maybeMina
-      }
-    ]);
-
-  }, 1000);
+  setChoices([
+    {
+      text: "wrong number 😭",
+      next: wrongNumber
+    },
+    {
+      text: "who is this",
+      next: whoIsThis
+    },
+    {
+      text: "yeah im coming",
+      next: pretend
+    }
+  ]);
 }
 
 
 /* wrong number */
 
-function wrongNumber() {
+async function wrongNumber() {
 
-  addMessage("OH");
+  await incoming([
+    "oh shit",
+    "WAIT",
+    "sorry LMAO"
+  ]);
 
-  setTimeout(() => {
-    addMessage("sorry omg");
-  }, 400);
+  await wait(450);
 
-  setTimeout(() => {
-    addMessage("wait");
-  }, 850);
+  await incoming([
+    "...",
+    "actually"
+  ]);
 
-  setTimeout(() => {
-    addMessage("since ur already here");
-  }, 1200);
-
-  setTimeout(() => {
-
-    setChoices([
-      {
-        text: "what",
-        trait: "nosy",
-        next: question
-      },
-      {
-        text: "LMAO okay",
-        trait: "nice",
-        next: question
-      },
-      {
-        text: "no ♥",
-        trait: "weird",
-        next: rejected
-      }
-    ]);
-
-  }, 1500);
+  setChoices([
+    {
+      text: "actually what",
+      next: actuallyWhat
+    },
+    {
+      text: "LMAO ur good",
+      next: youreGood
+    },
+    {
+      text: "bye 😭",
+      next: earlyBye
+    }
+  ]);
 }
 
 
-/* pretend mina */
+async function actuallyWhat() {
 
-function pretendMina() {
+  await incoming([
+    "can i ask u something",
+    "i need someone who doesn't know me"
+  ]);
 
-  addMessage("girl");
-
-  setTimeout(() => {
-    addMessage("...");
-  }, 400);
-
-  setTimeout(() => {
-    addMessage("this is absolutely not mina");
-  }, 850);
-
-  setTimeout(() => {
-
-    setChoices([
-      {
-        text: "u caught me",
-        trait: "nice",
-        next: caught
-      },
-      {
-        text: "prove it",
-        trait: "weird",
-        next: proveIt
-      }
-    ]);
-
-  }, 1150);
+  setChoices([
+    {
+      text: "why me 😭",
+      next: whyMe
+    },
+    {
+      text: "okay go",
+      next: situation
+    },
+    {
+      text: "this sounds dangerous",
+      next: dangerous
+    }
+  ]);
 }
 
 
-function awkward() {
+async function youreGood() {
 
-  addMessage("well");
+  await incoming([
+    "thank u 😭",
+    "wait",
+    "since u answered",
+    "can i ask u something"
+  ]);
 
-  setTimeout(() => {
-    addMessage("this is awkward");
-  }, 450);
-
-  setTimeout(() => {
-    addMessage("but hi i guess");
-  }, 900);
-
-  setTimeout(() => {
-
-    setChoices([
-      {
-        text: "hi stranger",
-        trait: "nice",
-        next: question
-      },
-      {
-        text: "bye stranger",
-        trait: "weird",
-        next: bye
-      }
-    ]);
-
-  }, 1200);
+  setChoices([
+    {
+      text: "why me",
+      next: whyMe
+    },
+    {
+      text: "sure lol",
+      next: situation
+    },
+    {
+      text: "depends what it is",
+      next: depends
+    }
+  ]);
 }
 
 
-function whoAreYou() {
+async function whyMe() {
 
-  addMessage("why");
+  await incoming([
+    "idk",
+    "u answered 😭",
+    "everyone i know is biased"
+  ]);
 
-  setTimeout(() => {
-    addMessage("ur the stranger here");
-  }, 500);
-
-  setTimeout(() => {
-
-    setChoices([
-      {
-        text: "YOU texted ME",
-        trait: "nosy",
-        next: fair
-      },
-      {
-        text: "okay fair",
-        trait: "nice",
-        next: question
-      }
-    ]);
-
-  }, 850);
+  setChoices([
+    {
+      text: "okay fair",
+      next: situation
+    },
+    {
+      text: "that's a terrible reason",
+      next: terribleReason
+    },
+    {
+      text: "im listening",
+      next: situation
+    }
+  ]);
 }
 
 
-function maybeMina() {
+async function dangerous() {
 
-  addMessage("no");
+  await incoming([
+    "LMAOOO",
+    "no omg",
+    "nothing like that",
+    "i just need an opinion"
+  ]);
 
-  setTimeout(() => {
-    addMessage("mina would never type like that");
-  }, 450);
-
-  setTimeout(() => {
-    addMessage("also she hates cats");
-  }, 900);
-
-  setTimeout(() => {
-
-    setChoices([
-      {
-        text: "oh nvm i could never be mina",
-        trait: "nice",
-        next: catFriend
-      },
-      {
-        text: "red flag",
-        trait: "nosy",
-        next: catFriend
-      }
-    ]);
-
-  }, 1200);
+  setChoices([
+    {
+      text: "okayyy go",
+      next: situation
+    },
+    {
+      text: "im scared but okay",
+      next: situation
+    }
+  ]);
 }
 
 
-function caught() {
+async function depends() {
 
-  addMessage("knew it");
+  await incoming([
+    "relationship drama",
+    "kinda",
+    "don't judge me"
+  ]);
 
-  setTimeout(() => {
-    addMessage("ur weird");
-  }, 450);
-
-  setTimeout(() => {
-    addMessage("i respect it tho");
-  }, 900);
-
-  setTimeout(() => {
-    question();
-  }, 1300);
+  setChoices([
+    {
+      text: "oh im listening",
+      next: situation
+    },
+    {
+      text: "i will absolutely judge",
+      next: judge
+    },
+    {
+      text: "go ahead lol",
+      next: situation
+    }
+  ]);
 }
 
 
-function proveIt() {
+async function terribleReason() {
 
-  addMessage("???");
+  await incoming([
+    "i know 😭",
+    "but ur literally perfect",
+    "u have zero context"
+  ]);
 
-  setTimeout(() => {
-    addMessage("okay ur definitely weird");
-  }, 500);
-
-  setTimeout(() => {
-    addMessage("i kinda like u");
-  }, 950);
-
-  setTimeout(() => {
-    question();
-  }, 1350);
+  setChoices([
+    {
+      text: "fine tell me",
+      next: situation
+    },
+    {
+      text: "okay that's kinda true",
+      next: situation
+    }
+  ]);
 }
 
 
-function fair() {
+async function judge() {
 
-  addMessage("...");
+  await incoming([
+    "okay fair",
+    "but like",
+    "quietly"
+  ]);
 
-  setTimeout(() => {
-    addMessage("okay u got me there");
-  }, 450);
-
-  setTimeout(() => {
-    question();
-  }, 900);
+  setChoices([
+    {
+      text: "no promises",
+      next: situation
+    },
+    {
+      text: "LMAO go",
+      next: situation
+    }
+  ]);
 }
 
 
-function catFriend() {
+/* who is this */
 
-  addMessage("RIGHT");
+async function whoIsThis() {
 
-  setTimeout(() => {
-    addMessage("finally someone gets it");
-  }, 500);
+  await incoming([
+    "mina?",
+    "...",
+    "wait"
+  ]);
 
-  setTimeout(() => {
-    addMessage("okay wait");
-  }, 900);
+  await incoming([
+    "ur not mina"
+  ]);
 
-  setTimeout(() => {
-    question();
-  }, 1250);
+  setChoices([
+    {
+      text: "no 😭 who are YOU",
+      next: whoAreYou
+    },
+    {
+      text: "apparently not",
+      next: apparentlyNot
+    },
+    {
+      text: "maybe i am",
+      next: maybeMina
+    }
+  ]);
 }
 
 
-/* fries */
+async function whoAreYou() {
 
-function question() {
+  await incoming([
+    "YOU'RE asking ME??",
+    "i texted the wrong number 😭"
+  ]);
 
-  addMessage("i need an unbiased opinion");
-
-  setTimeout(() => {
-    addMessage(
-      'if someone says "i\'m not hungry" and then eats half ur fries'
-    );
-  }, 550);
-
-  setTimeout(() => {
-    addMessage("are u allowed to be mad");
-  }, 1100);
-
-  setTimeout(() => {
-
-    setChoices([
-      {
-        text: "yes. jail.",
-        trait: "weird",
-        next: jail
-      },
-      {
-        text: "no sharing is caring",
-        trait: "nice",
-        next: sharing
-      },
-      {
-        text: "depends how good the fries were",
-        trait: "nosy",
-        next: fries
-      }
-    ]);
-
-  }, 1450);
+  setChoices([
+    {
+      text: "exactly so introduce urself",
+      next: introduce
+    },
+    {
+      text: "LMAOO",
+      next: introduce
+    },
+    {
+      text: "okay bye stranger",
+      next: earlyBye
+    }
+  ]);
 }
 
 
-function jail() {
+async function apparentlyNot() {
 
-  addMessage("THANK U");
+  await incoming([
+    "omg sorry",
+    "that's embarrassing"
+  ]);
 
-  setTimeout(() => {
-    addMessage("finally");
-  }, 400);
-
-  setTimeout(() => {
-    addMessage("mina said i was dramatic");
-  }, 850);
-
-  setTimeout(() => {
-    finalQuestion();
-  }, 1250);
+  setChoices([
+    {
+      text: "ur good lol",
+      next: youreGood
+    },
+    {
+      text: "extremely",
+      next: embarrassing
+    }
+  ]);
 }
 
 
-function sharing() {
+async function embarrassing() {
 
-  addMessage("oh");
+  await incoming([
+    "damn 😭",
+    "okay deserved",
+    "but wait"
+  ]);
 
-  setTimeout(() => {
-    addMessage("ur one of THOSE people");
-  }, 450);
-
-  setTimeout(() => {
-    addMessage("noted");
-  }, 850);
-
-  setTimeout(() => {
-    finalQuestion();
-  }, 1200);
+  setChoices([
+    {
+      text: "what now",
+      next: actuallyWhat
+    },
+    {
+      text: "oh god",
+      next: actuallyWhat
+    }
+  ]);
 }
 
 
-function fries() {
+async function maybeMina() {
 
-  addMessage("EXACTLY");
+  await incoming([
+    "no",
+    "absolutely not",
+    "mina would've yelled at me already"
+  ]);
 
-  setTimeout(() => {
-    addMessage("they were really good");
-  }, 450);
+  setChoices([
+    {
+      text: "maybe she's changed",
+      next: changedMina
+    },
+    {
+      text: "okay u got me",
+      next: introduce
+    }
+  ]);
+}
 
-  setTimeout(() => {
-    addMessage("like REALLY good");
-  }, 850);
 
-  setTimeout(() => {
-    finalQuestion();
-  }, 1200);
+async function changedMina() {
+
+  await incoming([
+    "in the last 20 minutes??",
+    "girl"
+  ]);
+
+  setChoices([
+    {
+      text: "anything is possible",
+      next: playful
+    },
+    {
+      text: "LMAOO okay fine",
+      next: introduce
+    }
+  ]);
+}
+
+
+async function playful() {
+
+  await incoming([
+    "ur annoying",
+    "i kinda respect it tho"
+  ]);
+
+  setChoices([
+    {
+      text: "thank u",
+      next: introduce
+    },
+    {
+      text: "as u should",
+      next: introduce
+    }
+  ]);
+}
+
+
+async function introduce() {
+
+  await incoming([
+    "im not giving a random number my government name 😭",
+    "u can call me m"
+  ]);
+
+  contactName.textContent = "m";
+
+  setChoices([
+    {
+      text: "m is suspicious",
+      next: suspicious
+    },
+    {
+      text: "okay m",
+      next: mContinue
+    },
+    {
+      text: "im still calling u stranger",
+      next: stranger
+    }
+  ]);
+}
+
+
+async function suspicious() {
+
+  await incoming([
+    "GOOD",
+    "stranger danger",
+    "anyway"
+  ]);
+
+  situation();
+}
+
+
+async function mContinue() {
+
+  await incoming([
+    "see we're friends now",
+    "kinda"
+  ]);
+
+  situation();
+}
+
+
+async function stranger() {
+
+  await incoming([
+    "rude",
+    "but fair"
+  ]);
+
+  situation();
+}
+
+
+/* pretending */
+
+async function pretend() {
+
+  await incoming([
+    "finally",
+    "did u bring it"
+  ]);
+
+  setChoices([
+    {
+      text: "bring what",
+      next: caughtPretending
+    },
+    {
+      text: "obviously",
+      next: deeperPretend
+    },
+    {
+      text: "no i forgot",
+      next: forgot
+    }
+  ]);
+}
+
+
+async function caughtPretending() {
+
+  await incoming([
+    "...",
+    "ur not mina",
+    "LMAOOOO"
+  ]);
+
+  setChoices([
+    {
+      text: "u caught me",
+      next: caught
+    },
+    {
+      text: "who's mina 😭",
+      next: whoIsThis
+    }
+  ]);
+}
+
+
+async function deeperPretend() {
+
+  await incoming([
+    "okay good",
+    "because if u forgot the cat carrier AGAIN"
+  ]);
+
+  await wait(300);
+
+  await incoming([
+    "...",
+    "wait",
+    "what color is my cat"
+  ]);
+
+  setChoices([
+    {
+      text: "orange",
+      next: orangeGuess
+    },
+    {
+      text: "black",
+      next: blackGuess
+    },
+    {
+      text: "cat colored",
+      next: catColored
+    }
+  ]);
+}
+
+
+async function orangeGuess() {
+
+  await incoming([
+    "WRONG",
+    "WHO IS THIS 😭"
+  ]);
+
+  caught();
+}
+
+
+async function blackGuess() {
+
+  await incoming([
+    "...",
+    "okay that's actually concerning",
+    "but still wrong person"
+  ]);
+
+  caught();
+}
+
+
+async function catColored() {
+
+  await incoming([
+    "CAT COLORED???",
+    "okay ur definitely not mina",
+    "im crying"
+  ]);
+
+  caught();
+}
+
+
+async function forgot() {
+
+  await incoming([
+    "MINA",
+    "i swear to god"
+  ]);
+
+  await wait(400);
+
+  await incoming([
+    "...wait",
+    "ur not mina are u"
+  ]);
+
+  setChoices([
+    {
+      text: "nope",
+      next: caught
+    },
+    {
+      text: "surprise",
+      next: caught
+    }
+  ]);
+}
+
+
+async function caught() {
+
+  await incoming([
+    "why did u go along with it 😭"
+  ]);
+
+  setChoices([
+    {
+      text: "i was curious",
+      next: curious
+    },
+    {
+      text: "it was funny",
+      next: funny
+    },
+    {
+      text: "idk honestly",
+      next: funny
+    }
+  ]);
+}
+
+
+async function curious() {
+
+  await incoming([
+    "nosy",
+    "respect",
+    "okay since ur here"
+  ]);
+
+  actuallyWhat();
+}
+
+
+async function funny() {
+
+  await incoming([
+    "okay it was kinda funny",
+    "u scared me tho",
+    "anyway wait"
+  ]);
+
+  actuallyWhat();
+}
+
+
+/* main conversation */
+
+async function situation() {
+
+  await incoming([
+    "okay",
+    "so there's this guy"
+  ]);
+
+  await wait(300);
+
+  await incoming([
+    "we've been talking for like 2 months",
+    "not dating",
+    "but definitely not just friends"
+  ]);
+
+  setChoices([
+    {
+      text: "oh brother 😭",
+      next: ohBrother
+    },
+    {
+      text: "situationship...",
+      next: situationship
+    },
+    {
+      text: "okay keep going",
+      next: keepGoing
+    }
+  ]);
+}
+
+
+async function ohBrother() {
+
+  await incoming([
+    "DONT START",
+    "i already know how it sounds 😭"
+  ]);
+
+  keepGoing();
+}
+
+
+async function situationship() {
+
+  await incoming([
+    "don't call it that",
+    "i hate that word",
+    "...but yes"
+  ]);
+
+  keepGoing();
+}
+
+
+async function keepGoing() {
+
+  await incoming([
+    "anyway",
+    "yesterday he disappeared for like 8 hours"
+  ]);
+
+  await wait(300);
+
+  await incoming([
+    "then came back at 1am",
+    "and texted me \"u up\""
+  ]);
+
+  setChoices([
+    {
+      text: "absolutely not",
+      next: absolutelyNot
+    },
+    {
+      text: "8 hours isn't that crazy",
+      next: defendGuy
+    },
+    {
+      text: "what did u say",
+      next: whatDidYouSay
+    }
+  ]);
+}
+
+
+async function absolutelyNot() {
+
+  await incoming([
+    "THANK U",
+    "that's what i said"
+  ]);
+
+  await wait(300);
+
+  await incoming([
+    "well",
+    "that's what i THOUGHT"
+  ]);
+
+  setChoices([
+    {
+      text: "oh no what did u actually say",
+      next: confession
+    },
+    {
+      text: "girl...",
+      next: confession
+    }
+  ]);
+}
+
+
+async function defendGuy() {
+
+  await incoming([
+    "okay mina said that too",
+    "but it's not JUST the 8 hours"
+  ]);
+
+  await wait(300);
+
+  await incoming([
+    "he watched my story",
+    "during the 8 hours"
+  ]);
+
+  setChoices([
+    {
+      text: "OH nvm",
+      next: storyWatch
+    },
+    {
+      text: "maybe he was busy",
+      next: stillDefending
+    }
+  ]);
+}
+
+
+async function storyWatch() {
+
+  await incoming([
+    "EXACTLY",
+    "like hello??",
+    "ur phone clearly works"
+  ]);
+
+  confession();
+}
+
+
+async function stillDefending() {
+
+  await incoming([
+    "why are u defending this man",
+    "u don't even know him 😭"
+  ]);
+
+  setChoices([
+    {
+      text: "im trying to be unbiased",
+      next: unbiased
+    },
+    {
+      text: "okay fine he's guilty",
+      next: confession
+    }
+  ]);
+}
+
+
+async function unbiased() {
+
+  await incoming([
+    "okay fair",
+    "that's literally why i asked a stranger"
+  ]);
+
+  confession();
+}
+
+
+async function whatDidYouSay() {
+
+  await incoming([
+    "...",
+    "that's the problem"
+  ]);
+
+  setChoices([
+    {
+      text: "WHAT DID U SAY",
+      next: confession
+    },
+    {
+      text: "oh god",
+      next: confession
+    }
+  ]);
+}
+
+
+async function confession() {
+
+  await incoming([
+    "i said",
+    "\"yeah what's up\""
+  ]);
+
+  await wait(500);
+
+  await incoming([
+    "I KNOW",
+    "don't say anything"
+  ]);
+
+  setChoices([
+    {
+      text: "stand UP 😭",
+      next: standUp
+    },
+    {
+      text: "LMAOOOO",
+      next: laughAtHer
+    },
+    {
+      text: "honestly i would've replied too",
+      next: relatable
+    }
+  ]);
+}
+
+
+async function standUp() {
+
+  await incoming([
+    "I KNOWWW",
+    "leave me alone 😭"
+  ]);
+
+  nextProblem();
+}
+
+
+async function laughAtHer() {
+
+  await incoming([
+    "ur supposed to HELP ME",
+    "not laugh 😭"
+  ]);
+
+  nextProblem();
+}
+
+
+async function relatable() {
+
+  await incoming([
+    "THANK U",
+    "finally someone honest"
+  ]);
+
+  nextProblem();
+}
+
+
+async function nextProblem() {
+
+  await incoming([
+    "okay so now",
+    "he asked if i wanna see him tonight"
+  ]);
+
+  setChoices([
+    {
+      text: "don't go",
+      next: dontGo
+    },
+    {
+      text: "go but act normal",
+      next: goNormal
+    },
+    {
+      text: "do u actually like him",
+      next: likeHim
+    }
+  ]);
+}
+
+
+async function dontGo() {
+
+  await incoming([
+    "that's what my brain says",
+    "unfortunately i am stupid"
+  ]);
+
+  setChoices([
+    {
+      text: "at least ur self aware",
+      next: selfAware
+    },
+    {
+      text: "then why did u ask me 😭",
+      next: whyAsk
+    }
+  ]);
+}
+
+
+async function goNormal() {
+
+  await incoming([
+    "see",
+    "this is the answer i wanted"
+  ]);
+
+  setChoices([
+    {
+      text: "so u just wanted validation",
+      next: validation
+    },
+    {
+      text: "but don't act desperate",
+      next: desperate
+    }
+  ]);
+}
+
+
+async function likeHim() {
+
+  await incoming([
+    "...",
+    "unfortunately"
+  ]);
+
+  await wait(400);
+
+  await incoming([
+    "yeah",
+    "a little too much probably"
+  ]);
+
+  setChoices([
+    {
+      text: "then talk to him fr",
+      next: communicate
+    },
+    {
+      text: "yeah ur cooked",
+      next: cooked
+    },
+    {
+      text: "that's kinda cute tho",
+      next: cute
+    }
+  ]);
+}
+
+
+async function selfAware() {
+
+  await incoming([
+    "barely",
+    "but yes"
+  ]);
+
+  realAdvice();
+}
+
+
+async function whyAsk() {
+
+  await incoming([
+    "because maybe a stranger would magically fix me",
+    "apparently not"
+  ]);
+
+  realAdvice();
+}
+
+
+async function validation() {
+
+  await incoming([
+    "...maybe",
+    "don't expose me"
+  ]);
+
+  realAdvice();
+}
+
+
+async function desperate() {
+
+  await incoming([
+    "HELLO",
+    "i wasn't planning on it 😭",
+    "okay maybe i needed to hear that"
+  ]);
+
+  realAdvice();
+}
+
+
+async function communicate() {
+
+  await incoming([
+    "ugh",
+    "the mature answer",
+    "hate that"
+  ]);
+
+  realAdvice();
+}
+
+
+async function cooked() {
+
+  await incoming([
+    "i KNOW",
+    "it's bad over here"
+  ]);
+
+  realAdvice();
+}
+
+
+async function cute() {
+
+  await incoming([
+    "don't encourage me 😭",
+    "but thank u"
+  ]);
+
+  realAdvice();
+}
+
+
+async function realAdvice() {
+
+  await incoming([
+    "okay wait",
+    "fr though"
+  ]);
+
+  await wait(350);
+
+  await incoming([
+    "should i tell him it bothered me",
+    "or is that doing too much"
+  ]);
+
+  setChoices([
+    {
+      text: "tell him",
+      next: tellHim
+    },
+    {
+      text: "wait and see what he does",
+      next: waitSee
+    },
+    {
+      text: "depends what u want from him",
+      next: whatWant
+    }
+  ]);
+}
+
+
+async function tellHim() {
+
+  await incoming([
+    "yeah",
+    "ur probably right",
+    "i hate communicating"
+  ]);
+
+  bond();
+}
+
+
+async function waitSee() {
+
+  await incoming([
+    "that's kinda what i was thinking",
+    "i don't wanna make it bigger than it is"
+  ]);
+
+  bond();
+}
+
+
+async function whatWant() {
+
+  await incoming([
+    "...",
+    "okay damn",
+    "why is the random number asking the real questions"
+  ]);
+
+  await wait(300);
+
+  await incoming([
+    "i think i want it to actually go somewhere"
+  ]);
+
+  bond();
+}
+
+
+/* little friendship */
+
+async function bond() {
+
+  await incoming([
+    "anyway",
+    "thank u random person"
+  ]);
+
+  setChoices([
+    {
+      text: "ur welcome random person",
+      next: mutualStrangers
+    },
+    {
+      text: "that'll be $20",
+      next: invoice
+    },
+    {
+      text: "i need an update later",
+      next: updateLater
+    }
+  ]);
+}
+
+
+async function mutualStrangers() {
+
+  await incoming([
+    "wait that's cute",
+    "random person solidarity"
+  ]);
+
+  saveNumber();
+}
+
+
+async function invoice() {
+
+  await incoming([
+    "LMAOOO",
+    "send the invoice to mina",
+    "she caused this"
+  ]);
+
+  saveNumber();
+}
+
+
+async function updateLater() {
+
+  await incoming([
+    "WAIT",
+    "u actually want an update??"
+  ]);
+
+  setChoices([
+    {
+      text: "yes im invested now",
+      next: invested
+    },
+    {
+      text: "obviously",
+      next: invested
+    },
+    {
+      text: "maybe lol",
+      next: maybeUpdate
+    }
+  ]);
+}
+
+
+async function invested() {
+
+  await incoming([
+    "omg",
+    "okay fine",
+    "ur getting an update"
+  ]);
+
+  saveNumber();
+}
+
+
+async function maybeUpdate() {
+
+  await incoming([
+    "too late",
+    "ur involved now"
+  ]);
+
+  saveNumber();
+}
+
+
+async function saveNumber() {
+
+  await incoming([
+    "wait",
+    "what do i save ur number as"
+  ]);
+
+  setChoices([
+    {
+      text: "wrong number",
+      next: savedWrongNumber
+    },
+    {
+      text: "free therapist",
+      next: savedTherapist
+    },
+    {
+      text: "none of ur business",
+      next: savedMystery
+    }
+  ]);
+}
+
+
+async function savedWrongNumber() {
+
+  contactName.textContent =
+    "m";
+
+  await incoming([
+    "boring",
+    "but okay 😭",
+    "ur officially wrong number"
+  ]);
+
+  finish();
+}
+
+
+async function savedTherapist() {
+
+  contactName.textContent =
+    "m";
+
+  await incoming([
+    "FREE THERAPIST 😭",
+    "okay that's actually perfect",
+    "saved"
+  ]);
+
+  finish();
+}
+
+
+async function savedMystery() {
+
+  contactName.textContent =
+    "m";
+
+  await incoming([
+    "okay mysterious",
+    "i'll come up with something myself"
+  ]);
+
+  finish();
+}
+
+
+async function finish() {
+
+  await wait(500);
+
+  await incoming([
+    "anyway",
+    "i gotta go",
+    "wish me luck"
+  ]);
+
+  setChoices([
+    {
+      text: "good luck m",
+      next: goodLuck
+    },
+    {
+      text: "don't do anything stupid",
+      next: dontBeStupid
+    },
+    {
+      text: "update me later",
+      next: finalUpdate
+    }
+  ]);
+}
+
+
+async function goodLuck() {
+
+  addMessage(
+    "good luck m",
+    "you"
+  );
+
+  await incoming([
+    "thank u stranger",
+    "talk later"
+  ]);
+
+  endConversation(
+    "maybe not such a wrong number."
+  );
+}
+
+
+async function dontBeStupid() {
+
+  addMessage(
+    "don't do anything stupid",
+    "you"
+  );
+
+  await incoming([
+    "no promises",
+    "bye 😭"
+  ]);
+
+  endConversation(
+    "somehow u made a friend."
+  );
+}
+
+
+async function finalUpdate() {
+
+  addMessage(
+    "update me later",
+    "you"
+  );
+
+  await incoming([
+    "i will",
+    "don't disappear"
+  ]);
+
+  endConversation(
+    "to be continued, probably."
+  );
+}
+
+
+/* early exit */
+
+async function earlyBye() {
+
+  await incoming([
+    "LMAO okay",
+    "bye stranger"
+  ]);
+
+  endConversation(
+    "well... that was short."
+  );
 }
 
 
 /* ending */
 
-function finalQuestion() {
+function endConversation(text) {
 
-  addMessage("okay last thing");
-
-  setTimeout(() => {
-    addMessage("what do i save ur number as");
-  }, 550);
-
-  setTimeout(() => {
-
-    setChoices([
-      {
-        text: "stranger",
-        trait: "nice",
-        next: ending
-      },
-      {
-        text: "fries attorney",
-        trait: "weird",
-        next: ending
-      },
-      {
-        text: "don't save it",
-        trait: "nosy",
-        next: ending
-      }
-    ]);
-
-  }, 900);
-}
-
-
-function ending() {
-
-  let endingText;
-
-  if (
-    personality.weird >= personality.nice &&
-    personality.weird >= personality.nosy
-  ) {
-
-    contactName.textContent =
-      "weird stranger";
-
-    endingText =
-      "okay weird stranger. don't change ur number.";
-
-  }
-
-  else if (
-    personality.nosy > personality.nice
-  ) {
-
-    contactName.textContent =
-      "nosy stranger";
-
-    endingText =
-      "ur nosy but whatever. i'll allow it.";
-
-  }
-
-  else {
-
-    contactName.textContent =
-      "nice stranger";
-
-    endingText =
-      "okay ur kinda nice. glad i texted the wrong person.";
-
-  }
-
-  addMessage(endingText);
-
-  setTimeout(() => {
-    addMessage("text me later?");
-  }, 650);
-
-  setTimeout(() => {
-
-    choices.innerHTML = "";
-
-    replyLabel.textContent =
-      "conversation ended";
-
-    const ending =
-      document.createElement("div");
-
-    ending.className = "ended";
-
-    ending.textContent =
-      "wrong number. right person, maybe.";
-
-    choices.appendChild(ending);
-
-    const restart =
-      document.createElement("button");
-
-    restart.className = "restart";
-
-    restart.textContent =
-      "text again";
-
-    restart.onclick = () => {
-      start();
-    };
-
-    choices.appendChild(restart);
-
-    status.textContent = "offline";
-
-  }, 1300);
-}
-
-
-function rejected() {
-
-  addMessage("damn");
-
-  setTimeout(() => {
-    addMessage("okay bye then");
-  }, 500);
-
-  setTimeout(() => {
-    bye();
-  }, 900);
-}
-
-
-function bye() {
-
-  status.textContent = "offline";
+  contactStatus.textContent =
+    "offline";
 
   replyLabel.textContent =
     "conversation ended";
@@ -986,10 +2073,8 @@ function bye() {
   const ending =
     document.createElement("div");
 
-  ending.className = "ended";
-
-  ending.textContent =
-    "well... that was short.";
+  ending.className = "end-text";
+  ending.textContent = text;
 
   choices.appendChild(ending);
 
@@ -997,13 +2082,13 @@ function bye() {
     document.createElement("button");
 
   restart.className = "restart";
-
   restart.textContent =
-    "text again";
+    "start over";
 
-  restart.onclick = () => {
-    start();
-  };
+  restart.addEventListener(
+    "click",
+    start
+  );
 
   choices.appendChild(restart);
 }
@@ -1011,20 +2096,31 @@ function bye() {
 
 /* clock */
 
-function updateTime() {
+function updateClock() {
 
   const now = new Date();
 
-  document.getElementById("time").textContent =
-    now.toLocaleTimeString([], {
-      hour: "numeric",
-      minute: "2-digit"
-    });
+  document.getElementById(
+    "phoneTime"
+  ).textContent =
+    now.toLocaleTimeString(
+      [],
+      {
+        hour: "numeric",
+        minute: "2-digit"
+      }
+    );
 }
 
-updateTime();
+updateClock();
 
-setInterval(updateTime, 30000);
+setInterval(
+  updateClock,
+  30000
+);
+
+
+/* start */
 
 start();
 
