@@ -14,13 +14,11 @@
     }
 
     :root {
-      --cream: #fff9ef;
-      --pink: #f4b8c4;
-      --dark-pink: #cc7f91;
-      --brown: #5d4545;
-      --purple: #aca1c7;
       --window: #f8eee5;
-      --taskbar: #e9cbd2;
+      --brown: #554349;
+      --pink: #e8c1cb;
+      --pink2: #f0d4da;
+      --border: #705c65;
     }
 
     html,
@@ -38,74 +36,75 @@
     }
 
     button,
+    input,
     a {
       font: inherit;
     }
 
+    button {
+      color: inherit;
+    }
+
     /* =========================
-       BOOT
+       BOOT SCREEN
     ========================= */
 
     #boot-screen {
       position: fixed;
       inset: 0;
       z-index: 99999;
+
       display: flex;
-      align-items: center;
-      justify-content: center;
       flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
       background: #17131b;
-      color: #f4dce4;
+      color: #f1dce5;
+
       transition: opacity .8s ease;
     }
 
     #boot-screen h1 {
-      font-size: clamp(22px, 4vw, 42px);
-      letter-spacing: 4px;
+      margin-bottom: 22px;
+      font-size: clamp(25px, 5vw, 44px);
       font-weight: normal;
-      margin-bottom: 24px;
-    }
-
-    #boot-screen p {
-      font-size: 11px;
-      opacity: .55;
-      margin-top: 14px;
-    }
-
-    #boot-warning {
-      margin-top: 7px;
-      font-size: 9px;
-      opacity: 0;
-      color: #d59aa7;
-      animation: bootWarning 1s 1.4s forwards;
-    }
-
-    @keyframes bootWarning {
-      to {
-        opacity: .65;
-      }
+      letter-spacing: 4px;
     }
 
     .loading-track {
-      width: min(260px, 70vw);
-      height: 13px;
-      border: 1px solid #d2bac4;
+      width: min(280px, 75vw);
+      height: 14px;
       padding: 2px;
+      border: 1px solid #d4bbc5;
     }
 
     .loading-bar {
       height: 100%;
       width: 0;
-      background: #e3b4c5;
-      animation: load 2.5s forwards;
+      background: #e0aebe;
+      animation: loading 2.5s forwards;
     }
 
-    @keyframes load {
+    @keyframes loading {
       0% { width: 0; }
-      35% { width: 38%; }
-      55% { width: 64%; }
-      65% { width: 64%; }
+      30% { width: 34%; }
+      52% { width: 62%; }
+      64% { width: 62%; }
       100% { width: 100%; }
+    }
+
+    #boot-text {
+      margin-top: 14px;
+      font-size: 10px;
+      opacity: .55;
+    }
+
+    #boot-warning {
+      margin-top: 6px;
+      font-size: 9px;
+      color: #d195a4;
+      opacity: .65;
     }
 
     /* =========================
@@ -114,27 +113,36 @@
 
     #desktop {
       position: relative;
+
+      width: 100vw;
       height: calc(100vh - 42px);
+
       padding: 22px;
       overflow: hidden;
 
       background:
-        radial-gradient(circle at 20% 20%, rgba(255,255,255,.6), transparent 25%),
-        radial-gradient(circle at 80% 75%, rgba(255,255,255,.25), transparent 22%),
-        linear-gradient(145deg, #d8cce7, #e8cbd5 50%, #c8d4ca);
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,.55), transparent 25%),
+        radial-gradient(circle at 78% 70%, rgba(255,255,255,.24), transparent 22%),
+        linear-gradient(
+          145deg,
+          #d8cce7,
+          #e8cbd5 50%,
+          #c8d4ca
+        );
 
       transition:
-        filter .4s ease,
-        background .5s ease;
+        background 1.3s ease,
+        filter .5s ease;
     }
 
     #desktop::after {
       content: "";
       position: absolute;
       inset: 0;
-      z-index: 9990;
+      z-index: 9000;
       pointer-events: none;
-      opacity: .08;
+
+      opacity: .07;
 
       background:
         repeating-linear-gradient(
@@ -148,64 +156,93 @@
 
     #desktop.cursed {
       filter:
-        saturate(.72)
-        contrast(1.09)
-        brightness(.94);
+        saturate(.75)
+        contrast(1.07)
+        brightness(.95);
     }
 
-    #desktop.deep-cursed {
+    #desktop.wallpaper-two {
       background:
-        radial-gradient(circle at 30% 20%, rgba(255,255,255,.15), transparent 22%),
-        linear-gradient(145deg, #8f849e, #af929d 45%, #85928b);
+        radial-gradient(
+          circle at 50% 32%,
+          rgba(238,220,225,.28),
+          transparent 13%
+        ),
+        radial-gradient(
+          circle at 50% 32%,
+          rgba(46,33,44,.24),
+          transparent 21%
+        ),
+        linear-gradient(
+          150deg,
+          #8a8496,
+          #9f8a95 50%,
+          #7b8984
+        );
+    }
+
+    #desktop.wallpaper-two .desktop-title p {
+      opacity: 0;
+    }
+
+    #desktop.wallpaper-two .desktop-title::after {
+      content: "you left this running.";
+      display: block;
+
+      font-size: 10px;
+      letter-spacing: 1px;
+
+      opacity: .65;
     }
 
     #desktop.glitch {
-      animation: screenGlitch .18s linear 2;
+      animation: glitch .13s linear 3;
     }
 
-    @keyframes screenGlitch {
+    @keyframes glitch {
       0% {
-        transform: translate(0,0);
-        filter: hue-rotate(0deg);
+        transform: translate(0);
+        filter: hue-rotate(0);
       }
 
       25% {
-        transform: translate(4px,-1px);
-        filter: hue-rotate(25deg);
+        transform: translate(4px,-2px);
+        filter: hue-rotate(20deg);
       }
 
       50% {
-        transform: translate(-5px,2px);
-        filter: hue-rotate(-25deg);
+        transform: translate(-5px,1px);
       }
 
       75% {
-        transform: translate(2px,1px);
+        transform: translate(2px,2px);
+        filter: hue-rotate(-20deg);
       }
 
       100% {
-        transform: translate(0,0);
+        transform: translate(0);
       }
     }
 
     .desktop-title {
       position: absolute;
-      right: 32px;
       top: 26px;
+      right: 30px;
+
       text-align: right;
-      opacity: .38;
       pointer-events: none;
-      z-index: 2;
+
+      opacity: .38;
     }
 
     .desktop-title h1 {
-      font-size: clamp(28px, 6vw, 72px);
+      font-size: clamp(32px, 7vw, 75px);
       font-weight: normal;
       letter-spacing: -5px;
     }
 
     .desktop-title p {
-      font-size: 11px;
+      font-size: 10px;
       letter-spacing: 2px;
     }
 
@@ -213,17 +250,17 @@
       position: absolute;
       left: 50%;
       bottom: 90px;
+
       transform: translateX(-50%);
-      font-size: 10px;
-      color: rgba(61, 43, 54, .32);
+
+      font-size: 9px;
       opacity: 0;
-      pointer-events: none;
+
       transition: opacity 1s ease;
-      z-index: 4;
     }
 
-    #background-message.visible {
-      opacity: 1;
+    #background-message.show {
+      opacity: .34;
     }
 
     /* =========================
@@ -231,95 +268,115 @@
     ========================= */
 
     .icons {
-      display: grid;
-      grid-template-columns: repeat(2, 92px);
-      gap: 28px 18px;
-      width: fit-content;
       position: relative;
-      z-index: 10;
+      z-index: 20;
+
+      display: grid;
+      grid-template-columns: repeat(2, 95px);
+
+      gap: 24px 14px;
+
+      width: fit-content;
     }
 
     .desktop-icon {
-      width: 92px;
+      width: 95px;
+
+      padding: 4px;
+
       border: none;
       background: transparent;
-      color: #493c42;
-      cursor: pointer;
+
       text-align: center;
-      padding: 4px;
-      position: relative;
+      text-decoration: none;
+
+      cursor: pointer;
+
       transition:
-        transform .25s ease,
-        left .4s ease,
-        top .4s ease;
+        left .3s ease,
+        top .3s ease,
+        transform .2s ease;
     }
 
-    .desktop-icon:hover .icon-picture {
-      transform: translateY(-3px) rotate(-2deg);
-      filter: brightness(1.06);
+    .desktop-icon:hover {
+      transform: translateY(-2px);
     }
 
     .desktop-icon:hover .icon-label {
-      background: rgba(255,255,255,.55);
+      background: rgba(255,255,255,.48);
     }
 
     .icon-picture {
       display: flex;
-      width: 55px;
-      height: 55px;
+
+      width: 56px;
+      height: 56px;
+
       margin: auto;
-      align-items: center;
+
       justify-content: center;
+      align-items: center;
+
       font-size: 39px;
-      filter: drop-shadow(2px 4px 2px rgba(50, 30, 40, .18));
-      transition: .15s;
+
+      filter:
+        drop-shadow(
+          2px 4px 2px rgba(50,30,40,.15)
+        );
     }
 
     .icon-label {
       display: inline-block;
-      margin-top: 5px;
+
+      margin-top: 4px;
       padding: 2px 4px;
-      font-size: 11px;
+
+      font-size: 10px;
       line-height: 1.2;
-      text-shadow: 0 1px rgba(255,255,255,.5);
     }
 
     #secret-icon,
     #visitor-icon,
-    #user-two-icon {
+    #user-two-icon,
+    #pictures-icon {
       display: none;
       position: absolute;
-      z-index: 30;
+      z-index: 40;
     }
 
     #secret-icon {
-      left: 225px;
+      left: 230px;
       bottom: 50px;
     }
 
     #visitor-icon {
-      right: 180px;
-      bottom: 85px;
+      right: 190px;
+      bottom: 75px;
     }
 
     #user-two-icon {
       right: 55px;
-      top: 160px;
+      top: 150px;
+    }
+
+    #pictures-icon {
+      right: 55px;
+      top: 265px;
     }
 
     #secret-icon.visible,
     #visitor-icon.visible,
-    #user-two-icon.visible {
+    #user-two-icon.visible,
+    #pictures-icon.visible {
       display: block;
-      animation: flickerIn .7s;
+      animation: appear .7s;
     }
 
-    @keyframes flickerIn {
+    @keyframes appear {
       0% { opacity: 0; }
-      15% { opacity: 1; }
-      30% { opacity: 0; }
-      45% { opacity: .35; }
-      60% { opacity: 0; }
+      20% { opacity: 1; }
+      35% { opacity: 0; }
+      55% { opacity: .4; }
       100% { opacity: 1; }
     }
 
@@ -329,23 +386,29 @@
 
     .window {
       display: none;
+
       position: absolute;
+
       width: min(470px, calc(100vw - 30px));
       min-height: 220px;
-      background: var(--window);
-      border: 2px solid #705c65;
-      box-shadow:
-        5px 7px 0 rgba(70, 50, 60, .17),
-        0 0 0 1px #fff inset;
+
       z-index: 100;
+
+      background: var(--window);
+
+      border: 2px solid var(--border);
+
+      box-shadow:
+        5px 7px 0 rgba(70,50,60,.17),
+        inset 0 0 0 1px #fff;
     }
 
     .window.active {
       display: block;
-      animation: windowOpen .13s ease-out;
+      animation: window-open .12s ease;
     }
 
-    @keyframes windowOpen {
+    @keyframes window-open {
       from {
         transform: scale(.97);
         opacity: .4;
@@ -358,53 +421,55 @@
     }
 
     .titlebar {
-      height: 31px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 6px 0 10px;
+
+      height: 31px;
+
+      padding-left: 9px;
+
       cursor: move;
-      color: #4c3c43;
-      border-bottom: 2px solid #705c65;
+
+      border-bottom: 2px solid var(--border);
 
       background:
         repeating-linear-gradient(
           0deg,
-          #e6bdc8,
-          #e6bdc8 2px,
+          #e3b7c4,
+          #e3b7c4 2px,
           #efccd5 2px,
           #efccd5 4px
         );
     }
 
-    .titlebar-name {
-      font-size: 12px;
+    .title-name {
+      font-size: 11px;
       font-weight: bold;
     }
 
-    .window-buttons {
-      display: flex;
-      gap: 4px;
-    }
+    .close-button {
+      width: 27px;
+      height: 100%;
 
-    .window-buttons button {
-      width: 21px;
-      height: 21px;
+      border: 0;
+      border-left: 1px solid #8c737c;
+
+      background: rgba(255,255,255,.2);
+
       cursor: pointer;
-      border: 1px solid #715b64;
-      background: #f7ebe6;
-      color: #604a54;
-      line-height: 15px;
     }
 
     .window-content {
       padding: 18px;
-      font-size: 13px;
+
+      font-size: 12px;
       line-height: 1.7;
     }
 
     .window-content h2 {
       margin-bottom: 10px;
+
       font-size: 17px;
       font-weight: normal;
     }
@@ -413,31 +478,30 @@
       margin-bottom: 10px;
     }
 
+    .tiny {
+      font-size: 9px;
+      opacity: .55;
+    }
+
     .window-link {
       display: block;
-      padding: 7px 8px;
+
       margin: 5px 0;
-      color: #5f4652;
-      border: 1px dashed #c296a4;
-      background: rgba(255,255,255,.42);
+      padding: 7px 8px;
+
+      border: 1px dashed #c399a4;
+
+      background: rgba(255,255,255,.38);
+
+      color: inherit;
+
       text-decoration: none;
+
+      cursor: pointer;
     }
 
     .window-link:hover {
-      background: #f2d8df;
-    }
-
-    .tiny {
-      opacity: .55;
-      font-size: 10px;
-    }
-
-    .danger-text {
-      color: #8c5866;
-    }
-
-    .muted {
-      opacity: .5;
+      background: #f0d7dd;
     }
 
     /* =========================
@@ -445,8 +509,13 @@
     ========================= */
 
     .notepad {
-      min-height: 210px;
+      min-height: 205px;
+
       padding: 13px;
+
+      white-space: pre-line;
+
+      border: 1px solid #c7b8b1;
 
       background:
         repeating-linear-gradient(
@@ -455,54 +524,231 @@
           #ded6cc 24px
         );
 
-      border: 1px solid #c7b8b1;
-      color: #56494d;
       line-height: 24px;
-      white-space: pre-line;
     }
 
     /* =========================
-       CHAT WINDOW
+       LOGIN
+    ========================= */
+
+    .login-box {
+      text-align: center;
+      padding: 12px 10px 5px;
+    }
+
+    .login-avatar {
+      font-size: 55px;
+      margin-bottom: 8px;
+    }
+
+    .login-name {
+      font-size: 15px;
+      margin-bottom: 15px;
+    }
+
+    #password-input {
+      width: 210px;
+      max-width: 90%;
+
+      padding: 7px;
+
+      border: 1px solid #806b74;
+      background: #fffaf7;
+
+      outline: none;
+    }
+
+    .login-button {
+      margin-top: 10px;
+      padding: 6px 20px;
+
+      border: 1px solid #806b74;
+      background: #ead2d8;
+
+      cursor: pointer;
+    }
+
+    #login-message {
+      min-height: 25px;
+
+      margin-top: 13px;
+
+      font-size: 10px;
+      opacity: .6;
+    }
+
+    /* =========================
+       PHOTO FOLDER
+    ========================= */
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+
+      gap: 10px;
+    }
+
+    .photo-file {
+      padding: 10px 5px;
+
+      border: 1px solid transparent;
+      background: transparent;
+
+      text-align: center;
+
+      cursor: pointer;
+    }
+
+    .photo-file:hover {
+      border-color: #c6aab3;
+      background: rgba(255,255,255,.45);
+    }
+
+    .photo-file span {
+      display: block;
+      font-size: 32px;
+    }
+
+    .photo-file small {
+      font-size: 8px;
+    }
+
+    /* =========================
+       PHOTO VIEWER
+    ========================= */
+
+    #photo-viewer {
+      width: min(520px, calc(100vw - 30px));
+    }
+
+    .photo-preview {
+      position: relative;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      min-height: 290px;
+
+      overflow: hidden;
+
+      background: #231e22;
+      color: #e9dfe3;
+    }
+
+    .photo-preview.normal {
+      background:
+        linear-gradient(
+          140deg,
+          #cfc9dd,
+          #d8bfc9,
+          #bdcbc5
+        );
+    }
+
+    .photo-preview.corrupt {
+      background:
+        repeating-linear-gradient(
+          90deg,
+          #261d24 0 18px,
+          #6e5361 18px 23px,
+          #27202a 23px 49px,
+          #baa0aa 49px 53px
+        );
+    }
+
+    .photo-preview.corrupt::before {
+      content: "";
+
+      position: absolute;
+      inset: 0;
+
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent 0 7px,
+          rgba(255,255,255,.08) 7px 8px
+        );
+    }
+
+    .photo-preview.future {
+      background:
+        radial-gradient(
+          circle at center,
+          #b4a4ae 0 15%,
+          #493a44 16% 17%,
+          #171216 40%
+        );
+    }
+
+    #photo-text {
+      z-index: 2;
+
+      padding: 20px;
+
+      font-size: 12px;
+      text-align: center;
+
+      white-space: pre-line;
+    }
+
+    #photo-meta {
+      margin-top: 9px;
+
+      font-size: 9px;
+      opacity: .55;
+    }
+
+    /* =========================
+       CHAT
     ========================= */
 
     .chat-box {
-      border: 1px solid #bfaeb5;
-      background: #fffaf8;
-      min-height: 165px;
-      padding: 12px;
-      font-size: 11px;
-      line-height: 1.7;
-    }
+      min-height: 170px;
 
-    .chat-line {
-      margin-bottom: 6px;
+      padding: 12px;
+
+      border: 1px solid #c1adb5;
+      background: #fffaf7;
+
+      font-size: 10px;
+      line-height: 1.8;
     }
 
     .chat-name {
+      color: #8b6472;
       font-weight: bold;
-      color: #82606e;
     }
 
-    #typing-indicator {
+    #typing {
       opacity: .45;
       font-style: italic;
     }
 
     /* =========================
-       ERROR POPUP
+       ERROR
     ========================= */
 
     #error-popup {
       display: none;
+
       position: fixed;
-      width: min(340px, calc(100vw - 30px));
-      left: 50%;
+
       top: 48%;
+      left: 50%;
+
+      width: min(340px, calc(100vw - 30px));
+
       transform: translate(-50%, -50%);
-      z-index: 9999;
-      border: 2px solid #62515a;
+
+      z-index: 99999;
+
+      border: 2px solid #64525b;
+
       background: #f6ebe6;
-      box-shadow: 8px 8px rgba(47, 32, 40, .22);
+
+      box-shadow:
+        7px 8px 0 rgba(45,30,40,.2);
     }
 
     #error-popup.show {
@@ -511,41 +757,115 @@
 
     .error-body {
       display: flex;
-      gap: 13px;
-      align-items: flex-start;
+      gap: 15px;
+
       padding: 20px;
-      font-size: 12px;
+
+      font-size: 11px;
       line-height: 1.5;
     }
 
     .error-symbol {
-      font-size: 27px;
+      font-size: 28px;
     }
 
     .error-ok {
       display: block;
-      min-width: 75px;
+
       margin: 0 auto 15px;
-      padding: 4px 13px;
-      background: #f8f0eb;
-      border: 2px outset #d5c5c4;
+      padding: 5px 18px;
+
+      border: 2px outset #decfd0;
+
+      background: #faf1ed;
+
       cursor: pointer;
     }
 
     /* =========================
-       START MENU
+       TASKBAR + START
     ========================= */
+
+    #taskbar {
+      position: fixed;
+
+      bottom: 0;
+      left: 0;
+      right: 0;
+
+      z-index: 8000;
+
+      display: flex;
+      align-items: center;
+
+      height: 42px;
+
+      padding: 5px;
+      gap: 5px;
+
+      background: #e8cbd2;
+
+      border-top: 2px solid rgba(255,255,255,.6);
+    }
+
+    #start-button {
+      height: 31px;
+
+      min-width: 82px;
+
+      padding: 0 12px;
+
+      border: 2px outset #f5e6e9;
+
+      background: #ecd3d8;
+
+      cursor: pointer;
+    }
+
+    #task-message {
+      flex: 1;
+
+      padding-left: 8px;
+
+      overflow: hidden;
+
+      font-size: 9px;
+      opacity: .6;
+
+      white-space: nowrap;
+    }
+
+    #clock {
+      min-width: 88px;
+      height: 30px;
+
+      border: 2px inset rgba(255,255,255,.6);
+
+      background: rgba(255,255,255,.18);
+
+      font-size: 10px;
+
+      cursor: pointer;
+    }
 
     #start-menu {
       display: none;
+
       position: fixed;
+
       left: 5px;
       bottom: 42px;
+
       width: 235px;
-      z-index: 5000;
-      border: 2px solid #6a5660;
-      background: #f7e9e4;
-      box-shadow: 5px 5px rgba(50,30,40,.17);
+
+      z-index: 7000;
+
+      border: 2px solid #6d5962;
+
+      background: #f5e7e3;
+
+      box-shadow:
+        5px 5px rgba(50,30,40,.16);
     }
 
     #start-menu.open {
@@ -554,96 +874,40 @@
 
     .start-header {
       padding: 12px;
-      background: #d9aebb;
-      border-bottom: 1px solid #876c76;
+
+      background: #d7aeb9;
+
+      border-bottom: 1px solid #806a73;
     }
 
     .start-header strong {
       display: block;
+
       font-size: 14px;
     }
 
     .start-header span {
-      font-size: 10px;
-      opacity: .65;
+      font-size: 9px;
+      opacity: .6;
     }
 
     .start-item {
       width: 100%;
+
       padding: 10px 12px;
+
       border: none;
-      border-bottom: 1px solid rgba(90,65,75,.12);
-      text-align: left;
-      color: #514147;
+      border-bottom: 1px solid rgba(80,60,70,.1);
+
       background: transparent;
+
+      text-align: left;
+
       cursor: pointer;
     }
 
     .start-item:hover {
-      background: #efd4dc;
-    }
-
-    /* =========================
-       TASKBAR
-    ========================= */
-
-    #taskbar {
-      position: fixed;
-      height: 42px;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 6000;
-      display: flex;
-      align-items: center;
-      padding: 5px;
-      gap: 5px;
-      border-top: 2px solid rgba(255,255,255,.6);
-      background: var(--taskbar);
-      box-shadow: 0 -2px rgba(80,55,65,.15);
-    }
-
-    #start-button {
-      height: 31px;
-      min-width: 82px;
-      padding: 0 12px;
-      border: 2px outset #f6e8e8;
-      background: #ecd3d8;
-      color: #514147;
-      cursor: pointer;
-    }
-
-    #task-message {
-      flex: 1;
-      padding-left: 7px;
-      font-size: 10px;
-      opacity: .56;
-      overflow: hidden;
-      white-space: nowrap;
-    }
-
-    #clock {
-      height: 30px;
-      min-width: 83px;
-      padding: 0 10px;
-      border: 2px inset rgba(255,255,255,.6);
-      background: rgba(255,255,255,.18);
-      cursor: default;
-      color: #4f4147;
-    }
-
-    /* =========================
-       FLICKER
-    ========================= */
-
-    .flicker {
-      animation: flicker .12s linear 3;
-    }
-
-    @keyframes flicker {
-      0% { opacity: 1; }
-      50% { opacity: .1; }
-      100% { opacity: 1; }
+      background: #edd1d8;
     }
 
     /* =========================
@@ -653,16 +917,16 @@
     @media (max-width: 600px) {
 
       #desktop {
-        padding: 15px;
+        padding: 14px;
       }
 
       .desktop-title {
-        right: 15px;
-        top: 15px;
+        top: 13px;
+        right: 13px;
       }
 
       .desktop-title h1 {
-        font-size: 35px;
+        font-size: 34px;
         letter-spacing: -3px;
       }
 
@@ -671,9 +935,11 @@
       }
 
       .icons {
-        margin-top: 55px;
+        margin-top: 58px;
+
         grid-template-columns: repeat(2, 85px);
-        gap: 20px 9px;
+
+        gap: 18px 7px;
       }
 
       .desktop-icon {
@@ -682,26 +948,35 @@
 
       .window {
         position: fixed !important;
+
+        top: 62px !important;
         left: 15px !important;
-        top: 70px !important;
-        max-height: calc(100vh - 130px);
+
+        max-height:
+          calc(100vh - 120px);
+
         overflow: auto;
       }
 
       #secret-icon {
         left: auto;
-        right: 20px;
-        bottom: 70px;
+        right: 15px;
+        bottom: 65px;
       }
 
       #visitor-icon {
-        right: 105px;
-        bottom: 70px;
+        right: 100px;
+        bottom: 65px;
       }
 
       #user-two-icon {
-        right: 10px;
-        top: 220px;
+        top: 250px;
+        right: 5px;
+      }
+
+      #pictures-icon {
+        top: 350px;
+        right: 5px;
       }
 
     }
@@ -711,9 +986,7 @@
 
 <body>
 
-  <!-- =========================
-       BOOT SCREEN
-  ========================== -->
+  <!-- BOOT -->
 
   <div id="boot-screen">
 
@@ -723,7 +996,9 @@
       <div class="loading-bar"></div>
     </div>
 
-    <p>please do not turn off your computer</p>
+    <div id="boot-text">
+      please do not turn off your computer
+    </div>
 
     <div id="boot-warning">
       another session may already be active
@@ -732,9 +1007,8 @@
   </div>
 
 
-  <!-- =========================
-       DESKTOP
-  ========================== -->
+
+  <!-- DESKTOP -->
 
   <main id="desktop">
 
@@ -748,14 +1022,12 @@
     </div>
 
 
-    <!-- NORMAL ICONS -->
-
     <div class="icons">
 
       <button
         class="desktop-icon"
         id="documents-icon"
-        onclick="openWindow('files-window')"
+        onclick="openWindow('documents-window')"
       >
         <span class="icon-picture">📁</span>
         <span class="icon-label">my documents</span>
@@ -764,7 +1036,7 @@
 
       <button
         class="desktop-icon"
-        onclick="openWindow('note-window')"
+        onclick="openWindow('notes-window')"
       >
         <span class="icon-picture">📝</span>
         <span class="icon-label">notes.txt</span>
@@ -810,7 +1082,6 @@
       <a
         class="desktop-icon"
         href="index.html"
-        style="text-decoration:none;"
       >
         <span class="icon-picture">🏠</span>
         <span class="icon-label">return home</span>
@@ -819,73 +1090,73 @@
     </div>
 
 
-
-    <!-- SECRET FILE -->
+    <!-- hidden -->
 
     <button
-      class="desktop-icon"
       id="secret-icon"
+      class="desktop-icon"
       onclick="openSecret()"
     >
       <span class="icon-picture">◼️</span>
-      <span class="icon-label" id="secret-label">
+      <span
+        class="icon-label"
+        id="secret-label"
+      >
         dont-open.exe
       </span>
     </button>
 
 
-
-    <!-- VISITOR LOG -->
-
     <button
-      class="desktop-icon"
       id="visitor-icon"
+      class="desktop-icon"
       onclick="openWindow('visitor-window')"
     >
       <span class="icon-picture">📜</span>
-      <span class="icon-label">
-        visitor_log.txt
-      </span>
+      <span class="icon-label">visitor_log.txt</span>
     </button>
 
-
-
-    <!-- USER TWO -->
 
     <button
-      class="desktop-icon"
       id="user-two-icon"
-      onclick="openWindow('user-two-window')"
+      class="desktop-icon"
+      onclick="openWindow('login-window')"
     >
-      <span class="icon-picture">📁</span>
-      <span class="icon-label">
-        user_02
-      </span>
+      <span class="icon-picture">👤</span>
+      <span class="icon-label">user_02</span>
     </button>
 
 
-    <!-- =========================
-         DOCUMENTS
-    ========================== -->
+    <button
+      id="pictures-icon"
+      class="desktop-icon"
+      onclick="openWindow('pictures-window')"
+    >
+      <span class="icon-picture">📷</span>
+      <span class="icon-label">pictures</span>
+    </button>
+
+
+
+    <!-- DOCUMENTS -->
 
     <section
       class="window"
-      id="files-window"
-      style="left:180px; top:90px;"
+      id="documents-window"
+      style="left:180px; top:85px;"
     >
 
       <div class="titlebar">
-
-        <span class="titlebar-name">
+        <span class="title-name">
           📁 C:\Users\kels\Documents
         </span>
 
-        <div class="window-buttons">
-          <button onclick="closeWindow('files-window')">
-            ×
-          </button>
-        </div>
-
+        <button
+          class="close-button"
+          onclick="closeWindow('documents-window')"
+        >
+          ×
+        </button>
       </div>
 
       <div class="window-content">
@@ -920,7 +1191,6 @@
         <div
           class="window-link"
           onclick="weirdFile()"
-          style="cursor:pointer;"
         >
           📄 i_dont_remember_making_this.txt
         </div>
@@ -928,7 +1198,6 @@
         <div
           class="window-link"
           onclick="missingPhoto()"
-          style="cursor:pointer;"
         >
           🖼 IMG_0000.jpg
         </div>
@@ -937,7 +1206,7 @@
           class="window-link"
           id="hidden-document"
           onclick="hiddenDocument()"
-          style="cursor:pointer; display:none;"
+          style="display:none;"
         >
           📄 you_were_here.txt
         </div>
@@ -948,28 +1217,25 @@
 
 
 
-    <!-- =========================
-         NOTES
-    ========================== -->
+    <!-- NOTES -->
 
     <section
       class="window"
-      id="note-window"
-      style="left:330px; top:135px;"
+      id="notes-window"
+      style="left:320px; top:130px;"
     >
 
       <div class="titlebar">
-
-        <span class="titlebar-name">
+        <span class="title-name">
           notes.txt - Notepad
         </span>
 
-        <div class="window-buttons">
-          <button onclick="closeWindow('note-window')">
-            ×
-          </button>
-        </div>
-
+        <button
+          class="close-button"
+          onclick="closeWindow('notes-window')"
+        >
+          ×
+        </button>
       </div>
 
       <div class="window-content">
@@ -994,27 +1260,26 @@ why does this computer keep saying i've been here before?</div>
 
 
 
-    <!-- =========================
-         FORTUNE CAT
-    ========================== -->
+    <!-- FORTUNE -->
 
     <section
       class="window"
       id="fortune-window"
-      style="left:250px; top:70px;"
+      style="left:255px; top:75px;"
     >
 
       <div class="titlebar">
 
-        <span class="titlebar-name">
+        <span class="title-name">
           fortune-cat.exe
         </span>
 
-        <div class="window-buttons">
-          <button onclick="closeWindow('fortune-window')">
-            ×
-          </button>
-        </div>
+        <button
+          class="close-button"
+          onclick="closeWindow('fortune-window')"
+        >
+          ×
+        </button>
 
       </div>
 
@@ -1023,7 +1288,7 @@ why does this computer keep saying i've been here before?</div>
         <h2>🐈 fortune-cat.exe</h2>
 
         <p>
-          an unidentified program is asking permission
+          an unidentified program wants permission
           to predict your future.
         </p>
 
@@ -1032,8 +1297,8 @@ why does this computer keep saying i've been here before?</div>
         </p>
 
         <a
-          class="window-link"
           href="fortune-cat.html"
+          class="window-link"
         >
           run fortune-cat.exe →
         </a>
@@ -1044,27 +1309,26 @@ why does this computer keep saying i've been here before?</div>
 
 
 
-    <!-- =========================
-         GUESTBOOK
-    ========================== -->
+    <!-- GUESTBOOK -->
 
     <section
       class="window"
       id="guest-window"
-      style="left:400px; top:175px;"
+      style="left:420px; top:170px;"
     >
 
       <div class="titlebar">
 
-        <span class="titlebar-name">
+        <span class="title-name">
           guestbook.exe
         </span>
 
-        <div class="window-buttons">
-          <button onclick="closeWindow('guest-window')">
-            ×
-          </button>
-        </div>
+        <button
+          class="close-button"
+          onclick="closeWindow('guest-window')"
+        >
+          ×
+        </button>
 
       </div>
 
@@ -1076,18 +1340,16 @@ why does this computer keep saying i've been here before?</div>
           leave something behind before you go.
         </p>
 
-        <p
-          class="tiny"
-          id="guestbook-subtext"
-        >
-          1 connection active
+        <p class="tiny">
+          connections active:
+          <span id="connection-count">1</span>
         </p>
 
         <a
-          class="window-link"
           href="guestbook.html"
+          class="window-link"
         >
-          connect to guestbook →
+          connect →
         </a>
 
       </div>
@@ -1096,27 +1358,26 @@ why does this computer keep saying i've been here before?</div>
 
 
 
-    <!-- =========================
-         RECYCLE BIN
-    ========================== -->
+    <!-- TRASH -->
 
     <section
       class="window"
       id="trash-window"
-      style="left:150px; top:210px;"
+      style="left:150px; top:205px;"
     >
 
       <div class="titlebar">
 
-        <span class="titlebar-name">
+        <span class="title-name">
           Recycle Bin
         </span>
 
-        <div class="window-buttons">
-          <button onclick="closeWindow('trash-window')">
-            ×
-          </button>
-        </div>
+        <button
+          class="close-button"
+          onclick="closeWindow('trash-window')"
+        >
+          ×
+        </button>
 
       </div>
 
@@ -1129,7 +1390,7 @@ why does this computer keep saying i've been here before?</div>
         </p>
 
         <div class="window-link">
-          🗑 embarrassing_photo_final_FINAL.jpg
+          🗑 embarrassing_photo_FINAL.jpg
         </div>
 
         <div class="window-link">
@@ -1139,7 +1400,6 @@ why does this computer keep saying i've been here before?</div>
         <div
           class="window-link"
           onclick="deletedMessage()"
-          style="cursor:pointer;"
         >
           🗑 message_from_unknown.txt
         </div>
@@ -1147,15 +1407,13 @@ why does this computer keep saying i've been here before?</div>
         <div
           class="window-link"
           onclick="deletedUser()"
-          style="cursor:pointer;"
         >
           🗑 user_02
         </div>
 
         <div
           class="window-link"
-          style="cursor:pointer;"
-          onclick="restoreFile()"
+          onclick="restoreUnknown()"
         >
           🗑 unknown.exe
         </div>
@@ -1166,27 +1424,26 @@ why does this computer keep saying i've been here before?</div>
 
 
 
-    <!-- =========================
-         CHAT
-    ========================== -->
+    <!-- CHAT -->
 
     <section
       class="window"
       id="chat-window"
-      style="left:520px; top:115px;"
+      style="left:500px; top:110px;"
     >
 
       <div class="titlebar">
 
-        <span class="titlebar-name">
+        <span class="title-name">
           messenger.exe
         </span>
 
-        <div class="window-buttons">
-          <button onclick="closeWindow('chat-window')">
-            ×
-          </button>
-        </div>
+        <button
+          class="close-button"
+          onclick="closeWindow('chat-window')"
+        >
+          ×
+        </button>
 
       </div>
 
@@ -1199,27 +1456,21 @@ why does this computer keep saying i've been here before?</div>
           id="chat-box"
         >
 
-          <div class="chat-line">
+          <div>
             <span class="chat-name">
               system:
             </span>
             connected.
           </div>
 
-          <div
-            class="chat-line"
-            id="chat-message-one"
-          >
+          <div>
             <span class="chat-name">
               unknown:
             </span>
             hi
           </div>
 
-          <div
-            class="chat-line"
-            id="typing-indicator"
-          >
+          <div id="typing">
             unknown is typing...
           </div>
 
@@ -1231,27 +1482,26 @@ why does this computer keep saying i've been here before?</div>
 
 
 
-    <!-- =========================
-         VISITOR LOG
-    ========================== -->
+    <!-- VISITOR LOG -->
 
     <section
       class="window"
       id="visitor-window"
-      style="left:360px; top:160px;"
+      style="left:350px; top:145px;"
     >
 
       <div class="titlebar">
 
-        <span class="titlebar-name">
+        <span class="title-name">
           visitor_log.txt
         </span>
 
-        <div class="window-buttons">
-          <button onclick="closeWindow('visitor-window')">
-            ×
-          </button>
-        </div>
+        <button
+          class="close-button"
+          onclick="closeWindow('visitor-window')"
+        >
+          ×
+        </button>
 
       </div>
 
@@ -1259,7 +1509,7 @@ why does this computer keep saying i've been here before?</div>
 
         <div
           class="notepad"
-          id="visitor-log-text"
+          id="visitor-log"
         >
 loading...
         </div>
@@ -1270,27 +1520,90 @@ loading...
 
 
 
-    <!-- =========================
-         USER 02
-    ========================== -->
+    <!-- USER 02 LOGIN -->
 
     <section
       class="window"
-      id="user-two-window"
-      style="left:480px; top:90px;"
+      id="login-window"
+      style="left:430px; top:90px;"
     >
 
       <div class="titlebar">
 
-        <span class="titlebar-name">
+        <span class="title-name">
+          Log On to enokiecloud
+        </span>
+
+        <button
+          class="close-button"
+          onclick="closeWindow('login-window')"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div class="window-content login-box">
+
+        <div class="login-avatar">
+          👤
+        </div>
+
+        <div class="login-name">
+          user_02
+        </div>
+
+        <input
+          type="password"
+          id="password-input"
+          placeholder="password"
+          autocomplete="off"
+          onkeydown="
+            if(event.key === 'Enter'){
+              tryLogin();
+            }
+          "
+        >
+
+        <br>
+
+        <button
+          class="login-button"
+          onclick="tryLogin()"
+        >
+          log in
+        </button>
+
+        <div id="login-message">
+          password required
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- USER 02 FILES -->
+
+    <section
+      class="window"
+      id="user-two-window"
+      style="left:420px; top:100px;"
+    >
+
+      <div class="titlebar">
+
+        <span class="title-name">
           C:\Users\user_02
         </span>
 
-        <div class="window-buttons">
-          <button onclick="closeWindow('user-two-window')">
-            ×
-          </button>
-        </div>
+        <button
+          class="close-button"
+          onclick="closeWindow('user-two-window')"
+        >
+          ×
+        </button>
 
       </div>
 
@@ -1299,31 +1612,175 @@ loading...
         <h2>user_02</h2>
 
         <p class="tiny">
-          account status: unavailable
+          account status: active
         </p>
 
         <div
           class="window-link"
-          onclick="userTwoFileOne()"
-          style="cursor:pointer;"
+          onclick="userNote()"
         >
           📄 note_to_kels.txt
         </div>
 
         <div
           class="window-link"
-          onclick="userTwoFileTwo()"
-          style="cursor:pointer;"
+          onclick="lastSession()"
         >
           📄 last_session.txt
         </div>
 
         <div
           class="window-link"
-          onclick="userTwoPhoto()"
-          style="cursor:pointer;"
+          onclick="revealPictures()"
+        >
+          📁 pictures
+        </div>
+
+        <div
+          class="window-link"
+          onclick="desktopCapture()"
         >
           🖼 desktop_capture.png
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- PICTURES -->
+
+    <section
+      class="window"
+      id="pictures-window"
+      style="left:290px; top:120px;"
+    >
+
+      <div class="titlebar">
+
+        <span class="title-name">
+          C:\Users\user_02\Pictures
+        </span>
+
+        <button
+          class="close-button"
+          onclick="closeWindow('pictures-window')"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div class="window-content">
+
+        <p class="tiny">
+          6 objects found
+        </p>
+
+        <div class="photo-grid">
+
+          <button
+            class="photo-file"
+            onclick="openPhoto('room')"
+          >
+            <span>🖼️</span>
+            <small>IMG_2009.jpg</small>
+          </button>
+
+
+          <button
+            class="photo-file"
+            onclick="openPhoto('corrupt')"
+          >
+            <span>🖼️</span>
+            <small>IMG_0000.jpg</small>
+          </button>
+
+
+          <button
+            class="photo-file"
+            onclick="openPhoto('capture')"
+          >
+            <span>🖥️</span>
+            <small>desktop_capture.png</small>
+          </button>
+
+
+          <button
+            class="photo-file"
+            onclick="openPhoto('future')"
+          >
+            <span>🖼️</span>
+            <small>tomorrow.jpg</small>
+          </button>
+
+
+          <button
+            class="photo-file"
+            onclick="openPhoto('missing')"
+          >
+            <span>❓</span>
+            <small>???</small>
+          </button>
+
+
+          <button
+            class="photo-file"
+            onclick="openPhoto('wallpaper')"
+          >
+            <span>🌫️</span>
+            <small>wallpaper_old.jpg</small>
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- PHOTO VIEWER -->
+
+    <section
+      class="window"
+      id="photo-viewer"
+      style="left:350px; top:85px;"
+    >
+
+      <div class="titlebar">
+
+        <span
+          class="title-name"
+          id="photo-title"
+        >
+          Image Viewer
+        </span>
+
+        <button
+          class="close-button"
+          onclick="closeWindow('photo-viewer')"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div class="window-content">
+
+        <div
+          class="photo-preview"
+          id="photo-preview"
+        >
+
+          <div id="photo-text">
+            loading...
+          </div>
+
+        </div>
+
+        <div id="photo-meta">
         </div>
 
       </div>
@@ -1334,26 +1791,25 @@ loading...
 
 
 
-  <!-- =========================
-       ERROR POPUP
-  ========================== -->
+  <!-- ERROR -->
 
   <div id="error-popup">
 
     <div class="titlebar">
 
       <span
-        class="titlebar-name"
+        class="title-name"
         id="error-title"
       >
         system message
       </span>
 
-      <div class="window-buttons">
-        <button onclick="closeError()">
-          ×
-        </button>
-      </div>
+      <button
+        class="close-button"
+        onclick="closeError()"
+      >
+        ×
+      </button>
 
     </div>
 
@@ -1380,13 +1836,12 @@ loading...
 
 
 
-  <!-- =========================
-       START MENU
-  ========================== -->
+  <!-- START -->
 
   <div id="start-menu">
 
     <div class="start-header">
+
       <strong id="start-user">
         kels
       </strong>
@@ -1394,12 +1849,13 @@ loading...
       <span id="start-subtitle">
         enokiecloud administrator
       </span>
+
     </div>
 
     <button
       class="start-item"
       onclick="
-        openWindow('files-window');
+        openWindow('documents-window');
         closeStart();
       "
     >
@@ -1409,7 +1865,7 @@ loading...
     <button
       class="start-item"
       onclick="
-        openWindow('note-window');
+        openWindow('notes-window');
         closeStart();
       "
     >
@@ -1436,9 +1892,7 @@ loading...
 
 
 
-  <!-- =========================
-       TASKBAR
-  ========================== -->
+  <!-- TASKBAR -->
 
   <footer id="taskbar">
 
@@ -1468,14 +1922,17 @@ loading...
 
     let zIndex = 100;
 
+    let interactions = 0;
+    let noteCount = 0;
     let clockClicks = 0;
-    let interactionCount = 0;
-    let noteOpened = 0;
     let shutdownCount = 0;
-    let chatOpened = 0;
+    let chatCount = 0;
+    let loginAttempts = 0;
+    let userLoggedIn = false;
     let secretOpened = false;
+    let wallpaperChanged = false;
 
-    let desktopVisits =
+    let visits =
       Number(
         localStorage.getItem(
           "enokieDesktopVisits"
@@ -1483,34 +1940,29 @@ loading...
       );
 
 
-
     /* =========================
-       BOOT
-    ========================== */
+       STARTUP
+    ========================= */
 
     window.addEventListener(
       "load",
       () => {
 
-        desktopVisits++;
+        visits++;
 
         localStorage.setItem(
           "enokieDesktopVisits",
-          desktopVisits
+          visits
         );
 
 
-        const boot =
-          document.getElementById(
-            "boot-screen"
-          );
+        if (visits > 1) {
 
-
-        if (desktopVisits > 1) {
-
-          document.getElementById(
-            "boot-warning"
-          ).textContent =
+          document
+            .getElementById(
+              "boot-warning"
+            )
+            .textContent =
             "previous session was not closed properly";
 
         }
@@ -1519,11 +1971,17 @@ loading...
         setTimeout(
           () => {
 
+            const boot =
+              document.getElementById(
+                "boot-screen"
+              );
+
             boot.style.opacity = "0";
 
             setTimeout(
               () => {
-                boot.style.display = "none";
+                boot.style.display =
+                  "none";
               },
               800
             );
@@ -1533,6 +1991,8 @@ loading...
         );
 
 
+        setupVisitorLog();
+
         updateClock();
 
         setInterval(
@@ -1540,66 +2000,66 @@ loading...
           1000
         );
 
-
         makeWindowsDraggable();
 
-        setupVisitorLog();
-
-        scheduleWeirdness();
+        scheduleEvents();
 
       }
     );
 
 
-
     /* =========================
-       WINDOW CONTROL
-    ========================== */
+       WINDOWS
+    ========================= */
 
     function openWindow(id) {
 
-      interactionCount++;
+      interactions++;
 
-      const el =
+      const windowEl =
         document.getElementById(id);
 
-      el.classList.add("active");
+      windowEl.classList.add(
+        "active"
+      );
 
-      bringToFront(el);
+      bringToFront(
+        windowEl
+      );
 
 
       if (
-        id === "note-window"
+        id === "notes-window"
       ) {
-        updateNotes();
+        changeNotes();
       }
 
 
       if (
         id === "chat-window"
       ) {
-        runChat();
+        updateChat();
       }
 
 
       if (
-        interactionCount >= 5
+        interactions >= 5
       ) {
-        maybeRandomEvent();
+        randomEvent();
       }
 
     }
-
 
 
     function closeWindow(id) {
 
       document
         .getElementById(id)
-        .classList.remove("active");
+        .classList.remove(
+          "active"
+        );
 
     }
-
 
 
     function bringToFront(el) {
@@ -1612,10 +2072,9 @@ loading...
     }
 
 
-
     /* =========================
-       DRAG WINDOWS
-    ========================== */
+       DRAGGING
+    ========================= */
 
     function makeWindowsDraggable() {
 
@@ -1624,29 +2083,30 @@ loading...
         .forEach(
           windowEl => {
 
-            const titlebar =
-              windowEl
-                .querySelector(
-                  ".titlebar"
-                );
+            const bar =
+              windowEl.querySelector(
+                ".titlebar"
+              );
 
             let dragging = false;
-
             let offsetX = 0;
             let offsetY = 0;
 
 
-            titlebar.addEventListener(
+            bar.addEventListener(
               "mousedown",
               event => {
 
                 if (
-                  event.target.tagName
-                    .toLowerCase()
-                    === "button"
+                  event.target
+                    .classList
+                    .contains(
+                      "close-button"
+                    )
                 ) {
                   return;
                 }
+
 
                 dragging = true;
 
@@ -1654,9 +2114,11 @@ loading...
                   windowEl
                 );
 
+
                 const rect =
                   windowEl
                     .getBoundingClientRect();
+
 
                 offsetX =
                   event.clientX
@@ -1678,12 +2140,13 @@ loading...
                   return;
                 }
 
+
                 if (
-                  window.innerWidth
-                  <= 600
+                  window.innerWidth <= 600
                 ) {
                   return;
                 }
+
 
                 windowEl.style.left =
                   event.clientX
@@ -1712,14 +2175,13 @@ loading...
     }
 
 
-
     /* =========================
-       NOTES CHANGE
-    ========================== */
+       NOTES
+    ========================= */
 
-    function updateNotes() {
+    function changeNotes() {
 
-      noteOpened++;
+      noteCount++;
 
       const note =
         document.getElementById(
@@ -1727,9 +2189,7 @@ loading...
         );
 
 
-      if (
-        noteOpened === 1
-      ) {
+      if (noteCount === 1) {
 
         note.textContent =
 `things to remember:
@@ -1746,8 +2206,8 @@ why does this computer keep saying i've been here before?`;
       }
 
 
-      if (
-        noteOpened === 2
+      else if (
+        noteCount === 2
       ) {
 
         note.textContent =
@@ -1767,8 +2227,8 @@ why did you open it again?`;
       }
 
 
-      if (
-        noteOpened === 3
+      else if (
+        noteCount === 3
       ) {
 
         note.textContent =
@@ -1785,9 +2245,7 @@ so who did?`;
       }
 
 
-      if (
-        noteOpened >= 4
-      ) {
+      else {
 
         note.textContent =
 `close the window.
@@ -1798,8 +2256,7 @@ please.`;
           .getElementById(
             "desktop"
           )
-          .classList
-          .add(
+          .classList.add(
             "cursed"
           );
 
@@ -1808,10 +2265,61 @@ please.`;
     }
 
 
+    /* =========================
+       DOCUMENT FILES
+    ========================= */
+
+    function weirdFile() {
+
+      showError(
+        "i_dont_remember_making_this.txt",
+        "last modified: tomorrow"
+      );
+
+      document
+        .getElementById(
+          "hidden-document"
+        )
+        .style.display =
+        "block";
+
+      document
+        .getElementById(
+          "file-count"
+        )
+        .textContent =
+        "6";
+
+    }
+
+
+    function missingPhoto() {
+
+      glitch();
+
+      showError(
+        "IMG_0000.jpg",
+        "created while the computer was inactive."
+      );
+
+    }
+
+
+    function hiddenDocument() {
+
+      showError(
+        "you_were_here.txt",
+        "you were here before this file existed."
+      );
+
+      revealUserTwo();
+
+    }
+
 
     /* =========================
        CLOCK
-    ========================== */
+    ========================= */
 
     function updateClock() {
 
@@ -1820,16 +2328,13 @@ please.`;
           "clock"
         );
 
-      const now =
-        new Date();
-
 
       if (
         secretOpened
-        && Math.random() < .06
+        && Math.random() < .05
       ) {
 
-        const fakeTimes = [
+        const badTimes = [
           "3:33 AM",
           "00:00",
           "13:72",
@@ -1838,16 +2343,19 @@ please.`;
         ];
 
         clock.textContent =
-          fakeTimes[
+          badTimes[
             Math.floor(
               Math.random()
-              * fakeTimes.length
+              * badTimes.length
             )
           ];
 
         return;
       }
 
+
+      const now =
+        new Date();
 
       clock.textContent =
         now.toLocaleTimeString(
@@ -1859,7 +2367,6 @@ please.`;
         );
 
     }
-
 
 
     function clockClick() {
@@ -1880,20 +2387,6 @@ please.`;
 
 
       if (
-        clockClicks === 5
-      ) {
-
-        document
-          .getElementById(
-            "clock"
-          )
-          .textContent =
-          "3:33 AM";
-
-      }
-
-
-      if (
         clockClicks >= 6
       ) {
 
@@ -1901,240 +2394,36 @@ please.`;
           .getElementById(
             "secret-icon"
           )
-          .classList
-          .add(
+          .classList.add(
             "visible"
           );
 
-        document
-          .getElementById(
-            "task-message"
-          )
-          .textContent =
-          "1 new file found.";
+        setTask(
+          "1 new file found."
+        );
 
       }
 
     }
 
 
-
-    /* =========================
-       DOCUMENT FILES
-    ========================== */
-
-    function weirdFile() {
-
-      showError(
-        "i_dont_remember_making_this.txt",
-        "last modified: tomorrow"
-      );
-
-      revealHiddenDocument();
-
-    }
-
-
-
-    function missingPhoto() {
-
-      glitchScreen();
-
-      showError(
-        "IMG_0000.jpg",
-        "preview unavailable. image dimensions: 1920 x 1080. created while computer was inactive."
-      );
-
-    }
-
-
-
-    function hiddenDocument() {
-
-      showError(
-        "you_were_here.txt",
-        "you were here before this file existed."
-      );
-
-    }
-
-
-
-    function revealHiddenDocument() {
-
-      document
-        .getElementById(
-          "hidden-document"
-        )
-        .style
-        .display =
-        "block";
-
-      document
-        .getElementById(
-          "file-count"
-        )
-        .textContent =
-        "6";
-
-    }
-
-
-
-    /* =========================
-       RECYCLE BIN
-    ========================== */
-
-    function deletedMessage() {
-
-      showError(
-        "message_from_unknown.txt",
-        "\"i can still see the desktop.\""
-      );
-
-    }
-
-
-
-    function deletedUser() {
-
-      showError(
-        "user_02",
-        "folder cannot be permanently deleted because it is currently in use."
-      );
-
-      document
-        .getElementById(
-          "user-two-icon"
-        )
-        .classList
-        .add(
-          "visible"
-        );
-
-    }
-
-
-
-    function restoreFile() {
-
-      document
-        .getElementById(
-          "secret-icon"
-        )
-        .classList
-        .add(
-          "visible"
-        );
-
-      document
-        .getElementById(
-          "task-message"
-        )
-        .textContent =
-        "unknown.exe restored.";
-
-      closeWindow(
-        "trash-window"
-      );
-
-      setTimeout(
-        () => {
-
-          showError(
-            "restore complete",
-            "1 object restored to a location that no longer exists."
-          );
-
-        },
-        700
-      );
-
-    }
-
-
-
-    /* =========================
-       SECRET
-    ========================== */
-
-    function openSecret() {
-
-      secretOpened = true;
-
-      document
-        .getElementById(
-          "desktop"
-        )
-        .classList
-        .add(
-          "cursed"
-        );
-
-
-      showError(
-        "dont-open.exe",
-        "you restored something that was deleted for a reason."
-      );
-
-
-      document
-        .getElementById(
-          "task-message"
-        )
-        .textContent =
-        "it noticed you.";
-
-
-      document
-        .getElementById(
-          "secret-label"
-        )
-        .textContent =
-        "too_late.exe";
-
-
-      revealVisitorLog();
-
-
-      setTimeout(
-        () => {
-
-          document
-            .getElementById(
-              "user-two-icon"
-            )
-            .classList
-            .add(
-              "visible"
-            );
-
-        },
-        2200
-      );
-
-    }
-
-
-
     /* =========================
        CHAT
-    ========================== */
+    ========================= */
 
-    function runChat() {
+    function updateChat() {
 
-      chatOpened++;
-
-      const typing =
-        document.getElementById(
-          "typing-indicator"
-        );
+      chatCount++;
 
       const box =
         document.getElementById(
           "chat-box"
         );
 
+      const typing =
+        document.getElementById(
+          "typing"
+        );
 
       typing.style.display =
         "block";
@@ -2147,80 +2436,181 @@ please.`;
             "none";
 
 
+          let message =
+            "can you see this?";
+
+
           if (
-            chatOpened === 1
+            chatCount === 2
           ) {
-
-            box.innerHTML += `
-              <div class="chat-line">
-                <span class="chat-name">
-                  unknown:
-                </span>
-                can you see this?
-              </div>
-            `;
-
+            message =
+              "you closed this last time.";
           }
 
 
-          else if (
-            chatOpened === 2
+          if (
+            chatCount >= 3
           ) {
-
-            box.innerHTML += `
-              <div class="chat-line">
-                <span class="chat-name">
-                  unknown:
-                </span>
-                you closed this last time.
-              </div>
-            `;
-
+            message =
+              "don't close the laptop.";
           }
 
 
-          else {
+          box.innerHTML += `
+            <div>
+              <span class="chat-name">
+                unknown:
+              </span>
+              ${message}
+            </div>
+          `;
 
-            box.innerHTML += `
-              <div class="chat-line">
-                <span class="chat-name">
-                  unknown:
-                </span>
-                don't close the laptop.
-              </div>
-            `;
 
+          if (
+            chatCount >= 2
+          ) {
+            revealUserTwo();
           }
 
         },
-        2200
+        1800
       );
 
     }
 
 
+    /* =========================
+       TRASH
+    ========================= */
+
+    function deletedMessage() {
+
+      showError(
+        "message_from_unknown.txt",
+        "\"i can still see the desktop.\""
+      );
+
+    }
+
+
+    function deletedUser() {
+
+      showError(
+        "user_02",
+        "folder cannot be deleted because it is currently in use."
+      );
+
+      revealUserTwo();
+
+    }
+
+
+    function restoreUnknown() {
+
+      document
+        .getElementById(
+          "secret-icon"
+        )
+        .classList.add(
+          "visible"
+        );
+
+      setTask(
+        "unknown.exe restored."
+      );
+
+
+      closeWindow(
+        "trash-window"
+      );
+
+
+      setTimeout(
+        () => {
+
+          showError(
+            "restore complete",
+            "object restored to a location that no longer exists."
+          );
+
+        },
+        600
+      );
+
+    }
+
+
+    /* =========================
+       SECRET
+    ========================= */
+
+    function openSecret() {
+
+      secretOpened = true;
+
+      const desktop =
+        document.getElementById(
+          "desktop"
+        );
+
+
+      desktop.classList.add(
+        "cursed"
+      );
+
+
+      document
+        .getElementById(
+          "secret-label"
+        )
+        .textContent =
+        "too_late.exe";
+
+
+      setTask(
+        "it noticed you."
+      );
+
+
+      showError(
+        "dont-open.exe",
+        "you restored something that was deleted for a reason."
+      );
+
+
+      revealVisitorLog();
+
+
+      setTimeout(
+        revealUserTwo,
+        1700
+      );
+
+    }
+
 
     /* =========================
        VISITOR LOG
-    ========================== */
+    ========================= */
 
     function setupVisitorLog() {
 
       const now =
         new Date();
 
-      const log =
-        document.getElementById(
-          "visitor-log-text"
-        );
 
-      log.textContent =
+      document
+        .getElementById(
+          "visitor-log"
+        )
+        .textContent =
 `visitor log
 
-session count: ${desktopVisits}
+session count: ${visits}
 
 last access:
-${now.toLocaleDateString()} ${now.toLocaleTimeString()}
+${now.toLocaleDateString()}
+${now.toLocaleTimeString()}
 
 current user:
 kels
@@ -2234,27 +2624,173 @@ active`;
     }
 
 
-
     function revealVisitorLog() {
 
       document
         .getElementById(
           "visitor-icon"
         )
-        .classList
-        .add(
+        .classList.add(
           "visible"
         );
 
     }
 
 
-
     /* =========================
        USER 02
-    ========================== */
+    ========================= */
 
-    function userTwoFileOne() {
+    function revealUserTwo() {
+
+      document
+        .getElementById(
+          "user-two-icon"
+        )
+        .classList.add(
+          "visible"
+        );
+
+      document
+        .getElementById(
+          "connection-count"
+        )
+        .textContent =
+        "2";
+
+    }
+
+
+    function tryLogin() {
+
+      loginAttempts++;
+
+      const input =
+        document.getElementById(
+          "password-input"
+        );
+
+      const message =
+        document.getElementById(
+          "login-message"
+        );
+
+
+      if (
+        userLoggedIn
+      ) {
+        return;
+      }
+
+
+      if (
+        loginAttempts === 1
+      ) {
+
+        message.textContent =
+          "incorrect password.";
+
+        input.value = "";
+
+      }
+
+
+      else if (
+        loginAttempts === 2
+      ) {
+
+        message.textContent =
+          "hint: you already know it.";
+
+        input.value = "";
+
+      }
+
+
+      else if (
+        loginAttempts === 3
+      ) {
+
+        message.textContent =
+          "incorrect.";
+
+        input.value =
+          "••••••••";
+
+        input.disabled =
+          true;
+
+
+        setTimeout(
+          () => {
+
+            message.textContent =
+              "logging in...";
+
+          },
+          700
+        );
+
+
+        setTimeout(
+          loginUserTwo,
+          1900
+        );
+
+      }
+
+    }
+
+
+    function loginUserTwo() {
+
+      userLoggedIn = true;
+
+
+      closeWindow(
+        "login-window"
+      );
+
+
+      glitch();
+
+
+      document
+        .getElementById(
+          "start-user"
+        )
+        .textContent =
+        "user_02";
+
+
+      document
+        .getElementById(
+          "start-subtitle"
+        )
+        .textContent =
+        "session resumed";
+
+
+      setTask(
+        "user_02 logged in."
+      );
+
+
+      setTimeout(
+        () => {
+
+          openWindow(
+            "user-two-window"
+          );
+
+        },
+        500
+      );
+
+    }
+
+
+    function userNote() {
 
       showError(
         "note_to_kels.txt",
@@ -2264,8 +2800,7 @@ active`;
     }
 
 
-
-    function userTwoFileTwo() {
+    function lastSession() {
 
       showError(
         "last_session.txt",
@@ -2275,166 +2810,353 @@ active`;
     }
 
 
+    function desktopCapture() {
 
-    function userTwoPhoto() {
-
-      glitchScreen();
-
-      setTimeout(
-        () => {
-
-          showError(
-            "desktop_capture.png",
-            "capture timestamp matches your current session."
-          );
-
-        },
-        200
+      openPhoto(
+        "capture"
       );
 
     }
 
 
-
     /* =========================
-       RANDOM EVENTS
-    ========================== */
+       PICTURES
+    ========================= */
 
-    function maybeRandomEvent() {
+    function revealPictures() {
 
-      const chance =
-        Math.random();
+      document
+        .getElementById(
+          "pictures-icon"
+        )
+        .classList.add(
+          "visible"
+        );
+
+      closeWindow(
+        "user-two-window"
+      );
+
+      openWindow(
+        "pictures-window"
+      );
+
+    }
+
+
+    function openPhoto(type) {
+
+      openWindow(
+        "photo-viewer"
+      );
+
+
+      const preview =
+        document.getElementById(
+          "photo-preview"
+        );
+
+      const text =
+        document.getElementById(
+          "photo-text"
+        );
+
+      const title =
+        document.getElementById(
+          "photo-title"
+        );
+
+      const meta =
+        document.getElementById(
+          "photo-meta"
+        );
+
+
+      preview.className =
+        "photo-preview";
 
 
       if (
-        chance < .15
+        type === "room"
       ) {
 
-        const messages = [
-          "file moved while you weren't looking.",
-          "user already logged in.",
-          "connection established.",
-          "you have 1 unread message from: unknown",
-          "this folder did not exist yesterday.",
-          "background process: observing",
-          "camera unavailable.",
-          "nothing happened."
-        ];
-
-
-        showError(
-          "enokiecloud",
-          messages[
-            Math.floor(
-              Math.random()
-              * messages.length
-            )
-          ]
+        preview.classList.add(
+          "normal"
         );
+
+        title.textContent =
+          "IMG_2009.jpg";
+
+        text.textContent =
+`the image is too faded to make out.
+
+there seems to be someone
+standing near the edge of the frame.`;
+
+        meta.textContent =
+          "date taken: unavailable";
+
+      }
+
+
+      if (
+        type === "corrupt"
+      ) {
+
+        preview.classList.add(
+          "corrupt"
+        );
+
+        title.textContent =
+          "IMG_0000.jpg";
+
+        text.textContent =
+`IMAGE DATA CORRUPTED
+
+recovering...
+
+recovering...
+
+subject detected: 1`;
+
+        meta.textContent =
+          "created while computer was inactive";
+
+        glitch();
+
+      }
+
+
+      if (
+        type === "capture"
+      ) {
+
+        preview.classList.add(
+          "normal"
+        );
+
+        title.textContent =
+          "desktop_capture.png";
+
+        text.textContent =
+`this looks like the desktop
+you are currently viewing.
+
+one window is open.
+
+you didn't open it.`;
+
+        meta.textContent =
+          "timestamp: current session";
+
+      }
+
+
+      if (
+        type === "future"
+      ) {
+
+        preview.classList.add(
+          "future"
+        );
+
+        title.textContent =
+          "tomorrow.jpg";
+
+        text.textContent =
+`no preview available.
+
+facial recognition:
+1 person detected`;
+
+        meta.textContent =
+          "date taken: tomorrow";
+
+        revealVisitorLog();
+
+      }
+
+
+      if (
+        type === "missing"
+      ) {
+
+        preview.classList.add(
+          "corrupt"
+        );
+
+        title.textContent =
+          "untitled";
+
+        text.textContent =
+`FILE NAME REMOVED
+
+location:
+C:\\Users\\kels\\Desktop
+
+owner:
+user_02`;
+
+        meta.textContent =
+          "accessed 3 seconds ago";
+
+        revealUserTwo();
+
+      }
+
+
+      if (
+        type === "wallpaper"
+      ) {
+
+        preview.classList.add(
+          "normal"
+        );
+
+        title.textContent =
+          "wallpaper_old.jpg";
+
+        text.textContent =
+`it looks almost exactly
+like your current wallpaper.
+
+almost.`;
+
+        meta.textContent =
+          "set as desktop background?";
+
+
+        if (
+          !wallpaperChanged
+        ) {
+
+          wallpaperChanged =
+            true;
+
+
+          setTimeout(
+            changeWallpaper,
+            1400
+          );
+
+        }
 
       }
 
     }
 
 
+    /* =========================
+       WALLPAPER CHANGE
+    ========================= */
 
-    function scheduleWeirdness() {
+    function changeWallpaper() {
 
-      setTimeout(
-        () => {
+      glitch();
 
-          if (
-            document.hidden
-          ) {
-            return;
-          }
 
-          document
-            .getElementById(
-              "task-message"
-            )
-            .textContent =
-            "background process started.";
+      document
+        .getElementById(
+          "desktop"
+        )
+        .classList.add(
+          "wallpaper-two"
+        );
 
-        },
-        10000
+
+      setTask(
+        "desktop background changed by user_02"
       );
 
 
       setTimeout(
         () => {
 
-          moveDocumentsIcon();
+          showError(
+            "Display Properties",
+            "your desktop background was changed by another user."
+          );
 
         },
-        17000
-      );
-
-
-      setTimeout(
-        () => {
-
-          showBackgroundMessage();
-
-        },
-        26000
-      );
-
-
-      setTimeout(
-        () => {
-
-          if (
-            interactionCount >= 2
-          ) {
-
-            revealVisitorLog();
-
-          }
-
-        },
-        33000
-      );
-
-
-      setTimeout(
-        () => {
-
-          if (
-            interactionCount >= 4
-          ) {
-
-            document
-              .getElementById(
-                "user-two-icon"
-              )
-              .classList
-              .add(
-                "visible"
-              );
-
-          }
-
-        },
-        47000
+        700
       );
 
     }
 
 
+    /* =========================
+       RANDOM EVENTS
+    ========================= */
 
-    function moveDocumentsIcon() {
+    function scheduleEvents() {
+
+      setTimeout(
+        () => {
+
+          setTask(
+            "background process started."
+          );
+
+        },
+        9000
+      );
+
+
+      setTimeout(
+        moveIcon,
+        16000
+      );
+
+
+      setTimeout(
+        showBackgroundMessage,
+        25000
+      );
+
+
+      setTimeout(
+        () => {
+
+          if (
+            interactions >= 2
+          ) {
+            revealVisitorLog();
+          }
+
+        },
+        32000
+      );
+
+
+      setTimeout(
+        () => {
+
+          if (
+            interactions >= 4
+          ) {
+            revealUserTwo();
+          }
+
+        },
+        42000
+      );
+
+    }
+
+
+    function moveIcon() {
 
       const icon =
         document.getElementById(
           "documents-icon"
         );
 
+
       icon.style.left =
-        "18px";
+        "20px";
 
       icon.style.top =
-        "9px";
+        "10px";
 
 
       setTimeout(
@@ -2447,11 +3169,10 @@ active`;
             "0px";
 
         },
-        3000
+        2800
       );
 
     }
-
 
 
     function showBackgroundMessage() {
@@ -2461,8 +3182,9 @@ active`;
           "background-message"
         );
 
+
       message.classList.add(
-        "visible"
+        "show"
       );
 
 
@@ -2470,27 +3192,61 @@ active`;
         () => {
 
           message.classList.remove(
-            "visible"
+            "show"
           );
 
         },
-        1800
+        1700
       );
 
     }
 
 
+    function randomEvent() {
+
+      if (
+        Math.random() > .15
+      ) {
+        return;
+      }
+
+
+      const messages = [
+        "file moved while you weren't looking.",
+        "user already logged in.",
+        "connection established.",
+        "1 unread message from: unknown",
+        "this folder did not exist yesterday.",
+        "background process: observing",
+        "camera unavailable.",
+        "nothing happened."
+      ];
+
+
+      showError(
+        "enokiecloud",
+        messages[
+          Math.floor(
+            Math.random()
+            * messages.length
+          )
+        ]
+      );
+
+    }
+
 
     /* =========================
        GLITCH
-    ========================== */
+    ========================= */
 
-    function glitchScreen() {
+    function glitch() {
 
       const desktop =
         document.getElementById(
           "desktop"
         );
+
 
       desktop.classList.add(
         "glitch"
@@ -2511,10 +3267,9 @@ active`;
     }
 
 
-
     /* =========================
-       ERRORS
-    ========================== */
+       ERROR
+    ========================= */
 
     function showError(
       title,
@@ -2541,13 +3296,11 @@ active`;
         .getElementById(
           "error-popup"
         )
-        .classList
-        .add(
+        .classList.add(
           "show"
         );
 
     }
-
 
 
     function closeError() {
@@ -2556,18 +3309,16 @@ active`;
         .getElementById(
           "error-popup"
         )
-        .classList
-        .remove(
+        .classList.remove(
           "show"
         );
 
     }
 
 
-
     /* =========================
        START MENU
-    ========================== */
+    ========================= */
 
     function toggleStart() {
 
@@ -2575,13 +3326,11 @@ active`;
         .getElementById(
           "start-menu"
         )
-        .classList
-        .toggle(
+        .classList.toggle(
           "open"
         );
 
     }
-
 
 
     function closeStart() {
@@ -2590,18 +3339,16 @@ active`;
         .getElementById(
           "start-menu"
         )
-        .classList
-        .remove(
+        .classList.remove(
           "open"
         );
 
     }
 
 
-
     /* =========================
        SHUTDOWN
-    ========================== */
+    ========================= */
 
     function fakeShutdown() {
 
@@ -2626,49 +3373,52 @@ active`;
         shutdownCount === 2
       ) {
 
+        revealUserTwo();
+
         showError(
           "Shut Down Windows",
           "another user is currently logged in."
         );
-
-        document
-          .getElementById(
-            "user-two-icon"
-          )
-          .classList
-          .add(
-            "visible"
-          );
 
       }
 
 
       else {
 
-        document
-          .getElementById(
-            "desktop"
-          )
-          .classList
-          .add(
-            "deep-cursed"
-          );
-
-
-        document
-          .getElementById(
-            "task-message"
-          )
-          .textContent =
-          "shutdown cancelled by user_02";
-
+        setTask(
+          "shutdown cancelled by user_02"
+        );
 
         showError(
           "user_02",
           "i'm not finished."
         );
 
+        document
+          .getElementById(
+            "desktop"
+          )
+          .classList.add(
+            "wallpaper-two"
+          );
+
       }
+
+    }
+
+
+    /* =========================
+       TASKBAR
+    ========================= */
+
+    function setTask(text) {
+
+      document
+        .getElementById(
+          "task-message"
+        )
+        .textContent =
+        text;
 
     }
 
