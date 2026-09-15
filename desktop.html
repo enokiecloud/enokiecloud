@@ -148,6 +148,27 @@ button{color:inherit}
 .msg.me .bubble{background:var(--blue);color:white}
 .system-line{text-align:center;color:#9a9ca2;font-size:10px;margin:12px 0}
 
+.reply-panel{
+  display:none;
+  gap:7px;
+  flex-wrap:wrap;
+  padding:10px 12px 12px;
+  border-top:1px solid #e4e4e7;
+  background:#fafafa;
+}
+.reply-panel.show{display:flex}
+.reply-choice{
+  border:0;
+  border-radius:16px;
+  padding:7px 11px;
+  background:#e7e8ec;
+  color:#25262a;
+  font-size:11px;
+  cursor:pointer;
+}
+.reply-choice:hover{background:#d9dbe0}
+.reply-choice:disabled{opacity:.45;cursor:default}
+
 /* notes */
 .notes-layout{display:flex;height:420px}
 .notes-list{width:205px;flex:0 0 205px;background:#f1f1f3;border-right:1px solid #ddd;overflow:auto}
@@ -356,7 +377,11 @@ button{color:inherit}
   </div>
   <div class="messages-layout">
     <aside class="message-list"><div class="search">Search</div><div id="contacts"></div></aside>
-    <section class="chat"><div id="chat-title" class="chat-head">3asians</div><div id="chat-body" class="chat-body"></div></section>
+    <section class="chat">
+      <div id="chat-title" class="chat-head">3asians</div>
+      <div id="chat-body" class="chat-body"></div>
+      <div id="reply-panel" class="reply-panel"></div>
+    </section>
   </div>
 </section>
 
@@ -393,6 +418,7 @@ button{color:inherit}
       <div class="history-row">No Text To Speech - YouTube <small>Sep 3 · 9:37 PM</small></div>
       <div id="history-login" class="history-row" style="display:none">macbook activity history <small>Sep 4 · 1:42 AM</small></div>
       <div id="history-hidden" class="history-row" style="display:none">find my device last location <small>Sep 4 · 2:08 AM</small></div>
+      <div id="history-second" class="history-row" style="display:none">icloud account · devices <small>Sep 4 · 2:19 AM</small></div>
     </div>
   </div>
 </section>
@@ -504,7 +530,7 @@ button{color:inherit}
 
 <script>
 let topZ=500;
-const KEY="enokieStoryV6";
+const KEY="enokieStoryV7";
 
 /* Testing shortcut:
    open desktop.html?reset=1 to clear story progress without exposing a reset button to visitors. */
@@ -530,6 +556,12 @@ const DEFAULT_STATE={
   deletedSeen:false,
   callLogSeen:false,
   unknownPingCount:0,
+  ringQuestionSent:false,
+  answeredRing:false,
+  askedIdentity:false,
+  askedHappened:false,
+  secondInvestigation:false,
+  replyBusy:false,
   unknownMsgs:[]
 };
 let state={...DEFAULT_STATE,...JSON.parse(localStorage.getItem(KEY)||"{}")};
@@ -707,7 +739,7 @@ function openFinder(folder){
       docTile("messages-index.db","","DB","recovered")+
       docTile("window-state.plist","","PLIST","recovered")+
       (state.backstoryUnlocked?docTile("deleted-message-cache.txt","openText('deleted')","TXT","partial"):"")+
-      (state.deletedSeen?docTile("call-history.txt","openText('calls')","TXT","recovered"):"")+
+      ((state.deletedSeen||state.secondInvestigation)?docTile("call-history.txt","openText('calls')","TXT","recovered"):"")+
       (state.phase>=7?docTile("system-log.txt","openText('system')","TXT","today"):"");
   }
 
@@ -868,6 +900,19 @@ function unknownMsgs(){
   return state.unknownMsgs||[];
 }
 
+function unknownText(item){
+  return String(item||"").replace(/^me::/,"");
+}
+
+function isVisitorUnknownMsg(item){
+  return String(item||"").startsWith("me::");
+}
+
+function lastUnknownText(){
+  const last=unknownMsgs().at(-1);
+  return last ? unknownText(last) : "hello?";
+}
+
 function contactNames(){
   const names=["3asians","jadabae","noemibae","kyle","lil sis ava","kiddo jas","mami"];
   if(state.phase>=4) names.unshift("unknown");
@@ -884,7 +929,7 @@ function renderContacts(active="3asians"){
 
     const u=unknownMsgs();
     let preview="";
-    if(name==="unknown") preview=u.at(-1)||"hello?";
+    if(name==="unknown") preview=lastUnknownText();
     else if(name==="mami") preview="mom";
     else if(name==="3asians") preview=state.backstoryUnlocked?"noemibae: she called and didn't say anything":"group chat";
 
@@ -900,8 +945,12 @@ function renderChat(name){
   body.innerHTML="";
 
   let data;
-  if(name==="unknown") data=unknownMsgs().map(t=>["unknown",t]);
-  else if(name==="3asians") data=groupChatData();
+  if(name==="unknown"){
+    data=unknownMsgs().map(item=>[
+      isVisitorUnknownMsg(item) ? "me" : "unknown",
+      unknownText(item)
+    ]);
+  }else if(name==="3asians") data=groupChatData();
   else data=personChatData(name);
 
   data.forEach(([sender,msg])=>{
@@ -920,6 +969,7 @@ function renderChat(name){
   });
 
   body.scrollTop=body.scrollHeight;
+  renderReplyChoices(name);
 
   /* Opening Unknown only confirms that someone is actively on the other side.
      From here on, the visitor's actions drive the story. */
@@ -952,6 +1002,129 @@ function pushUnknown(msg){
     renderChat("unknown");
   }else{
     renderContacts();
+  }
+}
+
+function pushVisitor(msg){
+  state.unknownMsgs=state.unknownMsgs||[];
+  state.unknownMsgs.push("me::"+msg);
+  localStorage.setItem(KEY,JSON.stringify(state));
+
+  if(document.getElementById("messages-window").classList.contains("active") &&
+     document.getElementById("chat-title").textContent==="unknown"){
+    renderContacts("unknown");
+    renderChat("unknown");
+  }
+}
+
+function setReplyBusy(value){
+  state.replyBusy=value;
+  localStorage.setItem(KEY,JSON.stringify(state));
+  renderReplyChoices("unknown");
+}
+
+function renderReplyChoices(name){
+  const panel=document.getElementById("reply-panel");
+  if(!panel) return;
+
+  panel.innerHTML="";
+  panel.classList.remove("show");
+
+  if(name!=="unknown" || !state.ringQuestionSent || state.replyBusy) return;
+
+  const choices=[];
+
+  if(!state.answeredRing) choices.push(["yes","yes"]);
+  if(!state.askedIdentity) choices.push(["who are you?","identity"]);
+  if(!state.askedHappened) choices.push(["what happened to you?","happened"]);
+
+  if(!choices.length) return;
+
+  choices.forEach(([label,key])=>{
+    const b=document.createElement("button");
+    b.className="reply-choice";
+    b.textContent=label;
+    b.onclick=()=>chooseUnknownReply(key,label);
+    panel.appendChild(b);
+  });
+
+  panel.classList.add("show");
+}
+
+function unlockSecondInvestigation(){
+  if(state.secondInvestigation) return;
+
+  state.secondInvestigation=true;
+  localStorage.setItem(KEY,JSON.stringify(state));
+  syncStory();
+
+  /* Quietly add material for the next investigation beat instead of
+     having Unknown explain the mystery. */
+  setTimeout(()=>{
+    showNotification(
+      "Finder",
+      "Recovered Files",
+      "1 recovered item added.",
+      "recovered",
+      "images/icons/folder.png"
+    );
+  },900);
+}
+
+function finishUnknownReply(delay=2600){
+  setTimeout(()=>{
+    state.replyBusy=false;
+    localStorage.setItem(KEY,JSON.stringify(state));
+
+    if(document.getElementById("messages-window").classList.contains("active") &&
+       document.getElementById("chat-title").textContent==="unknown"){
+      renderChat("unknown");
+    }
+  },delay);
+}
+
+function chooseUnknownReply(key,label){
+  if(state.replyBusy) return;
+
+  pushVisitor(label);
+  state.replyBusy=true;
+
+  if(key==="yes"){
+    state.answeredRing=true;
+    localStorage.setItem(KEY,JSON.stringify(state));
+    renderReplyChoices("unknown");
+
+    setTimeout(()=>pushUnknown("okay"),700);
+    setTimeout(()=>pushUnknown("so it's only me that can't hear it"),1700);
+    setTimeout(()=>unlockSecondInvestigation(),2100);
+    finishUnknownReply(2800);
+    return;
+  }
+
+  if(key==="identity"){
+    state.askedIdentity=true;
+    localStorage.setItem(KEY,JSON.stringify(state));
+    renderReplyChoices("unknown");
+
+    setTimeout(()=>pushUnknown("i don't know"),700);
+    setTimeout(()=>pushUnknown("i know that sounds stupid"),1600);
+    setTimeout(()=>pushUnknown("the name here is enokie"),2700);
+    setTimeout(()=>pushUnknown("i don't know if that's mine"),3900);
+    setTimeout(()=>unlockSecondInvestigation(),4300);
+    finishUnknownReply(5000);
+    return;
+  }
+
+  if(key==="happened"){
+    state.askedHappened=true;
+    localStorage.setItem(KEY,JSON.stringify(state));
+    renderReplyChoices("unknown");
+
+    setTimeout(()=>pushUnknown("i remember getting home"),700);
+    setTimeout(()=>pushUnknown("i remember opening this"),1800);
+    setTimeout(()=>pushUnknown("after that it's pieces"),3100);
+    setTimeout(()=>unlockSecondInvestigation(),3500);
+    finishUnknownReply(4300);
   }
 }
 
@@ -1110,7 +1283,7 @@ function renderNotes(name="grocery list"){
   list.innerHTML="";
 
   const names=["grocery list","school","friday","random","website stuff"];
-  if(state.phase>=7) names.unshift("untitled");
+  if(state.secondInvestigation) names.unshift("untitled");
 
   names.forEach(n=>{
     const r=document.createElement("div");
@@ -1124,19 +1297,7 @@ function renderNotes(name="grocery list"){
   let body=notes[name]||"";
 
   if(name==="untitled"){
-    body=state.callSeen
-      ? `can you open this?
-
-i saw the call window
-
-i couldn't hear anything
-
-don't close this yet`
-      : `are you there
-
-i can see when something opens
-
-i can't open anything myself`;
+    body=`can you see this too?`;
   }
 
   document.getElementById("note-text").textContent=body;
@@ -1144,7 +1305,7 @@ i can't open anything myself`;
 
 function openNotes(btn=null){
   openApp("notes-window","Notes",btn);
-  renderNotes(state.phase>=7?"untitled":"grocery list");
+  renderNotes("grocery list");
 }
 
 /* Recovered text files drive the investigation. */
@@ -1299,6 +1460,8 @@ function declineCall(){
   save();
 
   setTimeout(()=>{
+    state.ringQuestionSent=true;
+    localStorage.setItem(KEY,JSON.stringify(state));
     pushUnknown("did that ring for you");
     showIncomingText("Unknown","did that ring for you","unknown");
   },1000);
@@ -1310,6 +1473,8 @@ function acceptCall(){
   save();
 
   setTimeout(()=>{
+    state.ringQuestionSent=true;
+    localStorage.setItem(KEY,JSON.stringify(state));
     pushUnknown("did that ring for you");
     showIncomingText("Unknown","did that ring for you","unknown");
   },1000);
@@ -1322,6 +1487,7 @@ function syncStory(){
 
   document.getElementById("history-login").style.display=state.phase>=2?"block":"none";
   document.getElementById("history-hidden").style.display=state.backstoryUnlocked?"block":"none";
+  document.getElementById("history-second").style.display=state.secondInvestigation?"block":"none";
   document.getElementById("unknown-call-row").style.display=state.callSeen?"flex":"none";
   document.getElementById("guest-setting").style.display=state.phase>=8?"block":"none";
 
@@ -1436,7 +1602,7 @@ window.addEventListener("load",()=>{
   /* If Unknown already unlocked on a previous visit, surface the latest
      message again so the visitor doesn't have to guess that a new contact exists. */
   if(state.phase>=4 && !state.unknownOpen && state.unknownMsgs?.length){
-    setTimeout(()=>showIncomingText("Unknown",state.unknownMsgs.at(-1),"unknown"),900);
+    setTimeout(()=>showIncomingText("Unknown",lastUnknownText(),"unknown"),900);
   }
 });
 </script>
