@@ -505,21 +505,17 @@ main{width:min(930px,91%);margin:38px auto 90px}
     <img class="clerk" src="images/fortune-cat.png" alt="little enokiecloud visitor clerk">
     <div class="speech">
       <strong id="hello">oh hi!</strong>
-      <span id="speechText">lemme see who u are...</span>
+      <span id="speechText">lemme see...</span>
       <div class="triangle">▼</div>
     </div>
   </section>
 
   <section class="pass">
-    <div class="tiny-doodle one" aria-hidden="true">⌁ ♡</div>
-    <div class="tiny-doodle two" aria-hidden="true">✿</div>
-    <div class="taped-note">welcome<br>little visitor ♡</div>
     <div class="pass-head">
       <div class="pass-name">
         <div class="cloud">☁</div>
         <div class="pass-title">ENOKIECLOUD<br>VISITOR PASS</div>
       </div>
-      <div class="tagline">a temporary resident<br>in a very permanent place.</div>
     </div>
 
     <div class="pass-body">
@@ -534,16 +530,11 @@ main{width:min(930px,91%);margin:38px auto 90px}
       </div>
 
       <div class="info">
-        <div class="row"><div class="label">visitor no.</div><div class="value" id="visitorNo">0047</div></div>
-        <div class="row"><div class="label">creature</div><div class="value" id="creature">house cat</div></div>
+        <div class="row"><div class="label">visitor</div><div class="value" id="visitorNo">#1</div></div>
+        <div class="row"><div class="label">type</div><div class="value" id="creature">house cat</div></div>
         <div class="row"><div class="label">vibe</div><div class="value" id="vibe">quietly nosy</div></div>
-        <div class="row"><div class="label">frequency</div><div class="value" id="frequency">72.4 mhz</div></div>
         <div class="row"><div class="label">first seen</div><div class="value" id="firstSeen">09.14.26</div></div>
         <div class="row"><div class="label">currently</div><div class="value" id="currently">wandering</div></div>
-
-        <div class="return" id="returnMessage">
-          okay... ur officially a little resident now ♡
-        </div>
       </div>
 
       <div class="stamp-area">
@@ -557,27 +548,15 @@ main{width:min(930px,91%);margin:38px auto 90px}
         </div>
 
         <div class="resident">CLOUD<br>RESIDENT<br>☁</div>
-
-        <div class="remember">keep being u...<br>the cloud remembers.</div>
       </div>
     </div>
   </section>
-
-  <section class="note">
-    <strong>A LITTLE NOTE...</strong>
-    <p>this isn't a real fingerprint. it's just a little identity for ur visits. it stays on this browser and doesn't collect any personal info ♡</p>
-  </section>
-
-  <div class="footer">
-    <span>different visitors make this place special ♡</span>
-    <span>same browser = same identity</span>
-  </div>
 
   <a class="back" href="index.html">← back home</a>
 </main>
 
 <script>
-const STORAGE_KEY = "enokiecloud_visitor_identity_v3";
+const STORAGE_KEY = "enokiecloud_visitor_identity_v4";
 
 const creatures = [
   "house cat",
@@ -626,11 +605,12 @@ function dateStamp(){
 }
 
 function createIdentity(){
+  let nextNumber = Number(localStorage.getItem("enokiecloud_local_visitor_number") || "0") + 1;
+  localStorage.setItem("enokiecloud_local_visitor_number", String(nextNumber));
   return {
-    number: String(Math.floor(Math.random()*9999)+1).padStart(4,"0"),
+    number: String(nextNumber),
     creature: pick(creatures),
     vibe: pick(vibes),
-    frequency: (Math.random()*70+30).toFixed(1) + " mhz",
     firstSeen: dateStamp(),
     currently: pick(statuses),
     visits: 1
@@ -657,21 +637,18 @@ try{
   identity = createIdentity();
 }
 
-document.getElementById("visitorNo").textContent = identity.number;
+document.getElementById("visitorNo").textContent = "#" + identity.number;
 document.getElementById("creature").textContent = identity.creature;
 document.getElementById("vibe").textContent = identity.vibe;
-document.getElementById("frequency").textContent = identity.frequency;
 document.getElementById("firstSeen").textContent = identity.firstSeen;
 document.getElementById("currently").textContent = identity.currently;
 document.getElementById("approval").innerHTML =
   identity.creature.toUpperCase() + "<br>APPROVED";
 
 if(returning){
-  document.getElementById("hello").textContent = "oh... ur back!";
+  document.getElementById("hello").textContent = "oh ur back";
   document.getElementById("speechText").textContent =
-    "wait i remember u. visitor no. " + identity.number + " ♡";
-  document.getElementById("returnMessage").innerHTML =
-    "visit " + identity.visits + " ♡<br>same browser, same little identity.";
+    "wait i remember u";
 }
 </script>
 </body>
