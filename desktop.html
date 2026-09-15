@@ -4,3236 +4,769 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>enokiecloud</title>
-
 <style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+:root{
+  --bar:29px;
+  --glass:rgba(230,232,236,.94);
+  --sidebar:rgba(225,228,233,.90);
+  --blue:#2488ff;
 }
-
-html, body {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "SF Pro Text",
-    "SF Pro Display",
-    "Helvetica Neue",
-    Arial,
-    sans-serif;
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  color:#202124;
 }
+button,input{font:inherit}
+button{color:inherit}
 
-button {
-  font: inherit;
-}
-
-/* =========================
-   DESKTOP
-========================= */
-
-#desktop {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-
+#desktop{
+  position:relative;
+  width:100vw;height:100vh;overflow:hidden;
   background:
-    linear-gradient(
-      rgba(0,0,0,.03),
-      rgba(0,0,0,.12)
-    ),
-    url("images/photos/wallpaper.jpg");
-
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-/* =========================
-   MENU BAR
-========================= */
-
-#menu-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-
-  height: 29px;
-
-  display: flex;
-  align-items: center;
-
-  padding: 0 13px;
-
-  background: rgba(17,17,19,.68);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-
-  color: white;
-
-  font-size: 13px;
-
-  z-index: 9999;
-}
-
-.menu-left,
-.menu-right {
-  display: flex;
-  align-items: center;
-}
-
-.menu-left {
-  gap: 18px;
-}
-
-.menu-right {
-  margin-left: auto;
-  gap: 14px;
-}
-
-.menu-apple {
-  width: 15px;
-  height: 15px;
-  object-fit: contain;
-  filter: brightness(0) invert(1);
-}
-
-#active-app {
-  font-weight: 700;
-}
-
-#menu-clock {
-  min-width: 145px;
-  text-align: right;
-  font-size: 12px;
-}
-
-/* =========================
-   DESKTOP ITEMS
-========================= */
-
-#desktop-icons {
-  position: absolute;
-  top: 48px;
-  right: 20px;
-
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-
-  z-index: 50;
-}
-
-.desktop-item {
-  width: 90px;
-
-  border: 1px solid transparent;
-  border-radius: 7px;
-
-  padding: 5px;
-
-  background: transparent;
-  color: white;
-
-  text-align: center;
-
-  cursor: pointer;
-}
-
-.desktop-item:hover {
-  background: rgba(255,255,255,.12);
-}
-
-.desktop-item img {
-  width: 52px;
-  height: 52px;
-  object-fit: contain;
-
-  filter:
-    drop-shadow(0 4px 5px rgba(0,0,0,.35));
-}
-
-.desktop-label {
-  display: block;
-  margin-top: 3px;
-
-  font-size: 11px;
-
-  text-shadow:
-    0 1px 4px rgba(0,0,0,.95);
-}
-
-/* =========================
-   WINDOWS
-========================= */
-
-.window {
-  position: absolute;
-
-  display: none;
-
-  width: min(760px, calc(100vw - 40px));
-  min-height: 430px;
-
-  overflow: hidden;
-
-  border-radius: 12px;
-
-  background: rgba(247,248,250,.96);
-
-  border: 1px solid rgba(255,255,255,.65);
-
-  box-shadow:
-    0 25px 70px rgba(0,0,0,.36);
-
-  z-index: 300;
-}
-
-.window.active {
-  display: block;
-  animation: windowOpen .15s ease;
-}
-
-@keyframes windowOpen {
-  from {
-    opacity: .4;
-    transform: scale(.975);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.window-top {
-  position: relative;
-
-  height: 43px;
-
-  display: flex;
-  align-items: center;
-
-  padding: 0 14px;
-
-  background: rgba(230,231,235,.96);
-
-  border-bottom:
-    1px solid rgba(0,0,0,.08);
-
-  cursor: move;
-}
-
-.traffic-lights {
-  display: flex;
-  gap: 8px;
-
-  z-index: 3;
-}
-
-.traffic {
-  width: 12px;
-  height: 12px;
-
-  border: 1px solid rgba(0,0,0,.1);
-  border-radius: 50%;
-
-  cursor: pointer;
-}
-
-.red {
-  background: #ff5f57;
-}
-
-.yellow {
-  background: #febc2e;
-}
-
-.green {
-  background: #28c840;
-}
-
-.window-title {
-  position: absolute;
-  left: 50%;
-
-  transform: translateX(-50%);
-
-  font-size: 13px;
-  font-weight: 600;
-
-  color: #37393e;
-}
-
-/* =========================
-   FINDER
-========================= */
-
-.finder-layout {
-  display: flex;
-  min-height: 387px;
-}
-
-.finder-sidebar {
-  width: 175px;
-
-  padding: 13px 9px;
-
-  background: rgba(222,225,230,.82);
-
-  border-right:
-    1px solid rgba(0,0,0,.06);
-}
-
-.sidebar-title {
-  margin: 10px 9px 5px;
-
-  color: #7d8087;
-
-  font-size: 10px;
-  font-weight: 700;
-
-  text-transform: uppercase;
-}
-
-.sidebar-row {
-  padding: 6px 9px;
-
-  border-radius: 6px;
-
-  font-size: 12px;
-
-  color: #30343a;
-
-  cursor: pointer;
-}
-
-.sidebar-row:hover {
-  background: rgba(0,0,0,.06);
-}
-
-.sidebar-row.active {
-  background: rgba(112,158,214,.30);
-}
-
-.finder-main {
-  flex: 1;
-
-  padding: 20px;
-
-  background: rgba(255,255,255,.92);
-}
-
-.finder-heading {
-  margin-bottom: 18px;
-}
-
-.finder-heading h3 {
-  font-size: 17px;
-}
-
-.finder-grid {
-  display: grid;
-
-  grid-template-columns:
-    repeat(4, minmax(90px,1fr));
-
-  gap: 20px 14px;
-}
-
-.finder-file {
-  border: 0;
-  border-radius: 8px;
-
-  padding: 7px 4px;
-
-  background: transparent;
-
-  text-align: center;
-
-  cursor: pointer;
-}
-
-.finder-file:hover {
-  background: rgba(85,135,200,.11);
-}
-
-.finder-file img {
-  width: 58px;
-  height: 58px;
-
-  object-fit: contain;
-}
-
-.finder-file-name {
-  margin-top: 5px;
-
-  font-size: 11px;
-  color: #2d3035;
-}
-
-.pdf-icon {
-  position: relative;
-
-  width: 48px;
-  height: 59px;
-
-  margin: auto;
-
-  border: 1px solid #c7cbd0;
-  border-radius: 4px;
-
-  background: white;
-
-  box-shadow:
-    0 2px 6px rgba(0,0,0,.10);
-}
-
-.pdf-icon::before {
-  content: "PDF";
-
-  position: absolute;
-
-  left: 6px;
-  bottom: 8px;
-
-  color: #e54848;
-
-  font-size: 11px;
-  font-weight: 800;
-}
-
-/* =========================
-   MESSAGES
-========================= */
-
-.messages-layout {
-  display: flex;
-
-  height: 430px;
-
-  background: white;
-}
-
-.message-sidebar {
-  width: 205px;
-
-  overflow-y: auto;
-
-  border-right: 1px solid #ddd;
-
-  background: #f1f1f3;
-}
-
-.message-search {
-  margin: 11px;
-
-  height: 29px;
-
-  display: flex;
-  align-items: center;
-
-  padding: 0 10px;
-
-  border-radius: 7px;
-
-  background: #dedfe3;
-
-  color: #777;
-
-  font-size: 11px;
-}
-
-.contact-row {
-  padding: 10px 13px;
-
-  border-top:
-    1px solid rgba(0,0,0,.04);
-
-  cursor: pointer;
-}
-
-.contact-row:hover {
-  background: rgba(0,0,0,.04);
-}
-
-.contact-row.active {
-  background: #d9e5f5;
-}
-
-.contact-name {
-  font-size: 12px;
-  font-weight: 650;
-}
-
-.contact-preview {
-  margin-top: 2px;
-
-  color: #7b7c81;
-
-  font-size: 10px;
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.chat-area {
-  flex: 1;
-
-  display: flex;
-  flex-direction: column;
-
-  min-width: 0;
-}
-
-.chat-header {
-  height: 48px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-bottom: 1px solid #ddd;
-
-  font-size: 12px;
-  font-weight: 650;
-}
-
-.chat-messages {
-  flex: 1;
-
-  padding: 16px;
-
-  overflow-y: auto;
-
-  background: white;
-}
-
-.chat-message {
-  margin-bottom: 10px;
-}
-
-.chat-message.me {
-  text-align: right;
-}
-
-.chat-sender {
-  margin-left: 8px;
-  margin-bottom: 3px;
-
-  color: #999;
-
-  font-size: 9px;
-}
-
-.chat-message.me .chat-sender {
-  display: none;
-}
-
-.chat-bubble {
-  display: inline-block;
-
-  max-width: 72%;
-
-  padding: 8px 11px;
-
-  border-radius: 17px;
-
-  background: #e9e9ed;
-
-  color: #222;
-
-  font-size: 12px;
-  line-height: 1.4;
-}
-
-.chat-message.me .chat-bubble {
-  background: #2488ff;
-  color: white;
-}
-
-/* =========================
-   NOTES
-========================= */
-
-.notes-layout {
-  display: flex;
-
-  height: 410px;
-}
-
-.notes-sidebar {
-  width: 205px;
-
-  background: #f0f0f2;
-
-  border-right: 1px solid #ddd;
-}
-
-.notes-search {
-  margin: 11px;
-
-  height: 29px;
-
-  display: flex;
-  align-items: center;
-
-  padding: 0 10px;
-
-  border-radius: 7px;
-
-  background: #dedfe2;
-
-  color: #777;
-
-  font-size: 11px;
-}
-
-.note-row {
-  padding: 11px 13px;
-
-  border-top:
-    1px solid rgba(0,0,0,.05);
-
-  cursor: pointer;
-}
-
-.note-row.active {
-  background: #fff0b9;
-}
-
-.note-row strong {
-  display: block;
-
-  font-size: 12px;
-}
-
-.note-row small {
-  color: #777;
-
-  font-size: 10px;
-}
-
-.note-content {
-  flex: 1;
-
-  padding: 24px;
-
-  overflow-y: auto;
-
-  background: #fffdf4;
-}
-
-.note-content h2 {
-  margin-bottom: 14px;
-
-  font-size: 21px;
-}
-
-.note-text {
-  white-space: pre-line;
-
-  font-size: 14px;
-  line-height: 1.75;
-
-  color: #333;
-}
-
-/* =========================
-   PHOTOS
-========================= */
-
-.photos-content {
-  min-height: 390px;
-
-  padding: 20px;
-
-  background: #f7f7f8;
-}
-
-.photos-heading {
-  margin-bottom: 16px;
-
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.photos-grid {
-  display: grid;
-
-  grid-template-columns:
-    repeat(4,1fr);
-
-  gap: 7px;
-}
-
-.photo-thumb {
-  aspect-ratio: 1;
-
-  padding: 0;
-
-  overflow: hidden;
-
-  border: 0;
-
-  background: #ddd;
-
-  cursor: pointer;
-}
-
-.photo-thumb img {
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-
-  transition: transform .15s ease;
-}
-
-.photo-thumb:hover img {
-  transform: scale(1.035);
-}
-
-/* =========================
-   PHOTO VIEWER
-========================= */
-
-.photo-viewer-body {
-  min-height: 470px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 17px;
-
-  background: #151517;
-}
-
-.photo-viewer-body img {
-  max-width: 100%;
-  max-height: 445px;
-
-  object-fit: contain;
-}
-
-/* =========================
-   SAFARI / ENOKIETUBE
-========================= */
-
-.safari-toolbar {
-  height: 45px;
-
-  display: flex;
-  align-items: center;
-
-  gap: 10px;
-
-  padding: 7px 12px;
-
-  background: #e8e9ec;
-
-  border-bottom: 1px solid #d5d7da;
-}
-
-.safari-nav {
-  color: #696c72;
-
-  font-size: 18px;
-}
-
-.address-bar {
-  flex: 1;
-
-  height: 29px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 7px;
-
-  background: white;
-
-  box-shadow:
-    inset 0 0 0 1px #d5d7da;
-
-  font-size: 11px;
-
-  color: #555;
-}
-
-.safari-page {
-  min-height: 350px;
-
-  padding: 20px;
-
-  background: white;
-}
-
-.enokie-header {
-  display: flex;
-  align-items: center;
-
-  gap: 8px;
-
-  margin-bottom: 18px;
-}
-
-.enokie-play {
-  width: 31px;
-  height: 23px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 6px;
-
-  background: #ff244b;
-  color: white;
-
-  font-size: 11px;
-}
-
-.enokie-name {
-  font-size: 22px;
-  font-weight: 750;
-}
-
-.youtube-card {
-  width: min(500px,100%);
-}
-
-.youtube-thumbnail {
-  width: 100%;
-
-  aspect-ratio: 16/9;
-
-  overflow: hidden;
-
-  border-radius: 9px;
-
-  background: #111;
-}
-
-.youtube-thumbnail img {
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-}
-
-.youtube-title {
-  margin-top: 10px;
-
-  font-size: 14px;
-  font-weight: 650;
-
-  line-height: 1.35;
-}
-
-.youtube-meta {
-  margin-top: 5px;
-
-  color: #72757a;
-
-  font-size: 11px;
-}
-
-/* =========================
-   MUSIC
-========================= */
-
-.music-layout {
-  display: flex;
-
-  min-height: 390px;
-
-  background:
-    linear-gradient(
-      140deg,
-      #161618,
-      #242329
-    );
-
-  color: white;
-}
-
-.music-sidebar {
-  width: 180px;
-
-  padding: 18px 12px;
-
-  border-right:
-    1px solid rgba(255,255,255,.08);
-
-  background: rgba(10,10,12,.45);
-}
-
-.music-title {
-  margin-bottom: 18px;
-
-  font-size: 21px;
-  font-weight: 750;
-}
-
-.music-nav {
-  padding: 7px 8px;
-
-  border-radius: 6px;
-
-  font-size: 12px;
-}
-
-.music-nav.active {
-  background:
-    rgba(255,255,255,.10);
-}
-
-.music-main {
-  flex: 1;
-
-  padding: 22px;
-}
-
-.music-main h2 {
-  margin-bottom: 17px;
-
-  font-size: 18px;
-}
-
-.album-grid {
-  display: grid;
-
-  grid-template-columns:
-    repeat(2,minmax(160px,210px));
-
-  gap: 20px;
-}
-
-.album-card {
-  cursor: pointer;
-}
-
-.album-cover {
-  width: 100%;
-
-  aspect-ratio: 1;
-
-  overflow: hidden;
-
-  border-radius: 8px;
-
-  background: #333;
-}
-
-.album-cover img {
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-}
-
-.album-name {
-  margin-top: 7px;
-
-  font-size: 12px;
-  font-weight: 650;
-}
-
-.album-artist {
-  margin-top: 2px;
-
-  color: #aaa;
-
-  font-size: 10px;
-}
-
-#music-player {
-  position: absolute;
-
-  left: 50%;
-  bottom: 75px;
-
-  transform: translateX(-50%);
-
-  width: min(900px,calc(100vw - 40px));
-
-  display: none;
-
-  padding: 7px;
-
-  border-radius: 11px;
-
-  background: rgba(0,0,0,.90);
-
-  box-shadow:
-    0 15px 45px rgba(0,0,0,.45);
-
-  z-index: 9500;
-}
-
-#music-player.show {
-  display: block;
-}
-
-#music-player img {
-  width: 100%;
-
-  display: block;
-
-  border-radius: 6px;
-}
-
-/* =========================
-   FACETIME
-========================= */
-
-.facetime-body {
-  min-height: 390px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-
-  background:
-    linear-gradient(
-      145deg,
-      #eceef2,
-      #d8dce2
-    );
-}
-
-.facetime-body img {
-  width: 92px;
-  height: 92px;
-
-  object-fit: contain;
-
-  margin-bottom: 17px;
-}
-
-.facetime-body h2 {
-  font-size: 20px;
-}
-
-.facetime-body p {
-  margin-top: 5px;
-
-  color: #777;
-
-  font-size: 12px;
-}
-
-/* =========================
-   SETTINGS
-========================= */
-
-.settings-content {
-  min-height: 390px;
-
-  padding: 21px;
-
-  background: #f2f3f5;
-}
-
-.settings-heading {
-  margin-bottom: 17px;
-
-  font-size: 21px;
-  font-weight: 700;
-}
-
-.setting-card {
-  margin-bottom: 10px;
-
-  padding: 14px;
-
-  border-radius: 11px;
-
-  background: white;
-
-  box-shadow:
-    0 1px 4px rgba(0,0,0,.08);
-}
-
-.setting-card strong {
-  display: block;
-
-  font-size: 13px;
-}
-
-.setting-card span {
-  display: block;
-
-  margin-top: 3px;
-
-  color: #777;
-
-  font-size: 11px;
-}
-
-/* =========================
-   PDF
-========================= */
-
-#pdf-window {
-  width: min(820px,calc(100vw - 40px));
-  height: min(660px,calc(100vh - 100px));
-}
-
-.pdf-body {
-  height: calc(100% - 43px);
-}
-
-.pdf-body iframe {
-  width: 100%;
-  height: 100%;
-
-  border: 0;
-
-  background: white;
-}
-
-/* =========================
-   DOCK
-========================= */
-
-#dock-wrap {
-  position: absolute;
-
-  bottom: 8px;
-  left: 50%;
-
-  transform: translateX(-50%);
-
-  z-index: 9000;
-}
-
-#dock {
-  display: flex;
-  align-items: flex-end;
-
-  gap: 7px;
-
-  padding: 7px 8px;
-
-  border:
-    1px solid rgba(255,255,255,.35);
-
-  border-radius: 18px;
-
-  background:
-    rgba(219,222,227,.35);
-
-  box-shadow:
-    0 10px 35px rgba(0,0,0,.32);
-
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
-}
-
-.dock-item {
-  position: relative;
-
-  width: 51px;
-  height: 51px;
-
-  padding: 0;
-
-  border: 0;
-
-  background: transparent;
-
-  cursor: pointer;
-
-  transition:
-    transform .14s ease,
-    margin .14s ease;
-}
-
-.dock-item:hover {
-  transform:
-    translateY(-9px)
-    scale(1.17);
-
-  margin: 0 3px;
-}
-
-.dock-item img {
-  width: 100%;
-  height: 100%;
-
-  object-fit: contain;
-
-  border-radius: 11px;
-
-  filter:
-    drop-shadow(
-      0 3px 5px rgba(0,0,0,.30)
-    );
-}
-
-.dock-tooltip {
-  position: absolute;
-
-  left: 50%;
-  bottom: calc(100% + 12px);
-
-  transform: translateX(-50%);
-
-  padding: 5px 8px;
-
-  border-radius: 6px;
-
-  background: rgba(30,30,32,.94);
-  color: white;
-
-  font-size: 11px;
-
-  white-space: nowrap;
-
-  opacity: 0;
-
-  pointer-events: none;
-}
-
-.dock-item:hover .dock-tooltip {
-  opacity: 1;
-}
-
-.dock-dot {
-  position: absolute;
-
-  left: 50%;
-  bottom: -6px;
-
-  width: 4px;
-  height: 4px;
-
-  border-radius: 50%;
-
-  background: white;
-
-  transform: translateX(-50%);
-
-  display: none;
-}
-
-.dock-item.running .dock-dot {
-  display: block;
-}
-
-.dock-divider {
-  width: 1px;
-  height: 41px;
-
-  margin: 0 4px;
-
-  background:
-    rgba(255,255,255,.40);
-}
-
-@media(max-width:700px) {
-  .window {
-    position: fixed !important;
-
-    left: 10px !important;
-    top: 40px !important;
-
-    width: calc(100vw - 20px);
-
-    max-height:
-      calc(100vh - 105px);
-
-    overflow: auto;
-  }
-
-  .menu-left span:not(#active-app) {
-    display: none;
-  }
-
-  .menu-right span:not(#menu-clock) {
-    display: none;
-  }
-
-  .finder-sidebar,
-  .message-sidebar,
-  .notes-sidebar,
-  .music-sidebar {
-    width: 125px;
-  }
-
-  .finder-grid,
-  .photos-grid {
-    grid-template-columns:
-      repeat(2,1fr);
-  }
-
-  #dock {
-    gap: 3px;
-    padding: 5px;
-  }
-
-  .dock-item {
-    width: 38px;
-    height: 38px;
-  }
+    linear-gradient(rgba(0,0,0,.04),rgba(0,0,0,.13)),
+    url("images/photos/wallpaper.jpg") center/cover no-repeat;
+}
+
+/* top bar */
+#menubar{
+  position:absolute;inset:0 0 auto 0;height:var(--bar);
+  display:flex;align-items:center;padding:0 12px;
+  color:#fff;background:rgba(13,13,15,.68);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  font-size:12px;z-index:10000;
+}
+.menu-left,.menu-right{display:flex;align-items:center;gap:17px}
+.menu-right{margin-left:auto;gap:13px}
+.apple{width:14px;height:16px;object-fit:contain;filter:brightness(0) invert(1)}
+#active-app{font-weight:700}
+#clock{min-width:136px;text-align:right}
+
+/* desktop icons */
+#desktop-icons{
+  position:absolute;top:47px;right:20px;z-index:20;
+  display:flex;flex-direction:column;gap:12px;
+}
+.desktop-icon{
+  width:88px;padding:5px;border:1px solid transparent;border-radius:7px;
+  background:transparent;color:#fff;text-align:center;cursor:default;
+}
+.desktop-icon:hover{background:rgba(255,255,255,.12)}
+.desktop-icon img{width:53px;height:53px;object-fit:contain;filter:drop-shadow(0 4px 4px rgba(0,0,0,.35))}
+.desktop-icon span{display:block;margin-top:3px;font-size:11px;text-shadow:0 1px 4px #000}
+
+/* windows */
+.window{
+  position:absolute;display:none;
+  width:min(720px,88vw);max-width:88vw;
+  min-height:420px;max-height:calc(100vh - 92px);
+  overflow:hidden;border-radius:12px;
+  background:rgba(248,249,250,.96);
+  border:1px solid rgba(255,255,255,.62);
+  box-shadow:0 24px 70px rgba(0,0,0,.36);
+  z-index:300;
+}
+.window.active{display:block;animation:open .14s ease}
+@keyframes open{from{opacity:.35;transform:scale(.98)}to{opacity:1;transform:scale(1)}}
+.window-top{
+  position:relative;height:43px;display:flex;align-items:center;padding:0 13px;
+  background:var(--glass);border-bottom:1px solid rgba(0,0,0,.08);cursor:move;
+}
+.traffic{display:flex;gap:8px;z-index:2}
+.dot{width:12px;height:12px;border:1px solid rgba(0,0,0,.1);border-radius:50%;padding:0;cursor:pointer}
+.red{background:#ff5f57}.yellow{background:#febc2e}.green{background:#28c840}
+.window-title{position:absolute;left:50%;transform:translateX(-50%);font-size:12px;font-weight:650;color:#37393d}
+.window-body{height:calc(100% - 43px);min-height:377px}
+
+/* finder */
+.finder-layout{display:flex;height:430px}
+.sidebar{
+  width:172px;flex:0 0 172px;padding:12px 8px;
+  background:var(--sidebar);border-right:1px solid rgba(0,0,0,.07);
+}
+.side-title{margin:10px 9px 5px;color:#7f8288;font-size:10px;font-weight:700;text-transform:uppercase}
+.side-row{padding:6px 9px;border-radius:6px;font-size:12px;cursor:pointer}
+.side-row:hover{background:rgba(0,0,0,.055)}
+.side-row.active{background:rgba(104,153,214,.27)}
+.finder-main{flex:1;padding:19px;background:rgba(255,255,255,.93);overflow:auto}
+.finder-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.finder-heading h2{font-size:17px}
+.finder-grid{display:grid;grid-template-columns:repeat(4,minmax(80px,1fr));gap:18px 12px}
+.file{
+  border:0;background:transparent;padding:7px 3px;border-radius:7px;
+  text-align:center;cursor:pointer;
+}
+.file:hover{background:rgba(70,120,190,.10)}
+.file img{width:58px;height:58px;object-fit:contain}
+.file-name{margin-top:5px;font-size:11px;word-break:break-word}
+.file-meta{margin-top:2px;font-size:9px;color:#8b8d92}
+.doc-icon{
+  width:48px;height:59px;margin:auto;border-radius:4px;
+  border:1px solid #c7cbd0;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.08);
+  display:flex;align-items:flex-end;justify-content:center;padding-bottom:7px;
+  color:#df4545;font-size:10px;font-weight:800;
+}
+.txt-icon{color:#5f6b76}
+.locked{opacity:.5;filter:grayscale(.3)}
+
+/* generic pane */
+.pane{padding:20px;height:100%;overflow:auto;background:#fff}
+.pane h2{font-size:19px;margin-bottom:13px}
+.muted{color:#777;font-size:11px}
+
+/* photos */
+.photos-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.photo{border:0;background:#ddd;aspect-ratio:1;overflow:hidden;cursor:pointer}
+.photo img{width:100%;height:100%;object-fit:cover;transition:.15s}
+.photo:hover img{transform:scale(1.035)}
+.photo-viewer{height:480px;background:#151517;display:flex;align-items:center;justify-content:center;position:relative}
+.photo-viewer img{max-width:100%;max-height:100%;object-fit:contain}
+.meta-panel{
+  position:absolute;right:12px;bottom:12px;width:235px;padding:12px;border-radius:10px;
+  background:rgba(18,18,20,.82);color:#fff;backdrop-filter:blur(12px);font-size:11px;
+}
+.meta-panel strong{display:block;margin-bottom:6px}
+.meta-row{display:flex;justify-content:space-between;gap:10px;margin-top:4px;color:#d5d5d7}
+.meta-row span:last-child{text-align:right;color:#fff}
+
+/* messages */
+.messages-layout{display:flex;height:430px;background:#fff}
+.message-list{width:210px;flex:0 0 210px;background:#f1f1f3;border-right:1px solid #ddd;overflow:auto}
+.search{height:29px;margin:11px;border-radius:7px;background:#dedfe2;color:#777;display:flex;align-items:center;padding:0 10px;font-size:11px}
+.contact{padding:10px 13px;border-top:1px solid rgba(0,0,0,.04);cursor:pointer}
+.contact:hover{background:rgba(0,0,0,.04)}
+.contact.active{background:#d7e5f6}
+.contact strong{display:block;font-size:12px}
+.contact small{display:block;margin-top:2px;font-size:10px;color:#777;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.unread{display:inline-block;width:7px;height:7px;background:var(--blue);border-radius:50%;margin-left:5px}
+.chat{flex:1;display:flex;flex-direction:column;min-width:0}
+.chat-head{height:48px;border-bottom:1px solid #ddd;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:650}
+.chat-body{flex:1;padding:16px;overflow:auto}
+.msg{margin-bottom:10px}.msg.me{text-align:right}
+.sender{margin:0 0 3px 8px;color:#999;font-size:9px}.msg.me .sender{display:none}
+.bubble{display:inline-block;max-width:74%;padding:8px 11px;border-radius:17px;background:#e9e9ed;font-size:12px;line-height:1.4}
+.msg.me .bubble{background:var(--blue);color:white}
+.system-line{text-align:center;color:#9a9ca2;font-size:10px;margin:12px 0}
+
+/* notes */
+.notes-layout{display:flex;height:420px}
+.notes-list{width:205px;flex:0 0 205px;background:#f1f1f3;border-right:1px solid #ddd;overflow:auto}
+.note-row{padding:11px 13px;border-top:1px solid rgba(0,0,0,.05);cursor:pointer}
+.note-row.active{background:#fff0b8}
+.note-row strong{display:block;font-size:12px}.note-row small{font-size:10px;color:#777}
+.note-page{flex:1;padding:24px;background:#fffdf4;overflow:auto}
+.note-page h2{font-size:20px;margin-bottom:14px}.note-text{white-space:pre-line;font-size:14px;line-height:1.72}
+
+/* safari */
+.safari-toolbar{height:45px;display:flex;align-items:center;gap:9px;padding:7px 11px;background:#e8e9ec;border-bottom:1px solid #d5d7da}
+.nav{font-size:18px;color:#686b70}.address{flex:1;height:29px;border-radius:7px;background:#fff;box-shadow:inset 0 0 0 1px #d6d8dc;display:flex;align-items:center;justify-content:center;font-size:11px;color:#555}
+.safari-page{height:380px;padding:18px;background:#fff;overflow:auto}
+.site-title{font-size:21px;font-weight:750;margin-bottom:16px}
+.yt{width:min(490px,100%)}.yt img{width:100%;border-radius:8px}.yt-title{font-size:14px;font-weight:650;margin-top:8px;line-height:1.35}.yt-meta{font-size:10px;color:#777;margin-top:4px}
+.history{margin-top:22px;border-top:1px solid #eee;padding-top:14px}.history h3{font-size:13px;margin-bottom:8px}
+.history-row{padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:11px}.history-row small{display:block;color:#8a8b90;margin-top:2px}
+
+/* music */
+.music-layout{display:flex;height:400px;background:linear-gradient(145deg,#151517,#25242a);color:#fff}
+.music-side{width:175px;padding:18px 12px;border-right:1px solid rgba(255,255,255,.08)}
+.music-side h2{font-size:20px;margin-bottom:16px}.music-nav{padding:7px 8px;border-radius:6px;font-size:12px}.music-nav.active{background:rgba(255,255,255,.1)}
+.music-main{flex:1;padding:21px;overflow:auto}.music-main h3{font-size:17px;margin-bottom:15px}
+.albums{display:grid;grid-template-columns:repeat(2,minmax(150px,205px));gap:18px}
+.album{cursor:pointer}.album img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px}.album strong{display:block;font-size:12px;margin-top:7px}.album small{font-size:10px;color:#aaa}
+.last-played{margin-top:7px;font-size:9px;color:#8f8f95}
+
+/* facetime */
+.facetime{height:400px;background:linear-gradient(145deg,#eef0f4,#d8dce3);padding:20px;overflow:auto}
+.call-row{display:flex;align-items:center;justify-content:space-between;padding:12px 10px;border-bottom:1px solid rgba(0,0,0,.08);font-size:12px}
+.call-row .when{font-size:10px;color:#777}
+.call-actions button{border:0;border-radius:7px;padding:6px 9px;background:#fff;cursor:pointer}
+.incoming{
+  position:absolute;left:50%;top:70px;transform:translateX(-50%);
+  display:none;width:310px;padding:16px;border-radius:18px;background:rgba(34,34,37,.88);
+  color:white;backdrop-filter:blur(18px);z-index:9800;box-shadow:0 18px 50px rgba(0,0,0,.4);
+}
+.incoming.show{display:block;animation:drop .18s ease}
+@keyframes drop{from{opacity:0;transform:translate(-50%,-12px)}to{opacity:1;transform:translate(-50%,0)}}
+.incoming strong{display:block;font-size:14px}.incoming small{display:block;color:#ccc;margin-top:3px}
+.incoming .actions{display:flex;gap:10px;margin-top:13px}
+.incoming button{flex:1;border:0;border-radius:8px;padding:8px;cursor:pointer}.decline{background:#ff5f57;color:#fff}.accept{background:#28c840;color:#fff}
+
+/* system/settings */
+.settings{padding:20px;height:390px;background:#f3f4f6;overflow:auto}
+.setting{padding:13px;border-radius:10px;background:#fff;margin-bottom:9px;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+.setting strong{display:block;font-size:12px}.setting span{display:block;margin-top:3px;font-size:10px;color:#777}
+.reset{border:0;border-radius:8px;padding:8px 10px;background:#eee;cursor:pointer;margin-top:5px}
+
+/* text files */
+.textfile{padding:20px;height:390px;background:#111;color:#d7d7da;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;line-height:1.65;white-space:pre-wrap;overflow:auto}
+.textfile .warn{color:#ffcc66}
+
+/* pdf */
+#pdf-window{width:min(820px,90vw);height:min(660px,calc(100vh - 90px))}
+.pdfbody{height:calc(100% - 43px)}.pdfbody iframe{width:100%;height:100%;border:0}
+
+/* music player image */
+#player{
+  position:absolute;left:50%;bottom:75px;transform:translateX(-50%);
+  width:min(900px,92vw);display:none;padding:7px;border-radius:11px;background:rgba(0,0,0,.9);
+  z-index:9400;box-shadow:0 15px 45px rgba(0,0,0,.45)
+}
+#player.show{display:block}#player img{display:block;width:100%;border-radius:6px}
+
+/* dock */
+#dock-wrap{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);z-index:9000}
+#dock{display:flex;align-items:flex-end;gap:7px;padding:7px 8px;border-radius:18px;border:1px solid rgba(255,255,255,.34);background:rgba(220,223,228,.35);backdrop-filter:blur(28px);box-shadow:0 10px 35px rgba(0,0,0,.32)}
+.dock-item{position:relative;width:50px;height:50px;padding:0;border:0;background:transparent;cursor:pointer;transition:.14s}
+.dock-item:hover{transform:translateY(-8px) scale(1.15);margin:0 3px}
+.dock-item img{width:100%;height:100%;object-fit:contain;border-radius:11px;filter:drop-shadow(0 3px 5px rgba(0,0,0,.3))}
+.tip{position:absolute;left:50%;bottom:calc(100% + 11px);transform:translateX(-50%);opacity:0;padding:5px 8px;border-radius:6px;background:rgba(28,28,30,.94);color:#fff;font-size:10px;white-space:nowrap;pointer-events:none}
+.dock-item:hover .tip{opacity:1}
+.running::after{content:"";position:absolute;left:50%;bottom:-6px;width:4px;height:4px;border-radius:50%;background:#fff;transform:translateX(-50%)}
+.divider{width:1px;height:40px;background:rgba(255,255,255,.42);margin:0 4px}
+
+/* subtle story effects */
+#screen-flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:12000}
+#screen-flash.flash{animation:flash .13s linear}
+@keyframes flash{0%{opacity:0}45%{opacity:.13}100%{opacity:0}}
+.glitch-label{animation:labelglitch .16s linear 2}
+@keyframes labelglitch{0%{transform:translateX(0)}25%{transform:translateX(-1px)}50%{transform:translateX(2px)}75%{transform:translateX(-1px)}100%{transform:translateX(0)}}
+
+@media(max-width:760px){
+  .window{width:92vw;max-width:92vw}
+  .sidebar{width:132px;flex-basis:132px}
+  .message-list,.notes-list{width:145px;flex-basis:145px}
+  .finder-grid{grid-template-columns:repeat(2,1fr)}
+  .photos-grid{grid-template-columns:repeat(2,1fr)}
+  .dock-item{width:39px;height:39px}
+  #dock{gap:3px;padding:5px}
+  .menu-left span:not(#active-app){display:none}
 }
 </style>
 </head>
-
 <body>
-
 <main id="desktop">
 
-<header id="menu-bar">
-
+<header id="menubar">
   <div class="menu-left">
-
-    <img
-      src="images/icons/apple.png"
-      class="menu-apple"
-      alt=""
-    >
-
-    <span id="active-app">
-      Finder
-    </span>
-
-    <span>File</span>
-    <span>Edit</span>
-    <span>View</span>
-    <span>Go</span>
-    <span>Window</span>
-    <span>Help</span>
-
+    <img class="apple" src="images/icons/apple.png" alt="">
+    <span id="active-app">Finder</span>
+    <span>File</span><span>Edit</span><span>View</span><span>Go</span><span>Window</span><span>Help</span>
   </div>
-
-  <div class="menu-right">
-
-    <span>⌁</span>
-    <span>◉</span>
-    <span>⌁⌁</span>
-
-    <span id="menu-clock"></span>
-
-  </div>
-
+  <div class="menu-right"><span>⌁</span><span>◉</span><span>⌁⌁</span><span id="clock"></span></div>
 </header>
 
-
 <section id="desktop-icons">
-
-  <button
-    class="desktop-item"
-    onclick="openFinder('school')"
-  >
-
-    <img
-      src="images/icons/folder.png"
-      alt=""
-    >
-
-    <span class="desktop-label">
-      school
-    </span>
-
-  </button>
-
-
-  <button
-    class="desktop-item"
-    onclick="openPhotos()"
-  >
-
-    <img
-      src="images/icons/folder.png"
-      alt=""
-    >
-
-    <span class="desktop-label">
-      pictures
-    </span>
-
-  </button>
-
-
-  <button
-    class="desktop-item"
-    onclick="openFinder('downloads')"
-  >
-
-    <img
-      src="images/icons/folder.png"
-      alt=""
-    >
-
-    <span class="desktop-label">
-      downloads
-    </span>
-
-  </button>
-
+  <button class="desktop-icon" onclick="openFinder('school')"><img src="images/icons/folder.png"><span>school</span></button>
+  <button class="desktop-icon" onclick="openPhotos()"><img src="images/icons/folder.png"><span>pictures</span></button>
+  <button class="desktop-icon" onclick="openFinder('downloads')"><img src="images/icons/folder.png"><span>downloads</span></button>
+  <button id="recovered-desktop" class="desktop-icon" style="display:none" onclick="openFinder('recovered')"><img src="images/icons/folder.png"><span>recovered</span></button>
 </section>
 
-
-<!-- FINDER -->
-
-<section
-  id="finder-window"
-  class="window"
-  style="
-    left:145px;
-    top:72px;
-  "
->
-
+<!-- Finder -->
+<section id="finder-window" class="window" style="left:8vw;top:8vh">
   <div class="window-top">
-
-    <div class="traffic-lights">
-
-      <button
-        class="traffic red"
-        onclick="closeWindow('finder-window')"
-      ></button>
-
-      <button class="traffic yellow"></button>
-      <button class="traffic green"></button>
-
-    </div>
-
-    <div class="window-title">
-      Finder
-    </div>
-
+    <div class="traffic"><button class="dot red" onclick="closeWindow('finder-window')"></button><button class="dot yellow"></button><button class="dot green"></button></div>
+    <div class="window-title">Finder</div>
   </div>
-
-
   <div class="finder-layout">
-
-    <aside class="finder-sidebar">
-
-      <div class="sidebar-title">
-        Favorites
-      </div>
-
-      <div
-        class="sidebar-row"
-        onclick="openFinder('desktop')"
-      >
-        Desktop
-      </div>
-
-      <div
-        class="sidebar-row"
-        onclick="openFinder('school')"
-      >
-        school
-      </div>
-
-      <div
-        class="sidebar-row"
-        onclick="openPhotos()"
-      >
-        Pictures
-      </div>
-
-      <div
-        class="sidebar-row"
-        onclick="openFinder('downloads')"
-      >
-        Downloads
-      </div>
-
-      <div class="sidebar-title">
-        Locations
-      </div>
-
-      <div class="sidebar-row active">
-        Macintosh HD
-      </div>
-
+    <aside class="sidebar">
+      <div class="side-title">Favorites</div>
+      <div class="side-row" onclick="openFinder('desktop')">Desktop</div>
+      <div class="side-row" onclick="openFinder('school')">school</div>
+      <div class="side-row" onclick="openPhotos()">Pictures</div>
+      <div class="side-row" onclick="openFinder('downloads')">Downloads</div>
+      <div id="recovered-side" class="side-row" style="display:none" onclick="openFinder('recovered')">recovered</div>
+      <div class="side-title">Locations</div>
+      <div class="side-row active">Macintosh HD</div>
     </aside>
-
-
     <div class="finder-main">
-
-      <div class="finder-heading">
-        <h3 id="finder-heading">
-          Desktop
-        </h3>
-      </div>
-
-      <div
-        id="finder-grid"
-        class="finder-grid"
-      ></div>
-
+      <div class="finder-heading"><h2 id="finder-title">Desktop</h2><span id="finder-count" class="muted"></span></div>
+      <div id="finder-grid" class="finder-grid"></div>
     </div>
-
   </div>
-
 </section>
 
-
-<!-- MESSAGES -->
-
-<section
-  id="messages-window"
-  class="window"
-  style="
-    left:285px;
-    top:73px;
-    width:700px;
-  "
->
-
+<!-- Photos -->
+<section id="photos-window" class="window" style="left:10vw;top:8vh">
   <div class="window-top">
-
-    <div class="traffic-lights">
-
-      <button
-        class="traffic red"
-        onclick="closeWindow('messages-window')"
-      ></button>
-
-      <button class="traffic yellow"></button>
-      <button class="traffic green"></button>
-
-    </div>
-
-    <div class="window-title">
-      Messages
-    </div>
-
+    <div class="traffic"><button class="dot red" onclick="closeWindow('photos-window')"></button><button class="dot yellow"></button><button class="dot green"></button></div>
+    <div class="window-title">Photos</div>
   </div>
+  <div class="pane">
+    <h2>Library</h2>
+    <div class="photos-grid">
+      <button class="photo" onclick="showPhoto(1)"><img src="images/photos/photo-01.jpg"></button>
+      <button class="photo" onclick="showPhoto(2)"><img src="images/photos/photo-02.jpg"></button>
+      <button class="photo" onclick="showPhoto(3)"><img src="images/photos/photo-03.jpg"></button>
+      <button class="photo" onclick="showPhoto(4)"><img src="images/photos/photo-04.jpg"></button>
+    </div>
+  </div>
+</section>
 
+<section id="photo-window" class="window" style="left:16vw;top:6vh;width:min(680px,84vw)">
+  <div class="window-top">
+    <div class="traffic"><button class="dot red" onclick="closeWindow('photo-window')"></button><button class="dot yellow"></button><button class="dot green"></button></div>
+    <div class="window-title">Preview</div>
+  </div>
+  <div class="photo-viewer">
+    <img id="photo-big" src="">
+    <div id="photo-meta" class="meta-panel"></div>
+  </div>
+</section>
 
+<!-- Messages -->
+<section id="messages-window" class="window" style="left:14vw;top:8vh">
+  <div class="window-top">
+    <div class="traffic"><button class="dot red" onclick="closeWindow('messages-window')"></button><button class="dot yellow"></button><button class="dot green"></button></div>
+    <div class="window-title">Messages</div>
+  </div>
   <div class="messages-layout">
-
-    <aside class="message-sidebar">
-
-      <div class="message-search">
-        Search
-      </div>
-
-      <div id="contacts-list"></div>
-
-    </aside>
-
-
-    <section class="chat-area">
-
-      <div
-        id="chat-title"
-        class="chat-header"
-      >
-        3asians
-      </div>
-
-      <div
-        id="chat-messages"
-        class="chat-messages"
-      ></div>
-
-    </section>
-
+    <aside class="message-list"><div class="search">Search</div><div id="contacts"></div></aside>
+    <section class="chat"><div id="chat-title" class="chat-head">3asians</div><div id="chat-body" class="chat-body"></div></section>
   </div>
-
 </section>
 
-
-<!-- NOTES -->
-
-<section
-  id="notes-window"
-  class="window"
-  style="
-    left:390px;
-    top:90px;
-    width:610px;
-  "
->
-
+<!-- Notes -->
+<section id="notes-window" class="window" style="left:18vw;top:9vh;width:min(650px,86vw)">
   <div class="window-top">
-
-    <div class="traffic-lights">
-
-      <button
-        class="traffic red"
-        onclick="closeWindow('notes-window')"
-      ></button>
-
-      <button class="traffic yellow"></button>
-      <button class="traffic green"></button>
-
-    </div>
-
-    <div class="window-title">
-      Notes
-    </div>
-
+    <div class="traffic"><button class="dot red" onclick="closeWindow('notes-window')"></button><button class="dot yellow"></button><button class="dot green"></button></div>
+    <div class="window-title">Notes</div>
   </div>
-
-
   <div class="notes-layout">
+    <aside class="notes-list"><div class="search">Search</div><div id="notes-list"></div></aside>
+    <article class="note-page"><h2 id="note-title"></h2><div id="note-text" class="note-text"></div></article>
+  </div>
+</section>
 
-    <aside class="notes-sidebar">
+<!-- Safari -->
+<section id="safari-window" class="window" style="left:12vw;top:7vh">
+  <div class="window-top">
+    <div class="traffic"><button class="dot red" onclick="closeWindow('safari-window')"></button><button class="dot yellow"></button><button class="dot green"></button></div>
+    <div class="window-title">Safari</div>
+  </div>
+  <div class="safari-toolbar"><span class="nav">‹</span><span class="nav">›</span><div class="address">enokiecloud.tv</div></div>
+  <div class="safari-page">
+    <div class="site-title">EnokieTube</div>
+    <div class="yt">
+      <img src="images/youtube/youtube-thumbnail.jpg">
+      <div class="yt-title">I Found the Creepiest Discord Server (YouTube Tried to Remove this Video)</div>
+      <div class="yt-meta">No Text To Speech · 654K views</div>
+    </div>
+    <div class="history">
+      <h3>Recently visited</h3>
+      <div class="history-row">how to check recent logins on mac <small>Sep 3 · 1:42 AM</small></div>
+      <div class="history-row">can someone remotely control your computer <small>Sep 3 · 1:58 AM</small></div>
+      <div id="history-hidden" class="history-row" style="display:none">find my device last location <small>Sep 4 · 2:08 AM</small></div>
+    </div>
+  </div>
+</section>
 
-      <div class="notes-search">
-        Search
+<!-- Music -->
+<section id="music-window" class="window" style="left:13vw;top:8vh">
+  <div class="window-top">
+    <div class="traffic"><button class="dot red" onclick="closeWindow('music-window')"></button><button class="dot yellow"></button><button class="dot green"></button></div>
+    <div class="window-title">Music</div>
+  </div>
+  <div class="music-layout">
+    <aside class="music-side"><h2>Music</h2><div class="music-nav active">Listen Now</div><div class="music-nav">Browse</div><div class="music-nav">Recently Added</div></aside>
+    <div class="music-main">
+      <h3>Recently Played</h3>
+      <div class="albums">
+        <div class="album" onclick="playSong('one')"><img src="images/music/album-one-more-try.jpg"><strong>One More Try</strong><small>bistencs, cursedcry</small><div id="lp-one" class="last-played"></div></div>
+        <div class="album" onclick="playSong('two')"><img src="images/music/album-wantmetoo.jpg"><strong>wantmetoo (demo)</strong><small>reiko</small><div id="lp-two" class="last-played"></div></div>
       </div>
+    </div>
+  </div>
+</section>
 
-      <div class="note-row active">
+<!-- FaceTime -->
+<section id="facetime-window" class="window" style="left:20vw;top:10vh;width:min(520px,82vw)">
+  <div class="window-top">
+    <div class="traffic"><button class="dot red" onclick="closeWindow('facetime-window')"></button><button class="dot yellow"></button><button class="dot green"></button></div>
+    <div class="window-title">FaceTime</div>
+  </div>
+  <div class="facetime">
+    <h2 style="font-size:19px;margin-bottom:14px">Recents</h2>
+    <div class="call-row"><span>Mami</span><span class="when">Sep 2 · 8:12 PM</span></div>
+    <div class="call-row"><span>3asians</span><span class="when">Sep 3 · 11:47 PM</span></div>
+    <div id="unknown-call-row" class="call-row" style="display:none"><span>Unknown</span><span class="when">Sep 4 · 2:17 AM</span></div>
+  </div>
+</section>
 
-        <strong>
-          grocery list
-        </strong>
+<!-- Settings -->
+<section id="settings-window" class="window" style="left:22vw;top:9vh;width:min(560px,84vw)">
+  <div class="window-top">
+    <div class="traffic"><button class="dot red" onclick="closeWindow('settings-window')"></button><button class="dot yellow"></button><button class="dot green"></button></div>
+    <div class="window-title">System Settings</div>
+  </div>
+  <div class="settings">
+    <div class="setting"><strong>Apple Account</strong><span>enokie</span></div>
+    <div class="setting"><strong>Last successful login</strong><span id="settings-login">Sep 3, 2026 · 11:58 PM</span></div>
+    <div id="guest-setting" class="setting" style="display:none"><strong>Guest User</strong><span>Active session detected</span></div>
+    <div class="setting"><strong>Appearance</strong><span>Dark</span></div>
+    <div class="setting"><strong>Desktop & Dock</strong><span>Customized</span></div>
+    <button class="reset" onclick="resetStory()">Reset story progress</button>
+  </div>
+</section>
 
-        <small>
-          today
-        </small>
+<!-- Text file -->
+<section id="text-window" class="window" style="left:18vw;top:8vh;width:min(650px,84vw)">
+  <div class="window-top">
+    <div class="traffic"><button class="dot red" onclick="closeWindow('text-window')"></button><button class="dot yellow"></button><button class="dot green"></button></div>
+    <div id="text-title" class="window-title">file.txt</div>
+  </div>
+  <div id="text-content" class="textfile"></div>
+</section>
 
-      </div>
+<!-- PDF -->
+<section id="pdf-window" class="window" style="left:12vw;top:5vh">
+  <div class="window-top">
+    <div class="traffic"><button class="dot red" onclick="closeWindow('pdf-window')"></button><button class="dot yellow"></button><button class="dot green"></button></div>
+    <div class="window-title">syllabus.pdf</div>
+  </div>
+  <div class="pdfbody"><iframe src="school/syllabus.pdf"></iframe></div>
+</section>
 
-      <div class="note-row">
+<!-- incoming call -->
+<div id="incoming" class="incoming">
+  <strong>Incoming FaceTime</strong>
+  <small>Unknown</small>
+  <div class="actions"><button class="decline" onclick="declineCall()">Decline</button><button class="accept" onclick="acceptCall()">Accept</button></div>
+</div>
 
-        <strong>
-          website stuff
-        </strong>
+<div id="player"><img id="player-img" src=""></div>
+<div id="screen-flash"></div>
 
-        <small>
-          yesterday
-        </small>
+<!-- Dock -->
+<div id="dock-wrap"><nav id="dock">
+  <button class="dock-item" onclick="openFinder('desktop');run(this)"><span class="tip">Finder</span><img src="images/icons/finder.png"></button>
+  <button class="dock-item" onclick="openApp('safari-window','Safari',this)"><span class="tip">Safari</span><img src="images/icons/safari.png"></button>
+  <button class="dock-item" onclick="openMessages(this)"><span class="tip">Messages</span><img src="images/icons/messages.png"></button>
+  <button class="dock-item" onclick="openPhotos(this)"><span class="tip">Photos</span><img src="images/icons/photos.png"></button>
+  <button class="dock-item" onclick="openApp('facetime-window','FaceTime',this)"><span class="tip">FaceTime</span><img src="images/icons/facetime.png"></button>
+  <button class="dock-item" onclick="openApp('music-window','Music',this)"><span class="tip">Music</span><img src="images/icons/music.png"></button>
+  <button class="dock-item" onclick="openNotes(this)"><span class="tip">Notes</span><img src="images/icons/notes.png"></button>
+  <button class="dock-item" onclick="openApp('settings-window','System Settings',this)"><span class="tip">System Settings</span><img src="images/icons/settings.png"></button>
+  <div class="divider"></div>
+  <button class="dock-item"><span class="tip">Trash</span><img src="images/icons/trash.png"></button>
+</nav></div>
 
-      </div>
+</main>
 
-    </aside>
+<script>
+let topZ=500;
+const KEY="enokieStoryV1";
+let state=JSON.parse(localStorage.getItem(KEY)||'{"phase":0,"unknownOpen":false,"windowMoved":false,"callSeen":false}');
+function save(){localStorage.setItem(KEY,JSON.stringify(state));syncStory()}
+function advance(n){if(state.phase<n){state.phase=n;save()}}
+function flash(){const f=document.getElementById("screen-flash");f.classList.remove("flash");void f.offsetWidth;f.classList.add("flash")}
 
+function clock(){
+  const n=new Date();
+  document.getElementById("clock").textContent=
+    n.toLocaleDateString([],{weekday:"short",month:"short",day:"numeric"})+" "+
+    n.toLocaleTimeString([],{hour:"numeric",minute:"2-digit"});
+}
+clock();setInterval(clock,1000);
 
-    <section class="note-content">
+function openApp(id,name,btn=null){
+  const w=document.getElementById(id);w.classList.add("active");w.style.zIndex=++topZ;
+  document.getElementById("active-app").textContent=name;if(btn)run(btn);
+}
+function closeWindow(id){document.getElementById(id).classList.remove("active");document.getElementById("active-app").textContent="Finder"}
+function run(btn){btn.classList.add("running")}
 
-      <h2>
-        grocery list
-      </h2>
+document.querySelectorAll(".window").forEach(win=>{
+  const bar=win.querySelector(".window-top");let drag=false,ox=0,oy=0;
+  bar.addEventListener("mousedown",e=>{
+    if(e.target.classList.contains("dot"))return;
+    drag=true;const r=win.getBoundingClientRect();ox=e.clientX-r.left;oy=e.clientY-r.top;
+    win.style.zIndex=++topZ;
+  });
+  document.addEventListener("mousemove",e=>{
+    if(!drag||innerWidth<760)return;
+    win.style.left=Math.max(0,Math.min(innerWidth-win.offsetWidth,e.clientX-ox))+"px";
+    win.style.top=Math.max(29,Math.min(innerHeight-win.offsetHeight-60,e.clientY-oy))+"px";
+    if(state.phase>=4 && !state.windowMoved){
+      state.windowMoved=true;save();
+      setTimeout(()=>pushUnknown("wait"),450);
+      setTimeout(()=>pushUnknown("you can move the windows?"),1600);
+      setTimeout(()=>pushUnknown("i haven't been able to do that"),3300);
+      setTimeout(()=>triggerCall(),5200);
+    }
+  });
+  document.addEventListener("mouseup",()=>drag=false);
+});
 
-      <div class="note-text">
-☐ 1 red onion
+function folderTile(name,action,meta=""){
+  return `<button class="file" ${action?`onclick="${action}"`:""}><img src="images/icons/folder.png"><div class="file-name">${name}</div>${meta?`<div class="file-meta">${meta}</div>`:""}</button>`;
+}
+function docTile(name,action,type="TXT",meta=""){
+  return `<button class="file" ${action?`onclick="${action}"`:""}><div class="doc-icon ${type==="TXT"?"txt-icon":""}">${type}</div><div class="file-name">${name}</div>${meta?`<div class="file-meta">${meta}</div>`:""}</button>`;
+}
+function openFinder(folder){
+  openApp("finder-window","Finder");
+  const t=document.getElementById("finder-title"),g=document.getElementById("finder-grid"),c=document.getElementById("finder-count");
+  if(folder==="desktop"){
+    t.textContent="Desktop";g.innerHTML=
+      folderTile("school","openFinder('school')")+
+      folderTile("pictures","openPhotos()")+
+      folderTile("downloads","openFinder('downloads')")+
+      (state.phase>=2?folderTile("recovered","openFinder('recovered')","modified today"):"");
+  }
+  if(folder==="school"){
+    t.textContent="school";g.innerHTML=
+      docTile("syllabus.pdf","openApp('pdf-window','Preview')","PDF","Fall 2026")+
+      folderTile("assignments","")+
+      folderTile("readings","");
+  }
+  if(folder==="downloads"){
+    t.textContent="Downloads";
+    g.innerHTML=docTile("Screenshot 2026-09-03 at 1.51 AM.png","","PNG","Sep 3")+
+      docTile("receipt.pdf","","PDF","Sep 2")+
+      docTile("image (1).png","","PNG","Sep 3")+
+      (state.phase>=1?docTile("photo-info.txt","openText('photo-info')","TXT","modified after last login"):"");
+    if(state.phase>=1)advance(2);
+  }
+  if(folder==="recovered"){
+    t.textContent="recovered";
+    g.innerHTML=
+      docTile("last-session.txt","openText('session')","TXT","recovered")+
+      docTile("unsent.txt","openText('unsent')","TXT","recovered")+
+      (state.phase>=5?docTile("system-log.txt","openText('system')","TXT","today"):"");
+  }
+  c.textContent=g.children.length+" items";
+}
+
+const photoMeta={
+  1:["IMG_4072.jpeg","Aug 29, 2026 · 7:14 PM","iPhone 15","Sacramento, CA"],
+  2:["IMG_4218.jpeg","Aug 31, 2026 · 11:08 PM","iPhone 15",""],
+  3:["IMG_4361.jpeg","Sep 2, 2026 · 12:43 AM","iPhone 15",""],
+  4:["IMG_4409.jpeg","Sep 11, 2026 · 2:13 AM","Unknown device","metadata changed"]
+};
+function openPhotos(btn=null){openApp("photos-window","Photos",btn)}
+function showPhoto(n){
+  document.getElementById("photo-big").src=`images/photos/photo-0${n}.jpg`;
+  const m=photoMeta[n];
+  document.getElementById("photo-meta").innerHTML=`<strong>${m[0]}</strong>
+    <div class="meta-row"><span>Taken</span><span>${m[1]}</span></div>
+    <div class="meta-row"><span>Device</span><span>${m[2]}</span></div>
+    <div class="meta-row"><span>Info</span><span>${m[3]||"—"}</span></div>`;
+  openApp("photo-window","Preview");
+  if(n===4 && state.phase<1){advance(1);flash();setTimeout(()=>{document.getElementById("photo-meta").classList.add("glitch-label")},250)}
+}
+
+const baseChats={
+  "3asians":[
+    ["jadabae","are we still going out friday"],
+    ["noemibae","i can after 8"],
+    ["kyle","same"],
+    ["kels","okay ill text when im leaving"],
+    ["jadabae","did enokie ever answer"],
+    ["noemibae","no"],
+    ["kyle","she said she was going home"],
+    ["system","1 message unavailable"],
+    ["jadabae","has anyone heard from her since then"]
+  ],
+  "jadabae":[["jadabae","where are u"],["kels","girl im coming 😭"],["jadabae","you said that 20 mins ago"]],
+  "noemibae":[["noemibae","look at what i just sent u"],["kels","LMFAOOO STOP"],["noemibae","i knew youd get it"]],
+  "kyle":[["kyle","yall still going out"],["kels","yes unfortunately"],["kyle","crazy"]],
+  "lil sis ava":[["lil sis ava","are u home later"],["kels","yeah why"],["lil sis ava","i need to tell u something lol"]],
+  "kiddo jas":[["kiddo jas","can i ask u something"],["kels","ofc whats up"]],
+  "mami":[["mami","anak text me when you get home"],["kels","okay ma i will"],["mami","dont forget"]]
+};
+let unknownMsgs=[];
+function contactNames(){
+  const names=["3asians","jadabae","noemibae","kyle","lil sis ava","kiddo jas","mami"];
+  if(state.phase>=3)names.unshift("unknown");
+  return names;
+}
+function renderContacts(active="3asians"){
+  const box=document.getElementById("contacts");box.innerHTML="";
+  contactNames().forEach(name=>{
+    const d=document.createElement("div");d.className="contact"+(name===active?" active":"");
+    const preview=name==="unknown"?(unknownMsgs.at(-1)||"hello?"):(name==="mami"?"mom":name==="3asians"?"group chat":"");
+    d.innerHTML=`<strong>${name}${name==="unknown"&&state.phase===3?'<span class="unread"></span>':""}</strong><small>${preview}</small>`;
+    d.onclick=()=>{renderContacts(name);renderChat(name)};
+    box.appendChild(d);
+  });
+}
+function renderChat(name){
+  document.getElementById("chat-title").textContent=name;
+  const body=document.getElementById("chat-body");body.innerHTML="";
+  const data=name==="unknown"?unknownMsgs.map(t=>["unknown",t]):baseChats[name];
+  data.forEach(([sender,text])=>{
+    if(sender==="system"){body.insertAdjacentHTML("beforeend",`<div class="system-line">${text}</div>`);return}
+    body.insertAdjacentHTML("beforeend",`<div class="msg ${sender==="kels"?"me":""}"><div class="sender">${sender}</div><div class="bubble">${text}</div></div>`);
+  });
+  body.scrollTop=body.scrollHeight;
+  if(name==="unknown" && state.phase===3){
+    state.unknownOpen=true;advance(4);
+    setTimeout(()=>pushUnknown("can you see this"),900);
+    setTimeout(()=>pushUnknown("are you at my desk"),2400);
+  }
+}
+function openMessages(btn=null){openApp("messages-window","Messages",btn);renderContacts();renderChat(state.phase>=3?"unknown":"3asians")}
+function pushUnknown(text){
+  if(!unknownMsgs.includes(text))unknownMsgs.push(text);
+  if(document.getElementById("messages-window").classList.contains("active")){
+    renderContacts("unknown");renderChat("unknown");
+  }
+}
+
+const notes={
+  "grocery list":`☐ 1 red onion
 ☐ 1 bulb garlic
 ☐ 2 roma tomatoes
 ☐ 1 bunch green onions
 ☐ 1 small ginger
 ☐ 1 bottle soy sauce
 ☐ 1 bottle cane vinegar
-☐ 1 small bottle fish sauce
 ☐ 2 packs pork bouillon cubes
 ☐ 1 pack pork belly
 ☐ 1 pack chicken thighs
 ☐ 1 pack pancit bihon
 ☐ 1 can coconut milk
-☐ 1 can spam
 ☐ 1 dozen eggs
-☐ 1 small bag jasmine rice
-☐ 4 calamansi
-☐ 2 potatoes
-☐ 2 carrots
-☐ 1 small cabbage
-
-snacks / extras
-
-☐ 1 pack skyflakes
-☐ 1 bag chicharron
-☐ 1 box mango juice
-      </div>
-
-    </section>
-
-  </div>
-
-</section>
-
-
-<!-- PHOTOS -->
-
-<section
-  id="photos-window"
-  class="window"
-  style="
-    left:270px;
-    top:80px;
-    width:680px;
-  "
->
-
-  <div class="window-top">
-
-    <div class="traffic-lights">
-
-      <button
-        class="traffic red"
-        onclick="closeWindow('photos-window')"
-      ></button>
-
-      <button class="traffic yellow"></button>
-      <button class="traffic green"></button>
-
-    </div>
-
-    <div class="window-title">
-      Photos
-    </div>
-
-  </div>
-
-
-  <div class="photos-content">
-
-    <div class="photos-heading">
-      Library
-    </div>
-
-
-    <div class="photos-grid">
-
-      <button
-        class="photo-thumb"
-        onclick="showPhoto('images/photos/photo-01.jpg')"
-      >
-        <img
-          src="images/photos/photo-01.jpg"
-          alt=""
-        >
-      </button>
-
-
-      <button
-        class="photo-thumb"
-        onclick="showPhoto('images/photos/photo-02.jpg')"
-      >
-        <img
-          src="images/photos/photo-02.jpg"
-          alt=""
-        >
-      </button>
-
-
-      <button
-        class="photo-thumb"
-        onclick="showPhoto('images/photos/photo-03.jpg')"
-      >
-        <img
-          src="images/photos/photo-03.jpg"
-          alt=""
-        >
-      </button>
-
-
-      <button
-        class="photo-thumb"
-        onclick="showPhoto('images/photos/photo-04.jpg')"
-      >
-        <img
-          src="images/photos/photo-04.jpg"
-          alt=""
-        >
-      </button>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- PHOTO VIEWER -->
-
-<section
-  id="photo-viewer"
-  class="window"
-  style="
-    left:330px;
-    top:60px;
-  "
->
-
-  <div class="window-top">
-
-    <div class="traffic-lights">
-
-      <button
-        class="traffic red"
-        onclick="closeWindow('photo-viewer')"
-      ></button>
-
-      <button class="traffic yellow"></button>
-      <button class="traffic green"></button>
-
-    </div>
-
-    <div class="window-title">
-      Preview
-    </div>
-
-  </div>
-
-
-  <div class="photo-viewer-body">
-
-    <img
-      id="photo-viewer-image"
-      src=""
-      alt=""
-    >
-
-  </div>
-
-</section>
-
-
-<!-- SAFARI -->
-
-<section
-  id="safari-window"
-  class="window"
-  style="
-    left:220px;
-    top:65px;
-    width:760px;
-  "
->
-
-  <div class="window-top">
-
-    <div class="traffic-lights">
-
-      <button
-        class="traffic red"
-        onclick="closeWindow('safari-window')"
-      ></button>
-
-      <button class="traffic yellow"></button>
-      <button class="traffic green"></button>
-
-    </div>
-
-    <div class="window-title">
-      Safari
-    </div>
-
-  </div>
-
-
-  <div class="safari-toolbar">
-
-    <span class="safari-nav">
-      ‹
-    </span>
-
-    <span class="safari-nav">
-      ›
-    </span>
-
-    <div class="address-bar">
-      enokiecloud.tv
-    </div>
-
-  </div>
-
-
-  <div class="safari-page">
-
-    <div class="enokie-header">
-
-      <div class="enokie-play">
-        ▶
-      </div>
-
-      <div class="enokie-name">
-        EnokieTube
-      </div>
-
-    </div>
-
-
-    <div class="youtube-card">
-
-      <div class="youtube-thumbnail">
-
-        <img
-          src="images/youtube/youtube-thumbnail.jpg"
-          alt=""
-        >
-
-      </div>
-
-      <div class="youtube-title">
-        I Found the Creepiest Discord Server
-        (YouTube Tried to Remove this Video)
-      </div>
-
-      <div class="youtube-meta">
-        No Text To Speech · 654K views
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- MUSIC -->
-
-<section
-  id="music-window"
-  class="window"
-  style="
-    left:265px;
-    top:75px;
-    width:670px;
-  "
->
-
-  <div class="window-top">
-
-    <div class="traffic-lights">
-
-      <button
-        class="traffic red"
-        onclick="closeWindow('music-window')"
-      ></button>
-
-      <button class="traffic yellow"></button>
-      <button class="traffic green"></button>
-
-    </div>
-
-    <div class="window-title">
-      Music
-    </div>
-
-  </div>
-
-
-  <div class="music-layout">
-
-    <aside class="music-sidebar">
-
-      <div class="music-title">
-        Music
-      </div>
-
-      <div class="music-nav active">
-        Listen Now
-      </div>
-
-      <div class="music-nav">
-        Browse
-      </div>
-
-      <div class="music-nav">
-        Recently Added
-      </div>
-
-    </aside>
-
-
-    <section class="music-main">
-
-      <h2>
-        Recently Played
-      </h2>
-
-
-      <div class="album-grid">
-
-        <div
-          class="album-card"
-          onclick="playSong('one-more-try')"
-        >
-
-          <div class="album-cover">
-
-            <img
-              src="images/music/album-one-more-try.jpg"
-              alt=""
-            >
-
-          </div>
-
-          <div class="album-name">
-            One More Try
-          </div>
-
-          <div class="album-artist">
-            bistencs, cursedcry
-          </div>
-
-        </div>
-
-
-        <div
-          class="album-card"
-          onclick="playSong('wantmetoo')"
-        >
-
-          <div class="album-cover">
-
-            <img
-              src="images/music/album-wantmetoo.jpg"
-              alt=""
-            >
-
-          </div>
-
-          <div class="album-name">
-            wantmetoo (demo)
-          </div>
-
-          <div class="album-artist">
-            reiko
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-  </div>
-
-</section>
-
-
-<!-- FACETIME -->
-
-<section
-  id="facetime-window"
-  class="window"
-  style="
-    left:385px;
-    top:100px;
-    width:500px;
-  "
->
-
-  <div class="window-top">
-
-    <div class="traffic-lights">
-
-      <button
-        class="traffic red"
-        onclick="closeWindow('facetime-window')"
-      ></button>
-
-      <button class="traffic yellow"></button>
-      <button class="traffic green"></button>
-
-    </div>
-
-    <div class="window-title">
-      FaceTime
-    </div>
-
-  </div>
-
-
-  <div class="facetime-body">
-
-    <img
-      src="images/icons/facetime.png"
-      alt=""
-    >
-
-    <h2>
-      FaceTime
-    </h2>
-
-    <p>
-      No recent calls
-    </p>
-
-  </div>
-
-</section>
-
-
-<!-- SETTINGS -->
-
-<section
-  id="settings-window"
-  class="window"
-  style="
-    left:370px;
-    top:95px;
-    width:560px;
-  "
->
-
-  <div class="window-top">
-
-    <div class="traffic-lights">
-
-      <button
-        class="traffic red"
-        onclick="closeWindow('settings-window')"
-      ></button>
-
-      <button class="traffic yellow"></button>
-      <button class="traffic green"></button>
-
-    </div>
-
-    <div class="window-title">
-      System Settings
-    </div>
-
-  </div>
-
-
-  <div class="settings-content">
-
-    <div class="settings-heading">
-      System Settings
-    </div>
-
-    <div class="setting-card">
-
-      <strong>
-        Appearance
-      </strong>
-
-      <span>
-        Auto
-      </span>
-
-    </div>
-
-    <div class="setting-card">
-
-      <strong>
-        Wallpaper
-      </strong>
-
-      <span>
-        Memories
-      </span>
-
-    </div>
-
-    <div class="setting-card">
-
-      <strong>
-        Desktop & Dock
-      </strong>
-
-      <span>
-        Customized
-      </span>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- PDF -->
-
-<section
-  id="pdf-window"
-  class="window"
-  style="
-    left:220px;
-    top:55px;
-  "
->
-
-  <div class="window-top">
-
-    <div class="traffic-lights">
-
-      <button
-        class="traffic red"
-        onclick="closeWindow('pdf-window')"
-      ></button>
-
-      <button class="traffic yellow"></button>
-      <button class="traffic green"></button>
-
-    </div>
-
-    <div class="window-title">
-      syllabus.pdf
-    </div>
-
-  </div>
-
-
-  <div class="pdf-body">
-
-    <iframe
-      src="school/syllabus.pdf"
-      title="syllabus"
-    ></iframe>
-
-  </div>
-
-</section>
-
-
-<!-- MUSIC PLAYER -->
-
-<div id="music-player">
-
-  <img
-    id="music-player-image"
-    src=""
-    alt=""
-  >
-
-</div>
-
-
-<!-- DOCK -->
-
-<div id="dock-wrap">
-
-<nav id="dock">
-
-  <button
-    class="dock-item"
-    onclick="
-      openFinder('desktop');
-      markRunning(this);
-    "
-  >
-
-    <span class="dock-tooltip">
-      Finder
-    </span>
-
-    <img
-      src="images/icons/finder.png"
-      alt=""
-    >
-
-    <span class="dock-dot"></span>
-
-  </button>
-
-
-  <button
-    class="dock-item"
-    onclick="
-      openApp(
-        'safari-window',
-        'Safari',
-        this
-      )
-    "
-  >
-
-    <span class="dock-tooltip">
-      Safari
-    </span>
-
-    <img
-      src="images/icons/safari.png"
-      alt=""
-    >
-
-    <span class="dock-dot"></span>
-
-  </button>
-
-
-  <button
-    class="dock-item"
-    onclick="
-      openMessages(this)
-    "
-  >
-
-    <span class="dock-tooltip">
-      Messages
-    </span>
-
-    <img
-      src="images/icons/messages.png"
-      alt=""
-    >
-
-    <span class="dock-dot"></span>
-
-  </button>
-
-
-  <button
-    class="dock-item"
-    onclick="
-      openPhotos(this)
-    "
-  >
-
-    <span class="dock-tooltip">
-      Photos
-    </span>
-
-    <img
-      src="images/icons/photos.png"
-      alt=""
-    >
-
-    <span class="dock-dot"></span>
-
-  </button>
-
-
-  <button
-    class="dock-item"
-    onclick="
-      openApp(
-        'facetime-window',
-        'FaceTime',
-        this
-      )
-    "
-  >
-
-    <span class="dock-tooltip">
-      FaceTime
-    </span>
-
-    <img
-      src="images/icons/facetime.png"
-      alt=""
-    >
-
-    <span class="dock-dot"></span>
-
-  </button>
-
-
-  <button
-    class="dock-item"
-    onclick="
-      openApp(
-        'music-window',
-        'Music',
-        this
-      )
-    "
-  >
-
-    <span class="dock-tooltip">
-      Music
-    </span>
-
-    <img
-      src="images/icons/music.png"
-      alt=""
-    >
-
-    <span class="dock-dot"></span>
-
-  </button>
-
-
-  <button
-    class="dock-item"
-    onclick="
-      openApp(
-        'notes-window',
-        'Notes',
-        this
-      )
-    "
-  >
-
-    <span class="dock-tooltip">
-      Notes
-    </span>
-
-    <img
-      src="images/icons/notes.png"
-      alt=""
-    >
-
-    <span class="dock-dot"></span>
-
-  </button>
-
-
-  <button
-    class="dock-item"
-    onclick="
-      openApp(
-        'settings-window',
-        'System Settings',
-        this
-      )
-    "
-  >
-
-    <span class="dock-tooltip">
-      System Settings
-    </span>
-
-    <img
-      src="images/icons/settings.png"
-      alt=""
-    >
-
-    <span class="dock-dot"></span>
-
-  </button>
-
-
-  <div class="dock-divider"></div>
-
-
-  <button class="dock-item">
-
-    <span class="dock-tooltip">
-      Trash
-    </span>
-
-    <img
-      src="images/icons/trash.png"
-      alt=""
-    >
-
-  </button>
-
-</nav>
-
-</div>
-
-</main>
-
-
-<script>
-
-let topZ = 500;
-
-
-/* =========================
-   CORRECT MESSAGE DATA
-========================= */
-
-const chats = {
-
-  "3asians": [
-    {
-      sender: "jadabae",
-      text: "bro where are we eating"
-    },
-    {
-      sender: "noemibae",
-      text: "why do we ask this every time 😭"
-    },
-    {
-      sender: "kyle",
-      text: "because nobody ever picks"
-    },
-    {
-      sender: "kels",
-      text: "okay everyone gets ONE suggestion and then we're spinning a wheel"
-    },
-    {
-      sender: "jadabae",
-      text: "hotpot"
-    },
-    {
-      sender: "noemibae",
-      text: "kbbq"
-    },
-    {
-      sender: "kyle",
-      text: "in n out"
-    },
-    {
-      sender: "kels",
-      text: "kyle be serious"
-    },
-    {
-      sender: "kyle",
-      text: "i am serious"
-    },
-    {
-      sender: "jadabae",
-      text: "remove him from the gc"
-    },
-    {
-      sender: "noemibae",
-      text: "LMFAOOOO"
-    },
-    {
-      sender: "kels",
-      text: "okay hotpot vs kbbq bc apparently democracy has limits"
-    }
-  ],
-
-
-  "jadabae": [
-    {
-      sender: "jadabae",
-      text: "where are u"
-    },
-    {
-      sender: "kels",
-      text: "girl im coming 😭"
-    },
-    {
-      sender: "jadabae",
-      text: "you said that 20 mins ago"
-    }
-  ],
-
-
-  "noemibae": [
-    {
-      sender: "noemibae",
-      text: "look at what i just sent u"
-    },
-    {
-      sender: "kels",
-      text: "LMFAOOO STOP"
-    },
-    {
-      sender: "noemibae",
-      text: "i knew youd get it"
-    }
-  ],
-
-
-  "kyle": [
-    {
-      sender: "kyle",
-      text: "yall still going out"
-    },
-    {
-      sender: "kels",
-      text: "yes unfortunately"
-    },
-    {
-      sender: "kyle",
-      text: "crazy"
-    }
-  ],
-
-
-  "lil sis ava": [
-    {
-      sender: "lil sis ava",
-      text: "are u home later"
-    },
-    {
-      sender: "kels",
-      text: "yeah why"
-    },
-    {
-      sender: "lil sis ava",
-      text: "i need to tell u something lol"
-    }
-  ],
-
-
-  "kiddo jas": [
-    {
-      sender: "kiddo jas",
-      text: "can i ask u something"
-    },
-    {
-      sender: "kels",
-      text: "ofc whats up"
-    }
-  ],
-
-
-  "mami": [
-    {
-      sender: "mami",
-      text: "anak text me when you get home"
-    },
-    {
-      sender: "kels",
-      text: "okay ma i will"
-    },
-    {
-      sender: "mami",
-      text: "dont forget"
-    }
-  ]
-
+☐ 1 small bag jasmine rice`,
+  "website stuff":`desktop
+photos
+music
+fix mobile later
+remember to back everything up`
 };
+function renderNotes(name="grocery list"){
+  const list=document.getElementById("notes-list");list.innerHTML="";
+  const names=["grocery list","website stuff"];
+  if(state.phase>=4)names.unshift("untitled");
+  names.forEach(n=>{
+    const r=document.createElement("div");r.className="note-row"+(n===name?" active":"");
+    r.innerHTML=`<strong>${n}</strong><small>${n==="untitled"?"now":"Sep 3"}</small>`;
+    r.onclick=()=>renderNotes(n);list.appendChild(r);
+  });
+  document.getElementById("note-title").textContent=name;
+  let text=notes[name]||"";
+  if(name==="untitled"){
+    text=state.windowMoved?`you can move the windows?
 
+i haven't been able to do that
 
-const contacts = [
-  "3asians",
-  "jadabae",
-  "noemibae",
-  "kyle",
-  "lil sis ava",
-  "kiddo jas",
-  "mami"
-];
+please don't close this`:`are you there
 
+i can see the desktop change
 
-/* =========================
-   CLOCK
-========================= */
-
-function updateClock() {
-
-  const now =
-    new Date();
-
-  const date =
-    now.toLocaleDateString(
-      [],
-      {
-        weekday: "short",
-        month: "short",
-        day: "numeric"
-      }
-    );
-
-  const time =
-    now.toLocaleTimeString(
-      [],
-      {
-        hour: "numeric",
-        minute: "2-digit"
-      }
-    );
-
-  document.getElementById(
-    "menu-clock"
-  ).textContent =
-    `${date} ${time}`;
-
-}
-
-updateClock();
-
-setInterval(
-  updateClock,
-  1000
-);
-
-
-/* =========================
-   WINDOWS
-========================= */
-
-function openApp(
-  id,
-  name,
-  dockButton = null
-) {
-
-  const win =
-    document.getElementById(id);
-
-  win.classList.add(
-    "active"
-  );
-
-  topZ++;
-
-  win.style.zIndex =
-    topZ;
-
-  document.getElementById(
-    "active-app"
-  ).textContent =
-    name;
-
-
-  if(dockButton) {
-    markRunning(
-      dockButton
-    );
+but i can't click anything`;
+    if(state.phase<5)advance(5);
   }
-
+  document.getElementById("note-text").textContent=text;
 }
+function openNotes(btn=null){openApp("notes-window","Notes",btn);renderNotes(state.phase>=4?"untitled":"grocery list")}
 
+function openText(kind){
+  let title="",content="";
+  if(kind==="photo-info"){
+    title="photo-info.txt";
+    content=`IMG_4409.jpeg
+created: Sep 2, 2026 12:48 AM
+modified: Sep 11, 2026 2:13 AM
 
-function closeWindow(id) {
+last account login:
+Sep 3, 2026 11:58 PM
 
-  document
-    .getElementById(id)
-    .classList.remove(
-      "active"
-    );
-
-  document.getElementById(
-    "active-app"
-  ).textContent =
-    "Finder";
-
-}
-
-
-function markRunning(button) {
-
-  button.classList.add(
-    "running"
-  );
-
-}
-
-
-/* =========================
-   DRAG WINDOWS
-========================= */
-
-document
-  .querySelectorAll(
-    ".window"
-  )
-  .forEach(
-    win => {
-
-      const bar =
-        win.querySelector(
-          ".window-top"
-        );
-
-      let dragging = false;
-      let offsetX = 0;
-      let offsetY = 0;
-
-
-      bar.addEventListener(
-        "mousedown",
-        event => {
-
-          if(
-            event.target.classList
-            .contains("traffic")
-          ) {
-            return;
-          }
-
-          dragging = true;
-
-          topZ++;
-
-          win.style.zIndex =
-            topZ;
-
-          const rect =
-            win.getBoundingClientRect();
-
-          offsetX =
-            event.clientX
-            - rect.left;
-
-          offsetY =
-            event.clientY
-            - rect.top;
-
-        }
-      );
-
-
-      document.addEventListener(
-        "mousemove",
-        event => {
-
-          if(!dragging) {
-            return;
-          }
-
-          if(
-            window.innerWidth
-            <= 700
-          ) {
-            return;
-          }
-
-          win.style.left =
-            event.clientX
-            - offsetX
-            + "px";
-
-          win.style.top =
-            event.clientY
-            - offsetY
-            + "px";
-
-        }
-      );
-
-
-      document.addEventListener(
-        "mouseup",
-        () => {
-
-          dragging = false;
-
-        }
-      );
-
-    }
-  );
-
-
-/* =========================
-   FINDER
-========================= */
-
-function folderTile(
-  name,
-  action
-) {
-
-  return `
-
-    <button
-      class="finder-file"
-      ${action ? `onclick="${action}"` : ""}
-    >
-
-      <img
-        src="images/icons/folder.png"
-        alt=""
-      >
-
-      <div class="finder-file-name">
-        ${name}
-      </div>
-
-    </button>
-
-  `;
-
-}
-
-
-function openFinder(folder) {
-
-  openApp(
-    "finder-window",
-    "Finder"
-  );
-
-  const heading =
-    document.getElementById(
-      "finder-heading"
-    );
-
-  const grid =
-    document.getElementById(
-      "finder-grid"
-    );
-
-
-  if(
-    folder === "desktop"
-  ) {
-
-    heading.textContent =
-      "Desktop";
-
-    grid.innerHTML = `
-
-      ${folderTile(
-        "school",
-        "openFinder('school')"
-      )}
-
-      ${folderTile(
-        "pictures",
-        "openPhotos()"
-      )}
-
-      ${folderTile(
-        "downloads",
-        "openFinder('downloads')"
-      )}
-
-    `;
-
+<span class="warn">the file was modified 7 days after the last successful login.</span>`;
+    advance(3);setTimeout(()=>{renderContacts();},400);
   }
+  if(kind==="session"){
+    title="last-session.txt";
+    content=`session recovery
+-----------------------------
+user: enokie
+last foreground activity: Sep 4 2026 02:14:03
+network: disconnected
+camera: requested
+messages: background process active
+session end: unavailable
 
-
-  if(
-    folder === "school"
-  ) {
-
-    heading.textContent =
-      "school";
-
-    grid.innerHTML = `
-
-      <button
-        class="finder-file"
-        onclick="
-          openApp(
-            'pdf-window',
-            'Preview'
-          )
-        "
-      >
-
-        <div class="pdf-icon"></div>
-
-        <div class="finder-file-name">
-          syllabus.pdf
-        </div>
-
-      </button>
-
-
-      ${folderTile(
-        "assignments",
-        ""
-      )}
-
-      ${folderTile(
-        "readings",
-        ""
-      )}
-
-    `;
-
+recovery note:
+session was never closed normally.`;
+    advance(3);
   }
+  if(kind==="unsent"){
+    title="unsent.txt";
+    content=`i keep thinking someone is opening things after i close them
 
+maybe i'm just tired
 
-  if(
-    folder === "downloads"
-  ) {
+if this is still here tomorrow remind me to change my password
 
-    heading.textContent =
-      "Downloads";
-
-    grid.innerHTML = `
-
-      <button class="finder-file">
-
-        <div class="pdf-icon"></div>
-
-        <div class="finder-file-name">
-          Screenshot 2026-09-15.png
-        </div>
-
-      </button>
-
-
-      <button class="finder-file">
-
-        <div class="pdf-icon"></div>
-
-        <div class="finder-file-name">
-          untitled.pdf
-        </div>
-
-      </button>
-
-
-      <button class="finder-file">
-
-        <div class="pdf-icon"></div>
-
-        <div class="finder-file-name">
-          image (1).png
-        </div>
-
-      </button>
-
-    `;
-
+don't tell them yet`;
+    advance(3);
   }
+  if(kind==="system"){
+    title="system-log.txt";
+    content=`Sep 03 23:58:17  user=enokie login success
+Sep 04 02:14:03  user=enokie session suspended
+Sep 04 02:17:31  camera request / no response
+Sep 11 02:13:09  photo metadata updated
+Sep 15 ${new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})}  user=guest session active
 
+process:
+cloud.restore.enokie       running
+messages.bridge            running
+windowserver               running
+
+owner session:
+<span class="warn">state: unresolved</span>`;
+    advance(6);
+  }
+  document.getElementById("text-title").textContent=title;
+  document.getElementById("text-content").innerHTML=content;
+  openApp("text-window","TextEdit");
 }
 
-
-/* =========================
-   MESSAGES
-========================= */
-
-function renderContacts() {
-
-  const container =
-    document.getElementById(
-      "contacts-list"
-    );
-
-  container.innerHTML = "";
-
-
-  contacts.forEach(
-    name => {
-
-      const row =
-        document.createElement(
-          "div"
-        );
-
-      row.className =
-        "contact-row";
-
-
-      if(
-        name === "3asians"
-      ) {
-        row.classList.add(
-          "active"
-        );
-      }
-
-
-      row.innerHTML = `
-
-        <div class="contact-name">
-          ${name}
-        </div>
-
-        <div class="contact-preview">
-          ${
-            name === "3asians"
-            ? "group chat"
-            : (
-                name === "mami"
-                ? "mom"
-                : ""
-              )
-          }
-        </div>
-
-      `;
-
-
-      row.onclick =
-        () => {
-
-          document
-            .querySelectorAll(
-              ".contact-row"
-            )
-            .forEach(
-              item => item.classList.remove(
-                "active"
-              )
-            );
-
-          row.classList.add(
-            "active"
-          );
-
-          renderChat(name);
-
-        };
-
-
-      container.appendChild(
-        row
-      );
-
-    }
-  );
-
+function playSong(which){
+  const p=document.getElementById("player"),img=document.getElementById("player-img");
+  img.src=which==="one"?"images/music/player-one-more-try.png":"images/music/player-wantmetoo.png";
+  p.classList.add("show");setTimeout(()=>p.classList.remove("show"),7000);
 }
-
-
-function renderChat(name) {
-
-  document.getElementById(
-    "chat-title"
-  ).textContent =
-    name;
-
-
-  const container =
-    document.getElementById(
-      "chat-messages"
-    );
-
-  container.innerHTML = "";
-
-
-  chats[name].forEach(
-    message => {
-
-      const block =
-        document.createElement(
-          "div"
-        );
-
-
-      const isMe =
-        message.sender === "kels";
-
-
-      block.className =
-        "chat-message"
-        + (
-          isMe
-          ? " me"
-          : ""
-        );
-
-
-      block.innerHTML = `
-
-        <div class="chat-sender">
-          ${message.sender}
-        </div>
-
-        <div class="chat-bubble">
-          ${message.text}
-        </div>
-
-      `;
-
-
-      container.appendChild(
-        block
-      );
-
-    }
-  );
-
-
-  container.scrollTop =
-    container.scrollHeight;
-
+function triggerCall(){
+  if(state.callSeen)return;
+  state.callSeen=true;save();
+  document.getElementById("incoming").classList.add("show");
+  document.getElementById("unknown-call-row").style.display="flex";
 }
-
-
-function openMessages(button) {
-
-  openApp(
-    "messages-window",
-    "Messages",
-    button
-  );
-
+function declineCall(){
+  document.getElementById("incoming").classList.remove("show");
+  pushUnknown("please don't do that again");
+  advance(6);
+}
+function acceptCall(){
+  document.getElementById("incoming").classList.remove("show");
+  openApp("facetime-window","FaceTime");
+  setTimeout(()=>pushUnknown("i can't see you"),1000);
+  setTimeout(()=>pushUnknown("but i know you're there"),2400);
+  setTimeout(()=>pushUnknown("i think i'm still here"),4500);
+  advance(6);
+}
+function syncStory(){
+  const rec=state.phase>=2;
+  document.getElementById("recovered-desktop").style.display=rec?"block":"none";
+  document.getElementById("recovered-side").style.display=rec?"block":"none";
+  document.getElementById("history-hidden").style.display=state.phase>=2?"block":"none";
+  document.getElementById("unknown-call-row").style.display=state.phase>=5?"flex":"none";
+  document.getElementById("guest-setting").style.display=state.phase>=6?"block":"none";
+  document.getElementById("lp-one").textContent=state.phase>=2?"last played Sep 4 · 2:13 AM":"";
+  document.getElementById("lp-two").textContent=state.phase>=2?"last played Sep 3 · 11:51 PM":"";
+  if(state.phase>=3 && unknownMsgs.length===0)unknownMsgs=["hello?"];
   renderContacts();
-
-  renderChat(
-    "3asians"
-  );
-
 }
-
-
-/* =========================
-   PHOTOS
-========================= */
-
-function openPhotos(button = null) {
-
-  openApp(
-    "photos-window",
-    "Photos",
-    button
-  );
-
-}
-
-
-function showPhoto(src) {
-
-  document.getElementById(
-    "photo-viewer-image"
-  ).src =
-    src;
-
-  openApp(
-    "photo-viewer",
-    "Preview"
-  );
-
-}
-
-
-/* =========================
-   MUSIC
-========================= */
-
-function playSong(song) {
-
-  const player =
-    document.getElementById(
-      "music-player"
-    );
-
-  const image =
-    document.getElementById(
-      "music-player-image"
-    );
-
-
-  if(
-    song === "one-more-try"
-  ) {
-
-    image.src =
-      "images/music/player-one-more-try.png";
-
+function resetStory(){
+  if(confirm("Reset the mystery to the beginning?")){
+    localStorage.removeItem(KEY);location.reload();
   }
-
-
-  if(
-    song === "wantmetoo"
-  ) {
-
-    image.src =
-      "images/music/player-wantmetoo.png";
-
-  }
-
-
-  player.classList.add(
-    "show"
-  );
-
-
-  setTimeout(
-    () => {
-
-      player.classList.remove(
-        "show"
-      );
-
-    },
-    8000
-  );
-
 }
 
-
-/* =========================
-   START
-========================= */
-
-window.addEventListener(
-  "load",
-  () => {
-
-    renderContacts();
-
-    renderChat(
-      "3asians"
-    );
-
-  }
-);
-
+window.addEventListener("load",()=>{syncStory();renderContacts();renderChat("3asians")});
 </script>
-
 </body>
 </html>
