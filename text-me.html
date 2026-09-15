@@ -588,6 +588,17 @@ const NUMBER =
 
 let contactDisplay = NUMBER;
 
+/* persistent story memory */
+const STORY_KEY = "enokiecloud_text_me_story_v1";
+function todayKey(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;}
+function loadStory(){const base={metM:false,lastVisit:"",updateNumber:0,advice:"",visitorName:""};try{return {...base,...JSON.parse(localStorage.getItem(STORY_KEY))};}catch{return base;}}
+let story=loadStory();
+function saveStory(){localStorage.setItem(STORY_KEY,JSON.stringify(story));}
+function rememberAdvice(v){story.advice=v;saveStory();}
+function rememberVisitorName(v){story.visitorName=v;saveStory();}
+function finishOriginalStory(){story.metM=true;story.lastVisit=todayKey();story.updateNumber=0;saveStory();}
+function finishUpdate(n){story.metM=true;story.lastVisit=todayKey();story.updateNumber=n;saveStory();}
+
 const messages =
   document.getElementById("messages");
 
@@ -2188,6 +2199,8 @@ async function seriousQuestion() {
 
 async function tellHim() {
 
+  rememberAdvice("tell him");
+
   await incoming([
     "yeah"
   ]);
@@ -2210,6 +2223,8 @@ async function tellHim() {
 
 async function waitAndSee() {
 
+  rememberAdvice("wait and see");
+
   await incoming([
     "that's kinda what i was thinking"
   ]);
@@ -2225,6 +2240,8 @@ async function waitAndSee() {
 
 
 async function whatDoYouWant() {
+
+  rememberAdvice("ask what u want");
 
   await incoming([
     "..."
@@ -2512,6 +2529,8 @@ async function saveVisitor() {
 
 async function wrongNumberName() {
 
+  rememberVisitorName("wrong number");
+
   await incoming([
     "boring 😭"
   ]);
@@ -2534,6 +2553,8 @@ async function wrongNumberName() {
 
 async function therapistName() {
 
+  rememberVisitorName("free therapist");
+
   await incoming([
     "FREE THERAPIST 😭"
   ]);
@@ -2555,6 +2576,8 @@ async function therapistName() {
 
 
 async function mysteryName() {
+
+  rememberVisitorName("mystery person");
 
   await incoming([
     "okay mysterious"
@@ -2603,6 +2626,8 @@ async function finalPart() {
 
 async function goodLuck() {
 
+  finishOriginalStory();
+
   await incoming([
     "thank u stranger"
   ]);
@@ -2621,6 +2646,8 @@ async function goodLuck() {
 
 async function dontBeStupid() {
 
+  finishOriginalStory();
+
   await incoming([
     "no promises 😭"
   ]);
@@ -2638,6 +2665,8 @@ async function dontBeStupid() {
 
 
 async function updateMe() {
+
+  finishOriginalStory();
 
   await incoming([
     "i will"
@@ -2673,6 +2702,47 @@ async function byeEarly() {
 }
 
 
+/* returning story updates */
+function prepareMConversation(){messages.innerHTML="";choices.innerHTML="";typingLine.textContent="";contactDisplay="M";contactName.textContent="M";contactCircle.textContent="M";replyLabel.textContent="choose a reply";addDate();}
+
+async function sameDayReturn(){prepareMConversation();await wait(900);await incoming(["okay why are u back already 😭"]);await wait(850);await incoming(["i said i'd update u"]);await wait(1000);await incoming(["nothing happened yet"]);setChoices([{text:"im impatient",next:sameDayImpatient},{text:"just checking 😭",next:sameDayChecking},{text:"fine bye",next:sameDayBye}]);}
+async function sameDayImpatient(){await incoming(["I CAN TELL 😭"]);await wait(850);await incoming(["go do something"]);await wait(800);await incoming(["i'll text u when there's tea"]);endConversation("no new tea yet.");}
+async function sameDayChecking(){await incoming(["mhm sure"]);await wait(900);await incoming(["i'll tell u when something happens"]);endConversation("m is still out there somewhere.");}
+async function sameDayBye(){await incoming(["LMAO bye"]);endConversation("check back another day.");}
+
+async function updateOne(){prepareMConversation();await wait(1000);await incoming(["BRO"]);await wait(900);await incoming(["ur not gonna believe me"]);await wait(1050);await incoming(["remember that guy"]);setChoices([{text:"unfortunately yes",next:updateOneRemember},{text:"THE u up guy??",next:updateOneRemember},{text:"what did he do 😭",next:updateOneRemember}]);}
+async function updateOneRemember(){await incoming(["YES HIM 😭"]);await wait(950);await incoming(["okay so"]);await wait(1100);await incoming(["i actually went to see him"]);setChoices([{text:"M.",next:updateOneWent},{text:"I KNEW U WOULD",next:updateOneWent},{text:"okay and???",next:updateOneWent}]);}
+async function updateOneWent(){await incoming(["DONT 😭"]);await wait(850);await incoming(["but it was actually good"]);await wait(950);await incoming(["like annoyingly good"]);await wait(1000);if(story.advice==="tell him"){await incoming(["and btw","i did what u said","i told him the disappearing thing bothered me"]);}else if(story.advice==="wait and see"){await incoming(["and i listened to u","i didn't bring up the disappearing thing","i just watched how he acted"]);}else if(story.advice==="ask what u want"){await incoming(["also ur annoying question got stuck in my head","the whole \"what do u actually want from him\" thing","so i kinda asked him what this even is"]);}else{await incoming(["i almost brought up the disappearing thing too","but i chickened out"]);}setChoices([{text:"AND WHAT DID HE SAY",next:updateOneAnswer},{text:"wait im proud of u",next:updateOneProud},{text:"this better not end badly",next:updateOneAnswer}]);}
+async function updateOneProud(){await incoming(["don't be proud yet 😭"]);await wait(900);await incoming(["because here's where it gets weird"]);updateOneAnswer();}
+async function updateOneAnswer(){if(story.advice==="tell him"){await incoming(["he actually apologized","like a REAL apology","said he didn't realize it came off like that"]);}else if(story.advice==="wait and see"){await incoming(["he was literally perfect the whole night","texting me after","acting normal","which somehow made me MORE suspicious 😭"]);}else if(story.advice==="ask what u want"){await incoming(["he said he likes me","but he wants to \"take things slow\"","whatever that means"]);}else{await incoming(["he was being so sweet","like suspiciously sweet","and now im confused again"]);}await wait(1100);await incoming(["anyway"]);await wait(850);await incoming(["i thought okay maybe we're fine"]);await wait(1200);await incoming(["then this morning he posted something weird"]);setChoices([{text:"WHAT DID HE POST",next:updateOneEnd},{text:"oh brother 😭",next:updateOneEnd},{text:"m i swear to god",next:updateOneEnd}]);}
+async function updateOneEnd(){await incoming(["NO"]);await wait(800);await incoming(["im not telling u yet"]);await wait(900);await incoming(["i need to investigate first 😭"]);finishUpdate(1);endConversation("m has gone to investigate.");}
+
+async function updateTwo(){prepareMConversation();await wait(950);await incoming(["okay"]);await wait(900);await incoming(["investigation complete"]);await wait(1000);await incoming(["and i fear i was being dramatic"]);setChoices([{text:"SHOCKING",next:updateTwoDramatic},{text:"what was the post 😭",next:updateTwoPost},{text:"i knew it",next:updateTwoDramatic}]);}
+async function updateTwoDramatic(){await incoming(["okay shut up 😭"]);await wait(850);updateTwoPost();}
+async function updateTwoPost(){await incoming(["it was a dinner pic"]);await wait(900);await incoming(["and there was very clearly another plate across from him"]);await wait(1000);await incoming(["so OBVIOUSLY i was like hello???"]);setChoices([{text:"valid honestly",next:updateTwoReveal},{text:"m that could be anyone",next:updateTwoReveal},{text:"did u ask him",next:updateTwoReveal}]);}
+async function updateTwoReveal(){await incoming(["IT WAS HIS SISTER 😭"]);await wait(1000);await incoming(["i almost ruined my own life over a plate"]);setChoices([{text:"im crying",next:updateTwoAfter},{text:"PLEASE relax",next:updateTwoAfter},{text:"did u tell him u thought that",next:updateTwoTell}]);}
+async function updateTwoTell(){await incoming(["ABSOLUTELY NOT"]);await wait(800);await incoming(["that information dies with us"]);updateTwoAfter();}
+async function updateTwoAfter(){await incoming(["but"]);await wait(1100);await incoming(["something else happened"]);await wait(1000);await incoming(["he asked if i was free this weekend"]);setChoices([{text:"that's good??",next:updateTwoWeekend},{text:"for what",next:updateTwoWeekend},{text:"here we go again",next:updateTwoWeekend}]);}
+async function updateTwoWeekend(){await incoming(["DINNER"]);await wait(850);await incoming(["like actual dinner"]);await wait(950);await incoming(["not 1am \"u up\" dinner 😭"]);setChoices([{text:"growth",next:updateTwoEnd},{text:"wait that's cute",next:updateTwoEnd},{text:"don't get ahead of urself",next:updateTwoEnd}]);}
+async function updateTwoEnd(){await incoming(["EXACTLY"]);await wait(900);await incoming(["im trying to be normal about it"]);await wait(800);await incoming(["will report back"]);finishUpdate(2);endConversation("m is attempting to be normal.");}
+
+async function updateThree(){prepareMConversation();await wait(1000);await incoming(["hi"]);await wait(1200);await incoming(["don't freak out"]);setChoices([{text:"WHY WOULD U START LIKE THAT",next:updateThreeStart},{text:"oh god",next:updateThreeStart},{text:"im calm",next:updateThreeCalm}]);}
+async function updateThreeCalm(){await incoming(["liar 😭"]);await wait(800);updateThreeStart();}
+async function updateThreeStart(){await incoming(["dinner happened"]);await wait(950);await incoming(["it was good"]);await wait(950);await incoming(["and then he asked me what i was looking for"]);setChoices([{text:"FINALLY",next:updateThreeTalk},{text:"what did u say",next:updateThreeTalk},{text:"and u didn't run away??",next:updateThreeRun}]);}
+async function updateThreeRun(){await incoming(["almost 😭"]);await wait(800);await incoming(["but no"]);updateThreeTalk();}
+async function updateThreeTalk(){await incoming(["i told him i like him"]);await wait(1000);await incoming(["and that i don't wanna do the weird half-dating thing forever"]);await wait(1150);await incoming(["and he said he feels the same"]);setChoices([{text:"M????",next:updateThreeReaction},{text:"WAITTTT",next:updateThreeReaction},{text:"look at u communicating",next:updateThreeCommunicating}]);}
+async function updateThreeCommunicating(){await incoming(["I KNOW"]);await wait(800);await incoming(["disgusting"]);updateThreeReaction();}
+async function updateThreeReaction(){await incoming(["soooo"]);await wait(1300);await incoming(["we're actually gonna try dating"]);await wait(1100);await incoming(["like for real"]);setChoices([{text:"AWWWW",next:updateThreeEnd},{text:"i raised u well",next:updateThreeRaised},{text:"if he acts up im here",next:updateThreeEnd}]);}
+async function updateThreeRaised(){await incoming(["U DID NOT RAISE ME 😭"]);await wait(800);updateThreeEnd();}
+async function updateThreeEnd(){await incoming(["but fr"]);await wait(850);await incoming(["kinda insane that i told a wrong number all of this"]);await wait(1000);await incoming(["glad u answered though ♡"]);finishUpdate(3);endConversation("the wrong number became a friend.");}
+
+async function caughtUp(){prepareMConversation();await wait(1000);const nickname=story.visitorName||"stranger";await incoming(["oh hi " + nickname]);await wait(900);await incoming(["nothing dramatic today"]);await wait(950);await incoming(["which is probably a good sign 😭"]);setChoices([{text:"boringgg",next:caughtUpBoring},{text:"im proud of u",next:caughtUpProud},{text:"just checking on u",next:caughtUpChecking}]);}
+async function caughtUpBoring(){await incoming(["RIGHT 😭"]);await wait(800);await incoming(["peace is so uneventful"]);endConversation("for once, m has no emergency.");}
+async function caughtUpProud(){await incoming(["ew don't get sentimental"]);await wait(800);await incoming(["but thank u ♡"]);endConversation("m is doing okay.");}
+async function caughtUpChecking(){await incoming(["wait that's actually sweet"]);await wait(850);await incoming(["im good ♡"]);endConversation("m is doing okay.");}
+
+async function openTextMe(){story=loadStory();if(!story.metM){start();return;}if(story.lastVisit===todayKey()){sameDayReturn();return;}if(story.updateNumber===0){updateOne();return;}if(story.updateNumber===1){updateTwo();return;}if(story.updateNumber===2){updateThree();return;}caughtUp();}
+
 /* ending */
 
 function endConversation(text) {
@@ -2705,7 +2775,7 @@ function endConversation(text) {
     "start over";
 
   restart.onclick =
-    start;
+    openTextMe;
 
   choices.appendChild(restart);
 }
@@ -2740,7 +2810,7 @@ setInterval(
 
 /* go */
 
-start();
+openTextMe();
 
 </script>
 
