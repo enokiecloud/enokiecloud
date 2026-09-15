@@ -642,11 +642,11 @@ document.querySelectorAll(".window").forEach(win=>{
       state.phase=Math.max(state.phase,6);
       save();
 
-      setTimeout(()=>pushUnknown("wait"),700);
-      setTimeout(()=>pushUnknown("you did that?"),2100);
-      setTimeout(()=>pushUnknown("you can move those?"),3900);
-      setTimeout(()=>pushUnknown("i can't"),6500);
-      setTimeout(()=>triggerCall(),9800);
+      setTimeout(()=>pushUnknown("wait"),350);
+      setTimeout(()=>pushUnknown("you did that?"),1100);
+      setTimeout(()=>pushUnknown("you can move those?"),2200);
+      setTimeout(()=>pushUnknown("i can't"),3400);
+      setTimeout(()=>triggerCall(),5200);
     }
   });
   document.addEventListener("mouseup",()=>drag=false);
@@ -916,8 +916,8 @@ function renderChat(name){
     state.phase=Math.max(state.phase,5);
     save();
 
-    setTimeout(()=>pushUnknown("is someone there"),3200);
-    setTimeout(()=>pushUnknown("can you read this"),7200);
+    setTimeout(()=>pushUnknown("is someone there"),1600);
+    setTimeout(()=>pushUnknown("can you read this"),3400);
   }
 }
 
@@ -981,7 +981,7 @@ function maybeUnlockBackstory(){
     state.phase=Math.max(state.phase,3);
     save();
 
-    setTimeout(()=>beginUnknownPings(),10500);
+    setTimeout(()=>beginUnknownPings(),2500);
   }
 }
 
@@ -1005,7 +1005,7 @@ function beginUnknownPings(){
       localStorage.setItem(KEY,JSON.stringify(state));
       showIncomingText("Unknown","wait","unknown");
     }
-  },14000);
+  },6500);
 }
 
 function scheduleNormalPing(){
@@ -1020,7 +1020,7 @@ function scheduleNormalPing(){
     /* It reads like a normal current text at first. Later, once the visitor
        understands the computer has been unattended, it becomes unsettling. */
     showIncomingText("mami","anak please call me when you see this","mami");
-  },18000);
+  },7000);
 }
 
 const notes={
@@ -1268,6 +1268,15 @@ function syncStory(){
   document.getElementById("lp-two").textContent=state.backstoryUnlocked?"last played Sep 3 · 11:51 PM":"";
 
   renderContacts();
+
+  /* Safety net for phase-3 saves where the original timer was interrupted. */
+  if(state.backstoryUnlocked && state.phase===3 && !state.unknownOpen && !window.__unknownQueued){
+    window.__unknownQueued=true;
+    setTimeout(()=>{
+      window.__unknownQueued=false;
+      beginUnknownPings();
+    },1200);
+  }
 }
 
 /* Kept for console/testing, but no visible reset control is shown to visitors. */
@@ -1277,16 +1286,37 @@ function resetStory(){
 }
 
 window.addEventListener("load",()=>{
+  /* Repair any saved state where the visitor found both recovered clues
+     but refreshed before the Unknown timer could fire. */
+  if(state.sessionSeen && state.draftSeen && !state.backstoryUnlocked){
+    state.backstoryUnlocked=true;
+    state.phase=Math.max(state.phase,3);
+    localStorage.setItem(KEY,JSON.stringify(state));
+  }
+
+  /* This was the v4 bug: a refresh during phase 3 destroyed the pending
+     setTimeout, leaving Unknown permanently locked. Requeue it on load. */
+  if(state.backstoryUnlocked && state.phase===3 && !state.unknownOpen){
+    setTimeout(()=>beginUnknownPings(),1200);
+  }
+
+  /* Repair an incomplete saved phase-4 state too. */
+  if(state.phase>=4 && (!state.unknownMsgs || state.unknownMsgs.length===0)){
+    state.unknownMsgs=["hello?"];
+    state.unknownPingCount=Math.max(state.unknownPingCount||0,1);
+    localStorage.setItem(KEY,JSON.stringify(state));
+  }
+
   syncStory();
   renderContacts();
   renderChat("3asians");
 
   scheduleNormalPing();
 
-  /* If the visitor refreshes just after the impossible contact unlocked,
-     surface the latest message again instead of losing the moment. */
+  /* If Unknown already unlocked on a previous visit, surface the latest
+     message again so the visitor doesn't have to guess that a new contact exists. */
   if(state.phase>=4 && !state.unknownOpen && state.unknownMsgs?.length){
-    setTimeout(()=>showIncomingText("Unknown",state.unknownMsgs.at(-1),"unknown"),2200);
+    setTimeout(()=>showIncomingText("Unknown",state.unknownMsgs.at(-1),"unknown"),1600);
   }
 });
 </script>
