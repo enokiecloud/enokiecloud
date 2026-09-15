@@ -468,9 +468,9 @@ button{color:inherit}
 
 <!-- incoming Messages notification -->
 <div id="message-notification" class="message-notification" onclick="openIncomingText()">
-  <img src="images/icons/messages.png" alt="">
+  <img id="notification-icon" src="images/icons/messages.png" alt="">
   <div class="notification-copy">
-    <div class="notification-top"><strong>Messages</strong><span>now</span></div>
+    <div class="notification-top"><strong id="notification-app">Messages</strong><span>now</span></div>
     <div id="notification-sender" class="notification-sender">Unknown</div>
     <div id="notification-text" class="notification-text">hello?</div>
   </div>
@@ -504,7 +504,7 @@ button{color:inherit}
 
 <script>
 let topZ=500;
-const KEY="enokieStoryV4";
+const KEY="enokieStoryV5";
 
 /* Testing shortcut:
    open desktop.html?reset=1 to clear story progress without exposing a reset button to visitors. */
@@ -733,6 +733,16 @@ function showPhoto(n){
     state.metaSeen=true;
     state.phase=Math.max(state.phase,1);
     save();
+
+    setTimeout(()=>{
+      showNotification(
+        "Finder",
+        "Recovered Item",
+        "A cached file was restored to Downloads.",
+        "downloads",
+        "images/icons/folder.png"
+      );
+    },900);
   }
 }
 
@@ -945,20 +955,46 @@ function pushUnknown(msg){
 
 let notificationTarget="unknown";
 
-function showIncomingText(sender,msg,target="unknown"){
+function showNotification(app,sender,msg,target="unknown",icon="images/icons/messages.png"){
   const n=document.getElementById("message-notification");
   notificationTarget=target;
 
+  document.getElementById("notification-app").textContent=app;
+  document.getElementById("notification-icon").src=icon;
   document.getElementById("notification-sender").textContent=sender;
   document.getElementById("notification-text").textContent=msg;
+
+  n.classList.remove("show");
+  void n.offsetWidth;
   n.classList.add("show");
 
   clearTimeout(window.__notificationTimer);
-  window.__notificationTimer=setTimeout(()=>n.classList.remove("show"),9000);
+  window.__notificationTimer=setTimeout(()=>n.classList.remove("show"),6500);
+}
+
+function showIncomingText(sender,msg,target="unknown"){
+  showNotification(
+    "Messages",
+    sender,
+    msg,
+    target,
+    "images/icons/messages.png"
+  );
 }
 
 function openIncomingText(){
   document.getElementById("message-notification").classList.remove("show");
+
+  if(notificationTarget==="downloads"){
+    openFinder("downloads");
+    return;
+  }
+
+  if(notificationTarget==="recovered"){
+    openFinder("recovered");
+    return;
+  }
+
   openApp("messages-window","Messages");
 
   if(notificationTarget==="unknown"){
@@ -976,12 +1012,16 @@ function openIncomingText(){
 /* Once both recovered files have been read, the late-night messages quietly
    become visible. The impossible contact does NOT arrive immediately. */
 function maybeUnlockBackstory(){
-  if(state.sessionSeen && state.draftSeen && !state.backstoryUnlocked){
+  const foundRecoveredClue=state.sessionSeen || state.draftSeen;
+
+  if(foundRecoveredClue && !state.backstoryUnlocked){
     state.backstoryUnlocked=true;
     state.phase=Math.max(state.phase,3);
     save();
 
-    setTimeout(()=>beginUnknownPings(),2500);
+    /* The visitor found enough to know the timeline is wrong.
+       Don't make them hunt for every single file before the computer responds. */
+    setTimeout(()=>beginUnknownPings(),1800);
   }
 }
 
@@ -989,13 +1029,13 @@ function beginUnknownPings(){
   if(state.phase>=4 || state.unknownOpen) return;
 
   state.phase=4;
-  state.unknownMsgs=["hello?"];
-  state.unknownPingCount=1;
+  state.unknownMsgs=state.unknownMsgs?.length ? state.unknownMsgs : ["hello?"];
+  state.unknownPingCount=Math.max(state.unknownPingCount||0,1);
   state.notificationShown=true;
   localStorage.setItem(KEY,JSON.stringify(state));
   syncStory();
 
-  showIncomingText("Unknown","hello?","unknown");
+  showIncomingText("Unknown",state.unknownMsgs.at(-1),"unknown");
 
   /* If the visitor ignores it, the computer tries once more. */
   setTimeout(()=>{
@@ -1020,7 +1060,7 @@ function scheduleNormalPing(){
     /* It reads like a normal current text at first. Later, once the visitor
        understands the computer has been unattended, it becomes unsettling. */
     showIncomingText("mami","anak please call me when you see this","mami");
-  },7000);
+  },4500);
 }
 
 const notes={
@@ -1123,6 +1163,16 @@ the file changed after the last normal activity on this account.`;
 
     state.photoInfoSeen=true;
     state.phase=Math.max(state.phase,2);
+
+    setTimeout(()=>{
+      showNotification(
+        "Finder",
+        "Recovered Files",
+        "4 recovered items were found.",
+        "recovered",
+        "images/icons/folder.png"
+      );
+    },850);
   }
 
   if(kind==="session"){
@@ -1285,6 +1335,64 @@ function resetStory(){
   location.reload();
 }
 
+function startStoryWatchdog(){
+  /* Nudge #1: If the visitor hasn't found the photo clue, create a reason
+     to look in Downloads instead of letting the page sit dead forever. */
+  setTimeout(()=>{
+    if(state.phase===0){
+      state.phase=1;
+      localStorage.setItem(KEY,JSON.stringify(state));
+      syncStory();
+
+      showNotification(
+        "Finder",
+        "Recovered Item",
+        "A cached file was restored to Downloads.",
+        "downloads",
+        "images/icons/folder.png"
+      );
+    }
+  },9000);
+
+  /* Nudge #2: If they opened Downloads but didn't notice the cache file,
+     remind them once. */
+  setTimeout(()=>{
+    if(state.phase===1 && !state.photoInfoSeen){
+      showNotification(
+        "Finder",
+        "Downloads",
+        "IMG_4409-info.txt was recovered.",
+        "downloads",
+        "images/icons/folder.png"
+      );
+    }
+  },13500);
+
+  /* Nudge #3: Once recovered files exist, don't require the exact right file.
+     If the visitor has been exploring for a while, let the contact begin. */
+  setTimeout(()=>{
+    if(state.phase>=2 && state.phase<4 && !state.unknownOpen){
+      state.backstoryUnlocked=true;
+      state.phase=3;
+      localStorage.setItem(KEY,JSON.stringify(state));
+      syncStory();
+      setTimeout(()=>beginUnknownPings(),900);
+    }
+  },17500);
+
+  /* Absolute fallback. If someone spends ~24 seconds clicking around but
+     somehow avoids every clue, the Mac still proves that it is active. */
+  setTimeout(()=>{
+    if(state.phase<4 && !state.unknownOpen){
+      state.backstoryUnlocked=true;
+      state.phase=3;
+      localStorage.setItem(KEY,JSON.stringify(state));
+      syncStory();
+      beginUnknownPings();
+    }
+  },24000);
+}
+
 window.addEventListener("load",()=>{
   /* Repair any saved state where the visitor found both recovered clues
      but refreshed before the Unknown timer could fire. */
@@ -1297,7 +1405,7 @@ window.addEventListener("load",()=>{
   /* This was the v4 bug: a refresh during phase 3 destroyed the pending
      setTimeout, leaving Unknown permanently locked. Requeue it on load. */
   if(state.backstoryUnlocked && state.phase===3 && !state.unknownOpen){
-    setTimeout(()=>beginUnknownPings(),1200);
+    setTimeout(()=>beginUnknownPings(),800);
   }
 
   /* Repair an incomplete saved phase-4 state too. */
@@ -1312,11 +1420,12 @@ window.addEventListener("load",()=>{
   renderChat("3asians");
 
   scheduleNormalPing();
+  startStoryWatchdog();
 
   /* If Unknown already unlocked on a previous visit, surface the latest
      message again so the visitor doesn't have to guess that a new contact exists. */
   if(state.phase>=4 && !state.unknownOpen && state.unknownMsgs?.length){
-    setTimeout(()=>showIncomingText("Unknown",state.unknownMsgs.at(-1),"unknown"),1600);
+    setTimeout(()=>showIncomingText("Unknown",state.unknownMsgs.at(-1),"unknown"),900);
   }
 });
 </script>
