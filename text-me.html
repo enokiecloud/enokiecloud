@@ -1,1 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>text me ~ enokiecloud</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #fdfcf9;
+      color: #111;
+      font-family: "Cormorant Garamond", serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      width: min(1040px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 34px 0 18px;
+      border-bottom: 1px solid #111;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+    }
+
+    .logo {
+      width: 210px;
+      display: block;
+    }
+
+    nav {
+      display: flex;
+      gap: 28px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+    }
+
+    main {
+      min-height: 720px;
+      display: flex;
+      justify-content: center;
+      padding: 70px 0 90px;
+    }
+
+    .text-area {
+      width: min(650px, 100%);
+    }
+
+    .tiny-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+    }
+
+    .phone {
+      border: 1.5px solid #111;
+      border-radius: 35px;
+      background: #fff;
+      overflow: hidden;
+      box-shadow: 5px 6px 0 #e7e6e2;
+    }
+
+    .phone-top {
+      height: 58px;
+      border-bottom: 1px solid #d5d5d2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .back {
+      position: absolute;
+      left: 22px;
+      font-size: 17px;
+    }
+
+    .contact {
+      text-align: center;
+    }
+
+    .contact-name {
+      font-size: 19px;
+      font-weight: 500;
+    }
+
+    .contact-status {
+      display: block;
+      margin-top: -1px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 8px;
+      color: #777;
+    }
+
+    .messages {
+      min-height: 440px;
+      padding: 35px 28px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .message {
+      max-width: 72%;
+      padding: 11px 15px;
+      border-radius: 18px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      line-height: 1.55;
+
+      opacity: 0;
+      transform: translateY(5px);
+      animation: appear .25s ease forwards;
+    }
+
+    @keyframes appear {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .them {
+      align-self: flex-start;
+      background: #efefec;
+      border-bottom-left-radius: 5px;
+    }
+
+    .you {
+      align-self: flex-end;
+      background: #111;
+      color: #fff;
+      border-bottom-right-radius: 5px;
+    }
+
+    .typing {
+      align-self: flex-start;
+      color: #777;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+      margin: 4px 0 2px 8px;
+    }
+
+    .reply-area {
+      border-top: 1px solid #d5d5d2;
+      padding: 20px 24px 24px;
+      min-height: 130px;
+    }
+
+    .reply-label {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 9px;
+      letter-spacing: .12em;
+      margin-bottom: 10px;
+      color: #777;
+    }
+
+    .choices {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .choice {
+      appearance: none;
+      background: #fff;
+      color: #111;
+      border: 1px solid #111;
+      border-radius: 100px;
+      padding: 9px 14px;
+      cursor: pointer;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+      transition: .15s ease;
+    }
+
+    .choice:hover {
+      background: #111;
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .ended {
+      font-style: italic;
+      font-size: 16px;
+    }
+
+    .restart {
+      margin-top: 12px;
+      appearance: none;
+      border: 0;
+      background: none;
+      padding: 0;
+      text-decoration: underline;
+      cursor: pointer;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 9px;
+    }
+
+    .footer-link {
+      display: inline-block;
+      margin-top: 18px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 9px;
+    }
+
+    @media (max-width: 650px) {
+      .page {
+        width: min(100% - 24px, 1040px);
+      }
+
+      header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      nav {
+        flex-wrap: wrap;
+        gap: 12px 20px;
+      }
+
+      main {
+        padding-top: 40px;
+      }
+
+      .messages {
+        min-height: 390px;
+        padding: 28px 18px 22px;
+      }
+
+      .message {
+        max-width: 86%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <header>
+
+    <a href="index.html">
+      <img
+        src="images/enokiecloud-logo.png"
+        class="logo"
+        alt="enokiecloud"
+      >
+    </a>
+
+    <nav>
+      <a href="index.html">home</a>
+      <a href="memory-box.html">memory box</a>
+      <a href="guestbook.html">guestbook</a>
+    </nav>
+
+  </header>
+
+  <main>
+
+    <div class="text-area">
+
+      <div class="tiny-top">
+        <span>TEXT ME</span>
+        <span id="time">...</span>
+      </div>
+
+      <div class="phone">
+
+        <div class="phone-top">
+
+          <span class="back">‹</span>
+
+          <div class="contact">
+            <span class="contact-name" id="contactName">
+              unknown
+            </span>
+
+            <span class="contact-status" id="status">
+              online
+            </span>
+          </div>
+
+        </div>
+
+        <div class="messages" id="messages"></div>
+
+        <div class="reply-area">
+
+          <div class="reply-label" id="replyLabel">
+            pick one
+          </div>
+
+          <div class="choices" id="choices"></div>
+
+        </div>
+
+      </div>
+
+      <a class="footer-link" href="index.html">
+        ← leave
+      </a>
+
+    </div>
+
+  </main>
+
+</div>
+
+<script>
+
+const messages =
+  document.getElementById("messages");
+
+const choices =
+  document.getElementById("choices");
+
+const replyLabel =
+  document.getElementById("replyLabel");
+
+const contactName =
+  document.getElementById("contactName");
+
+const status =
+  document.getElementById("status");
+
+
+let personality = {
+  nice: 0,
+  nosy: 0,
+  weird: 0
+};
+
+
+function addMessage(text, side = "them") {
+
+  const bubble =
+    document.createElement("div");
+
+  bubble.className =
+    `message ${side}`;
+
+  bubble.textContent = text;
+
+  messages.appendChild(bubble);
+
+  messages.scrollTop =
+    messages.scrollHeight;
+}
+
+
+function typing(callback) {
+
+  status.textContent = "typing...";
+
+  const thing =
+    document.createElement("div");
+
+  thing.className = "typing";
+  thing.textContent = "...";
+
+  messages.appendChild(thing);
+
+  setTimeout(() => {
+
+    thing.remove();
+
+    status.textContent = "online";
+
+    callback();
+
+  }, 650);
+}
+
+
+function setChoices(options) {
+
+  choices.innerHTML = "";
+
+  options.forEach(option => {
+
+    const button =
+      document.createElement("button");
+
+    button.className = "choice";
+    button.textContent = option.text;
+
+    button.onclick = () => {
+
+      choices.innerHTML = "";
+
+      addMessage(option.text, "you");
+
+      if (option.trait) {
+        personality[option.trait]++;
+      }
+
+      typing(option.next);
+    };
+
+    choices.appendChild(button);
+  });
+}
+
+
+/* start */
+
+function start() {
+
+  messages.innerHTML = "";
+  choices.innerHTML = "";
+
+  personality = {
+    nice: 0,
+    nosy: 0,
+    weird: 0
+  };
+
+  contactName.textContent = "unknown";
+  status.textContent = "online";
+
+  replyLabel.textContent = "pick one";
+
+  setTimeout(() => {
+    addMessage("hello?");
+  }, 300);
+
+  setTimeout(() => {
+    addMessage("are u coming or not");
+  }, 850);
+
+  setTimeout(() => {
+    addMessage("mina");
+  }, 1400);
+
+  setTimeout(() => {
+
+    setChoices([
+      {
+        text: "who is mina",
+        trait: "nosy",
+        next: whoMina
+      },
+      {
+        text: "wrong number lol",
+        trait: "nice",
+        next: wrongNumber
+      },
+      {
+        text: "yeah im almost there",
+        trait: "weird",
+        next: pretendMina
+      }
+    ]);
+
+  }, 1750);
+}
+
+
+/* who is mina */
+
+function whoMina() {
+
+  addMessage("...");
+
+  setTimeout(() => {
+    addMessage("wait");
+  }, 350);
+
+  setTimeout(() => {
+    addMessage("ur not mina");
+  }, 700);
+
+  setTimeout(() => {
+
+    setChoices([
+      {
+        text: "apparently not",
+        trait: "nice",
+        next: awkward
+      },
+      {
+        text: "depends. who are u",
+        trait: "nosy",
+        next: whoAreYou
+      },
+      {
+        text: "maybe i am",
+        trait: "weird",
+        next: maybeMina
+      }
+    ]);
+
+  }, 1000);
+}
+
+
+/* wrong number */
+
+function wrongNumber() {
+
+  addMessage("OH");
+
+  setTimeout(() => {
+    addMessage("sorry omg");
+  }, 400);
+
+  setTimeout(() => {
+    addMessage("wait");
+  }, 850);
+
+  setTimeout(() => {
+    addMessage("since ur already here");
+  }, 1200);
+
+  setTimeout(() => {
+
+    setChoices([
+      {
+        text: "what",
+        trait: "nosy",
+        next: question
+      },
+      {
+        text: "LMAO okay",
+        trait: "nice",
+        next: question
+      },
+      {
+        text: "no ♥",
+        trait: "weird",
+        next: rejected
+      }
+    ]);
+
+  }, 1500);
+}
+
+
+/* pretend mina */
+
+function pretendMina() {
+
+  addMessage("girl");
+
+  setTimeout(() => {
+    addMessage("...");
+  }, 400);
+
+  setTimeout(() => {
+    addMessage("this is absolutely not mina");
+  }, 850);
+
+  setTimeout(() => {
+
+    setChoices([
+      {
+        text: "u caught me",
+        trait: "nice",
+        next: caught
+      },
+      {
+        text: "prove it",
+        trait: "weird",
+        next: proveIt
+      }
+    ]);
+
+  }, 1150);
+}
+
+
+function awkward() {
+
+  addMessage("well");
+
+  setTimeout(() => {
+    addMessage("this is awkward");
+  }, 450);
+
+  setTimeout(() => {
+    addMessage("but hi i guess");
+  }, 900);
+
+  setTimeout(() => {
+
+    setChoices([
+      {
+        text: "hi stranger",
+        trait: "nice",
+        next: question
+      },
+      {
+        text: "bye stranger",
+        trait: "weird",
+        next: bye
+      }
+    ]);
+
+  }, 1200);
+}
+
+
+function whoAreYou() {
+
+  addMessage("why");
+
+  setTimeout(() => {
+    addMessage("ur the stranger here");
+  }, 500);
+
+  setTimeout(() => {
+
+    setChoices([
+      {
+        text: "YOU texted ME",
+        trait: "nosy",
+        next: fair
+      },
+      {
+        text: "okay fair",
+        trait: "nice",
+        next: question
+      }
+    ]);
+
+  }, 850);
+}
+
+
+function maybeMina() {
+
+  addMessage("no");
+
+  setTimeout(() => {
+    addMessage("mina would never type like that");
+  }, 450);
+
+  setTimeout(() => {
+    addMessage("also she hates cats");
+  }, 900);
+
+  setTimeout(() => {
+
+    setChoices([
+      {
+        text: "oh nvm i could never be mina",
+        trait: "nice",
+        next: catFriend
+      },
+      {
+        text: "red flag",
+        trait: "nosy",
+        next: catFriend
+      }
+    ]);
+
+  }, 1200);
+}
+
+
+function caught() {
+
+  addMessage("knew it");
+
+  setTimeout(() => {
+    addMessage("ur weird");
+  }, 450);
+
+  setTimeout(() => {
+    addMessage("i respect it tho");
+  }, 900);
+
+  setTimeout(() => {
+    question();
+  }, 1300);
+}
+
+
+function proveIt() {
+
+  addMessage("???");
+
+  setTimeout(() => {
+    addMessage("okay ur definitely weird");
+  }, 500);
+
+  setTimeout(() => {
+    addMessage("i kinda like u");
+  }, 950);
+
+  setTimeout(() => {
+    question();
+  }, 1350);
+}
+
+
+function fair() {
+
+  addMessage("...");
+
+  setTimeout(() => {
+    addMessage("okay u got me there");
+  }, 450);
+
+  setTimeout(() => {
+    question();
+  }, 900);
+}
+
+
+function catFriend() {
+
+  addMessage("RIGHT");
+
+  setTimeout(() => {
+    addMessage("finally someone gets it");
+  }, 500);
+
+  setTimeout(() => {
+    addMessage("okay wait");
+  }, 900);
+
+  setTimeout(() => {
+    question();
+  }, 1250);
+}
+
+
+/* fries */
+
+function question() {
+
+  addMessage("i need an unbiased opinion");
+
+  setTimeout(() => {
+    addMessage(
+      'if someone says "i\'m not hungry" and then eats half ur fries'
+    );
+  }, 550);
+
+  setTimeout(() => {
+    addMessage("are u allowed to be mad");
+  }, 1100);
+
+  setTimeout(() => {
+
+    setChoices([
+      {
+        text: "yes. jail.",
+        trait: "weird",
+        next: jail
+      },
+      {
+        text: "no sharing is caring",
+        trait: "nice",
+        next: sharing
+      },
+      {
+        text: "depends how good the fries were",
+        trait: "nosy",
+        next: fries
+      }
+    ]);
+
+  }, 1450);
+}
+
+
+function jail() {
+
+  addMessage("THANK U");
+
+  setTimeout(() => {
+    addMessage("finally");
+  }, 400);
+
+  setTimeout(() => {
+    addMessage("mina said i was dramatic");
+  }, 850);
+
+  setTimeout(() => {
+    finalQuestion();
+  }, 1250);
+}
+
+
+function sharing() {
+
+  addMessage("oh");
+
+  setTimeout(() => {
+    addMessage("ur one of THOSE people");
+  }, 450);
+
+  setTimeout(() => {
+    addMessage("noted");
+  }, 850);
+
+  setTimeout(() => {
+    finalQuestion();
+  }, 1200);
+}
+
+
+function fries() {
+
+  addMessage("EXACTLY");
+
+  setTimeout(() => {
+    addMessage("they were really good");
+  }, 450);
+
+  setTimeout(() => {
+    addMessage("like REALLY good");
+  }, 850);
+
+  setTimeout(() => {
+    finalQuestion();
+  }, 1200);
+}
+
+
+/* ending */
+
+function finalQuestion() {
+
+  addMessage("okay last thing");
+
+  setTimeout(() => {
+    addMessage("what do i save ur number as");
+  }, 550);
+
+  setTimeout(() => {
+
+    setChoices([
+      {
+        text: "stranger",
+        trait: "nice",
+        next: ending
+      },
+      {
+        text: "fries attorney",
+        trait: "weird",
+        next: ending
+      },
+      {
+        text: "don't save it",
+        trait: "nosy",
+        next: ending
+      }
+    ]);
+
+  }, 900);
+}
+
+
+function ending() {
+
+  let endingText;
+
+  if (
+    personality.weird >= personality.nice &&
+    personality.weird >= personality.nosy
+  ) {
+
+    contactName.textContent =
+      "weird stranger";
+
+    endingText =
+      "okay weird stranger. don't change ur number.";
+
+  }
+
+  else if (
+    personality.nosy > personality.nice
+  ) {
+
+    contactName.textContent =
+      "nosy stranger";
+
+    endingText =
+      "ur nosy but whatever. i'll allow it.";
+
+  }
+
+  else {
+
+    contactName.textContent =
+      "nice stranger";
+
+    endingText =
+      "okay ur kinda nice. glad i texted the wrong person.";
+
+  }
+
+  addMessage(endingText);
+
+  setTimeout(() => {
+    addMessage("text me later?");
+  }, 650);
+
+  setTimeout(() => {
+
+    choices.innerHTML = "";
+
+    replyLabel.textContent =
+      "conversation ended";
+
+    const ending =
+      document.createElement("div");
+
+    ending.className = "ended";
+
+    ending.textContent =
+      "wrong number. right person, maybe.";
+
+    choices.appendChild(ending);
+
+    const restart =
+      document.createElement("button");
+
+    restart.className = "restart";
+
+    restart.textContent =
+      "text again";
+
+    restart.onclick = () => {
+      start();
+    };
+
+    choices.appendChild(restart);
+
+    status.textContent = "offline";
+
+  }, 1300);
+}
+
+
+function rejected() {
+
+  addMessage("damn");
+
+  setTimeout(() => {
+    addMessage("okay bye then");
+  }, 500);
+
+  setTimeout(() => {
+    bye();
+  }, 900);
+}
+
+
+function bye() {
+
+  status.textContent = "offline";
+
+  replyLabel.textContent =
+    "conversation ended";
+
+  choices.innerHTML = "";
+
+  const ending =
+    document.createElement("div");
+
+  ending.className = "ended";
+
+  ending.textContent =
+    "well... that was short.";
+
+  choices.appendChild(ending);
+
+  const restart =
+    document.createElement("button");
+
+  restart.className = "restart";
+
+  restart.textContent =
+    "text again";
+
+  restart.onclick = () => {
+    start();
+  };
+
+  choices.appendChild(restart);
+}
+
+
+/* clock */
+
+function updateTime() {
+
+  const now = new Date();
+
+  document.getElementById("time").textContent =
+    now.toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit"
+    });
+}
+
+updateTime();
+
+setInterval(updateTime, 30000);
+
+start();
+
+</script>
+
+</body>
+</html>
