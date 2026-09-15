@@ -241,7 +241,7 @@ button{color:inherit}
 
 /* music player image */
 #player{
-  position:absolute;left:50%;bottom:75px;transform:translateX(-50%);
+  position:absolute;left:50%;bottom:92px;transform:translateX(-50%);
   width:min(900px,92vw);display:none;padding:7px;border-radius:11px;background:rgba(0,0,0,.9);
   z-index:9400;box-shadow:0 15px 45px rgba(0,0,0,.45)
 }
@@ -504,7 +504,7 @@ button{color:inherit}
 
 <script>
 let topZ=500;
-const KEY="enokieStoryV3";
+const KEY="enokieStoryV4";
 
 /* Testing shortcut:
    open desktop.html?reset=1 to clear story progress without exposing a reset button to visitors. */
@@ -525,6 +525,11 @@ const DEFAULT_STATE={
   unknownOpen:false,
   windowMoved:false,
   callSeen:false,
+  normalPingSeen:false,
+  normalPingOpened:false,
+  deletedSeen:false,
+  callLogSeen:false,
+  unknownPingCount:0,
   unknownMsgs:[]
 };
 let state={...DEFAULT_STATE,...JSON.parse(localStorage.getItem(KEY)||"{}")};
@@ -540,25 +545,84 @@ function clock(){
 }
 clock();setInterval(clock,1000);
 
+const openWindows=[];
+
 function fitWindow(w){
   requestAnimationFrame(()=>{
     const r=w.getBoundingClientRect();
-    const pad=10, dockSpace=74;
+    const pad=10, dockSpace=82;
+
     if(r.right>innerWidth-pad) w.style.left=Math.max(pad,innerWidth-r.width-pad)+"px";
     if(r.left<pad) w.style.left=pad+"px";
     if(r.bottom>innerHeight-dockSpace) w.style.top=Math.max(35,innerHeight-r.height-dockSpace)+"px";
     if(r.top<35) w.style.top="35px";
   });
 }
+
+function tidyWindows(currentId){
+  const active=[...document.querySelectorAll(".window.active")];
+
+  /* Keep the desktop readable. Once a fourth app opens, the oldest background
+     window quietly closes instead of leaving a pile of window slivers. */
+  if(active.length>3){
+    const victim=openWindows.find(id=>id!==currentId && document.getElementById(id)?.classList.contains("active"));
+    if(victim) closeWindow(victim,true);
+  }
+}
+
+function staggerWindow(w,id){
+  if(w.dataset.positioned==="true") return;
+
+  const visibleCount=document.querySelectorAll(".window.active").length;
+  const offset=Math.min(visibleCount,2)*24;
+
+  if(innerWidth>=760){
+    const baseLeft=Math.max(54,Math.round(innerWidth*.08));
+    const baseTop=Math.max(54,Math.round(innerHeight*.075));
+    w.style.left=(baseLeft+offset)+"px";
+    w.style.top=(baseTop+offset)+"px";
+  }
+
+  w.dataset.positioned="true";
+}
+
 function openApp(id,name,btn=null){
   const w=document.getElementById(id);
+  const wasOpen=w.classList.contains("active");
+
   w.classList.add("active");
   w.style.zIndex=++topZ;
+
+  if(!wasOpen){
+    const existing=openWindows.indexOf(id);
+    if(existing>=0) openWindows.splice(existing,1);
+    openWindows.push(id);
+    staggerWindow(w,id);
+  }else{
+    const existing=openWindows.indexOf(id);
+    if(existing>=0){
+      openWindows.splice(existing,1);
+      openWindows.push(id);
+    }
+  }
+
   document.getElementById("active-app").textContent=name;
   if(btn)run(btn);
+
+  tidyWindows(id);
   fitWindow(w);
 }
-function closeWindow(id){document.getElementById(id).classList.remove("active");document.getElementById("active-app").textContent="Finder"}
+
+function closeWindow(id,silent=false){
+  const w=document.getElementById(id);
+  w.classList.remove("active");
+
+  const i=openWindows.indexOf(id);
+  if(i>=0) openWindows.splice(i,1);
+
+  if(!silent) document.getElementById("active-app").textContent="Finder";
+}
+
 function run(btn){btn.classList.add("running")}
 
 document.querySelectorAll(".window").forEach(win=>{
@@ -578,11 +642,11 @@ document.querySelectorAll(".window").forEach(win=>{
       state.phase=Math.max(state.phase,6);
       save();
 
-      setTimeout(()=>pushUnknown("wait"),500);
-      setTimeout(()=>pushUnknown("you did that?"),1600);
-      setTimeout(()=>pushUnknown("you can move those?"),2900);
-      setTimeout(()=>pushUnknown("i can't"),4400);
-      setTimeout(()=>triggerCall(),6800);
+      setTimeout(()=>pushUnknown("wait"),700);
+      setTimeout(()=>pushUnknown("you did that?"),2100);
+      setTimeout(()=>pushUnknown("you can move those?"),3900);
+      setTimeout(()=>pushUnknown("i can't"),6500);
+      setTimeout(()=>triggerCall(),9800);
     }
   });
   document.addEventListener("mouseup",()=>drag=false);
@@ -640,6 +704,8 @@ function openFinder(folder){
       docTile("draft-17.txt","openText('unsent')","TXT","recovered")+
       docTile("messages-index.db","","DB","recovered")+
       docTile("window-state.plist","","PLIST","recovered")+
+      (state.backstoryUnlocked?docTile("deleted-message-cache.txt","openText('deleted')","TXT","partial"):"")+
+      (state.deletedSeen?docTile("call-history.txt","openText('calls')","TXT","recovered"):"")+
       (state.phase>=7?docTile("system-log.txt","openText('system')","TXT","today"):"");
   }
 
@@ -674,31 +740,37 @@ const normalChats={
   "jadabae":[
     ["jadabae","where are u"],["me","girl im coming 😭"],["jadabae","you said that 20 mins ago"],
     ["jadabae","bring the charger pls"],["me","I HAVE IT"],["jadabae","okay good bc noemi is at 4%"],
-    ["me","im outside"],["jadabae","WAIT FOR ME"]
+    ["me","im outside"],["jadabae","WAIT FOR ME"],
+    ["me","u have 30 seconds"],["jadabae","ur so dramatic"]
   ],
   "noemibae":[
     ["noemibae","look at what i just sent u"],["me","LMFAOOO STOP"],["noemibae","i knew youd get it"],
     ["me","why would u send that while im in class"],["noemibae","timing was important"],["me","blocked"],
-    ["noemibae","also do u still have my black top"],["me","probably 😭"]
+    ["noemibae","also do u still have my black top"],["me","probably 😭"],
+    ["noemibae","THIEF"],["me","finders keepers"]
   ],
   "kyle":[
     ["kyle","yall still going out"],["me","yes unfortunately"],["kyle","crazy"],
     ["kyle","what time"],["me","idk ask jada"],["kyle","useless"],
-    ["me","are u driving friday"],["kyle","probably"],["me","kk"]
+    ["me","are u driving friday"],["kyle","probably"],["me","kk"],
+    ["kyle","no backseat driving this time"],["me","then drive better"]
   ],
   "lil sis ava":[
     ["lil sis ava","are u home later"],["me","yeah why"],["lil sis ava","i need to tell u something lol"],
     ["me","that sounds threatening"],["lil sis ava","its not 😭"],["me","okayyy"],
-    ["lil sis ava","dont forget what u promised"],["me","i didnttt"]
+    ["lil sis ava","dont forget what u promised"],["me","i didnttt"],
+    ["lil sis ava","you literally always say that"],["me","have faith in me pls"]
   ],
   "kiddo jas":[
     ["kiddo jas","can i ask u something"],["me","ofc whats up"],["kiddo jas","nvm i figured it out"],
     ["me","girl 😭"],["kiddo jas","SORRY"],["me","ur good lol"],
-    ["kiddo jas","ill tell u tomorrow"],["me","okie"]
+    ["kiddo jas","ill tell u tomorrow"],["me","okie"],
+    ["kiddo jas","wait dont forget"],["me","NOW U HAVE ME CURIOUS"]
   ],
   "mami":[
     ["mami","anak did you eat"],["me","yes ma"],["mami","what did you eat"],["me","rice and chicken"],
-    ["mami","okay text me when you get home"],["me","i will"],["mami","before 1 please"],["me","yes ma"]
+    ["mami","okay text me when you get home"],["me","i will"],["mami","before 1 please"],["me","yes ma"],
+    ["mami","and bring the container"],["me","😭 okay"]
   ]
 };
 
@@ -720,7 +792,7 @@ function groupChatData(){
   ];
 
   if(state.backstoryUnlocked){
-    chat.push(["system","messages restored from Sep 4"]);
+    chat.push(["system","Sep 4 · 1:31 AM"]);
     chat.push(["jadabae","did she ever text u back"]);
     chat.push(["noemibae","no"]);
     chat.push(["kyle","she said she was going home"]);
@@ -729,7 +801,7 @@ function groupChatData(){
     chat.push(["noemibae","then why did she call me at 2:17"]);
     chat.push(["kyle","what"]);
     chat.push(["noemibae","she called and didn't say anything"]);
-    chat.push(["system","1 message unavailable"]);
+    chat.push(["system","Message removed"]);
   }
 
   return chat;
@@ -737,6 +809,11 @@ function groupChatData(){
 
 function personChatData(name){
   const chat=[...(normalChats[name]||[])];
+
+  if(name==="mami" && state.normalPingSeen){
+    chat.push(["system","Sep 15 · now"]);
+    chat.push(["mami","anak please call me when you see this"]);
+  }
 
   if(!state.backstoryUnlocked) return chat;
 
@@ -797,7 +874,7 @@ function renderContacts(active="3asians"){
     let preview="";
     if(name==="unknown") preview=u.at(-1)||"hello?";
     else if(name==="mami") preview="mom";
-    else if(name==="3asians") preview=state.backstoryUnlocked?"8 messages restored":"group chat";
+    else if(name==="3asians") preview=state.backstoryUnlocked?"noemibae: she called and didn't say anything":"group chat";
 
     d.innerHTML=`<strong>${name}${name==="unknown"&&!state.unknownOpen?'<span class="unread"></span>':""}</strong><small>${preview}</small>`;
     d.onclick=()=>{renderContacts(name);renderChat(name)};
@@ -832,15 +909,15 @@ function renderChat(name){
 
   body.scrollTop=body.scrollHeight;
 
-  /* Opening the impossible conversation causes it to answer in real time. */
+  /* The first impossible contact is deliberately slow. It should feel like
+     somebody is testing whether the visitor can actually see them. */
   if(name==="unknown" && state.phase>=4 && !state.unknownOpen){
     state.unknownOpen=true;
     state.phase=Math.max(state.phase,5);
     save();
 
-    setTimeout(()=>pushUnknown("is someone there"),1200);
-    setTimeout(()=>pushUnknown("can you read this"),2900);
-    setTimeout(()=>pushUnknown("don't close messages"),5000);
+    setTimeout(()=>pushUnknown("is someone there"),3200);
+    setTimeout(()=>pushUnknown("can you read this"),7200);
   }
 }
 
@@ -866,8 +943,12 @@ function pushUnknown(msg){
   }
 }
 
-function showIncomingText(sender,msg){
+let notificationTarget="unknown";
+
+function showIncomingText(sender,msg,target="unknown"){
   const n=document.getElementById("message-notification");
+  notificationTarget=target;
+
   document.getElementById("notification-sender").textContent=sender;
   document.getElementById("notification-text").textContent=msg;
   n.classList.add("show");
@@ -879,29 +960,67 @@ function showIncomingText(sender,msg){
 function openIncomingText(){
   document.getElementById("message-notification").classList.remove("show");
   openApp("messages-window","Messages");
-  renderContacts("unknown");
-  renderChat("unknown");
+
+  if(notificationTarget==="unknown"){
+    renderContacts("unknown");
+    renderChat("unknown");
+    return;
+  }
+
+  state.normalPingOpened=true;
+  localStorage.setItem(KEY,JSON.stringify(state));
+  renderContacts(notificationTarget);
+  renderChat(notificationTarget);
 }
 
-/* Once both recovered files have been read, old Messages data becomes readable.
-   A little later, a message arrives that is NOT part of the recovered history. */
+/* Once both recovered files have been read, the late-night messages quietly
+   become visible. The impossible contact does NOT arrive immediately. */
 function maybeUnlockBackstory(){
   if(state.sessionSeen && state.draftSeen && !state.backstoryUnlocked){
     state.backstoryUnlocked=true;
     state.phase=Math.max(state.phase,3);
     save();
 
-    setTimeout(()=>{
-      if(state.phase<4){
-        state.phase=4;
-        state.unknownMsgs=["hello?"];
-        state.notificationShown=true;
-        localStorage.setItem(KEY,JSON.stringify(state));
-        syncStory();
-        showIncomingText("Unknown","hello?");
-      }
-    },4200);
+    setTimeout(()=>beginUnknownPings(),10500);
   }
+}
+
+function beginUnknownPings(){
+  if(state.phase>=4 || state.unknownOpen) return;
+
+  state.phase=4;
+  state.unknownMsgs=["hello?"];
+  state.unknownPingCount=1;
+  state.notificationShown=true;
+  localStorage.setItem(KEY,JSON.stringify(state));
+  syncStory();
+
+  showIncomingText("Unknown","hello?","unknown");
+
+  /* If the visitor ignores it, the computer tries once more. */
+  setTimeout(()=>{
+    if(!state.unknownOpen && state.unknownPingCount===1){
+      pushUnknown("wait");
+      state.unknownPingCount=2;
+      localStorage.setItem(KEY,JSON.stringify(state));
+      showIncomingText("Unknown","wait","unknown");
+    }
+  },14000);
+}
+
+function scheduleNormalPing(){
+  if(state.normalPingSeen || state.phase>=3) return;
+
+  setTimeout(()=>{
+    if(state.normalPingSeen || state.phase>=3) return;
+
+    state.normalPingSeen=true;
+    localStorage.setItem(KEY,JSON.stringify(state));
+
+    /* It reads like a normal current text at first. Later, once the visitor
+       understands the computer has been unattended, it becomes unsettling. */
+    showIncomingText("mami","anak please call me when you see this","mami");
+  },18000);
 }
 
 const notes={
@@ -930,6 +1049,12 @@ const notes={
 - kyle said he can drive
 - pick somewhere everyone will actually eat
 - mami wants me home before 1`,
+  "random":`things i keep forgetting
+- buy more hair ties
+- send ava the link
+- charge portable battery
+- return noemi's black top lol
+- get gas before friday`,
   "website stuff":`desktop
 photos
 music
@@ -941,7 +1066,7 @@ function renderNotes(name="grocery list"){
   const list=document.getElementById("notes-list");
   list.innerHTML="";
 
-  const names=["grocery list","school","friday","website stuff"];
+  const names=["grocery list","school","friday","random","website stuff"];
   if(state.phase>=7) names.unshift("untitled");
 
   names.forEach(n=>{
@@ -1035,6 +1160,46 @@ don't tell everyone yet`;
     state.phase=Math.max(state.phase,2);
   }
 
+  if(kind==="deleted"){
+    title="deleted-message-cache.txt";
+    body=`messages-index.db
+partial recovery
+-----------------------------
+thread: 3asians
+Sep 4, 2026 · 12:52 AM
+
+kyle:
+don't tell jada we stopped there
+
+status:
+deleted from visible conversation
+recovery confidence: 71%`;
+
+    state.deletedSeen=true;
+    state.phase=Math.max(state.phase,3);
+  }
+
+  if(kind==="calls"){
+    title="call-history.txt";
+    body=`recovered call attempts
+-----------------------------
+Sep 4 · 1:41 AM   kyle → enokie      missed
+Sep 4 · 1:44 AM   kyle → enokie      missed
+Sep 4 · 1:49 AM   kyle → jadabae     03:12
+Sep 4 · 1:53 AM   kyle → noemibae    01:47
+Sep 4 · 2:02 AM   kyle → enokie      missed
+Sep 4 · 2:09 AM   kyle → enokie      missed
+
+note:
+the deleted message predates these calls.
+
+location attachment:
+unavailable`;
+
+    state.callLogSeen=true;
+    state.phase=Math.max(state.phase,3);
+  }
+
   if(kind==="system"){
     title="system-log.txt";
     body=`Sep 03 23:58:17  user=enokie login success
@@ -1116,10 +1281,12 @@ window.addEventListener("load",()=>{
   renderContacts();
   renderChat("3asians");
 
-  /* If the visitor refreshes just after the impossible message unlocked,
-     gently surface it again instead of losing the moment. */
+  scheduleNormalPing();
+
+  /* If the visitor refreshes just after the impossible contact unlocked,
+     surface the latest message again instead of losing the moment. */
   if(state.phase>=4 && !state.unknownOpen && state.unknownMsgs?.length){
-    setTimeout(()=>showIncomingText("Unknown",state.unknownMsgs.at(-1)),1800);
+    setTimeout(()=>showIncomingText("Unknown",state.unknownMsgs.at(-1),"unknown"),2200);
   }
 });
 </script>
