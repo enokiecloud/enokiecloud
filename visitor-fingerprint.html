@@ -376,7 +376,94 @@ main{width:min(930px,91%);margin:38px auto 90px}
 }
 .back{display:inline-block;margin-top:25px;font:11px "DM Mono",monospace}
 
-@media(max-width:780px){
+
+/* little scrapbook details */
+.pass{overflow:visible}
+.paperclip{
+  position:absolute;
+  z-index:6;
+  left:-7px;
+  top:-16px;
+  width:24px;
+  height:62px;
+  border:3px solid var(--ink);
+  border-radius:14px;
+  transform:rotate(-12deg);
+  background:transparent;
+}
+.paperclip:after{
+  content:"";
+  position:absolute;
+  left:5px;
+  top:7px;
+  width:9px;
+  height:40px;
+  border:2px solid var(--ink);
+  border-radius:10px;
+}
+.tiny-doodle{
+  position:absolute;
+  z-index:3;
+  font-family:"Patrick Hand",cursive;
+  color:#6f6b65;
+  pointer-events:none;
+}
+.tiny-doodle.one{right:205px;top:18px;font-size:22px;transform:rotate(8deg)}
+.tiny-doodle.two{right:26px;bottom:24px;font-size:20px;transform:rotate(-8deg)}
+.taped-note{
+  position:absolute;
+  z-index:5;
+  right:-38px;
+  top:-35px;
+  width:105px;
+  padding:15px 10px 12px;
+  background:#f2efe8;
+  border:1px solid #aaa59d;
+  transform:rotate(6deg);
+  text-align:center;
+  font:17px/1.1 "Patrick Hand",cursive;
+  box-shadow:2px 3px 0 rgba(0,0,0,.07);
+}
+.taped-note:before{
+  content:"";
+  position:absolute;
+  width:55px;
+  height:17px;
+  left:24px;
+  top:-9px;
+  background:rgba(190,185,175,.55);
+  transform:rotate(-4deg);
+}
+.post-lines{
+  position:absolute;
+  z-index:4;
+  right:-32px;
+  top:86px;
+  width:78px;
+  height:48px;
+  transform:rotate(4deg);
+  opacity:.8;
+}
+.post-lines span{
+  display:block;
+  height:1.5px;
+  background:var(--ink);
+  margin:9px 0;
+  border-radius:50%;
+}
+.postage{position:relative}
+.postage .mini-face{
+  width:58px;
+  height:49px;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+  margin:0 auto 8px;
+  border-radius:50%;
+  filter:grayscale(1);
+}
+
+@media(max-width:780px){.taped-note{right:4px;top:-28px;transform:scale(.8) rotate(6deg)}.post-lines{display:none}.tiny-doodle{display:none}
   header{flex-direction:column;align-items:flex-start;padding:17px 0}
   .logo{width:220px;max-width:90%}
   .welcome{min-height:auto;padding:18px;align-items:center}
@@ -424,6 +511,9 @@ main{width:min(930px,91%);margin:38px auto 90px}
   </section>
 
   <section class="pass">
+    <div class="tiny-doodle one" aria-hidden="true">⌁ ♡</div>
+    <div class="tiny-doodle two" aria-hidden="true">✿</div>
+    <div class="taped-note">welcome<br>little visitor ♡</div>
     <div class="pass-head">
       <div class="pass-name">
         <div class="cloud">☁</div>
@@ -434,7 +524,7 @@ main{width:min(930px,91%);margin:38px auto 90px}
 
     <div class="pass-body">
       <div>
-        <div class="portrait-card">
+        <div class="portrait-card" style="position:relative"><div class="paperclip" aria-hidden="true"></div>
           <div class="portrait">
             <img src="images/visitor-profile.jpg" alt="visitor profile cat" class="profile-photo">
           </div>
@@ -458,8 +548,9 @@ main{width:min(930px,91%);margin:38px auto 90px}
 
       <div class="stamp-area">
         <div class="postage">
+          <div class="post-lines" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
           <div>
-            <div class="post-cat"></div>
+            <img src="images/visitor-profile.jpg" alt="" class="mini-face">
             <strong id="approval">HOUSE CAT<br>APPROVED</strong>
             <small>♡</small>
           </div>
