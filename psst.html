@@ -1,1 +1,72 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>psst... ~ enokiecloud</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}:root{--paper:#fdfcf9;--ink:#111;--soft:#eceae4;--muted:#777}
+body{margin:0;min-height:100vh;background:var(--paper);color:var(--ink);font-family:"Cormorant Garamond",serif}
+a{color:inherit;text-decoration:none}.page{width:min(1040px,calc(100% - 40px));margin:auto}
+header{padding:34px 0 18px;border-bottom:1px solid #111;display:flex;align-items:center;justify-content:space-between;gap:30px}
+.logo{width:210px;display:block}nav{display:flex;gap:28px;font:11px "IBM Plex Mono",monospace}
+main{min-height:calc(100vh - 120px);display:flex;justify-content:center;padding:70px 0 85px}.feature{width:520px;max-width:100%}
+.eyebrow{margin-bottom:20px;font:9px "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase}
+h1{margin:0 0 5px;font-size:clamp(56px,9vw,88px);line-height:.9;font-weight:400;letter-spacing:-.04em}.sub{margin:0 0 38px;font-size:18px;font-style:italic}
+.note-wrap{position:relative;width:min(430px,92%);margin:auto}.tape{width:92px;height:25px;position:absolute;z-index:2;top:-11px;left:50%;transform:translateX(-50%) rotate(-2deg);background:rgba(225,223,216,.72)}
+.note{min-height:255px;padding:48px 42px 38px;background:#fffefa;border:1px solid #111;box-shadow:7px 8px 0 var(--soft);display:flex;flex-direction:column;justify-content:center;transform:rotate(-.45deg)}
+.note-label{margin-bottom:26px;font:9px "IBM Plex Mono",monospace;letter-spacing:.04em}.note-message{margin:0;font-size:29px;line-height:1.16;overflow-wrap:anywhere}
+.actions{width:min(430px,92%);margin:28px auto 0;display:flex;justify-content:center;gap:28px}
+.text-button{appearance:none;border:0;border-bottom:1px solid #111;background:transparent;color:#111;padding:2px 0;cursor:pointer;font:10px "IBM Plex Mono",monospace}
+.composer{width:min(430px,92%);margin:30px auto 0;display:none}.composer.open{display:block}.composer label{display:block;margin-bottom:9px;font:9px "IBM Plex Mono",monospace}
+textarea{width:100%;min-height:120px;resize:vertical;border:1px solid #111;border-radius:0;outline:none;background:#fffefa;color:#111;padding:15px;font:20px/1.25 "Cormorant Garamond",serif}
+.composer-bottom{margin-top:10px;display:flex;align-items:center;justify-content:space-between;gap:15px}.count,.status{font:8px "IBM Plex Mono",monospace;color:var(--muted)}
+.status{min-height:14px;margin-top:12px;text-align:center}.done{display:none;width:min(430px,92%);margin:auto;padding:65px 25px;text-align:center}.done.show{display:block}
+.done-big{margin:0 0 10px;font-size:31px;font-style:italic}.done-small{margin:0;font:9px "IBM Plex Mono",monospace}.leave{display:inline-block;margin-top:48px;font:9px "IBM Plex Mono",monospace}.hidden{display:none!important}
+@media(max-width:650px){.page{width:min(100% - 24px,1040px)}header{flex-direction:column;align-items:flex-start}nav{flex-wrap:wrap;gap:12px 20px}main{padding-top:48px}.note{min-height:225px;padding:42px 28px 32px}.note-message{font-size:25px}}
+</style>
+</head>
+<body><div class="page">
+<header><a href="index.html"><img src="images/enokiecloud-logo.png" class="logo" alt="enokiecloud"></a><nav><a href="index.html">home</a><a href="memory-box.html">memory box</a><a href="guestbook.html">guestbook</a></nav></header>
+<main><div class="feature">
+<div class="eyebrow">a little something</div><h1>psst...</h1><p class="sub" id="subtitle">someone left this for you.</p>
+<div id="noteSection"><div class="note-wrap"><div class="tape"></div><div class="note"><div class="note-label" id="noteLabel">FOR YOU</div><p class="note-message" id="noteMessage">looking for something...</p></div></div>
+<div class="actions hidden" id="actions"><button class="text-button" id="keepButton">keep it</button><button class="text-button" id="leaveButton">leave one behind</button></div>
+<div class="composer" id="composer"><label for="messageInput">for whoever comes next</label><textarea id="messageInput" maxlength="300" placeholder="write something..."></textarea>
+<div class="composer-bottom"><span class="count"><span id="count">0</span>/300</span><button class="text-button" id="sendButton">leave it here</button></div><div class="status" id="status"></div></div></div>
+<div class="done" id="done"><p class="done-big" id="doneBig">okay. someone else will find it.</p><p class="done-small">that's all ♡</p></div>
+<a href="index.html" class="leave">← leave</a></div></main></div>
+<script>
+const SUPABASE_URL="https://szezeozsmdhlyibxhwqv.supabase.co";
+const SUPABASE_KEY="sb_publishable_k40X-XyTfxJ97f4_kkMTPQ_epBOcFAh";
+const LOCAL_KEY="enokiecloud_psst_v1";
+const noteSection=document.getElementById("noteSection"),noteLabel=document.getElementById("noteLabel"),noteMessage=document.getElementById("noteMessage"),actions=document.getElementById("actions"),keepButton=document.getElementById("keepButton"),leaveButton=document.getElementById("leaveButton"),composer=document.getElementById("composer"),messageInput=document.getElementById("messageInput"),sendButton=document.getElementById("sendButton"),status=document.getElementById("status"),count=document.getElementById("count"),subtitle=document.getElementById("subtitle"),done=document.getElementById("done"),doneBig=document.getElementById("doneBig");
+function loadState(){try{return JSON.parse(localStorage.getItem(LOCAL_KEY))||{participated:false}}catch{return{participated:false}}}
+let state=loadState();
+function saveState(){localStorage.setItem(LOCAL_KEY,JSON.stringify(state))}
+function headers(extra={}){return{"apikey":SUPABASE_KEY,"Authorization":"Bearer "+SUPABASE_KEY,"Content-Type":"application/json",...extra}}
+function showDone(text="okay. someone else will find it."){noteSection.classList.add("hidden");done.classList.add("show");doneBig.textContent=text}
+function openComposer(){composer.classList.add("open");actions.classList.add("hidden");messageInput.focus()}
+async function takeNote(){const r=await fetch(SUPABASE_URL+"/rest/v1/rpc/take_next_person_note",{method:"POST",headers:headers(),body:"{}"});if(!r.ok)throw Error();const d=await r.json();return Array.isArray(d)&&d.length?d[0]:null}
+async function leaveNote(message){const r=await fetch(SUPABASE_URL+"/rest/v1/next_person_notes",{method:"POST",headers:headers({"Prefer":"return=minimal"}),body:JSON.stringify({message})});if(!r.ok)throw Error()}
+async function start(){
+ if(state.participated){subtitle.textContent="you already found something here.";showDone("you already passed yours along.");return}
+ try{
+  const note=await takeNote();
+  if(note){noteLabel.textContent="SOMEONE LEFT THIS FOR YOU";noteMessage.textContent=note.message;actions.classList.remove("hidden")}
+  else{subtitle.textContent="looks like you're first.";noteLabel.textContent="NOTHING HERE YET";noteMessage.textContent="leave something for whoever wanders in next.";composer.classList.add("open")}
+ }catch{subtitle.textContent="hmm...";noteLabel.textContent="ONE SEC";noteMessage.textContent="something got lost on the way here.";status.textContent="try refreshing in a sec"}
+}
+keepButton.onclick=()=>{subtitle.textContent="it's yours now.";openComposer()};
+leaveButton.onclick=()=>{subtitle.textContent="pass something along.";openComposer()};
+messageInput.oninput=()=>{count.textContent=messageInput.value.length;status.textContent=""};
+sendButton.onclick=async()=>{
+ const message=messageInput.value.trim();if(!message){status.textContent="u gotta write something first";return}
+ sendButton.disabled=true;messageInput.disabled=true;status.textContent="leaving it here...";
+ try{await leaveNote(message);state.participated=true;saveState();showDone()}
+ catch{sendButton.disabled=false;messageInput.disabled=false;status.textContent="hmm that didn't work. try again."}
+};
+start();
+</script></body></html>
