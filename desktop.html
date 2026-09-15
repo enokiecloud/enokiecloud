@@ -608,6 +608,18 @@ button{color:inherit}
   background:#e4e5e9!important
 }
 
+
+/* V19 contact personality */
+.contact-avatar.av-group{background:linear-gradient(145deg,#b58eff,#7566d8)!important}
+.contact-avatar.av-jada{background:linear-gradient(145deg,#ffadc0,#df7195)!important}
+.contact-avatar.av-noemi{background:linear-gradient(145deg,#9adccd,#58aa98)!important}
+.contact-avatar.av-kyle{background:linear-gradient(145deg,#9ac0eb,#5a82b6)!important}
+.contact-avatar.av-ava{background:linear-gradient(145deg,#ffd08b,#e59c56)!important}
+.contact-avatar.av-jas{background:linear-gradient(145deg,#cdb0e9,#9579bc)!important}
+.contact-avatar.av-mami{background:linear-gradient(145deg,#ecabab,#bd7474)!important}
+.contact-avatar.av-unknown{background:linear-gradient(145deg,#c8ccd4,#9297a0)!important}
+.contact-avatar.av-e{background:linear-gradient(145deg,#bbbfc7,#81868f)!important}
+
 </style>
 </head>
 <body>
@@ -931,14 +943,14 @@ button{color:inherit}
 
 <script>
 let topZ=500;
-const KEY="enokieStoryV18";
+const KEY="enokieStoryV19";
 
 /* Testing shortcut:
    open desktop.html?reset=1 to clear story progress without exposing a reset button to visitors. */
 const resetParams=new URLSearchParams(location.search);
 if(resetParams.get("reset")==="1"){
   localStorage.removeItem(KEY);
-  sessionStorage.removeItem("ecloud-v18-session");
+  sessionStorage.removeItem("ecloud-v19-session");
   history.replaceState({},document.title,location.pathname);
 }
 
@@ -984,6 +996,19 @@ const DEFAULT_STATE={
 
   friendPingStage:0,
   friendChatsOpened:[],
+  friendPings:{
+    jadabae:false,
+    noemibae:false,
+    mami:false,
+    kyle:false,
+    "lil sis ava":false,
+    "kiddo jas":false
+  },
+
+  pendingBondApp:null,
+  pendingBondLines:[],
+  pendingFriendPing:null,
+  bondSceneBusy:false,
 
   replyBusy:false,
   shutdownEnabled:false,
@@ -1367,6 +1392,7 @@ function groupChatData(){
 
 function personChatData(name){
   const chat=[...(normalChats[name]||[])];
+  const pings=state.friendPings||{};
 
   if(!state.backstoryUnlocked) return chat;
 
@@ -1376,7 +1402,7 @@ function personChatData(name){
     chat.push(["jadabae","pls answer"]);
     chat.push(["jadabae","noemi said ur phone rang once then stopped"]);
 
-    if(state.friendPingStage>=1){
+    if(pings.jadabae){
       chat.push(["system","Sep 7, 2026 · 11:38 PM"]);
       chat.push(["jadabae","i keep opening this chat like ur randomly gonna answer"]);
       chat.push(["jadabae","i know thats stupid"]);
@@ -1391,7 +1417,7 @@ function personChatData(name){
     chat.push(["noemibae","u literally didnt say anything"]);
     chat.push(["noemibae","ur freaking me out"]);
 
-    if(state.friendPingStage>=2){
+    if(pings.noemibae){
       chat.push(["system","Sep 10, 2026 · 8:21 PM"]);
       chat.push(["noemibae","ur black top is still here btw"]);
       chat.push(["noemibae","im not giving it away"]);
@@ -1406,7 +1432,7 @@ function personChatData(name){
     chat.push(["kyle","everyone keeps asking me where u are"]);
     chat.push(["kyle","i told them i dropped u off"]);
 
-    if(state.friendPingStage>=3){
+    if(pings.kyle){
       chat.push(["system","Sep 11, 2026 · 1:12 AM"]);
       chat.push(["kyle","i keep going over that night"]);
       chat.push(["kyle","i shouldve waited until u got inside"]);
@@ -1414,14 +1440,14 @@ function personChatData(name){
     }
   }
 
-  if(name==="lil sis ava" && state.friendPingStage>=2){
+  if(name==="lil sis ava" && pings["lil sis ava"]){
     chat.push(["system","Sep 9, 2026 · 4:05 PM"]);
     chat.push(["lil sis ava","i found the picture of my bangs"]);
     chat.push(["lil sis ava","u still owe me for emotional damages btw"]);
     chat.push(["lil sis ava","come home so i can make fun of u properly"]);
   }
 
-  if(name==="kiddo jas" && state.friendPingStage>=3){
+  if(name==="kiddo jas" && pings["kiddo jas"]){
     chat.push(["system","Sep 12, 2026 · 3:44 PM"]);
     chat.push(["kiddo jas","remember how i said id tell u tomorrow"]);
     chat.push(["kiddo jas","i still havent told u"]);
@@ -1434,13 +1460,10 @@ function personChatData(name){
     chat.push(["mami","call me please"]);
     chat.push(["mami","i am awake"]);
 
-    if(state.friendPingStage>=1){
+    if(pings.mami){
       chat.push(["system","Sep 6, 2026 · 9:14 PM"]);
       chat.push(["mami","anak i left the light on"]);
       chat.push(["mami","your food is in the fridge"]);
-    }
-
-    if(state.friendPingStage>=3){
       chat.push(["system","Sep 13, 2026 · 10:02 PM"]);
       chat.push(["mami","goodnight anak"]);
       chat.push(["mami","i love you"]);
@@ -1474,11 +1497,31 @@ function contactNames(){
 }
 
 function nextRecoveredContact(){if(!state.backstoryUnlocked)return null;if(!state.readGroupLate)return "3asians";if(!state.readKyleLate)return "kyle";if(!state.readNoemiLate)return "noemibae";return null;}
-function avatarLabel(name){if(name==="3asians")return "3A";if(name==="unknown")return "?";if(name==="lil sis ava")return "A";if(name==="kiddo jas")return "J";return name.slice(0,1).toUpperCase();}
+function avatarLabel(name){
+  if(name==="3asians") return "3A";
+  if(name==="unknown") return "?";
+  if(name==="lil sis ava") return "A";
+  if(name==="kiddo jas") return "J";
+  return name.slice(0,1).toUpperCase();
+}
+
+function avatarClass(name){
+  if(name==="3asians") return "av-group";
+  if(name==="jadabae") return "av-jada";
+  if(name==="noemibae") return "av-noemi";
+  if(name==="kyle") return "av-kyle";
+  if(name==="lil sis ava") return "av-ava";
+  if(name==="kiddo jas") return "av-jas";
+  if(name==="mami") return "av-mami";
+  if(name==="unknown") return "av-unknown";
+  return "";
+}
+
 function renderContacts(active="3asians"){
   const box=document.getElementById("contacts");
   box.innerHTML="";
   const lead=nextRecoveredContact();
+  const pings=state.friendPings||{};
 
   contactNames().forEach(name=>{
     const d=document.createElement("div");
@@ -1491,33 +1534,21 @@ function renderContacts(active="3asians"){
     }else if(name==="3asians"){
       preview=name===lead?"recovered conversation":"group chat";
     }else if(name==="kyle"){
-      preview=name===lead
-        ?"recovered conversation"
-        :state.friendPingStage>=3?"im sorry":"then drive better";
+      preview=name===lead?"recovered conversation":pings.kyle?"im sorry":"then drive better";
     }else if(name==="noemibae"){
-      preview=name===lead
-        ?"recovered conversation"
-        :state.friendPingStage>=2?"u better come get it eventually":"blocked";
+      preview=name===lead?"recovered conversation":pings.noemibae?"u better come get it eventually":"blocked";
     }else if(name==="mami"){
-      preview=state.friendPingStage>=3
-        ?"i love you"
-        :state.friendPingStage>=1?"your food is in the fridge":"mom";
+      preview=pings.mami?"i love you":"mom";
     }else if(name==="jadabae"){
-      preview=state.friendPingStage>=1
-        ?"just say literally anything"
-        :"WAIT FOR ME";
+      preview=pings.jadabae?"just say literally anything":"WAIT FOR ME";
     }else if(name==="lil sis ava"){
-      preview=state.friendPingStage>=2
-        ?"come home so i can make fun of u"
-        :"have faith in me pls";
+      preview=pings["lil sis ava"]?"come home so i can make fun of u":"have faith in me pls";
     }else if(name==="kiddo jas"){
-      preview=state.friendPingStage>=3
-        ?"u still have to come back"
-        :"NOW U HAVE ME CURIOUS";
+      preview=pings["kiddo jas"]?"u still have to come back":"NOW U HAVE ME CURIOUS";
     }
 
     d.innerHTML=`
-      <div class="contact-avatar">${avatarLabel(name)}</div>
+      <div class="contact-avatar ${avatarClass(name)}">${avatarLabel(name)}</div>
       <div class="contact-copy">
         <strong>${name}</strong>
         <small>${preview}</small>
@@ -1547,7 +1578,10 @@ function renderChat(name){
     (state.ending==="stuck-stay" || state.ending==="stuck-leave");
 
   document.getElementById("chat-title").textContent=isFinalE?"e":name;
-  document.getElementById("chat-avatar").textContent=isFinalE?"e":avatarLabel(name);
+
+  const chatAvatar=document.getElementById("chat-avatar");
+  chatAvatar.textContent=isFinalE?"e":avatarLabel(name);
+  chatAvatar.className="chat-avatar "+(isFinalE?"av-e":avatarClass(name));
 
   const dateEl=document.getElementById("chat-date");
   if(name==="unknown"){
@@ -1567,8 +1601,11 @@ function renderChat(name){
       isVisitorUnknownMsg(item) ? "me" : "unknown",
       unknownText(item)
     ]);
-  }else if(name==="3asians") data=groupChatData();
-  else data=personChatData(name);
+  }else if(name==="3asians"){
+    data=groupChatData();
+  }else{
+    data=personChatData(name);
+  }
 
   data.forEach(([sender,msg])=>{
     if(sender==="system"){
@@ -1607,10 +1644,6 @@ function renderChat(name){
     );
   }
 
-  /* Important pacing fix:
-     ordinary/recovered conversations open at the TOP so the player has to
-     read through E's normal life before reaching the Sep 4 messages.
-     Unknown stays pinned to the newest message because it is live. */
   if(name==="unknown"){
     body.scrollTop=body.scrollHeight;
   }else{
@@ -1622,40 +1655,62 @@ function renderChat(name){
     save();
   }
 
+  /* Optional friend-memory scenes. They are tied to what the visitor
+     actually opens instead of E listing everybody at once. */
   if(state.attachmentPhase && name!=="unknown"){
     state.friendChatsOpened=state.friendChatsOpened||[];
-
-    const canReact=
-      (name==="jadabae" && state.friendPingStage>=1) ||
-      (name==="noemibae" && state.friendPingStage>=2) ||
-      (name==="mami" && state.friendPingStage>=1) ||
-      (name==="lil sis ava" && state.friendPingStage>=2) ||
-      (name==="kiddo jas" && state.friendPingStage>=3) ||
-      (name==="kyle" && state.friendPingStage>=3);
+    const canReact=!!state.friendPings?.[name];
 
     if(canReact && !state.friendChatsOpened.includes(name)){
       state.friendChatsOpened.push(name);
       save();
 
-      const memory={
-        "jadabae":"jada always double texts when she's worried",
-        "noemibae":"that's noemi. she never lets anything go",
-        "mami":"mami always leaves the light on",
-        "lil sis ava":"ava still has that terrible bangs picture",
-        "kiddo jas":"jas was supposed to tell me something",
-        "kyle":"he really did wait sometimes"
-      }[name];
+      const memories={
+        "jadabae":[
+          "jada always double texts when she's worried",
+          "once we spent twenty minutes looking for a car we had already walked past twice"
+        ],
+        "noemibae":[
+          "noemi never lets anything go",
+          "that black top was hers first. i definitely stole it"
+        ],
+        "mami":[
+          "mami always leaves the light on",
+          "she'd act like it was nothing but i knew she was waiting"
+        ],
+        "lil sis ava":[
+          "ava still has that terrible bangs picture",
+          "i begged her to delete it for years"
+        ],
+        "kiddo jas":[
+          "jas was supposed to tell me something",
+          "she always says tomorrow and then makes me wait"
+        ],
+        "kyle":[
+          "he really did wait sometimes",
+          "i complained about his driving more than i thanked him"
+        ]
+      };
 
-      if(memory){
+      const lines=memories[name];
+
+      if(lines){
+        lines.forEach(line=>pushUnknown(line));
+
         setTimeout(()=>{
-          pushUnknown(memory);
-          showIncomingText("Unknown",memory,"unknown");
-        },1700);
+          if(!isViewingThread("unknown")){
+            showIncomingText("Unknown",lines[0],"unknown");
+          }
+        },2100);
       }
     }
   }
 
   renderReplyChoices(name);
+
+  if(name==="unknown" && state.attachmentPhase && state.pendingBondApp){
+    setTimeout(()=>continueBondSceneIfNeeded(),250);
+  }
 
   if(name==="unknown" && state.phase>=4 && !state.unknownOpen){
     state.unknownOpen=true;
@@ -1663,6 +1718,7 @@ function renderChat(name){
     save();
 
     typeUnknownSequence(["is someone there","can you read this"],700,1250,700);
+
     setTimeout(()=>{
       if(!state.windowMoved && state.unknownOpen){
         typeUnknownSequence(["can you move this window?"],0,1200,500);
@@ -1925,20 +1981,30 @@ function chooseUnknownReply(key,label){
 
     typeUnknownSequence(
       [
-        "some of them",
-        "jada laughs really loud",
-        "noemi steals my clothes and then says i stole hers",
-        "ava still has a picture of the worst haircut i ever gave her",
-        "jas always says she has something to tell me and then forgets",
-        "kyle drives too fast",
-        "mami leaves the light on when i'm late",
-        "i remember little things better than important ones"
+        "not all at once",
+        "it's more like little pieces",
+        "when you open their messages something comes back",
+        "can you show me more?"
       ],
       700,1450,900,
       ()=>{
         state.replyBusy=false;
         state.attachmentArmed=true;
-        save();
+
+        if(!state.friendPings.kyle){
+          state.friendPings.kyle=true;
+          save();
+          renderContacts("unknown");
+
+          setTimeout(()=>{
+            if(!isViewingThread("kyle")){
+              showIncomingText("kyle","i keep going over that night","kyle");
+            }
+          },2600);
+        }else{
+          save();
+        }
+
         renderReplyChoices("unknown");
       }
     );
@@ -1960,7 +2026,21 @@ function chooseUnknownReply(key,label){
       700,1500,950,
       ()=>{
         state.replyBusy=false;
-        save();
+
+        if(!state.friendPings["kiddo jas"]){
+          state.friendPings["kiddo jas"]=true;
+          save();
+          renderContacts("unknown");
+
+          setTimeout(()=>{
+            if(!isViewingThread("kiddo jas")){
+              showIncomingText("kiddo jas","so technically u still have to come back","kiddo jas");
+            }
+          },2600);
+        }else{
+          save();
+        }
+
         renderReplyChoices("unknown");
       }
     );
@@ -2039,58 +2119,17 @@ function chooseUnknownReply(key,label){
 }
 
 function scheduleAttachmentReaction(appName){
-  if(!state.attachmentPhase || state.finalChoiceMade) return;
+  if(!state.attachmentPhase || state.finalChoiceMade || state.bondSceneBusy) return;
 
   const key=String(appName||"").toLowerCase();
   const allowed=["music","photos","notes","safari","finder","facetime"];
+  if(!allowed.includes(key)) return;
 
-  if(allowed.includes(key) && !state.bondApps.includes(key)){
-    state.bondApps.push(key);
-  }
+  const isNew=!state.bondApps.includes(key);
+  if(isNew) state.bondApps.push(key);
 
   state.attachmentLeaveCount=(state.attachmentLeaveCount||0)+1;
-
-  const uniqueCount=state.bondApps.length;
-
-  if(uniqueCount>=1 && state.friendPingStage<1){
-    state.friendPingStage=1;
-    save();
-
-    setTimeout(()=>{
-      showIncomingText(
-        "jadabae",
-        "i keep opening this chat like ur randomly gonna answer",
-        "jadabae"
-      );
-    },3800);
-  }
-  else if(uniqueCount>=2 && state.friendPingStage<2){
-    state.friendPingStage=2;
-    save();
-
-    setTimeout(()=>{
-      showIncomingText(
-        "noemibae",
-        "ur black top is still here btw",
-        "noemibae"
-      );
-    },3800);
-  }
-  else if(uniqueCount>=3 && state.friendPingStage<3){
-    state.friendPingStage=3;
-    save();
-
-    setTimeout(()=>{
-      showIncomingText(
-        "mami",
-        "goodnight anak. i love you",
-        "mami"
-      );
-    },3800);
-  }
-  else{
-    save();
-  }
+  state.bondSceneBusy=true;
 
   let lines=["where did you go?"];
 
@@ -2132,25 +2171,91 @@ function scheduleAttachmentReaction(appName){
     ];
   }
 
+  state.pendingBondApp=key;
+  state.pendingBondLines=lines.slice(1);
+
+  if(isNew && !state.pendingFriendPing){
+    if(state.bondApps.length===1 && !state.friendPings.jadabae){
+      state.pendingFriendPing="jadabae";
+    }else if(state.bondApps.length===2 && !state.friendPings.noemibae){
+      state.pendingFriendPing="noemibae";
+    }else if(state.bondApps.length===3 && !state.friendPings.mami){
+      state.pendingFriendPing="mami";
+    }else if(state.bondApps.length===4 && !state.friendPings["lil sis ava"]){
+      state.pendingFriendPing="lil sis ava";
+    }
+  }
+
+  save();
+
   setTimeout(()=>{
-    typeUnknownSequence(
-      lines,
-      0,1450,900,
-      ()=>{
+    pushUnknown(lines[0]);
+
+    if(!isViewingThread("unknown")){
+      showIncomingText("Unknown",lines[0],"unknown");
+    }
+  },1100);
+}
+
+function continueBondSceneIfNeeded(){
+  if(!state.attachmentPhase || !state.pendingBondApp) return;
+  if(!isViewingThread("unknown")) return;
+
+  const rest=[...(state.pendingBondLines||[])];
+
+  state.pendingBondApp=null;
+  state.pendingBondLines=[];
+  save();
+
+  const finish=()=>{
+    state.bondSceneBusy=false;
+    state.attachmentArmed=true;
+    save();
+    renderReplyChoices("unknown");
+
+    if(state.pendingFriendPing){
+      const who=state.pendingFriendPing;
+      state.pendingFriendPing=null;
+      state.friendPings=state.friendPings||{};
+      state.friendPings[who]=true;
+      save();
+      renderContacts("unknown");
+
+      const incoming={
+        "jadabae":"i keep opening this chat like ur randomly gonna answer",
+        "noemibae":"ur black top is still here btw",
+        "mami":"goodnight anak. i love you",
+        "lil sis ava":"come home so i can make fun of u properly"
+      }[who];
+
+      if(incoming){
         setTimeout(()=>{
-          showIncomingText(
-            "Unknown",
-            state.bondApps.length===1
-              ? "are you still there?"
-              : state.bondApps.length===2
-                ? "come back?"
-                : "i'm still here",
-            "unknown"
-          );
-        },1000);
+          if(!isViewingThread(who)){
+            showIncomingText(who,incoming,who);
+          }else{
+            renderChat(who);
+          }
+        },2400);
+      }
+    }
+  };
+
+  if(rest.length){
+    state.replyBusy=true;
+    save();
+
+    typeUnknownSequence(
+      rest,
+      500,1450,900,
+      ()=>{
+        state.replyBusy=false;
+        save();
+        finish();
       }
     );
-  },900);
+  }else{
+    finish();
+  }
 }
 
 function toggleAppleMenu(event){
@@ -2261,6 +2366,18 @@ function showNotification(app,sender,msg,target="unknown",icon="images/icons/mes
 
   clearTimeout(window.__notificationTimer);
   window.__notificationTimer=setTimeout(()=>n.classList.remove("show"),6500);
+}
+
+function isViewingThread(name){
+  const win=document.getElementById("messages-window");
+  const title=document.getElementById("chat-title");
+  if(!win || !title || !win.classList.contains("active")) return false;
+
+  const current=title.textContent.toLowerCase();
+  const target=String(name||"").toLowerCase();
+
+  if(target==="unknown" && current==="e") return true;
+  return current===target;
 }
 
 function showIncomingText(sender,msg,target="unknown"){
@@ -2971,7 +3088,7 @@ function syncStory(){
 /* Kept for console/testing, but no visible reset control is shown to visitors. */
 function resetStory(){
   localStorage.removeItem(KEY);
-  sessionStorage.removeItem("ecloud-v18-session");
+  sessionStorage.removeItem("ecloud-v19-session");
   location.reload();
 }
 
@@ -3049,6 +3166,9 @@ function guideNextHardStep(){
   }
 
   if(state.attachmentPhase && !state.finalChoiceMade){
+    if(isViewingThread("unknown")) return;
+    if(state.pendingBondApp) return;
+
     if(state.bondApps.length===0){
       showIncomingText("Unknown","can you open something else?","unknown");
     }else{
@@ -3057,7 +3177,7 @@ function guideNextHardStep(){
     return;
   }
 
-  if(state.attachmentPrompted && !state.finalChoiceMade){
+  if(state.attachmentPrompted && !state.finalChoiceMade && !isViewingThread("unknown")){
     showIncomingText("Unknown","can you stay a little longer?","unknown");
   }
 }
@@ -3065,8 +3185,8 @@ function guideNextHardStep(){
 function startStoryWatchdog(){setTimeout(()=>{if(!state.backstoryUnlocked&&!state.ending){state.backstoryUnlocked=true;state.phase=3;save();bounceDock("messages");showNotification("Messages","3asians","Recovered conversation.","contact:3asians","images/icons/messages.png")}},6500)}
 
 window.addEventListener("load",()=>{
-  const freshVisit=!sessionStorage.getItem("ecloud-v18-session");
-  sessionStorage.setItem("ecloud-v18-session","1");
+  const freshVisit=!sessionStorage.getItem("ecloud-v19-session");
+  sessionStorage.setItem("ecloud-v19-session","1");
 
   syncStory();
   renderContacts();
