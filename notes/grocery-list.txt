@@ -1,0 +1,18 @@
+grocery list
+
+[ ] eggs
+[ ] milk
+[ ] strawberries
+[ ] sweet potatoes
+[ ] rice
+[ ] ramen
+[ ] garlic
+[ ] green onion
+[ ] iced coffee
+[ ] cat food
+[ ] litter pellets
+[ ] paper towels
+
+maybe:
+[ ] mochi
+[ ] chips
