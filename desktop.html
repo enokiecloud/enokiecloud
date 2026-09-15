@@ -12,40 +12,38 @@
   padding: 0;
 }
 
-html,
-body {
+html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
   font-family:
     -apple-system,
     BlinkMacSystemFont,
+    "SF Pro Text",
     "SF Pro Display",
     "Helvetica Neue",
     Arial,
     sans-serif;
 }
 
-button,
-input {
+button {
   font: inherit;
 }
 
-/* =========================================================
+/* =========================
    DESKTOP
-========================================================= */
+========================= */
 
 #desktop {
   position: relative;
   width: 100vw;
   height: 100vh;
-
   overflow: hidden;
 
-  background-image:
+  background:
     linear-gradient(
-      rgba(15, 12, 17, .05),
-      rgba(15, 12, 17, .12)
+      rgba(0,0,0,.03),
+      rgba(0,0,0,.12)
     ),
     url("images/photos/wallpaper.jpg");
 
@@ -54,9 +52,9 @@ input {
   background-repeat: no-repeat;
 }
 
-/* =========================================================
+/* =========================
    MENU BAR
-========================================================= */
+========================= */
 
 #menu-bar {
   position: absolute;
@@ -64,25 +62,22 @@ input {
   left: 0;
   right: 0;
 
-  height: 28px;
+  height: 29px;
 
   display: flex;
   align-items: center;
 
-  padding: 0 12px;
+  padding: 0 13px;
+
+  background: rgba(17,17,19,.68);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
 
   color: white;
 
-  background: rgba(18, 18, 20, .58);
-
-  backdrop-filter: blur(25px) saturate(150%);
-  -webkit-backdrop-filter: blur(25px) saturate(150%);
-
-  border-bottom: 1px solid rgba(255,255,255,.08);
-
   font-size: 13px;
 
-  z-index: 10000;
+  z-index: 9999;
 }
 
 .menu-left,
@@ -92,7 +87,7 @@ input {
 }
 
 .menu-left {
-  gap: 17px;
+  gap: 18px;
 }
 
 .menu-right {
@@ -102,10 +97,8 @@ input {
 
 .menu-apple {
   width: 15px;
-  height: 17px;
-
+  height: 15px;
   object-fit: contain;
-
   filter: brightness(0) invert(1);
 }
 
@@ -113,40 +106,35 @@ input {
   font-weight: 700;
 }
 
-.menu-right span {
-  font-size: 12px;
-}
-
 #menu-clock {
   min-width: 145px;
   text-align: right;
+  font-size: 12px;
 }
 
-/* =========================================================
-   DESKTOP ICONS
-========================================================= */
+/* =========================
+   DESKTOP ITEMS
+========================= */
 
 #desktop-icons {
   position: absolute;
-
-  top: 47px;
+  top: 48px;
   right: 20px;
 
   display: flex;
   flex-direction: column;
+  gap: 14px;
 
-  gap: 13px;
-
-  z-index: 20;
+  z-index: 50;
 }
 
 .desktop-item {
   width: 90px;
 
-  padding: 5px;
-
   border: 1px solid transparent;
   border-radius: 7px;
+
+  padding: 5px;
 
   background: transparent;
   color: white;
@@ -158,71 +146,59 @@ input {
 
 .desktop-item:hover {
   background: rgba(255,255,255,.12);
-  border-color: rgba(255,255,255,.1);
 }
 
 .desktop-item img {
   width: 52px;
   height: 52px;
-
   object-fit: contain;
 
-  filter: drop-shadow(0 4px 5px rgba(0,0,0,.35));
+  filter:
+    drop-shadow(0 4px 5px rgba(0,0,0,.35));
 }
 
 .desktop-label {
-  display: inline-block;
-
-  max-width: 85px;
-
+  display: block;
   margin-top: 3px;
 
-  padding: 2px 5px;
-
-  border-radius: 4px;
-
   font-size: 11px;
-  line-height: 1.2;
 
   text-shadow:
-    0 1px 3px rgba(0,0,0,.95);
+    0 1px 4px rgba(0,0,0,.95);
 }
 
-/* =========================================================
+/* =========================
    WINDOWS
-========================================================= */
+========================= */
 
 .window {
   position: absolute;
 
   display: none;
 
-  width: min(760px, calc(100vw - 50px));
-  min-height: 440px;
+  width: min(760px, calc(100vw - 40px));
+  min-height: 430px;
 
   overflow: hidden;
 
   border-radius: 12px;
 
-  background: rgba(246,247,249,.94);
+  background: rgba(247,248,250,.96);
 
-  border: 1px solid rgba(255,255,255,.55);
+  border: 1px solid rgba(255,255,255,.65);
 
   box-shadow:
-    0 25px 70px rgba(0,0,0,.35);
+    0 25px 70px rgba(0,0,0,.36);
 
-  backdrop-filter: blur(35px) saturate(150%);
-  -webkit-backdrop-filter: blur(35px) saturate(150%);
-
-  z-index: 200;
+  z-index: 300;
 }
 
 .window.active {
   display: block;
-  animation: openWindow .16s ease;
+  animation: windowOpen .15s ease;
 }
 
-@keyframes openWindow {
+@keyframes windowOpen {
   from {
     opacity: .4;
     transform: scale(.975);
@@ -237,16 +213,17 @@ input {
 .window-top {
   position: relative;
 
-  height: 44px;
+  height: 43px;
 
   display: flex;
   align-items: center;
 
   padding: 0 14px;
 
-  background: rgba(229,231,235,.95);
+  background: rgba(230,231,235,.96);
 
-  border-bottom: 1px solid rgba(0,0,0,.1);
+  border-bottom:
+    1px solid rgba(0,0,0,.08);
 
   cursor: move;
 }
@@ -255,35 +232,33 @@ input {
   display: flex;
   gap: 8px;
 
-  z-index: 4;
+  z-index: 3;
 }
 
 .traffic {
   width: 12px;
   height: 12px;
 
+  border: 1px solid rgba(0,0,0,.1);
   border-radius: 50%;
-
-  border: 1px solid rgba(0,0,0,.12);
 
   cursor: pointer;
 }
 
-.traffic.red {
+.red {
   background: #ff5f57;
 }
 
-.traffic.yellow {
+.yellow {
   background: #febc2e;
 }
 
-.traffic.green {
+.green {
   background: #28c840;
 }
 
 .window-title {
   position: absolute;
-
   left: 50%;
 
   transform: translateX(-50%);
@@ -291,20 +266,16 @@ input {
   font-size: 13px;
   font-weight: 600;
 
-  color: #35373c;
+  color: #37393e;
 }
 
-.window-body {
-  min-height: 396px;
-}
-
-/* =========================================================
+/* =========================
    FINDER
-========================================================= */
+========================= */
 
 .finder-layout {
   display: flex;
-  min-height: 396px;
+  min-height: 387px;
 }
 
 .finder-sidebar {
@@ -312,15 +283,16 @@ input {
 
   padding: 13px 9px;
 
-  background: rgba(221,225,230,.72);
+  background: rgba(222,225,230,.82);
 
-  border-right: 1px solid rgba(0,0,0,.06);
+  border-right:
+    1px solid rgba(0,0,0,.06);
 }
 
 .sidebar-title {
   margin: 10px 9px 5px;
 
-  color: #7b7d83;
+  color: #7d8087;
 
   font-size: 10px;
   font-weight: 700;
@@ -345,7 +317,7 @@ input {
 }
 
 .sidebar-row.active {
-  background: rgba(114,160,216,.3);
+  background: rgba(112,158,214,.30);
 }
 
 .finder-main {
@@ -353,15 +325,11 @@ input {
 
   padding: 20px;
 
-  background: rgba(255,255,255,.84);
+  background: rgba(255,255,255,.92);
 }
 
 .finder-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .finder-heading h3 {
@@ -378,10 +346,10 @@ input {
 }
 
 .finder-file {
-  padding: 7px 4px;
-
   border: 0;
-  border-radius: 7px;
+  border-radius: 8px;
+
+  padding: 7px 4px;
 
   background: transparent;
 
@@ -391,7 +359,7 @@ input {
 }
 
 .finder-file:hover {
-  background: rgba(80,130,200,.1);
+  background: rgba(85,135,200,.11);
 }
 
 .finder-file img {
@@ -405,27 +373,24 @@ input {
   margin-top: 5px;
 
   font-size: 11px;
-
-  color: #292c31;
+  color: #2d3035;
 }
-
-/* PDF document */
 
 .pdf-icon {
   position: relative;
 
-  width: 49px;
+  width: 48px;
   height: 59px;
 
   margin: auto;
 
+  border: 1px solid #c7cbd0;
   border-radius: 4px;
 
   background: white;
 
-  border: 1px solid #c8ccd1;
-
-  box-shadow: 0 2px 5px rgba(0,0,0,.1);
+  box-shadow:
+    0 2px 6px rgba(0,0,0,.10);
 }
 
 .pdf-icon::before {
@@ -436,152 +401,47 @@ input {
   left: 6px;
   bottom: 8px;
 
-  color: #e43e3e;
+  color: #e54848;
 
   font-size: 11px;
   font-weight: 800;
 }
 
-.pdf-icon::after {
-  content: "";
-
-  position: absolute;
-
-  top: 0;
-  right: 0;
-
-  width: 13px;
-  height: 13px;
-
-  background:
-    linear-gradient(
-      45deg,
-      #e7e7e7 50%,
-      transparent 51%
-    );
-}
-
-/* =========================================================
-   NOTES
-========================================================= */
-
-.notes-layout {
-  display: flex;
-  min-height: 396px;
-}
-
-.notes-sidebar {
-  width: 205px;
-
-  background: #f0f0f2;
-
-  border-right: 1px solid #ddd;
-}
-
-.notes-search {
-  height: 31px;
-
-  margin: 12px;
-
-  display: flex;
-  align-items: center;
-
-  padding-left: 10px;
-
-  border-radius: 7px;
-
-  background: #dedfe2;
-
-  color: #777;
-
-  font-size: 11px;
-}
-
-.note-row {
-  padding: 12px 14px;
-
-  border-top: 1px solid rgba(0,0,0,.05);
-
-  cursor: pointer;
-}
-
-.note-row.active {
-  background: #fff0b8;
-}
-
-.note-row strong {
-  display: block;
-
-  font-size: 12px;
-}
-
-.note-row small {
-  display: block;
-
-  margin-top: 3px;
-
-  color: #777;
-
-  font-size: 10px;
-}
-
-.note-content {
-  flex: 1;
-
-  padding: 25px;
-
-  background: #fffdf5;
-}
-
-.note-content h2 {
-  margin-bottom: 16px;
-
-  font-size: 21px;
-}
-
-#grocery-text {
-  white-space: pre-line;
-
-  font-size: 14px;
-  line-height: 1.7;
-
-  color: #333;
-}
-
-/* =========================================================
+/* =========================
    MESSAGES
-========================================================= */
+========================= */
 
 .messages-layout {
   display: flex;
-  min-height: 396px;
+
+  height: 430px;
 
   background: white;
 }
 
 .message-sidebar {
-  width: 225px;
+  width: 205px;
+
+  overflow-y: auto;
 
   border-right: 1px solid #ddd;
 
   background: #f1f1f3;
-
-  overflow: auto;
 }
 
 .message-search {
-  margin: 12px;
+  margin: 11px;
 
-  height: 30px;
+  height: 29px;
 
   display: flex;
   align-items: center;
 
-  padding-left: 10px;
+  padding: 0 10px;
 
   border-radius: 7px;
 
-  background: #dedfe2;
+  background: #dedfe3;
 
   color: #777;
 
@@ -589,11 +449,12 @@ input {
 }
 
 .contact-row {
-  padding: 11px 14px;
+  padding: 10px 13px;
+
+  border-top:
+    1px solid rgba(0,0,0,.04);
 
   cursor: pointer;
-
-  border-top: 1px solid rgba(0,0,0,.04);
 }
 
 .contact-row:hover {
@@ -601,18 +462,18 @@ input {
 }
 
 .contact-row.active {
-  background: #d7e5f6;
+  background: #d9e5f5;
 }
 
 .contact-name {
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 650;
 }
 
 .contact-preview {
   margin-top: 2px;
 
-  color: #777;
+  color: #7b7c81;
 
   font-size: 10px;
 
@@ -646,24 +507,32 @@ input {
 .chat-messages {
   flex: 1;
 
-  padding: 18px;
+  padding: 16px;
 
   overflow-y: auto;
 
-  background: #fff;
+  background: white;
 }
 
 .chat-message {
-  margin-bottom: 11px;
+  margin-bottom: 10px;
+}
+
+.chat-message.me {
+  text-align: right;
 }
 
 .chat-sender {
   margin-left: 8px;
   margin-bottom: 3px;
 
-  color: #8b8b91;
+  color: #999;
 
   font-size: 9px;
+}
+
+.chat-message.me .chat-sender {
+  display: none;
 }
 
 .chat-bubble {
@@ -673,35 +542,116 @@ input {
 
   padding: 8px 11px;
 
-  border-radius: 16px;
+  border-radius: 17px;
 
-  background: #e8e8ec;
+  background: #e9e9ed;
+
+  color: #222;
 
   font-size: 12px;
   line-height: 1.4;
 }
 
-.chat-message.me {
-  text-align: right;
-}
-
 .chat-message.me .chat-bubble {
-  background: #2589ff;
+  background: #2488ff;
   color: white;
 }
 
-.chat-message.me .chat-sender {
-  display: none;
+/* =========================
+   NOTES
+========================= */
+
+.notes-layout {
+  display: flex;
+
+  height: 410px;
 }
 
-/* =========================================================
+.notes-sidebar {
+  width: 205px;
+
+  background: #f0f0f2;
+
+  border-right: 1px solid #ddd;
+}
+
+.notes-search {
+  margin: 11px;
+
+  height: 29px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 10px;
+
+  border-radius: 7px;
+
+  background: #dedfe2;
+
+  color: #777;
+
+  font-size: 11px;
+}
+
+.note-row {
+  padding: 11px 13px;
+
+  border-top:
+    1px solid rgba(0,0,0,.05);
+
+  cursor: pointer;
+}
+
+.note-row.active {
+  background: #fff0b9;
+}
+
+.note-row strong {
+  display: block;
+
+  font-size: 12px;
+}
+
+.note-row small {
+  color: #777;
+
+  font-size: 10px;
+}
+
+.note-content {
+  flex: 1;
+
+  padding: 24px;
+
+  overflow-y: auto;
+
+  background: #fffdf4;
+}
+
+.note-content h2 {
+  margin-bottom: 14px;
+
+  font-size: 21px;
+}
+
+.note-text {
+  white-space: pre-line;
+
+  font-size: 14px;
+  line-height: 1.75;
+
+  color: #333;
+}
+
+/* =========================
    PHOTOS
-========================================================= */
+========================= */
 
-.photos-layout {
-  min-height: 396px;
+.photos-content {
+  min-height: 390px;
 
-  padding: 21px;
+  padding: 20px;
 
   background: #f7f7f8;
 }
@@ -725,13 +675,15 @@ input {
 .photo-thumb {
   aspect-ratio: 1;
 
-  border: 0;
+  padding: 0;
 
   overflow: hidden;
 
-  cursor: pointer;
+  border: 0;
 
   background: #ddd;
+
+  cursor: pointer;
 }
 
 .photo-thumb img {
@@ -747,39 +699,35 @@ input {
   transform: scale(1.035);
 }
 
-/* =========================================================
+/* =========================
    PHOTO VIEWER
-========================================================= */
-
-#photo-viewer {
-  width: min(700px, calc(100vw - 50px));
-}
+========================= */
 
 .photo-viewer-body {
-  min-height: 480px;
+  min-height: 470px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  padding: 18px;
+  padding: 17px;
 
-  background: #171719;
+  background: #151517;
 }
 
 .photo-viewer-body img {
   max-width: 100%;
-  max-height: 440px;
+  max-height: 445px;
 
   object-fit: contain;
 }
 
-/* =========================================================
-   SAFARI / ENOKIE TUBE
-========================================================= */
+/* =========================
+   SAFARI / ENOKIETUBE
+========================= */
 
 .safari-toolbar {
-  height: 47px;
+  height: 45px;
 
   display: flex;
   align-items: center;
@@ -790,11 +738,11 @@ input {
 
   background: #e8e9ec;
 
-  border-bottom: 1px solid #d5d7db;
+  border-bottom: 1px solid #d5d7da;
 }
 
 .safari-nav {
-  color: #6a6d73;
+  color: #696c72;
 
   font-size: 18px;
 }
@@ -802,7 +750,7 @@ input {
 .address-bar {
   flex: 1;
 
-  height: 30px;
+  height: 29px;
 
   display: flex;
   align-items: center;
@@ -813,7 +761,7 @@ input {
   background: white;
 
   box-shadow:
-    inset 0 0 0 1px #d7d9dc;
+    inset 0 0 0 1px #d5d7da;
 
   font-size: 11px;
 
@@ -821,11 +769,11 @@ input {
 }
 
 .safari-page {
-  min-height: 349px;
+  min-height: 350px;
 
   padding: 20px;
 
-  background: #fff;
+  background: white;
 }
 
 .enokie-header {
@@ -837,7 +785,7 @@ input {
   margin-bottom: 18px;
 }
 
-.enokie-playmark {
+.enokie-play {
   width: 31px;
   height: 23px;
 
@@ -848,7 +796,6 @@ input {
   border-radius: 6px;
 
   background: #ff244b;
-
   color: white;
 
   font-size: 11px;
@@ -860,14 +807,10 @@ input {
 }
 
 .youtube-card {
-  width: min(480px,100%);
-
-  cursor: pointer;
+  width: min(500px,100%);
 }
 
 .youtube-thumbnail {
-  position: relative;
-
   width: 100%;
 
   aspect-ratio: 16/9;
@@ -886,47 +829,37 @@ input {
   object-fit: cover;
 }
 
-.youtube-title-image {
-  width: 100%;
-
-  margin-top: 8px;
-
-  object-fit: contain;
-}
-
-.youtube-info {
-  margin-top: 9px;
-}
-
 .youtube-title {
+  margin-top: 10px;
+
   font-size: 14px;
   font-weight: 650;
 
   line-height: 1.35;
 }
 
-.youtube-channel {
+.youtube-meta {
   margin-top: 5px;
 
-  color: #6f7176;
+  color: #72757a;
 
   font-size: 11px;
 }
 
-/* =========================================================
+/* =========================
    MUSIC
-========================================================= */
+========================= */
 
 .music-layout {
   display: flex;
 
-  min-height: 396px;
+  min-height: 390px;
 
   background:
     linear-gradient(
       140deg,
-      #171719,
-      #242328
+      #161618,
+      #242329
     );
 
   color: white;
@@ -937,7 +870,8 @@ input {
 
   padding: 18px 12px;
 
-  border-right: 1px solid rgba(255,255,255,.08);
+  border-right:
+    1px solid rgba(255,255,255,.08);
 
   background: rgba(10,10,12,.45);
 }
@@ -955,12 +889,11 @@ input {
   border-radius: 6px;
 
   font-size: 12px;
-
-  cursor: pointer;
 }
 
 .music-nav.active {
-  background: rgba(255,255,255,.1);
+  background:
+    rgba(255,255,255,.10);
 }
 
 .music-main {
@@ -970,7 +903,7 @@ input {
 }
 
 .music-main h2 {
-  margin-bottom: 18px;
+  margin-bottom: 17px;
 
   font-size: 18px;
 }
@@ -1008,7 +941,7 @@ input {
 }
 
 .album-name {
-  margin-top: 8px;
+  margin-top: 7px;
 
   font-size: 12px;
   font-weight: 650;
@@ -1030,20 +963,20 @@ input {
 
   transform: translateX(-50%);
 
-  width: min(900px, calc(100vw - 40px));
-
-  padding: 7px;
+  width: min(900px,calc(100vw - 40px));
 
   display: none;
 
-  border-radius: 12px;
+  padding: 7px;
 
-  background: rgba(0,0,0,.87);
+  border-radius: 11px;
+
+  background: rgba(0,0,0,.90);
 
   box-shadow:
-    0 14px 45px rgba(0,0,0,.4);
+    0 15px 45px rgba(0,0,0,.45);
 
-  z-index: 9000;
+  z-index: 9500;
 }
 
 #music-player.show {
@@ -1051,19 +984,19 @@ input {
 }
 
 #music-player img {
-  display: block;
-
   width: 100%;
 
-  border-radius: 7px;
+  display: block;
+
+  border-radius: 6px;
 }
 
-/* =========================================================
+/* =========================
    FACETIME
-========================================================= */
+========================= */
 
-.facetime-content {
-  min-height: 396px;
+.facetime-body {
+  min-height: 390px;
 
   display: flex;
   align-items: center;
@@ -1073,44 +1006,46 @@ input {
   background:
     linear-gradient(
       145deg,
-      #ebedf1,
-      #d7dbe1
+      #eceef2,
+      #d8dce2
     );
 }
 
-.facetime-big-icon {
+.facetime-body img {
   width: 92px;
   height: 92px;
+
+  object-fit: contain;
 
   margin-bottom: 17px;
 }
 
-.facetime-content h2 {
+.facetime-body h2 {
   font-size: 20px;
 }
 
-.facetime-content p {
-  margin-top: 6px;
+.facetime-body p {
+  margin-top: 5px;
 
   color: #777;
 
   font-size: 12px;
 }
 
-/* =========================================================
+/* =========================
    SETTINGS
-========================================================= */
+========================= */
 
 .settings-content {
-  min-height: 396px;
+  min-height: 390px;
 
-  padding: 22px;
+  padding: 21px;
 
   background: #f2f3f5;
 }
 
 .settings-heading {
-  margin-bottom: 18px;
+  margin-bottom: 17px;
 
   font-size: 21px;
   font-weight: 700;
@@ -1145,17 +1080,17 @@ input {
   font-size: 11px;
 }
 
-/* =========================================================
-   PDF VIEWER
-========================================================= */
+/* =========================
+   PDF
+========================= */
 
 #pdf-window {
-  width: min(800px, calc(100vw - 40px));
-  height: min(650px, calc(100vh - 100px));
+  width: min(820px,calc(100vw - 40px));
+  height: min(660px,calc(100vh - 100px));
 }
 
 .pdf-body {
-  height: calc(100% - 44px);
+  height: calc(100% - 43px);
 }
 
 .pdf-body iframe {
@@ -1167,9 +1102,9 @@ input {
   background: white;
 }
 
-/* =========================================================
+/* =========================
    DOCK
-========================================================= */
+========================= */
 
 #dock-wrap {
   position: absolute;
@@ -1179,7 +1114,7 @@ input {
 
   transform: translateX(-50%);
 
-  z-index: 9500;
+  z-index: 9000;
 }
 
 #dock {
@@ -1190,17 +1125,19 @@ input {
 
   padding: 7px 8px;
 
+  border:
+    1px solid rgba(255,255,255,.35);
+
   border-radius: 18px;
 
-  border: 1px solid rgba(255,255,255,.35);
-
-  background: rgba(218,220,225,.34);
+  background:
+    rgba(219,222,227,.35);
 
   box-shadow:
     0 10px 35px rgba(0,0,0,.32);
 
-  backdrop-filter: blur(30px) saturate(170%);
-  -webkit-backdrop-filter: blur(30px) saturate(170%);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
 }
 
 .dock-item {
@@ -1240,7 +1177,7 @@ input {
 
   filter:
     drop-shadow(
-      0 3px 5px rgba(0,0,0,.32)
+      0 3px 5px rgba(0,0,0,.30)
     );
 }
 
@@ -1257,7 +1194,6 @@ input {
   border-radius: 6px;
 
   background: rgba(30,30,32,.94);
-
   color: white;
 
   font-size: 11px;
@@ -1276,15 +1212,15 @@ input {
 .dock-dot {
   position: absolute;
 
-  bottom: -6px;
   left: 50%;
+  bottom: -6px;
 
   width: 4px;
   height: 4px;
 
   border-radius: 50%;
 
-  background: rgba(255,255,255,.9);
+  background: white;
 
   transform: translateX(-50%);
 
@@ -1301,31 +1237,11 @@ input {
 
   margin: 0 4px;
 
-  background: rgba(255,255,255,.4);
+  background:
+    rgba(255,255,255,.40);
 }
 
-/* =========================================================
-   MOBILE
-========================================================= */
-
 @media(max-width:700px) {
-
-  .menu-left span:not(#active-app) {
-    display: none;
-  }
-
-  .menu-left .menu-apple {
-    display: block;
-  }
-
-  .menu-right span:not(#menu-clock) {
-    display: none;
-  }
-
-  #menu-clock {
-    min-width: auto;
-  }
-
   .window {
     position: fixed !important;
 
@@ -1334,9 +1250,18 @@ input {
 
     width: calc(100vw - 20px);
 
-    max-height: calc(100vh - 105px);
+    max-height:
+      calc(100vh - 105px);
 
     overflow: auto;
+  }
+
+  .menu-left span:not(#active-app) {
+    display: none;
+  }
+
+  .menu-right span:not(#menu-clock) {
+    display: none;
   }
 
   .finder-sidebar,
@@ -1346,18 +1271,10 @@ input {
     width: 125px;
   }
 
-  .finder-grid {
-    grid-template-columns:
-      repeat(2,1fr);
-  }
-
+  .finder-grid,
   .photos-grid {
     grid-template-columns:
       repeat(2,1fr);
-  }
-
-  .album-grid {
-    grid-template-columns: 1fr;
   }
 
   #dock {
@@ -1377,1135 +1294,1304 @@ input {
 
 <main id="desktop">
 
-  <!-- MENU BAR -->
+<header id="menu-bar">
 
-  <header id="menu-bar">
+  <div class="menu-left">
 
-    <div class="menu-left">
-
-      <img
-        class="menu-apple"
-        src="images/icons/apple.png"
-        alt=""
-      >
-
-      <span id="active-app">
-        Finder
-      </span>
-
-      <span>File</span>
-      <span>Edit</span>
-      <span>View</span>
-      <span>Go</span>
-      <span>Window</span>
-      <span>Help</span>
-
-    </div>
-
-
-    <div class="menu-right">
-
-      <span>⌁</span>
-      <span>◉</span>
-      <span>⌁⌁</span>
-
-      <span id="menu-clock"></span>
-
-    </div>
-
-  </header>
-
-
-  <!-- DESKTOP ITEMS -->
-
-  <section id="desktop-icons">
-
-    <button
-      class="desktop-item"
-      onclick="openFinder('school')"
+    <img
+      src="images/icons/apple.png"
+      class="menu-apple"
+      alt=""
     >
 
-      <img
-        src="images/icons/folder.png"
-        alt=""
-      >
+    <span id="active-app">
+      Finder
+    </span>
 
-      <span class="desktop-label">
-        school
-      </span>
+    <span>File</span>
+    <span>Edit</span>
+    <span>View</span>
+    <span>Go</span>
+    <span>Window</span>
+    <span>Help</span>
 
-    </button>
+  </div>
 
+  <div class="menu-right">
 
-    <button
-      class="desktop-item"
-      onclick="openPhotos()"
-    >
+    <span>⌁</span>
+    <span>◉</span>
+    <span>⌁⌁</span>
 
-      <img
-        src="images/icons/folder.png"
-        alt=""
-      >
+    <span id="menu-clock"></span>
 
-      <span class="desktop-label">
-        pictures
-      </span>
+  </div>
 
-    </button>
+</header>
 
 
-    <button
-      class="desktop-item"
-      onclick="openFinder('downloads')"
-    >
+<section id="desktop-icons">
 
-      <img
-        src="images/icons/folder.png"
-        alt=""
-      >
-
-      <span class="desktop-label">
-        downloads
-      </span>
-
-    </button>
-
-  </section>
-
-
-  <!-- FINDER -->
-
-  <section
-    id="finder-window"
-    class="window"
-    style="
-      left: 140px;
-      top: 70px;
-    "
+  <button
+    class="desktop-item"
+    onclick="openFinder('school')"
   >
 
-    <div class="window-top">
+    <img
+      src="images/icons/folder.png"
+      alt=""
+    >
 
-      <div class="traffic-lights">
+    <span class="desktop-label">
+      school
+    </span>
 
-        <button
-          class="traffic red"
-          onclick="closeWindow('finder-window')"
-        ></button>
+  </button>
 
-        <button class="traffic yellow"></button>
-        <button class="traffic green"></button>
 
+  <button
+    class="desktop-item"
+    onclick="openPhotos()"
+  >
+
+    <img
+      src="images/icons/folder.png"
+      alt=""
+    >
+
+    <span class="desktop-label">
+      pictures
+    </span>
+
+  </button>
+
+
+  <button
+    class="desktop-item"
+    onclick="openFinder('downloads')"
+  >
+
+    <img
+      src="images/icons/folder.png"
+      alt=""
+    >
+
+    <span class="desktop-label">
+      downloads
+    </span>
+
+  </button>
+
+</section>
+
+
+<!-- FINDER -->
+
+<section
+  id="finder-window"
+  class="window"
+  style="
+    left:145px;
+    top:72px;
+  "
+>
+
+  <div class="window-top">
+
+    <div class="traffic-lights">
+
+      <button
+        class="traffic red"
+        onclick="closeWindow('finder-window')"
+      ></button>
+
+      <button class="traffic yellow"></button>
+      <button class="traffic green"></button>
+
+    </div>
+
+    <div class="window-title">
+      Finder
+    </div>
+
+  </div>
+
+
+  <div class="finder-layout">
+
+    <aside class="finder-sidebar">
+
+      <div class="sidebar-title">
+        Favorites
       </div>
 
       <div
-        id="finder-title"
-        class="window-title"
+        class="sidebar-row"
+        onclick="openFinder('desktop')"
       >
-        Finder
+        Desktop
       </div>
 
-    </div>
+      <div
+        class="sidebar-row"
+        onclick="openFinder('school')"
+      >
+        school
+      </div>
+
+      <div
+        class="sidebar-row"
+        onclick="openPhotos()"
+      >
+        Pictures
+      </div>
+
+      <div
+        class="sidebar-row"
+        onclick="openFinder('downloads')"
+      >
+        Downloads
+      </div>
+
+      <div class="sidebar-title">
+        Locations
+      </div>
+
+      <div class="sidebar-row active">
+        Macintosh HD
+      </div>
+
+    </aside>
 
 
-    <div class="window-body finder-layout">
+    <div class="finder-main">
 
-      <aside class="finder-sidebar">
-
-        <div class="sidebar-title">
-          Favorites
-        </div>
-
-        <div
-          class="sidebar-row"
-          onclick="openFinder('desktop')"
-        >
+      <div class="finder-heading">
+        <h3 id="finder-heading">
           Desktop
-        </div>
-
-        <div
-          class="sidebar-row"
-          onclick="openFinder('school')"
-        >
-          school
-        </div>
-
-        <div
-          class="sidebar-row"
-          onclick="openPhotos()"
-        >
-          Pictures
-        </div>
-
-        <div
-          class="sidebar-row"
-          onclick="openFinder('downloads')"
-        >
-          Downloads
-        </div>
-
-
-        <div class="sidebar-title">
-          Locations
-        </div>
-
-        <div
-          class="sidebar-row active"
-        >
-          Macintosh HD
-        </div>
-
-      </aside>
-
-
-      <div class="finder-main">
-
-        <div class="finder-heading">
-          <h3 id="finder-heading">
-            Desktop
-          </h3>
-        </div>
-
-        <div
-          id="finder-grid"
-          class="finder-grid"
-        ></div>
-
+        </h3>
       </div>
+
+      <div
+        id="finder-grid"
+        class="finder-grid"
+      ></div>
 
     </div>
 
-  </section>
+  </div>
+
+</section>
 
 
-  <!-- NOTES -->
+<!-- MESSAGES -->
 
-  <section
-    id="notes-window"
-    class="window"
-    style="
-      left: 390px;
-      top: 90px;
-      width: 620px;
-    "
-  >
+<section
+  id="messages-window"
+  class="window"
+  style="
+    left:285px;
+    top:73px;
+    width:700px;
+  "
+>
 
-    <div class="window-top">
+  <div class="window-top">
 
-      <div class="traffic-lights">
+    <div class="traffic-lights">
 
-        <button
-          class="traffic red"
-          onclick="closeWindow('notes-window')"
-        ></button>
+      <button
+        class="traffic red"
+        onclick="closeWindow('messages-window')"
+      ></button>
 
-        <button class="traffic yellow"></button>
-        <button class="traffic green"></button>
-
-      </div>
-
-      <div class="window-title">
-        Notes
-      </div>
+      <button class="traffic yellow"></button>
+      <button class="traffic green"></button>
 
     </div>
 
+    <div class="window-title">
+      Messages
+    </div>
 
-    <div class="window-body notes-layout">
-
-      <aside class="notes-sidebar">
-
-        <div class="notes-search">
-          Search
-        </div>
-
-        <div class="note-row active">
-
-          <strong>
-            grocery list
-          </strong>
-
-          <small>
-            today
-          </small>
-
-        </div>
-
-        <div class="note-row">
-
-          <strong>
-            website stuff
-          </strong>
-
-          <small>
-            yesterday
-          </small>
-
-        </div>
-
-      </aside>
+  </div>
 
 
-      <section class="note-content">
+  <div class="messages-layout">
 
-        <h2>
+    <aside class="message-sidebar">
+
+      <div class="message-search">
+        Search
+      </div>
+
+      <div id="contacts-list"></div>
+
+    </aside>
+
+
+    <section class="chat-area">
+
+      <div
+        id="chat-title"
+        class="chat-header"
+      >
+        3asians
+      </div>
+
+      <div
+        id="chat-messages"
+        class="chat-messages"
+      ></div>
+
+    </section>
+
+  </div>
+
+</section>
+
+
+<!-- NOTES -->
+
+<section
+  id="notes-window"
+  class="window"
+  style="
+    left:390px;
+    top:90px;
+    width:610px;
+  "
+>
+
+  <div class="window-top">
+
+    <div class="traffic-lights">
+
+      <button
+        class="traffic red"
+        onclick="closeWindow('notes-window')"
+      ></button>
+
+      <button class="traffic yellow"></button>
+      <button class="traffic green"></button>
+
+    </div>
+
+    <div class="window-title">
+      Notes
+    </div>
+
+  </div>
+
+
+  <div class="notes-layout">
+
+    <aside class="notes-sidebar">
+
+      <div class="notes-search">
+        Search
+      </div>
+
+      <div class="note-row active">
+
+        <strong>
           grocery list
-        </h2>
+        </strong>
 
-        <div id="grocery-text">
-          loading...
-        </div>
-
-      </section>
-
-    </div>
-
-  </section>
-
-
-  <!-- MESSAGES -->
-
-  <section
-    id="messages-window"
-    class="window"
-    style="
-      left: 320px;
-      top: 75px;
-      width: 690px;
-    "
-  >
-
-    <div class="window-top">
-
-      <div class="traffic-lights">
-
-        <button
-          class="traffic red"
-          onclick="closeWindow('messages-window')"
-        ></button>
-
-        <button class="traffic yellow"></button>
-        <button class="traffic green"></button>
+        <small>
+          today
+        </small>
 
       </div>
 
-      <div class="window-title">
-        Messages
-      </div>
+      <div class="note-row">
 
-    </div>
+        <strong>
+          website stuff
+        </strong>
 
-
-    <div class="window-body messages-layout">
-
-      <aside class="message-sidebar">
-
-        <div class="message-search">
-          Search
-        </div>
-
-        <div id="contacts-list"></div>
-
-      </aside>
-
-
-      <section class="chat-area">
-
-        <div
-          id="chat-title"
-          class="chat-header"
-        >
-          3asians
-        </div>
-
-        <div
-          id="chat-messages"
-          class="chat-messages"
-        ></div>
-
-      </section>
-
-    </div>
-
-  </section>
-
-
-  <!-- PHOTOS -->
-
-  <section
-    id="photos-window"
-    class="window"
-    style="
-      left: 260px;
-      top: 82px;
-      width: 680px;
-    "
-  >
-
-    <div class="window-top">
-
-      <div class="traffic-lights">
-
-        <button
-          class="traffic red"
-          onclick="closeWindow('photos-window')"
-        ></button>
-
-        <button class="traffic yellow"></button>
-        <button class="traffic green"></button>
+        <small>
+          yesterday
+        </small>
 
       </div>
 
-      <div class="window-title">
-        Photos
-      </div>
+    </aside>
 
-    </div>
 
-
-    <div class="window-body photos-layout">
-
-      <div class="photos-heading">
-        Library
-      </div>
-
-      <div class="photos-grid">
-
-        <button
-          class="photo-thumb"
-          onclick="showPhoto('images/photos/photo-01.jpg')"
-        >
-          <img
-            src="images/photos/photo-01.jpg"
-            alt=""
-          >
-        </button>
-
-
-        <button
-          class="photo-thumb"
-          onclick="showPhoto('images/photos/photo-02.jpg')"
-        >
-          <img
-            src="images/photos/photo-02.jpg"
-            alt=""
-          >
-        </button>
-
-
-        <button
-          class="photo-thumb"
-          onclick="showPhoto('images/photos/photo-03.jpg')"
-        >
-          <img
-            src="images/photos/photo-03.jpg"
-            alt=""
-          >
-        </button>
-
-
-        <button
-          class="photo-thumb"
-          onclick="showPhoto('images/photos/photo-04.jpg')"
-        >
-          <img
-            src="images/photos/photo-04.jpg"
-            alt=""
-          >
-        </button>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- PHOTO VIEWER -->
-
-  <section
-    id="photo-viewer"
-    class="window"
-    style="
-      left: 330px;
-      top: 65px;
-    "
-  >
-
-    <div class="window-top">
-
-      <div class="traffic-lights">
-
-        <button
-          class="traffic red"
-          onclick="closeWindow('photo-viewer')"
-        ></button>
-
-        <button class="traffic yellow"></button>
-        <button class="traffic green"></button>
-
-      </div>
-
-      <div class="window-title">
-        Preview
-      </div>
-
-    </div>
-
-
-    <div class="window-body photo-viewer-body">
-
-      <img
-        id="photo-viewer-image"
-        src=""
-        alt=""
-      >
-
-    </div>
-
-  </section>
-
-
-  <!-- SAFARI -->
-
-  <section
-    id="safari-window"
-    class="window"
-    style="
-      left: 225px;
-      top: 65px;
-      width: 760px;
-    "
-  >
-
-    <div class="window-top">
-
-      <div class="traffic-lights">
-
-        <button
-          class="traffic red"
-          onclick="closeWindow('safari-window')"
-        ></button>
-
-        <button class="traffic yellow"></button>
-        <button class="traffic green"></button>
-
-      </div>
-
-      <div class="window-title">
-        Safari
-      </div>
-
-    </div>
-
-
-    <div class="safari-toolbar">
-
-      <span class="safari-nav">
-        ‹
-      </span>
-
-      <span class="safari-nav">
-        ›
-      </span>
-
-      <div class="address-bar">
-        enokiecloud.tv
-      </div>
-
-    </div>
-
-
-    <div class="safari-page">
-
-      <div class="enokie-header">
-
-        <div class="enokie-playmark">
-          ▶
-        </div>
-
-        <div class="enokie-name">
-          EnokieTube
-        </div>
-
-      </div>
-
-
-      <div class="youtube-card">
-
-        <div class="youtube-thumbnail">
-
-          <img
-            src="images/youtube/youtube-thumbnail.jpg"
-            alt=""
-          >
-
-        </div>
-
-
-        <div class="youtube-info">
-
-          <div class="youtube-title">
-            I Found the Creepiest Discord Server
-            (YouTube Tried to Remove this Video)
-          </div>
-
-          <div class="youtube-channel">
-            No Text To Speech • 654K views
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- MUSIC -->
-
-  <section
-    id="music-window"
-    class="window"
-    style="
-      left: 270px;
-      top: 75px;
-      width: 670px;
-    "
-  >
-
-    <div class="window-top">
-
-      <div class="traffic-lights">
-
-        <button
-          class="traffic red"
-          onclick="closeWindow('music-window')"
-        ></button>
-
-        <button class="traffic yellow"></button>
-        <button class="traffic green"></button>
-
-      </div>
-
-      <div class="window-title">
-        Music
-      </div>
-
-    </div>
-
-
-    <div class="window-body music-layout">
-
-      <aside class="music-sidebar">
-
-        <div class="music-title">
-          Music
-        </div>
-
-        <div class="music-nav active">
-          Listen Now
-        </div>
-
-        <div class="music-nav">
-          Browse
-        </div>
-
-        <div class="music-nav">
-          Recently Added
-        </div>
-
-      </aside>
-
-
-      <section class="music-main">
-
-        <h2>
-          Recently Played
-        </h2>
-
-
-        <div class="album-grid">
-
-          <div
-            class="album-card"
-            onclick="playSong('one-more-try')"
-          >
-
-            <div class="album-cover">
-
-              <img
-                src="images/music/album-one-more-try.jpg"
-                alt=""
-              >
-
-            </div>
-
-            <div class="album-name">
-              One More Try
-            </div>
-
-            <div class="album-artist">
-              bistencs, cursedcry
-            </div>
-
-          </div>
-
-
-          <div
-            class="album-card"
-            onclick="playSong('wantmetoo')"
-          >
-
-            <div class="album-cover">
-
-              <img
-                src="images/music/album-wantmetoo.jpg"
-                alt=""
-              >
-
-            </div>
-
-            <div class="album-name">
-              wantmetoo (demo)
-            </div>
-
-            <div class="album-artist">
-              reiko
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-    </div>
-
-  </section>
-
-
-  <!-- FACETIME -->
-
-  <section
-    id="facetime-window"
-    class="window"
-    style="
-      left: 380px;
-      top: 100px;
-      width: 500px;
-    "
-  >
-
-    <div class="window-top">
-
-      <div class="traffic-lights">
-
-        <button
-          class="traffic red"
-          onclick="closeWindow('facetime-window')"
-        ></button>
-
-        <button class="traffic yellow"></button>
-        <button class="traffic green"></button>
-
-      </div>
-
-      <div class="window-title">
-        FaceTime
-      </div>
-
-    </div>
-
-
-    <div class="window-body facetime-content">
-
-      <img
-        class="facetime-big-icon"
-        src="images/icons/facetime.png"
-        alt=""
-      >
+    <section class="note-content">
 
       <h2>
-        FaceTime
+        grocery list
       </h2>
 
-      <p>
-        No recent calls
-      </p>
+      <div class="note-text">
+☐ 1 red onion
+☐ 1 bulb garlic
+☐ 2 roma tomatoes
+☐ 1 bunch green onions
+☐ 1 small ginger
+☐ 1 bottle soy sauce
+☐ 1 bottle cane vinegar
+☐ 1 small bottle fish sauce
+☐ 2 packs pork bouillon cubes
+☐ 1 pack pork belly
+☐ 1 pack chicken thighs
+☐ 1 pack pancit bihon
+☐ 1 can coconut milk
+☐ 1 can spam
+☐ 1 dozen eggs
+☐ 1 small bag jasmine rice
+☐ 4 calamansi
+☐ 2 potatoes
+☐ 2 carrots
+☐ 1 small cabbage
+
+snacks / extras
+
+☐ 1 pack skyflakes
+☐ 1 bag chicharron
+☐ 1 box mango juice
+      </div>
+
+    </section>
+
+  </div>
+
+</section>
+
+
+<!-- PHOTOS -->
+
+<section
+  id="photos-window"
+  class="window"
+  style="
+    left:270px;
+    top:80px;
+    width:680px;
+  "
+>
+
+  <div class="window-top">
+
+    <div class="traffic-lights">
+
+      <button
+        class="traffic red"
+        onclick="closeWindow('photos-window')"
+      ></button>
+
+      <button class="traffic yellow"></button>
+      <button class="traffic green"></button>
 
     </div>
 
-  </section>
+    <div class="window-title">
+      Photos
+    </div>
+
+  </div>
 
 
-  <!-- SETTINGS -->
+  <div class="photos-content">
 
-  <section
-    id="settings-window"
-    class="window"
-    style="
-      left: 370px;
-      top: 95px;
-      width: 560px;
-    "
-  >
-
-    <div class="window-top">
-
-      <div class="traffic-lights">
-
-        <button
-          class="traffic red"
-          onclick="closeWindow('settings-window')"
-        ></button>
-
-        <button class="traffic yellow"></button>
-        <button class="traffic green"></button>
-
-      </div>
-
-      <div class="window-title">
-        System Settings
-      </div>
-
+    <div class="photos-heading">
+      Library
     </div>
 
 
-    <div class="window-body settings-content">
+    <div class="photos-grid">
 
-      <div class="settings-heading">
-        System Settings
-      </div>
-
-      <div class="setting-card">
-
-        <strong>
-          Appearance
-        </strong>
-
-        <span>
-          Auto
-        </span>
-
-      </div>
-
-      <div class="setting-card">
-
-        <strong>
-          Wallpaper
-        </strong>
-
-        <span>
-          Memories
-        </span>
-
-      </div>
-
-      <div class="setting-card">
-
-        <strong>
-          Desktop & Dock
-        </strong>
-
-        <span>
-          Customized
-        </span>
-
-      </div>
-
-    </div>
-
-  </section>
+      <button
+        class="photo-thumb"
+        onclick="showPhoto('images/photos/photo-01.jpg')"
+      >
+        <img
+          src="images/photos/photo-01.jpg"
+          alt=""
+        >
+      </button>
 
 
-  <!-- PDF -->
+      <button
+        class="photo-thumb"
+        onclick="showPhoto('images/photos/photo-02.jpg')"
+      >
+        <img
+          src="images/photos/photo-02.jpg"
+          alt=""
+        >
+      </button>
 
-  <section
-    id="pdf-window"
-    class="window"
-    style="
-      left: 220px;
-      top: 55px;
-    "
-  >
 
-    <div class="window-top">
+      <button
+        class="photo-thumb"
+        onclick="showPhoto('images/photos/photo-03.jpg')"
+      >
+        <img
+          src="images/photos/photo-03.jpg"
+          alt=""
+        >
+      </button>
 
-      <div class="traffic-lights">
 
-        <button
-          class="traffic red"
-          onclick="closeWindow('pdf-window')"
-        ></button>
-
-        <button class="traffic yellow"></button>
-        <button class="traffic green"></button>
-
-      </div>
-
-      <div class="window-title">
-        syllabus.pdf
-      </div>
+      <button
+        class="photo-thumb"
+        onclick="showPhoto('images/photos/photo-04.jpg')"
+      >
+        <img
+          src="images/photos/photo-04.jpg"
+          alt=""
+        >
+      </button>
 
     </div>
 
+  </div>
 
-    <div class="pdf-body">
+</section>
 
-      <iframe
-        src="school/syllabus.pdf"
-        title="syllabus"
-      ></iframe>
+
+<!-- PHOTO VIEWER -->
+
+<section
+  id="photo-viewer"
+  class="window"
+  style="
+    left:330px;
+    top:60px;
+  "
+>
+
+  <div class="window-top">
+
+    <div class="traffic-lights">
+
+      <button
+        class="traffic red"
+        onclick="closeWindow('photo-viewer')"
+      ></button>
+
+      <button class="traffic yellow"></button>
+      <button class="traffic green"></button>
 
     </div>
 
-  </section>
+    <div class="window-title">
+      Preview
+    </div>
+
+  </div>
 
 
-  <!-- MUSIC PLAYER -->
-
-  <div id="music-player">
+  <div class="photo-viewer-body">
 
     <img
-      id="music-player-image"
+      id="photo-viewer-image"
       src=""
       alt=""
     >
 
   </div>
 
-
-  <!-- DOCK -->
-
-  <div id="dock-wrap">
-
-    <nav id="dock">
+</section>
 
 
-      <button
-        class="dock-item"
-        data-window="finder-window"
-        onclick="
-          openFinder('desktop');
-          markRunning(this);
-        "
-      >
+<!-- SAFARI -->
 
-        <span class="dock-tooltip">
-          Finder
-        </span>
+<section
+  id="safari-window"
+  class="window"
+  style="
+    left:220px;
+    top:65px;
+    width:760px;
+  "
+>
 
-        <img
-          src="images/icons/finder.png"
-          alt=""
-        >
+  <div class="window-top">
 
-        <span class="dock-dot"></span>
-
-      </button>
-
+    <div class="traffic-lights">
 
       <button
-        class="dock-item"
-        onclick="
-          openApp(
-            'safari-window',
-            'Safari',
-            this
-          )
-        "
-      >
+        class="traffic red"
+        onclick="closeWindow('safari-window')"
+      ></button>
 
-        <span class="dock-tooltip">
-          Safari
-        </span>
+      <button class="traffic yellow"></button>
+      <button class="traffic green"></button>
 
-        <img
-          src="images/icons/safari.png"
-          alt=""
-        >
+    </div>
 
-        <span class="dock-dot"></span>
-
-      </button>
-
-
-      <button
-        class="dock-item"
-        onclick="
-          openMessages(this)
-        "
-      >
-
-        <span class="dock-tooltip">
-          Messages
-        </span>
-
-        <img
-          src="images/icons/messages.png"
-          alt=""
-        >
-
-        <span class="dock-dot"></span>
-
-      </button>
-
-
-      <button
-        class="dock-item"
-        onclick="
-          openPhotos(this)
-        "
-      >
-
-        <span class="dock-tooltip">
-          Photos
-        </span>
-
-        <img
-          src="images/icons/photos.png"
-          alt=""
-        >
-
-        <span class="dock-dot"></span>
-
-      </button>
-
-
-      <button
-        class="dock-item"
-        onclick="
-          openApp(
-            'facetime-window',
-            'FaceTime',
-            this
-          )
-        "
-      >
-
-        <span class="dock-tooltip">
-          FaceTime
-        </span>
-
-        <img
-          src="images/icons/facetime.png"
-          alt=""
-        >
-
-        <span class="dock-dot"></span>
-
-      </button>
-
-
-      <button
-        class="dock-item"
-        onclick="
-          openApp(
-            'music-window',
-            'Music',
-            this
-          )
-        "
-      >
-
-        <span class="dock-tooltip">
-          Music
-        </span>
-
-        <img
-          src="images/icons/music.png"
-          alt=""
-        >
-
-        <span class="dock-dot"></span>
-
-      </button>
-
-
-      <button
-        class="dock-item"
-        onclick="
-          openNotes(this)
-        "
-      >
-
-        <span class="dock-tooltip">
-          Notes
-        </span>
-
-        <img
-          src="images/icons/notes.png"
-          alt=""
-        >
-
-        <span class="dock-dot"></span>
-
-      </button>
-
-
-      <button
-        class="dock-item"
-        onclick="
-          openApp(
-            'settings-window',
-            'System Settings',
-            this
-          )
-        "
-      >
-
-        <span class="dock-tooltip">
-          System Settings
-        </span>
-
-        <img
-          src="images/icons/settings.png"
-          alt=""
-        >
-
-        <span class="dock-dot"></span>
-
-      </button>
-
-
-      <div class="dock-divider"></div>
-
-
-      <button
-        class="dock-item"
-      >
-
-        <span class="dock-tooltip">
-          Trash
-        </span>
-
-        <img
-          src="images/icons/trash.png"
-          alt=""
-        >
-
-      </button>
-
-    </nav>
+    <div class="window-title">
+      Safari
+    </div>
 
   </div>
+
+
+  <div class="safari-toolbar">
+
+    <span class="safari-nav">
+      ‹
+    </span>
+
+    <span class="safari-nav">
+      ›
+    </span>
+
+    <div class="address-bar">
+      enokiecloud.tv
+    </div>
+
+  </div>
+
+
+  <div class="safari-page">
+
+    <div class="enokie-header">
+
+      <div class="enokie-play">
+        ▶
+      </div>
+
+      <div class="enokie-name">
+        EnokieTube
+      </div>
+
+    </div>
+
+
+    <div class="youtube-card">
+
+      <div class="youtube-thumbnail">
+
+        <img
+          src="images/youtube/youtube-thumbnail.jpg"
+          alt=""
+        >
+
+      </div>
+
+      <div class="youtube-title">
+        I Found the Creepiest Discord Server
+        (YouTube Tried to Remove this Video)
+      </div>
+
+      <div class="youtube-meta">
+        No Text To Speech · 654K views
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- MUSIC -->
+
+<section
+  id="music-window"
+  class="window"
+  style="
+    left:265px;
+    top:75px;
+    width:670px;
+  "
+>
+
+  <div class="window-top">
+
+    <div class="traffic-lights">
+
+      <button
+        class="traffic red"
+        onclick="closeWindow('music-window')"
+      ></button>
+
+      <button class="traffic yellow"></button>
+      <button class="traffic green"></button>
+
+    </div>
+
+    <div class="window-title">
+      Music
+    </div>
+
+  </div>
+
+
+  <div class="music-layout">
+
+    <aside class="music-sidebar">
+
+      <div class="music-title">
+        Music
+      </div>
+
+      <div class="music-nav active">
+        Listen Now
+      </div>
+
+      <div class="music-nav">
+        Browse
+      </div>
+
+      <div class="music-nav">
+        Recently Added
+      </div>
+
+    </aside>
+
+
+    <section class="music-main">
+
+      <h2>
+        Recently Played
+      </h2>
+
+
+      <div class="album-grid">
+
+        <div
+          class="album-card"
+          onclick="playSong('one-more-try')"
+        >
+
+          <div class="album-cover">
+
+            <img
+              src="images/music/album-one-more-try.jpg"
+              alt=""
+            >
+
+          </div>
+
+          <div class="album-name">
+            One More Try
+          </div>
+
+          <div class="album-artist">
+            bistencs, cursedcry
+          </div>
+
+        </div>
+
+
+        <div
+          class="album-card"
+          onclick="playSong('wantmetoo')"
+        >
+
+          <div class="album-cover">
+
+            <img
+              src="images/music/album-wantmetoo.jpg"
+              alt=""
+            >
+
+          </div>
+
+          <div class="album-name">
+            wantmetoo (demo)
+          </div>
+
+          <div class="album-artist">
+            reiko
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</section>
+
+
+<!-- FACETIME -->
+
+<section
+  id="facetime-window"
+  class="window"
+  style="
+    left:385px;
+    top:100px;
+    width:500px;
+  "
+>
+
+  <div class="window-top">
+
+    <div class="traffic-lights">
+
+      <button
+        class="traffic red"
+        onclick="closeWindow('facetime-window')"
+      ></button>
+
+      <button class="traffic yellow"></button>
+      <button class="traffic green"></button>
+
+    </div>
+
+    <div class="window-title">
+      FaceTime
+    </div>
+
+  </div>
+
+
+  <div class="facetime-body">
+
+    <img
+      src="images/icons/facetime.png"
+      alt=""
+    >
+
+    <h2>
+      FaceTime
+    </h2>
+
+    <p>
+      No recent calls
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- SETTINGS -->
+
+<section
+  id="settings-window"
+  class="window"
+  style="
+    left:370px;
+    top:95px;
+    width:560px;
+  "
+>
+
+  <div class="window-top">
+
+    <div class="traffic-lights">
+
+      <button
+        class="traffic red"
+        onclick="closeWindow('settings-window')"
+      ></button>
+
+      <button class="traffic yellow"></button>
+      <button class="traffic green"></button>
+
+    </div>
+
+    <div class="window-title">
+      System Settings
+    </div>
+
+  </div>
+
+
+  <div class="settings-content">
+
+    <div class="settings-heading">
+      System Settings
+    </div>
+
+    <div class="setting-card">
+
+      <strong>
+        Appearance
+      </strong>
+
+      <span>
+        Auto
+      </span>
+
+    </div>
+
+    <div class="setting-card">
+
+      <strong>
+        Wallpaper
+      </strong>
+
+      <span>
+        Memories
+      </span>
+
+    </div>
+
+    <div class="setting-card">
+
+      <strong>
+        Desktop & Dock
+      </strong>
+
+      <span>
+        Customized
+      </span>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- PDF -->
+
+<section
+  id="pdf-window"
+  class="window"
+  style="
+    left:220px;
+    top:55px;
+  "
+>
+
+  <div class="window-top">
+
+    <div class="traffic-lights">
+
+      <button
+        class="traffic red"
+        onclick="closeWindow('pdf-window')"
+      ></button>
+
+      <button class="traffic yellow"></button>
+      <button class="traffic green"></button>
+
+    </div>
+
+    <div class="window-title">
+      syllabus.pdf
+    </div>
+
+  </div>
+
+
+  <div class="pdf-body">
+
+    <iframe
+      src="school/syllabus.pdf"
+      title="syllabus"
+    ></iframe>
+
+  </div>
+
+</section>
+
+
+<!-- MUSIC PLAYER -->
+
+<div id="music-player">
+
+  <img
+    id="music-player-image"
+    src=""
+    alt=""
+  >
+
+</div>
+
+
+<!-- DOCK -->
+
+<div id="dock-wrap">
+
+<nav id="dock">
+
+  <button
+    class="dock-item"
+    onclick="
+      openFinder('desktop');
+      markRunning(this);
+    "
+  >
+
+    <span class="dock-tooltip">
+      Finder
+    </span>
+
+    <img
+      src="images/icons/finder.png"
+      alt=""
+    >
+
+    <span class="dock-dot"></span>
+
+  </button>
+
+
+  <button
+    class="dock-item"
+    onclick="
+      openApp(
+        'safari-window',
+        'Safari',
+        this
+      )
+    "
+  >
+
+    <span class="dock-tooltip">
+      Safari
+    </span>
+
+    <img
+      src="images/icons/safari.png"
+      alt=""
+    >
+
+    <span class="dock-dot"></span>
+
+  </button>
+
+
+  <button
+    class="dock-item"
+    onclick="
+      openMessages(this)
+    "
+  >
+
+    <span class="dock-tooltip">
+      Messages
+    </span>
+
+    <img
+      src="images/icons/messages.png"
+      alt=""
+    >
+
+    <span class="dock-dot"></span>
+
+  </button>
+
+
+  <button
+    class="dock-item"
+    onclick="
+      openPhotos(this)
+    "
+  >
+
+    <span class="dock-tooltip">
+      Photos
+    </span>
+
+    <img
+      src="images/icons/photos.png"
+      alt=""
+    >
+
+    <span class="dock-dot"></span>
+
+  </button>
+
+
+  <button
+    class="dock-item"
+    onclick="
+      openApp(
+        'facetime-window',
+        'FaceTime',
+        this
+      )
+    "
+  >
+
+    <span class="dock-tooltip">
+      FaceTime
+    </span>
+
+    <img
+      src="images/icons/facetime.png"
+      alt=""
+    >
+
+    <span class="dock-dot"></span>
+
+  </button>
+
+
+  <button
+    class="dock-item"
+    onclick="
+      openApp(
+        'music-window',
+        'Music',
+        this
+      )
+    "
+  >
+
+    <span class="dock-tooltip">
+      Music
+    </span>
+
+    <img
+      src="images/icons/music.png"
+      alt=""
+    >
+
+    <span class="dock-dot"></span>
+
+  </button>
+
+
+  <button
+    class="dock-item"
+    onclick="
+      openApp(
+        'notes-window',
+        'Notes',
+        this
+      )
+    "
+  >
+
+    <span class="dock-tooltip">
+      Notes
+    </span>
+
+    <img
+      src="images/icons/notes.png"
+      alt=""
+    >
+
+    <span class="dock-dot"></span>
+
+  </button>
+
+
+  <button
+    class="dock-item"
+    onclick="
+      openApp(
+        'settings-window',
+        'System Settings',
+        this
+      )
+    "
+  >
+
+    <span class="dock-tooltip">
+      System Settings
+    </span>
+
+    <img
+      src="images/icons/settings.png"
+      alt=""
+    >
+
+    <span class="dock-dot"></span>
+
+  </button>
+
+
+  <div class="dock-divider"></div>
+
+
+  <button class="dock-item">
+
+    <span class="dock-tooltip">
+      Trash
+    </span>
+
+    <img
+      src="images/icons/trash.png"
+      alt=""
+    >
+
+  </button>
+
+</nav>
+
+</div>
 
 </main>
 
 
 <script>
 
-let topZ = 300;
-
-let contactsData = [];
-let groupChatData = null;
+let topZ = 500;
 
 
-/* =========================================================
+/* =========================
+   CORRECT MESSAGE DATA
+========================= */
+
+const chats = {
+
+  "3asians": [
+    {
+      sender: "jadabae",
+      text: "bro where are we eating"
+    },
+    {
+      sender: "noemibae",
+      text: "why do we ask this every time 😭"
+    },
+    {
+      sender: "kyle",
+      text: "because nobody ever picks"
+    },
+    {
+      sender: "kels",
+      text: "okay everyone gets ONE suggestion and then we're spinning a wheel"
+    },
+    {
+      sender: "jadabae",
+      text: "hotpot"
+    },
+    {
+      sender: "noemibae",
+      text: "kbbq"
+    },
+    {
+      sender: "kyle",
+      text: "in n out"
+    },
+    {
+      sender: "kels",
+      text: "kyle be serious"
+    },
+    {
+      sender: "kyle",
+      text: "i am serious"
+    },
+    {
+      sender: "jadabae",
+      text: "remove him from the gc"
+    },
+    {
+      sender: "noemibae",
+      text: "LMFAOOOO"
+    },
+    {
+      sender: "kels",
+      text: "okay hotpot vs kbbq bc apparently democracy has limits"
+    }
+  ],
+
+
+  "jadabae": [
+    {
+      sender: "jadabae",
+      text: "where are u"
+    },
+    {
+      sender: "kels",
+      text: "girl im coming 😭"
+    },
+    {
+      sender: "jadabae",
+      text: "you said that 20 mins ago"
+    }
+  ],
+
+
+  "noemibae": [
+    {
+      sender: "noemibae",
+      text: "look at what i just sent u"
+    },
+    {
+      sender: "kels",
+      text: "LMFAOOO STOP"
+    },
+    {
+      sender: "noemibae",
+      text: "i knew youd get it"
+    }
+  ],
+
+
+  "kyle": [
+    {
+      sender: "kyle",
+      text: "yall still going out"
+    },
+    {
+      sender: "kels",
+      text: "yes unfortunately"
+    },
+    {
+      sender: "kyle",
+      text: "crazy"
+    }
+  ],
+
+
+  "lil sis ava": [
+    {
+      sender: "lil sis ava",
+      text: "are u home later"
+    },
+    {
+      sender: "kels",
+      text: "yeah why"
+    },
+    {
+      sender: "lil sis ava",
+      text: "i need to tell u something lol"
+    }
+  ],
+
+
+  "kiddo jas": [
+    {
+      sender: "kiddo jas",
+      text: "can i ask u something"
+    },
+    {
+      sender: "kels",
+      text: "ofc whats up"
+    }
+  ],
+
+
+  "mami": [
+    {
+      sender: "mami",
+      text: "anak text me when you get home"
+    },
+    {
+      sender: "kels",
+      text: "okay ma i will"
+    },
+    {
+      sender: "mami",
+      text: "dont forget"
+    }
+  ]
+
+};
+
+
+const contacts = [
+  "3asians",
+  "jadabae",
+  "noemibae",
+  "kyle",
+  "lil sis ava",
+  "kiddo jas",
+  "mami"
+];
+
+
+/* =========================
    CLOCK
-========================================================= */
+========================= */
 
 function updateClock() {
 
@@ -2546,13 +2632,13 @@ setInterval(
 );
 
 
-/* =========================================================
-   OPEN / CLOSE WINDOWS
-========================================================= */
+/* =========================
+   WINDOWS
+========================= */
 
 function openApp(
   id,
-  appName,
+  name,
   dockButton = null
 ) {
 
@@ -2571,7 +2657,7 @@ function openApp(
   document.getElementById(
     "active-app"
   ).textContent =
-    appName;
+    name;
 
 
   if(dockButton) {
@@ -2608,12 +2694,14 @@ function markRunning(button) {
 }
 
 
-/* =========================================================
-   DRAGGING
-========================================================= */
+/* =========================
+   DRAG WINDOWS
+========================= */
 
 document
-  .querySelectorAll(".window")
+  .querySelectorAll(
+    ".window"
+  )
   .forEach(
     win => {
 
@@ -2638,14 +2726,12 @@ document
             return;
           }
 
-
           dragging = true;
 
           topZ++;
 
           win.style.zIndex =
             topZ;
-
 
           const rect =
             win.getBoundingClientRect();
@@ -2670,14 +2756,12 @@ document
             return;
           }
 
-
           if(
             window.innerWidth
             <= 700
           ) {
             return;
           }
-
 
           win.style.left =
             event.clientX
@@ -2706,9 +2790,37 @@ document
   );
 
 
-/* =========================================================
+/* =========================
    FINDER
-========================================================= */
+========================= */
+
+function folderTile(
+  name,
+  action
+) {
+
+  return `
+
+    <button
+      class="finder-file"
+      ${action ? `onclick="${action}"` : ""}
+    >
+
+      <img
+        src="images/icons/folder.png"
+        alt=""
+      >
+
+      <div class="finder-file-name">
+        ${name}
+      </div>
+
+    </button>
+
+  `;
+
+}
+
 
 function openFinder(folder) {
 
@@ -2736,6 +2848,7 @@ function openFinder(folder) {
       "Desktop";
 
     grid.innerHTML = `
+
       ${folderTile(
         "school",
         "openFinder('school')"
@@ -2750,6 +2863,7 @@ function openFinder(folder) {
         "downloads",
         "openFinder('downloads')"
       )}
+
     `;
 
   }
@@ -2788,7 +2902,6 @@ function openFinder(folder) {
         ""
       )}
 
-
       ${folderTile(
         "readings",
         ""
@@ -2808,17 +2921,37 @@ function openFinder(folder) {
 
     grid.innerHTML = `
 
-      ${fileTile(
-        "Screenshot 2026-09-15.png"
-      )}
+      <button class="finder-file">
 
-      ${fileTile(
-        "untitled.pdf"
-      )}
+        <div class="pdf-icon"></div>
 
-      ${fileTile(
-        "image (1).png"
-      )}
+        <div class="finder-file-name">
+          Screenshot 2026-09-15.png
+        </div>
+
+      </button>
+
+
+      <button class="finder-file">
+
+        <div class="pdf-icon"></div>
+
+        <div class="finder-file-name">
+          untitled.pdf
+        </div>
+
+      </button>
+
+
+      <button class="finder-file">
+
+        <div class="pdf-icon"></div>
+
+        <div class="finder-file-name">
+          image (1).png
+        </div>
+
+      </button>
 
     `;
 
@@ -2827,163 +2960,22 @@ function openFinder(folder) {
 }
 
 
-function folderTile(
-  name,
-  onclick
-) {
-
-  return `
-
-    <button
-      class="finder-file"
-      ${
-        onclick
-        ? `onclick="${onclick}"`
-        : ""
-      }
-    >
-
-      <img
-        src="images/icons/folder.png"
-        alt=""
-      >
-
-      <div class="finder-file-name">
-        ${name}
-      </div>
-
-    </button>
-
-  `;
-
-}
-
-
-function fileTile(name) {
-
-  return `
-
-    <button
-      class="finder-file"
-    >
-
-      <div class="pdf-icon"></div>
-
-      <div class="finder-file-name">
-        ${name}
-      </div>
-
-    </button>
-
-  `;
-
-}
-
-
-/* =========================================================
-   NOTES
-========================================================= */
-
-async function loadGroceryList() {
-
-  try {
-
-    const response =
-      await fetch(
-        "notes/grocery-list.txt"
-      );
-
-    const text =
-      await response.text();
-
-    document.getElementById(
-      "grocery-text"
-    ).textContent =
-      text;
-
-  }
-
-  catch(error) {
-
-    document.getElementById(
-      "grocery-text"
-    ).textContent =
-      "could not load note.";
-
-  }
-
-}
-
-
-function openNotes(button) {
-
-  openApp(
-    "notes-window",
-    "Notes",
-    button
-  );
-
-  loadGroceryList();
-
-}
-
-
-/* =========================================================
+/* =========================
    MESSAGES
-========================================================= */
-
-async function loadMessages() {
-
-  try {
-
-    const contactsResponse =
-      await fetch(
-        "messages/contacts.json"
-      );
-
-    contactsData =
-      await contactsResponse.json();
-
-
-    const groupResponse =
-      await fetch(
-        "messages/group-chat.json"
-      );
-
-    groupChatData =
-      await groupResponse.json();
-
-
-    renderContacts();
-
-    renderGroupChat();
-
-  }
-
-  catch(error) {
-
-    console.error(
-      "Could not load messages",
-      error
-    );
-
-  }
-
-}
-
+========================= */
 
 function renderContacts() {
 
-  const list =
+  const container =
     document.getElementById(
       "contacts-list"
     );
 
-  list.innerHTML = "";
+  container.innerHTML = "";
 
 
-  contactsData.forEach(
-    contact => {
+  contacts.forEach(
+    name => {
 
       const row =
         document.createElement(
@@ -2995,8 +2987,7 @@ function renderContacts() {
 
 
       if(
-        contact.name ===
-        "3asians"
+        name === "3asians"
       ) {
         row.classList.add(
           "active"
@@ -3004,50 +2995,50 @@ function renderContacts() {
       }
 
 
-      const note =
-        contact.note
-        ? contact.note
-        : (
-            contact.type === "group"
-            ? "group chat"
-            : ""
-          );
-
-
       row.innerHTML = `
 
         <div class="contact-name">
-          ${contact.name}
+          ${name}
         </div>
 
         <div class="contact-preview">
-          ${note}
+          ${
+            name === "3asians"
+            ? "group chat"
+            : (
+                name === "mami"
+                ? "mom"
+                : ""
+              )
+          }
         </div>
 
       `;
 
 
-      if(
-        contact.name ===
-        "3asians"
-      ) {
+      row.onclick =
+        () => {
 
-        row.onclick =
-          renderGroupChat;
+          document
+            .querySelectorAll(
+              ".contact-row"
+            )
+            .forEach(
+              item => item.classList.remove(
+                "active"
+              )
+            );
 
-      }
-
-      else {
-
-        row.onclick =
-          () => renderSimpleContact(
-            contact.name
+          row.classList.add(
+            "active"
           );
 
-      }
+          renderChat(name);
+
+        };
 
 
-      list.appendChild(
+      container.appendChild(
         row
       );
 
@@ -3057,28 +3048,23 @@ function renderContacts() {
 }
 
 
-function renderGroupChat() {
-
-  if(!groupChatData) {
-    return;
-  }
-
+function renderChat(name) {
 
   document.getElementById(
     "chat-title"
   ).textContent =
-    groupChatData.name;
+    name;
 
 
-  const area =
+  const container =
     document.getElementById(
       "chat-messages"
     );
 
-  area.innerHTML = "";
+  container.innerHTML = "";
 
 
-  groupChatData.messages.forEach(
+  chats[name].forEach(
     message => {
 
       const block =
@@ -3088,9 +3074,7 @@ function renderGroupChat() {
 
 
       const isMe =
-        message.sender
-        .toLowerCase() ===
-        "kels";
+        message.sender === "kels";
 
 
       block.className =
@@ -3115,7 +3099,7 @@ function renderGroupChat() {
       `;
 
 
-      area.appendChild(
+      container.appendChild(
         block
       );
 
@@ -3123,59 +3107,8 @@ function renderGroupChat() {
   );
 
 
-  area.scrollTop =
-    area.scrollHeight;
-
-}
-
-
-function renderSimpleContact(name) {
-
-  document.getElementById(
-    "chat-title"
-  ).textContent =
-    name;
-
-
-  const area =
-    document.getElementById(
-      "chat-messages"
-    );
-
-
-  let text =
-    "hey";
-
-
-  if(name === "mami") {
-    text =
-      "text me when you get home";
-  }
-
-
-  if(name === "lil sis ava") {
-    text =
-      "look what i sent you 😭";
-  }
-
-
-  if(name === "kiddo jas") {
-    text =
-      "are you free later";
-  }
-
-
-  area.innerHTML = `
-
-    <div class="chat-message">
-
-      <div class="chat-bubble">
-        ${text}
-      </div>
-
-    </div>
-
-  `;
+  container.scrollTop =
+    container.scrollHeight;
 
 }
 
@@ -3188,14 +3121,18 @@ function openMessages(button) {
     button
   );
 
-  loadMessages();
+  renderContacts();
+
+  renderChat(
+    "3asians"
+  );
 
 }
 
 
-/* =========================================================
+/* =========================
    PHOTOS
-========================================================= */
+========================= */
 
 function openPhotos(button = null) {
 
@@ -3223,9 +3160,9 @@ function showPhoto(src) {
 }
 
 
-/* =========================================================
+/* =========================
    MUSIC
-========================================================= */
+========================= */
 
 function playSong(song) {
 
@@ -3279,21 +3216,19 @@ function playSong(song) {
 }
 
 
-/* =========================================================
-   INITIAL LOAD
-========================================================= */
+/* =========================
+   START
+========================= */
 
 window.addEventListener(
   "load",
   () => {
 
-    openFinder(
-      "desktop"
+    renderContacts();
+
+    renderChat(
+      "3asians"
     );
-
-    loadMessages();
-
-    loadGroceryList();
 
   }
 );
