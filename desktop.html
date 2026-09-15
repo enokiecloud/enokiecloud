@@ -533,6 +533,29 @@ button{color:inherit}
   #dock{gap:3px;padding:5px}
   .menu-left span:not(#active-app){display:none}
 }
+
+/* ================= V16 VISUAL REBOOT ================= */
+:root{--v16-line:rgba(55,58,67,.12);--v16-shadow:0 28px 90px rgba(0,0,0,.34);--v16-blue:#0a84ff}
+#desktop{background:radial-gradient(circle at 50% 38%,rgba(255,255,255,.03),rgba(0,0,0,.17) 72%),url("images/photos/wallpaper.jpg") center/cover no-repeat}
+#desktop:before{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;box-shadow:inset 0 0 160px rgba(0,0,0,.23)}
+#menubar{height:31px;background:rgba(14,14,17,.56);font-size:11.5px}
+.window{width:min(760px,90vw);min-height:470px;border-radius:16px;background:rgba(248,249,252,.88);border:1px solid rgba(255,255,255,.68);box-shadow:var(--v16-shadow);backdrop-filter:blur(24px) saturate(120%);-webkit-backdrop-filter:blur(24px) saturate(120%)}
+.window.active{animation:v16Open .2s cubic-bezier(.2,.8,.2,1)}
+@keyframes v16Open{from{opacity:0;transform:scale(.965) translateY(8px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.window-top{height:46px;padding:0 15px;background:rgba(239,240,244,.82);border-bottom:1px solid var(--v16-line)}
+.window-title{font-size:11.5px;color:#45474e}.dot{width:11px;height:11px}
+#desktop-icons{top:50px;right:22px;gap:15px}.desktop-icon{width:82px;border-radius:10px}.desktop-icon img{width:50px;height:50px}.desktop-icon span{font-size:10.5px}
+#dock{gap:7px;padding:7px 9px;border-radius:20px;background:rgba(227,229,234,.36);border:1px solid rgba(255,255,255,.34);box-shadow:0 14px 42px rgba(0,0,0,.27)}
+.dock-item{width:52px;height:52px;transition:transform .17s cubic-bezier(.2,.8,.2,1),margin .17s}.dock-item:hover{transform:translateY(-11px) scale(1.22);margin:0 5px}.dock-item.attention{animation:dockBounce .62s cubic-bezier(.25,.75,.35,1) 2}@keyframes dockBounce{0%,100%{transform:translateY(0)}45%{transform:translateY(-18px)}70%{transform:translateY(-5px)}}
+#finder-window{width:min(800px,92vw)}.finder-layout{height:500px}.sidebar{width:166px;flex-basis:166px;background:rgba(226,229,235,.72);padding-top:15px}.side-title{font-size:9px;letter-spacing:.04em}.side-row{font-size:11px;padding:7px 10px}.finder-main{flex:1;padding:20px 18px;background:rgba(255,255,255,.76)}.finder-heading{margin-bottom:14px}.finder-heading h2{font-size:20px;letter-spacing:-.02em}.finder-grid{grid-template-columns:repeat(3,minmax(90px,1fr));gap:14px 10px}.file{min-height:100px;padding:9px 6px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;border-radius:11px;transition:.15s}.file:hover{background:rgba(72,118,181,.09)}.file img{width:54px;height:54px}.doc-icon{width:50px;height:62px;border-radius:7px;box-shadow:0 4px 13px rgba(0,0,0,.08)}.file-name{font-size:10.5px;line-height:1.25}.file-meta{font-size:8.5px}
+.finder-preview{width:230px;flex:0 0 230px;display:flex;flex-direction:column;border-left:1px solid var(--v16-line);background:rgba(247,247,249,.88)}.finder-preview.empty .quick-content{color:#9a9ca2}.quick-head{padding:17px 17px 11px;border-bottom:1px solid var(--v16-line)}.quick-head small{display:block;font-size:9px;color:#96989d;margin-bottom:5px}.quick-head strong{display:block;font-size:14px}.quick-content{flex:1;padding:18px 17px;white-space:pre-line;overflow:auto;font-size:12px;line-height:1.58;color:#34363b}.quick-foot{padding:10px 16px;border-top:1px solid var(--v16-line);font-size:9px;color:#92949a}
+#messages-window{width:min(780px,92vw)}.messages-layout{height:525px;background:rgba(255,255,255,.88)}.message-list{width:245px;flex-basis:245px;background:rgba(239,240,244,.84);border-right:1px solid var(--v16-line)}.search{height:31px;margin:12px 12px 9px;background:rgba(212,214,219,.62);border-radius:9px}.contact{display:flex;align-items:center;gap:10px;padding:9px 11px;border-top:0;border-radius:9px;margin:2px 6px}.contact:hover{background:rgba(0,0,0,.045)}.contact.active{background:rgba(10,132,255,.15)}.contact.story-lead{background:rgba(10,132,255,.08)}.contact-avatar{width:38px;height:38px;flex:0 0 38px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#d4d7de,#aeb4c0);color:#fff;font-size:12px;font-weight:700;box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)}.contact.story-lead .contact-avatar{background:linear-gradient(145deg,#62a9ff,#0a84ff)}.contact-copy{min-width:0;flex:1}.contact strong{font-size:11.5px}.contact small{font-size:9.5px;color:#7c7f85}.lead-pill{padding:2px 6px;border-radius:10px;background:#fff;color:#4777a9;font-size:7.5px;font-weight:700;letter-spacing:.03em}.chat-head{height:64px;gap:4px;background:rgba(255,255,255,.62);backdrop-filter:blur(12px)}.chat-head strong{font-size:12px}.chat-head small{font-size:9px}.chat-avatar{width:29px;height:29px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:1px;background:linear-gradient(145deg,#d4d7de,#aeb4c0);color:#fff;font-size:9px;font-weight:700}.chat-body{padding:20px 22px 17px}.msg{margin-bottom:11px}.sender{font-size:8.5px;margin-left:10px}.bubble{max-width:67%;padding:8px 12px;border-radius:18px;font-size:12.5px;line-height:1.42;background:#e8e8ed}.msg.me .bubble{background:var(--v16-blue)}.system-line{font-size:9px;color:#989aa0;margin:15px 0}.typing-wrap{margin:4px 0 12px}.typing-bubble{width:52px;height:31px;border-radius:16px;background:#e8e8ed;display:flex;align-items:center;justify-content:center;gap:4px}.typing-bubble i{width:5px;height:5px;border-radius:50%;background:#8b8d92;animation:typingDot 1.1s infinite ease-in-out}.typing-bubble i:nth-child(2){animation-delay:.14s}.typing-bubble i:nth-child(3){animation-delay:.28s}@keyframes typingDot{0%,60%,100%{transform:translateY(0);opacity:.45}30%{transform:translateY(-3px);opacity:1}}.reply-panel{padding:11px 14px;background:rgba(250,250,251,.86)}.reply-choice{background:#ececf0;padding:8px 12px;font-size:10.5px;transition:.15s}.reply-choice:hover{background:#dedee4}
+#photos-window{width:min(790px,92vw)}.photos-layout{display:flex;height:510px;background:rgba(255,255,255,.9)}.photos-side{width:150px;flex:0 0 150px;padding:16px 10px;background:rgba(238,239,243,.82);border-right:1px solid var(--v16-line)}.photos-side h3{font-size:18px;margin:2px 8px 16px}.photos-nav{padding:7px 9px;border-radius:7px;font-size:11px;margin-bottom:2px}.photos-nav.active{background:rgba(10,132,255,.13);color:#1669bd;font-weight:600}.photos-main{flex:1;padding:20px;overflow:auto}.photos-main h2{font-size:20px;margin-bottom:4px}.photos-main .muted{margin-bottom:15px}.photos-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.photo{border-radius:11px;aspect-ratio:1.25;background:#ddd;box-shadow:0 2px 10px rgba(0,0,0,.08)}.photo-viewer{height:500px;border-radius:0 0 16px 16px}
+#safari-window{width:min(790px,92vw)}.safari-tabs{height:34px;display:flex;align-items:end;gap:5px;padding:0 12px;background:rgba(232,233,237,.84);border-bottom:1px solid var(--v16-line)}.safari-tab{border:0;background:rgba(255,255,255,.55);padding:7px 16px 6px;border-radius:8px 8px 0 0;font-size:10px;color:#63666b}.safari-tab.active{background:#fff;color:#24262a}.safari-toolbar{height:43px;background:rgba(246,247,249,.9)}.address{height:27px;border-radius:8px;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}.safari-view{height:430px;overflow:auto;background:#fff}.safari-home{padding:20px 22px}.safari-home .site-title{font-size:22px;margin-bottom:14px}.yt-card{display:grid;grid-template-columns:220px 1fr;gap:15px;padding:12px;border:1px solid #ececef;border-radius:13px;background:#fafafa}.yt-card img{width:220px;border-radius:10px}.yt-title{font-size:13px}.history-view{display:none;padding:17px 20px}.history-view.show{display:block}.history-view h2{font-size:20px;margin-bottom:14px}.history-day{font-size:10px;color:#909299;margin:15px 0 7px}.history-row{padding:10px 9px;border-bottom:1px solid #efeff2;font-size:11px}.history-row small{display:block;margin-top:3px}.recovered-history{background:#f4f8ff!important;border-radius:8px}.safari-detail-card{display:none;margin:14px 0 4px;padding:15px;border-radius:12px;background:#f5f7fa;border:1px solid #e2e6ec}.safari-detail-card.show{display:block}.safari-detail-card strong{display:block;font-size:12px;margin-bottom:7px}.safari-detail-card div{white-space:pre-line;font-size:11px;line-height:1.55;color:#47494f}
+#notes-window{width:min(720px,90vw)}.notes-layout{height:480px}.note-page{padding:26px 30px}#facetime-window{width:min(600px,88vw)}.facetime{height:480px;padding:22px}.recovered-calls{display:none;margin-bottom:14px;padding:10px;border-radius:12px;background:#f4f8ff;border:1px solid #dce9f8}.recovered-calls.show{display:block}.recovered-calls h3{font-size:10px;color:#52769b;margin-bottom:5px;text-transform:uppercase;letter-spacing:.05em}.call-row{padding:10px 8px}#music-window{width:min(760px,92vw)}.music-shell{height:500px}.music-layout{padding-bottom:82px}.music-main{padding:24px}.albums{grid-template-columns:repeat(2,minmax(180px,230px));gap:23px}.album img{border-radius:12px}.music-now-playing{height:82px}
+.message-notification{top:42px;right:18px;width:340px;border-radius:16px;background:rgba(245,246,248,.88);box-shadow:0 18px 50px rgba(0,0,0,.26)}
+#ending-shade{position:absolute;inset:0;pointer-events:none;background:rgba(0,0,0,0);z-index:21000;transition:background 1.2s ease}#desktop.stuck-mode #ending-shade{background:rgba(0,0,0,.38)}#desktop.stuck-mode #menubar,#desktop.stuck-mode #desktop-icons,#desktop.stuck-mode #dock-wrap,#desktop.stuck-mode #apple-menu,#desktop.stuck-mode #message-notification{opacity:0!important;pointer-events:none!important;transition:opacity .9s ease}#desktop.stuck-mode .window:not(#messages-window){display:none!important}#desktop.stuck-mode #messages-window{display:block!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;width:min(650px,88vw)!important;height:560px!important;min-height:0!important;max-height:78vh!important;z-index:24000!important;border-radius:19px!important;box-shadow:0 38px 120px rgba(0,0,0,.68)!important;transition:all .9s cubic-bezier(.2,.8,.2,1)}#desktop.stuck-mode #messages-window .message-list{display:none!important}#desktop.stuck-mode #messages-window .messages-layout{height:514px!important}#desktop.stuck-mode #messages-window .chat{width:100%!important}#desktop.stuck-mode #messages-window .traffic{visibility:hidden!important}#desktop.stuck-mode #messages-window .window-top{cursor:default!important}#desktop.stuck-mode #messages-window .reply-panel{display:none!important}#desktop.stuck-mode #messages-window .chat-head{height:58px!important;background:rgba(255,255,255,.78)}#desktop.stuck-mode #messages-window .chat-body{padding:25px 32px}
+
 </style>
 </head>
 <body>
@@ -586,23 +609,25 @@ button{color:inherit}
       <div class="finder-heading"><h2 id="finder-title">Desktop</h2><span id="finder-count" class="muted"></span></div>
       <div id="finder-grid" class="finder-grid"></div>
     </div>
+    <aside id="finder-preview" class="finder-preview empty">
+      <div class="quick-head"><small>Quick Look</small><strong id="quick-title">Select an item</strong></div>
+      <div id="quick-content" class="quick-content">Click a file to preview it here.</div>
+      <div id="quick-foot" class="quick-foot">Finder</div>
+    </aside>
   </div>
 </section>
 
 <!-- Photos -->
-<section id="photos-window" class="window" style="left:10vw;top:8vh">
-  <div class="window-top">
-    <div class="traffic"><button class="dot red" onclick="closeWindow('photos-window')"></button><button class="dot yellow"></button><button class="dot green"></button></div>
-    <div class="window-title">Photos</div>
-  </div>
-  <div class="pane">
-    <h2>Library</h2>
-    <div class="photos-grid">
+<section id="photos-window" class="window" style="left:10vw;top:7vh">
+  <div class="window-top"><div class="traffic"><button class="dot red" onclick="closeWindow('photos-window')"></button><button class="dot yellow"></button><button class="dot green"></button></div><div class="window-title">Photos</div></div>
+  <div class="photos-layout">
+    <aside class="photos-side"><h3>Photos</h3><div class="photos-nav active">Library</div><div class="photos-nav">Memories</div><div class="photos-nav">Favorites</div></aside>
+    <div class="photos-main"><h2>Library</h2><div class="muted">August – September 2026</div><div class="photos-grid">
       <button class="photo" onclick="showPhoto(1)"><img src="images/photos/photo-01.jpg"></button>
       <button class="photo" onclick="showPhoto(2)"><img src="images/photos/photo-02.jpg"></button>
       <button class="photo" onclick="showPhoto(3)"><img src="images/photos/photo-03.jpg"></button>
       <button class="photo" onclick="showPhoto(4)"><img src="images/photos/photo-04.jpg"></button>
-    </div>
+    </div></div>
   </div>
 </section>
 
@@ -627,6 +652,7 @@ button{color:inherit}
     <aside class="message-list"><div class="search">Search</div><div id="contacts"></div></aside>
     <section class="chat">
       <div class="chat-head">
+        <div id="chat-avatar" class="chat-avatar">3A</div>
         <strong id="chat-title">3asians</strong>
         <small id="chat-date"></small>
       </div>
@@ -649,40 +675,13 @@ button{color:inherit}
 </section>
 
 <!-- Safari -->
-<section id="safari-window" class="window" style="left:8vw;top:7vh;width:min(650px,86vw)">
-  <div class="window-top">
-    <div class="traffic"><button class="dot red" onclick="closeWindow('safari-window')"></button><button class="dot yellow"></button><button class="dot green"></button></div>
-    <div class="window-title">Safari</div>
-  </div>
-  <div class="safari-toolbar"><span class="nav">‹</span><span class="nav">›</span><div class="address">enokiecloud.tv</div></div>
-  <div class="safari-page">
-    <div class="site-title">EnokieTube</div>
-    <div class="yt">
-      <img src="images/youtube/youtube-thumbnail.jpg">
-      <div class="yt-title">I Found the Creepiest Discord Server (YouTube Tried to Remove this Video)</div>
-      <div class="yt-meta">No Text To Speech · 654K views</div>
-    </div>
-    <div class="history">
-      <h3>Recently visited</h3>
-      <div class="history-row">HCA 125 - course portal <small>Sep 3 · 4:26 PM</small></div>
-      <div class="history-row">pancit bihon recipe <small>Sep 3 · 6:11 PM</small></div>
-      <div class="history-row">No Text To Speech - YouTube <small>Sep 3 · 9:37 PM</small></div>
-
-      <div id="history-login" class="history-row clickable recovered-history" style="display:none" onclick="openSafariDetail('activity')">
-        macbook activity history <span class="history-tag">recovered</span>
-        <small>Sep 4 · 1:42 AM</small>
-      </div>
-
-      <div id="history-hidden" class="history-row clickable recovered-history" style="display:none" onclick="openSafariDetail('find')">
-        find my device last location <span class="history-tag">recovered</span>
-        <small>Sep 4 · 2:08 AM</small>
-      </div>
-
-      <div id="history-second" class="history-row clickable recovered-history" style="display:none" onclick="openSafariDetail('devices')">
-        icloud account · devices <span class="history-tag">new</span>
-        <small>Sep 4 · 2:19 AM</small>
-      </div>
-    </div>
+<section id="safari-window" class="window" style="left:8vw;top:7vh">
+  <div class="window-top"><div class="traffic"><button class="dot red" onclick="closeWindow('safari-window')"></button><button class="dot yellow"></button><button class="dot green"></button></div><div class="window-title">Safari</div></div>
+  <div class="safari-tabs"><button id="safari-tab-home" class="safari-tab active" onclick="openSafariHome()">enokiecloud.tv</button><button id="safari-tab-history" class="safari-tab" onclick="openSafariHistory()">History</button></div>
+  <div class="safari-toolbar"><span class="nav">‹</span><span class="nav">›</span><div id="safari-address" class="address">enokiecloud.tv</div></div>
+  <div class="safari-view">
+    <div id="safari-home-view" class="safari-home"><div class="site-title">EnokieTube</div><div class="yt-card"><img src="images/youtube/youtube-thumbnail.jpg"><div><div class="yt-title">I Found the Creepiest Discord Server (YouTube Tried to Remove this Video)</div><div class="yt-meta">No Text To Speech · 654K views</div></div></div></div>
+    <div id="safari-history-view" class="history-view"><h2>History</h2><div id="safari-detail-card" class="safari-detail-card"><strong id="safari-detail-title"></strong><div id="safari-detail-body"></div></div><div class="history-day">Wednesday, September 3</div><div class="history-row">HCA 125 · Course Portal <small>4:26 PM</small></div><div class="history-row">pancit bihon recipe <small>6:11 PM</small></div><div class="history-row">No Text To Speech · YouTube <small>9:37 PM</small></div><div id="history-find" class="history-row clickable recovered-history" style="display:none" onclick="openSafariDetail('find')">Find My · last location<small>Sep 4 · 2:08 AM · recovered</small></div></div>
   </div>
 </section>
 
@@ -767,6 +766,15 @@ button{color:inherit}
   </div>
   <div class="facetime">
     <h2 style="font-size:19px;margin-bottom:14px">Recents</h2>
+    <div id="recovered-calls" class="recovered-calls">
+      <h3>Recovered · Sep 4</h3>
+      <div class="call-row"><div class="call-person"><strong>kyle</strong><small class="missed">Missed</small></div><span class="when">1:41 AM</span></div>
+      <div class="call-row"><div class="call-person"><strong>kyle</strong><small class="missed">Missed</small></div><span class="when">1:44 AM</span></div>
+      <div class="call-row"><div class="call-person"><strong>jadabae</strong><small class="outgoing">Outgoing · 3:12</small></div><span class="when">1:49 AM</span></div>
+      <div class="call-row"><div class="call-person"><strong>noemibae</strong><small class="outgoing">Outgoing · 1:47</small></div><span class="when">1:53 AM</span></div>
+      <div class="call-row"><div class="call-person"><strong>kyle</strong><small class="missed">Missed</small></div><span class="when">2:02 AM</span></div>
+      <div class="call-row"><div class="call-person"><strong>kyle</strong><small class="missed">Missed</small></div><span class="when">2:09 AM</span></div>
+    </div>
 
     <div class="call-row">
       <div class="call-person"><strong>mami</strong><small class="incoming">Incoming · 18:04</small></div>
@@ -847,6 +855,7 @@ button{color:inherit}
   <div class="actions"><button class="decline" onclick="declineCall()">Decline</button><button class="accept" onclick="acceptCall()">Accept</button></div>
 </div>
 
+<div id="ending-shade"></div>
 <div id="shutdown-screen">
   <div class="shutdown-spinner"></div>
   <div id="shutdown-message">Shutting Down…</div>
@@ -855,93 +864,65 @@ button{color:inherit}
 
 <!-- Dock -->
 <div id="dock-wrap"><nav id="dock">
-  <button class="dock-item" onclick="openFinder('desktop');run(this)"><span class="tip">Finder</span><img src="images/icons/finder.png"></button>
-  <button class="dock-item" onclick="openApp('safari-window','Safari',this)"><span class="tip">Safari</span><img src="images/icons/safari.png"></button>
-  <button class="dock-item" onclick="openMessages(this)"><span class="tip">Messages</span><img src="images/icons/messages.png"></button>
-  <button class="dock-item" onclick="openPhotos(this)"><span class="tip">Photos</span><img src="images/icons/photos.png"></button>
-  <button class="dock-item" onclick="openApp('facetime-window','FaceTime',this)"><span class="tip">FaceTime</span><img src="images/icons/facetime.png"></button>
-  <button class="dock-item" onclick="openApp('music-window','Music',this)"><span class="tip">Music</span><img src="images/icons/music.png"></button>
-  <button class="dock-item" onclick="openNotes(this)"><span class="tip">Notes</span><img src="images/icons/notes.png"></button>
-  <button class="dock-item" onclick="openApp('settings-window','System Settings',this)"><span class="tip">System Settings</span><img src="images/icons/settings.png"></button>
-  <div class="divider"></div>
-  <button class="dock-item"><span class="tip">Trash</span><img src="images/icons/trash.png"></button>
+  <button id="dock-finder" class="dock-item" onclick="openFinder('desktop');run(this)"><span class="tip">Finder</span><img src="images/icons/finder.png"></button>
+  <button id="dock-safari" class="dock-item" onclick="openSafariHome(this)"><span class="tip">Safari</span><img src="images/icons/safari.png"></button>
+  <button id="dock-messages" class="dock-item" onclick="openMessages(this)"><span class="tip">Messages</span><img src="images/icons/messages.png"></button>
+  <button id="dock-photos" class="dock-item" onclick="openPhotos(this)"><span class="tip">Photos</span><img src="images/icons/photos.png"></button>
+  <button id="dock-facetime" class="dock-item" onclick="openFaceTime(this)"><span class="tip">FaceTime</span><img src="images/icons/facetime.png"></button>
+  <button id="dock-music" class="dock-item" onclick="openApp('music-window','Music',this)"><span class="tip">Music</span><img src="images/icons/music.png"></button>
+  <button id="dock-notes" class="dock-item" onclick="openNotes(this)"><span class="tip">Notes</span><img src="images/icons/notes.png"></button>
+  <button id="dock-settings" class="dock-item" onclick="openApp('settings-window','System Settings',this)"><span class="tip">System Settings</span><img src="images/icons/settings.png"></button>
+  <div class="divider"></div><button class="dock-item"><span class="tip">Trash</span><img src="images/icons/trash.png"></button>
 </nav></div>
 
 </main>
 
 <script>
 let topZ=500;
-const KEY="enokieStoryV15";
+const KEY="enokieStoryV16";
 
 /* Testing shortcut:
    open desktop.html?reset=1 to clear story progress without exposing a reset button to visitors. */
 const resetParams=new URLSearchParams(location.search);
 if(resetParams.get("reset")==="1"){
   localStorage.removeItem(KEY);
-  sessionStorage.removeItem("ecloud-v15-session");
+  sessionStorage.removeItem("ecloud-v16-session");
   history.replaceState({},document.title,location.pathname);
 }
 
 const DEFAULT_STATE={
   phase:0,
-  metaSeen:false,
-  photoInfoSeen:false,
-  sessionSeen:false,
-  draftSeen:false,
-  messagesDbSeen:false,
   backstoryUnlocked:false,
-  notificationShown:false,
-  unknownOpen:false,
-  windowMoved:false,
-  callSeen:false,
-  normalPingSeen:false,
-  normalPingOpened:false,
-
   readGroupLate:false,
   readKyleLate:false,
   readNoemiLate:false,
-  readMamiLate:false,
-
   deletedAvailable:false,
   deletedSeen:false,
   callHistoryAvailable:false,
   callLogSeen:false,
-
   safariHistoryAvailable:false,
-  sawSafariActivity:false,
   sawSafariFind:false,
-  sawSafariDevices:false,
-
+  recentItemsAvailable:false,
+  recentItemsSeen:false,
+  unknownOpen:false,
+  unknownMsgs:[],
+  windowMoved:false,
+  callSeen:false,
   ringQuestionSent:false,
   answeredRing:false,
   askedIdentity:false,
   askedHappened:false,
-
-  secondInvestigation:false,
-  deviceSeen:false,
-  sawUntitled:false,
-
-  thirdInvestigation:false,
-  locationSeen:false,
-  wifiSeen:false,
-  recentItemsAvailable:false,
-  recentItemsSeen:false,
-  askedKyleMemory:false,
   askedWhere:false,
-
   attachmentPhase:false,
   attachmentArmed:false,
   attachmentLeaveCount:0,
   attachmentPrompted:false,
-  finalChoiceMade:false,
+  replyBusy:false,
   shutdownEnabled:false,
   shutdownAttempted:false,
+  finalChoiceMade:false,
   ending:null,
-  returnCount:0,
-
-  replyBusy:false,
-  unknownPingCount:0,
-  unknownMsgs:[]
+  returnCount:0
 };
 let state={...DEFAULT_STATE,...JSON.parse(localStorage.getItem(KEY)||"{}")};
 function save(){localStorage.setItem(KEY,JSON.stringify(state));syncStory()}
@@ -1072,19 +1053,7 @@ document.querySelectorAll(".window").forEach(win=>{
     if(!drag||innerWidth<760)return;
     win.style.left=Math.max(0,Math.min(innerWidth-win.offsetWidth,e.clientX-ox))+"px";
     win.style.top=Math.max(29,Math.min(innerHeight-win.offsetHeight-60,e.clientY-oy))+"px";
-    if(state.phase>=5 && !state.windowMoved){
-      state.windowMoved=true;
-      state.phase=Math.max(state.phase,6);
-      save();
-
-      setTimeout(()=>pushUnknown("wait"),350);
-      setTimeout(()=>pushUnknown("you did that?"),1200);
-      setTimeout(()=>pushUnknown("you can move those?"),2400);
-
-      /* The FaceTime call is a consequence of the visitor proving they can
-         control the desktop, not another timer-driven exposition dump. */
-      setTimeout(()=>triggerCall(),4800);
-    }
+    if(state.phase>=5 && !state.windowMoved){state.windowMoved=true;state.phase=Math.max(state.phase,6);save();typeUnknownSequence(["wait","you did that?","you can move those?"],250,1050,600,()=>setTimeout(()=>triggerCall(),900));}
   });
   document.addEventListener("mouseup",()=>drag=false);
 });
@@ -1095,109 +1064,44 @@ function folderTile(name,action,meta=""){
 function docTile(name,action,type="TXT",meta=""){
   return `<button class="file" ${action?`onclick="${action}"`:""}><div class="doc-icon ${type==="TXT"?"txt-icon":""}">${type}</div><div class="file-name">${name}</div>${meta?`<div class="file-meta">${meta}</div>`:""}</button>`;
 }
+function resetQuickLook(){
+  const p=document.getElementById("finder-preview");if(!p)return;p.classList.add("empty");
+  document.getElementById("quick-title").textContent="Select an item";
+  document.getElementById("quick-content").textContent="Click a file to preview it here.";
+  document.getElementById("quick-foot").textContent="Finder";
+}
+function previewFinder(kind){
+  const p=document.getElementById("finder-preview");p.classList.remove("empty");
+  let title="",body="",foot="Quick Look";
+  if(kind==="deleted"){
+    title="deleted-message.txt";body=`3asians · Sep 4 · 12:52 AM\n\nkyle:\n“don't tell jada\nwe stopped there”\n\nThe rest of the message is missing.`;foot="Recovered message · optional";state.deletedSeen=true;
+  }
+  if(kind==="lastactivity"){
+    title="last-activity.txt";body=`SEP 4\n\n12:46 AM\nE's phone arrived home.\n\n2:13 AM\nMusic was playing.\n\n2:14 AM\nMessages was open.\n\n2:17 AM\nFaceTime tried to use the camera.\n\nAfter 2:17 AM:\nno clicks or typing.`;foot="Recovered Mac activity";state.recentItemsSeen=true;save();setTimeout(()=>beginUnknownPings(),1100);
+  }
+  if(kind==="unsent"){
+    title="unsent-note.txt";body=`Sep 3 · 11:34 PM\n\nsomething keeps opening\nafter i close it\n\nprobably just the laptop being weird\n\nkyle said it's nothing`;foot="Unsent note · optional";
+  }
+  document.getElementById("quick-title").textContent=title;document.getElementById("quick-content").textContent=body;document.getElementById("quick-foot").textContent=foot;save();
+}
 function openFinder(folder){
-  touchStory();
-  openApp("finder-window","Finder");
-  const t=document.getElementById("finder-title"),
-        g=document.getElementById("finder-grid"),
-        c=document.getElementById("finder-count");
-
+  touchStory();openApp("finder-window","Finder");resetQuickLook();
+  const t=document.getElementById("finder-title"),g=document.getElementById("finder-grid"),c=document.getElementById("finder-count");
   if(folder==="desktop"){
-    t.textContent="Desktop";
-    g.innerHTML=
-      folderTile("school","openFinder('school')")+
-      folderTile("pictures","openPhotos()")+
-      folderTile("downloads","openFinder('downloads')")+
-      docTile("health-admin-notes.txt","openText('healthnotes')","TXT","Sep 3")+
-      docTile("receipt.pdf","openText('receipt')","PDF","Sep 3")+
-      docTile("IMG_5708.jpeg","openPhotos()","JPG","Aug 28")+
-      (state.phase>=2
-        ?folderTile(
-          "Recovered Files",
-          "openFinder('recovered')",
-          state.callHistoryAvailable||state.deletedAvailable ? "new items" : "system restored"
-        )
-        :"");
+    t.textContent="Desktop";g.innerHTML=folderTile("school","openFinder('school')")+folderTile("pictures","openPhotos()")+folderTile("downloads","openFinder('downloads')")+docTile("health admin notes","openText('healthnotes')","TXT","Sep 3")+docTile("receipt.pdf","openText('receipt')","PDF","Sep 3")+((state.deletedAvailable||state.recentItemsAvailable)?folderTile("Recovered","openFinder('recovered')","recent"):"");
   }
-
   if(folder==="school"){
-    t.textContent="school";
-    g.innerHTML=
-      docTile("syllabus.pdf","openApp('pdf-window','Preview')","PDF","Fall 2026")+
-      docTile("HCA125-week3.pdf","openText('week3')","PDF","Sep 2")+
-      docTile("discussion-post-draft.txt","openText('intro')","TXT","Sep 1")+
-      folderTile("group project","openFinder('project')","3 items")+
-      folderTile("readings","openFinder('readings')","2 items")+
-      docTile("assignment-2.docx","openText('assignment')","DOC","Sep 1");
+    t.textContent="school";g.innerHTML=docTile("syllabus.pdf","openApp('pdf-window','Preview')","PDF","Fall 2026")+docTile("week 3 notes","openText('week3')","PDF","Sep 2")+docTile("discussion draft","openText('intro')","TXT","Sep 1")+folderTile("group project","openFinder('project')","2 items");
   }
-
   if(folder==="project"){
-    t.textContent="school / group project";
-    g.innerHTML=
-      docTile("presentation-outline.txt","openText('project-outline')","TXT","Sep 2")+
-      docTile("source-list.txt","openText('project-sources')","TXT","Sep 2")+
-      docTile("meeting-notes.txt","openText('project-meeting')","TXT","Sep 3");
+    t.textContent="school / group project";g.innerHTML=docTile("presentation outline","openText('project-outline')","TXT","Sep 2")+docTile("meeting notes","openText('project-meeting')","TXT","Sep 3");
   }
-
-  if(folder==="readings"){
-    t.textContent="school / readings";
-    g.innerHTML=
-      docTile("chapter-4-notes.txt","openText('chapter4')","TXT","Sep 2")+
-      docTile("access-to-care-summary.txt","openText('article')","TXT","Sep 3");
-  }
-
   if(folder==="downloads"){
-    t.textContent="Downloads";
-    g.innerHTML=
-      docTile("Screenshot 2026-09-03 at 1.51 AM.png","openText('screenshot')","PNG","Sep 3")+
-      docTile("receipt-0902.pdf","openText('receipt2')","PDF","Sep 2")+
-      docTile("cover.jpg","","JPG","Aug 30")+
-      docTile("archive.zip","","ZIP","Aug 29")+
-      docTile("untitled.pdf","openText('oldpdf')","PDF","Sep 1")+
-      docTile("IMG_4409.jpeg","showPhoto(4)","JPG","Sep 2")+
-      (state.phase>=1?docTile("photo-details.txt","openText('photo-info')","TXT","NEW"):"");
+    t.textContent="Downloads";g.innerHTML=docTile("course screenshot","openText('screenshot')","PNG","Sep 3")+docTile("receipt-0902.pdf","openText('receipt2')","PDF","Sep 2")+docTile("IMG_4409.jpeg","showPhoto(4)","JPG","Sep 2")+docTile("archive.zip","","ZIP","Aug 29");
   }
-
   if(folder==="recovered"){
-    t.textContent="Recovered Files";
-
-    const firstNew=!state.sessionSeen;
-    const secondNew=state.sessionSeen&&!state.draftSeen;
-    const thirdNew=state.sessionSeen&&state.draftSeen&&!state.messagesDbSeen;
-
-    g.innerHTML=
-      docTile("last-session.txt","openText('session')","TXT",firstNew?"NEW":state.sessionSeen?"opened":"recovered")+
-      docTile("unsent-note.txt","openText('unsent')","TXT",secondNew?"NEW":state.draftSeen?"opened":"recovered")+
-      docTile("message-records.txt","openText('messagesdb')","TXT",thirdNew?"NEW":state.messagesDbSeen?"opened":"recovered")+
-      docTile("last-open-apps.txt","openText('windowstate')","TXT","optional")+
-
-      (state.deletedAvailable
-        ?docTile("deleted-message.txt","openText('deleted')","TXT",state.deletedSeen?"opened":"NEW")
-        :"")+
-
-      (state.callHistoryAvailable
-        ?docTile("call-history.txt","openText('calls')","TXT",state.callLogSeen?"opened":"NEW")
-        :"")+
-
-      (state.secondInvestigation
-        ?docTile("device-status.txt","openText('device')","TXT",state.deviceSeen?"opened":"NEW")
-        :"")+
-
-      (state.thirdInvestigation
-        ?docTile("phone-location.txt","openText('location')","TXT",state.locationSeen?"opened":"NEW")
-        :"")+
-
-      (state.thirdInvestigation && state.locationSeen
-        ?docTile("wifi-history.txt","openText('wifi')","TXT",state.wifiSeen?"opened":"NEW")
-        :"")+
-
-      (state.recentItemsAvailable
-        ?docTile("recent-apps.txt","openText('recentitems')","TXT",state.recentItemsSeen?"opened":"NEW")
-        :"")+
-
-      (state.phase>=8?docTile("system-log.txt","openText('system')","TXT","optional"):"");
+    t.textContent="Recovered";g.innerHTML=(state.deletedAvailable?docTile("deleted-message.txt","previewFinder('deleted')","TXT",state.deletedSeen?"viewed":"optional"):"")+(state.recentItemsAvailable?docTile("last-activity.txt","previewFinder('lastactivity')","TXT",state.recentItemsSeen?"viewed":"story"):"")+docTile("unsent-note.txt","previewFinder('unsent')","TXT","optional");
   }
-
   c.textContent=g.children.length+" items";
 }
 
@@ -1210,29 +1114,7 @@ const photoMeta={
 function openPhotos(btn=null){openApp("photos-window","Photos",btn)}
 function showPhoto(n){
   document.getElementById("photo-big").src=`images/photos/photo-0${n}.jpg`;
-  const m=photoMeta[n];
-  document.getElementById("photo-meta").innerHTML=`<strong>${m[0]}</strong>
-    <div class="meta-row"><span>Taken</span><span>${m[1]}</span></div>
-    <div class="meta-row"><span>Device</span><span>${m[2]}</span></div>
-    <div class="meta-row"><span>Info</span><span>${m[3]||"—"}</span></div>`;
-  openApp("photo-window","Preview");
-
-  /* First clue: this picture was edited days after it was taken. */
-  if(n===4 && !state.metaSeen){
-    state.metaSeen=true;
-    state.phase=Math.max(state.phase,1);
-    save();
-
-    setTimeout(()=>{
-      showNotification(
-        "Finder",
-        "Recovered Item",
-        "A cached file was restored to Downloads.",
-        "downloads",
-        "images/icons/folder.png"
-      );
-    },900);
-  }
+  const m=photoMeta[n];document.getElementById("photo-meta").innerHTML=`<strong>${m[0]}</strong><div class="meta-row"><span>Taken</span><span>${m[1]}</span></div><div class="meta-row"><span>Device</span><span>${m[2]}</span></div><div class="meta-row"><span>Info</span><span>${m[3]||"—"}</span></div>`;openApp("photo-window","Preview");
 }
 
 const normalChats={
@@ -1424,68 +1306,19 @@ function contactNames(){
   return names;
 }
 
-function nextRecoveredContact(){
-  if(!state.backstoryUnlocked) return null;
-  if(!state.readGroupLate) return "3asians";
-  if(!state.readKyleLate) return "kyle";
-  if(!state.readNoemiLate) return "noemibae";
-  return null;
-}
-
+function nextRecoveredContact(){if(!state.backstoryUnlocked)return null;if(!state.readGroupLate)return "3asians";if(!state.readKyleLate)return "kyle";if(!state.readNoemiLate)return "noemibae";return null;}
+function avatarLabel(name){if(name==="3asians")return "3A";if(name==="unknown")return "?";if(name==="lil sis ava")return "A";if(name==="kiddo jas")return "J";return name.slice(0,1).toUpperCase();}
 function renderContacts(active="3asians"){
-  const box=document.getElementById("contacts");
-  box.innerHTML="";
-
-  const nextContact=nextRecoveredContact();
-
-  contactNames().forEach(name=>{
-    const d=document.createElement("div");
-    d.className="contact"+(name===active?" active":"");
-
-    let preview="";
-    let unread=false;
-    let badge=false;
-
-    if(name==="unknown"){
-      preview=lastUnknownText();
-      unread=!state.unknownOpen;
-    }else if(name==="3asians"){
-      preview=name===nextContact ? "recovered messages" : "group chat";
-    }else if(name==="kyle"){
-      preview=name===nextContact ? "recovered messages" : "then drive better";
-    }else if(name==="noemibae"){
-      preview=name===nextContact ? "recovered messages" : "blocked";
-    }else if(name==="mami"){
-      preview="mom";
-    }else if(name==="jadabae"){
-      preview="WAIT FOR ME";
-    }else if(name==="lil sis ava"){
-      preview="have faith in me pls";
-    }else if(name==="kiddo jas"){
-      preview="NOW U HAVE ME CURIOUS";
-    }
-
-    if(name===nextContact){
-      unread=true;
-      badge=true;
-    }
-
-    d.innerHTML=`<strong>${name}${unread?'<span class="unread"></span>':""}${badge?'<span class="new-badge">NEW</span>':""}</strong><small>${preview}</small>`;
-    d.onclick=()=>{
-      touchStory();
-      if(name==="unknown" && state.attachmentPhase){
-        state.attachmentArmed=true;
-        localStorage.setItem(KEY,JSON.stringify(state));
-      }
-      renderContacts(name);
-      renderChat(name);
-    };
-    box.appendChild(d);
+  const box=document.getElementById("contacts");box.innerHTML="";const lead=nextRecoveredContact();
+  contactNames().forEach(name=>{const d=document.createElement("div");d.className="contact"+(name===active?" active":"")+(name===lead?" story-lead":"");let preview="";if(name==="unknown")preview=lastUnknownText();else if(name==="3asians")preview=name===lead?"recovered conversation":"group chat";else if(name==="kyle")preview=name===lead?"recovered conversation":"then drive better";else if(name==="noemibae")preview=name===lead?"recovered conversation":"blocked";else if(name==="mami")preview="mom";else if(name==="jadabae")preview="WAIT FOR ME";else if(name==="lil sis ava")preview="have faith in me pls";else if(name==="kiddo jas")preview="NOW U HAVE ME CURIOUS";
+    d.innerHTML=`<div class="contact-avatar">${avatarLabel(name)}</div><div class="contact-copy"><strong>${name}</strong><small>${preview}</small></div>${name===lead?'<span class="lead-pill">RECOVERED</span>':""}`;
+    d.onclick=()=>{touchStory();if(name==="unknown"&&state.attachmentPhase){state.attachmentArmed=true;save()}renderContacts(name);renderChat(name)};box.appendChild(d);
   });
 }
 
 function renderChat(name){
   document.getElementById("chat-title").textContent=name;
+  document.getElementById("chat-avatar").textContent=avatarLabel(name);
 
   const dateEl=document.getElementById("chat-date");
   if(name==="unknown"){
@@ -1514,7 +1347,7 @@ function renderChat(name){
         if(state.deletedAvailable){
           body.insertAdjacentHTML(
             "beforeend",
-            `<button class="removed-message" title="Open recovered files" onclick="openFinder('recovered')">Message removed</button>`
+            `<button class="removed-message" title="Preview recovered fragment" onclick="openFinder('recovered');setTimeout(()=>previewFinder('deleted'),80)">Message removed</button>`
           );
         }else{
           body.insertAdjacentHTML("beforeend",`<div class="system-line">Message removed</div>`);
@@ -1551,33 +1384,16 @@ function renderChat(name){
     state.phase=Math.max(state.phase,5);
     save();
 
-    setTimeout(()=>pushUnknown("is someone there"),1200);
-    setTimeout(()=>pushUnknown("can you read this"),3000);
+    typeUnknownSequence(["is someone there","can you read this"],700,1250,700);
+    setTimeout(()=>{
+      if(!state.windowMoved && state.unknownOpen){
+        typeUnknownSequence(["can you move this window?"],0,1200,500);
+      }
+    },6200);
   }
 }
 
-function markRecoveredThreadReadIfNeeded(){
-  if(!state.backstoryUnlocked) return;
-
-  const body=document.getElementById("chat-body");
-  const name=document.getElementById("chat-title").textContent;
-  const nearBottom=body.scrollTop+body.clientHeight >= body.scrollHeight-40;
-
-  if(!nearBottom) return;
-
-  let changed=false;
-
-  if(name==="3asians"&&!state.readGroupLate){state.readGroupLate=true;changed=true}
-  if(name==="kyle"&&!state.readKyleLate){state.readKyleLate=true;changed=true}
-  if(name==="noemibae"&&!state.readNoemiLate){state.readNoemiLate=true;changed=true}
-  if(name==="mami"&&!state.readMamiLate){state.readMamiLate=true;changed=true}
-
-  if(changed){
-    localStorage.setItem(KEY,JSON.stringify(state));
-    renderContacts(name);
-    maybeAdvanceInvestigation();
-  }
-}
+function markRecoveredThreadReadIfNeeded(){if(!state.backstoryUnlocked)return;const body=document.getElementById("chat-body"),name=document.getElementById("chat-title").textContent,nearBottom=body.scrollTop+body.clientHeight>=body.scrollHeight-38;if(!nearBottom)return;let changed=false;if(name==="3asians"&&!state.readGroupLate){state.readGroupLate=true;state.deletedAvailable=true;changed=true}if(name==="kyle"&&!state.readKyleLate){state.readKyleLate=true;changed=true}if(name==="noemibae"&&!state.readNoemiLate){state.readNoemiLate=true;changed=true}if(changed){save();renderContacts(name);maybeAdvanceInvestigation()}}
 
 function openMessages(btn=null){
   openApp("messages-window","Messages",btn);
@@ -1586,20 +1402,12 @@ function openMessages(btn=null){
 }
 
 function pushUnknown(msg){
-  state.unknownMsgs=state.unknownMsgs||[];
-  if(!state.unknownMsgs.includes(msg)){
-    state.unknownMsgs.push(msg);
-    localStorage.setItem(KEY,JSON.stringify(state));
-  }
-
-  if(document.getElementById("messages-window").classList.contains("active") &&
-     document.getElementById("chat-title").textContent==="unknown"){
-    renderContacts("unknown");
-    renderChat("unknown");
-  }else{
-    renderContacts();
-  }
+  state.unknownMsgs=state.unknownMsgs||[];if(state.unknownMsgs.at(-1)!==msg){state.unknownMsgs.push(msg);localStorage.setItem(KEY,JSON.stringify(state))}
+  if(document.getElementById("messages-window").classList.contains("active")&&document.getElementById("chat-title").textContent==="unknown"){renderContacts("unknown");renderChat("unknown")}else{renderContacts()}
 }
+function showUnknownTyping(){if(!document.getElementById("messages-window").classList.contains("active"))return;if(document.getElementById("chat-title").textContent!=="unknown")return;const body=document.getElementById("chat-body");if(document.getElementById("unknown-typing"))return;body.insertAdjacentHTML("beforeend",`<div id="unknown-typing" class="typing-wrap"><div class="typing-bubble"><i></i><i></i><i></i></div></div>`);body.scrollTop=body.scrollHeight;}
+function hideUnknownTyping(){document.getElementById("unknown-typing")?.remove()}
+function typeUnknownSequence(lines,startDelay=500,typingMs=1000,gapMs=650,onDone=null){let t=startDelay;lines.forEach((line,index)=>{setTimeout(()=>showUnknownTyping(),t);t+=typingMs;setTimeout(()=>{hideUnknownTyping();pushUnknown(line);if(index===lines.length-1&&onDone)onDone()},t);t+=gapMs});return t;}
 
 function pushVisitor(msg){
   state.unknownMsgs=state.unknownMsgs||[];
@@ -1627,103 +1435,11 @@ function thirdClueCount(){
   return [state.locationSeen,state.wifiSeen].filter(Boolean).length;
 }
 
-function renderReplyChoices(name){
-  const panel=document.getElementById("reply-panel");
-  if(!panel) return;
+function renderReplyChoices(name){const panel=document.getElementById("reply-panel");if(!panel)return;panel.innerHTML="";panel.classList.remove("show");if(name!=="unknown"||state.replyBusy)return;const choices=[];if(state.ringQuestionSent&&!state.answeredRing)choices.push(["yes","yes"]);else if(state.answeredRing&&!state.askedIdentity)choices.push(["who are you?","identity"]);else if(state.askedIdentity&&!state.askedHappened)choices.push(["what happened to you?","happened"]);else if(state.askedHappened&&!state.askedWhere)choices.push(["where are you?","where"]);else if(state.attachmentPrompted&&!state.finalChoiceMade){choices.push(["i can stay","stay"]);choices.push(["i have to go","leave"])}if(!choices.length)return;choices.forEach(([label,key])=>{const b=document.createElement("button");b.className="reply-choice";b.textContent=label;b.onclick=()=>chooseUnknownReply(key,label);panel.appendChild(b)});panel.classList.add("show")}
 
-  panel.innerHTML="";
-  panel.classList.remove("show");
-
-  if(name!=="unknown" || !state.ringQuestionSent || state.replyBusy) return;
-
-  const choices=[];
-
-  if(!state.answeredRing){
-    choices.push(["yes","yes"]);
-  }
-  else if(state.secondInvestigation && secondClueCount()>=2 && !state.askedIdentity){
-    choices.push(["who are you?","identity"]);
-  }
-  else if(state.askedIdentity && secondClueCount()>=3 && !state.askedHappened){
-    choices.push(["what happened to you?","happened"]);
-  }
-  else if(state.askedHappened && state.thirdInvestigation && thirdClueCount()>=2 && !state.askedKyleMemory){
-    choices.push(["do you remember kyle?","kyle-memory"]);
-  }
-  else if(state.askedKyleMemory && state.recentItemsSeen && !state.askedWhere){
-    choices.push(["where are you?","where"]);
-  }
-  else if(state.attachmentPrompted && !state.finalChoiceMade){
-    choices.push(["i can stay","stay"]);
-    choices.push(["i have to go","leave"]);
-  }
-
-  if(!choices.length) return;
-
-  choices.forEach(([label,key])=>{
-    const b=document.createElement("button");
-    b.className="reply-choice";
-    b.textContent=label;
-    b.onclick=()=>chooseUnknownReply(key,label);
-    panel.appendChild(b);
-  });
-
-  panel.classList.add("show");
-}
-
-function unlockSecondInvestigation(){
-  if(state.secondInvestigation) return;
-
-  state.secondInvestigation=true;
-  localStorage.setItem(KEY,JSON.stringify(state));
-  syncStory();
-
-  setTimeout(()=>{
-    showNotification(
-      "Finder",
-      "Recovered Files",
-      "device-status.txt was recovered.",
-      "recovered",
-      "images/icons/folder.png"
-    );
-  },800);
-}
-
-function unlockThirdInvestigation(){
-  if(state.thirdInvestigation) return;
-
-  state.thirdInvestigation=true;
-  localStorage.setItem(KEY,JSON.stringify(state));
-  syncStory();
-
-  setTimeout(()=>{
-    showNotification(
-      "Finder",
-      "Recovered Files",
-      "phone-location.txt was recovered.",
-      "recovered",
-      "images/icons/folder.png"
-    );
-  },800);
-}
-
-function unlockRecentItems(){
-  if(state.recentItemsAvailable) return;
-
-  state.recentItemsAvailable=true;
-  localStorage.setItem(KEY,JSON.stringify(state));
-  syncStory();
-
-  setTimeout(()=>{
-    showNotification(
-      "Finder",
-      "Recovered Files",
-      "recent-apps.txt was recovered.",
-      "recovered",
-      "images/icons/folder.png"
-    );
-  },750);
-}
+function unlockSecondInvestigation(){}
+function unlockThirdInvestigation(){}
+function unlockRecentItems(){}
 
 function finishUnknownReply(delay=2600){
   setTimeout(()=>{
@@ -1738,165 +1454,19 @@ function finishUnknownReply(delay=2600){
 }
 
 function chooseUnknownReply(key,label){
-  touchStory();
-  if(state.replyBusy) return;
-
-  pushVisitor(label);
-  state.replyBusy=true;
-
-  if(key==="yes"){
-    state.answeredRing=true;
-    localStorage.setItem(KEY,JSON.stringify(state));
-    renderReplyChoices("unknown");
-
-    setTimeout(()=>pushUnknown("okay"),700);
-    setTimeout(()=>pushUnknown("so it's only me that can't hear it"),1700);
-    setTimeout(()=>unlockSecondInvestigation(),2200);
-    finishUnknownReply(2900);
-    return;
-  }
-
-  if(key==="identity"){
-    state.askedIdentity=true;
-    localStorage.setItem(KEY,JSON.stringify(state));
-    renderReplyChoices("unknown");
-
-    setTimeout(()=>pushUnknown("i don't know"),700);
-    setTimeout(()=>pushUnknown("there's one name on everything"),1700);
-    setTimeout(()=>pushUnknown("e"),2600);
-    setTimeout(()=>pushUnknown("i think that's me"),3600);
-    setTimeout(()=>pushUnknown("i don't remember why"),4700);
-    finishUnknownReply(5400);
-    return;
-  }
-
-  if(key==="happened"){
-    state.askedHappened=true;
-    localStorage.setItem(KEY,JSON.stringify(state));
-    renderReplyChoices("unknown");
-
-    setTimeout(()=>pushUnknown("i remember getting home"),700);
-    setTimeout(()=>pushUnknown("i remember opening this"),1800);
-    setTimeout(()=>pushUnknown("after that it's pieces"),3100);
-    setTimeout(()=>unlockThirdInvestigation(),3700);
-    finishUnknownReply(4300);
-    return;
-  }
-
-  if(key==="kyle-memory"){
-    state.askedKyleMemory=true;
-    localStorage.setItem(KEY,JSON.stringify(state));
-    renderReplyChoices("unknown");
-
-    setTimeout(()=>pushUnknown("the car"),700);
-    setTimeout(()=>pushUnknown("i remember getting out"),1700);
-    setTimeout(()=>pushUnknown("i don't remember him coming inside"),3000);
-    setTimeout(()=>unlockRecentItems(),3500);
-    finishUnknownReply(4200);
-    return;
-  }
-
-  if(key==="where"){
-    state.askedWhere=true;
-    state.attachmentPhase=true;
-    state.attachmentArmed=true;
-    localStorage.setItem(KEY,JSON.stringify(state));
-    renderReplyChoices("unknown");
-
-    setTimeout(()=>pushUnknown("i don't know"),700);
-    setTimeout(()=>pushUnknown("when you close things it gets quiet"),1900);
-    setTimeout(()=>pushUnknown("when the screen goes dark i can't see anything"),3400);
-    setTimeout(()=>pushUnknown("you can still open things, right?"),4700);
-    finishUnknownReply(5400);
-    return;
-  }
-
-  if(key==="stay"){
-    state.finalChoiceMade=true;
-    state.ending="stay";
-    state.attachmentPrompted=true;
-    localStorage.setItem(KEY,JSON.stringify(state));
-    renderReplyChoices("unknown");
-
-    setTimeout(()=>pushUnknown("okay"),650);
-    setTimeout(()=>pushUnknown("thank you"),1500);
-    setTimeout(()=>pushUnknown("just stay for a little while"),2600);
-    setTimeout(()=>{
-      syncStory();
-      showNotification(
-        "System Settings",
-        "Users",
-        "A second user is connected.",
-        "settings",
-        "images/icons/settings.png"
-      );
-    },3300);
-    finishUnknownReply(3900);
-    return;
-  }
-
-  if(key==="leave"){
-    state.finalChoiceMade=true;
-    state.shutdownEnabled=true;
-    state.ending="leaving";
-    localStorage.setItem(KEY,JSON.stringify(state));
-    renderReplyChoices("unknown");
-
-    setTimeout(()=>pushUnknown("oh"),650);
-    setTimeout(()=>pushUnknown("okay"),1500);
-    setTimeout(()=>pushUnknown("if you really have to"),2450);
-    setTimeout(()=>{
-      syncStory();
-      showNotification(
-        "System",
-        "Shut Down",
-        "Use the Apple menu when you're ready.",
-        "apple",
-        "images/icons/apple.png"
-      );
-    },3200);
-    finishUnknownReply(3700);
-  }
+  touchStory();if(state.replyBusy)return;pushVisitor(label);state.replyBusy=true;
+  if(key==="yes"){state.answeredRing=true;save();renderReplyChoices("unknown");typeUnknownSequence(["okay","so you can hear it","i can't"],600,1250,720,()=>{state.replyBusy=false;save();renderReplyChoices("unknown")});return}
+  if(key==="identity"){state.askedIdentity=true;save();renderReplyChoices("unknown");typeUnknownSequence(["i don't know","there's one name on everything","e","i think that's me","but it doesn't feel like mine"],650,1250,720,()=>{state.replyBusy=false;save();renderReplyChoices("unknown")});return}
+  if(key==="happened"){state.askedHappened=true;save();renderReplyChoices("unknown");typeUnknownSequence(["i remember getting home","i remember sitting here","music was playing","then it's just pieces"],650,1250,760,()=>{state.replyBusy=false;save();renderReplyChoices("unknown")});return}
+  if(key==="where"){state.askedWhere=true;state.attachmentPhase=true;state.attachmentArmed=true;save();renderReplyChoices("unknown");typeUnknownSequence(["i don't know","when you close things it gets quiet","when the screen goes dark i can't see anything","can you open something else?"],650,1300,760,()=>{state.replyBusy=false;save()});return}
+  if(key==="stay"){state.finalChoiceMade=true;state.ending="stay";save();renderReplyChoices("unknown");typeUnknownSequence(["okay","thank you","don't close it yet"],650,1300,800,()=>setTimeout(()=>enterStuckEnding("stay"),900));return}
+  if(key==="leave"){state.finalChoiceMade=true;state.shutdownEnabled=true;state.ending="leaving";save();renderReplyChoices("unknown");typeUnknownSequence(["wait","just a little longer","please?"],650,1300,850,()=>{setTimeout(()=>showNotification("System","Shut Down","Use the Apple menu when you're ready.","apple","images/icons/apple.png"),700)})}
 }
 
 function scheduleAttachmentReaction(appName){
-  if(!state.attachmentPhase || state.finalChoiceMade) return;
-
-  const step=state.attachmentLeaveCount||0;
-  state.attachmentLeaveCount=step+1;
-  localStorage.setItem(KEY,JSON.stringify(state));
-
-  if(step===0){
-    let msg="where did you go?";
-
-    if(appName==="Music") msg="you like that one?";
-    if(appName==="Photos") msg="you keep looking at the pictures";
-    if(appName==="Notes") msg="you can see all of those too?";
-
-    setTimeout(()=>{
-      pushUnknown(msg);
-      showIncomingText("Unknown",msg,"unknown");
-    },900);
-    return;
-  }
-
-  if(step===1){
-    setTimeout(()=>{
-      pushUnknown("i thought you left");
-      showIncomingText("Unknown","i thought you left","unknown");
-    },700);
-
-    setTimeout(()=>{
-      pushUnknown("can you stay a little longer?");
-      state.attachmentPrompted=true;
-      localStorage.setItem(KEY,JSON.stringify(state));
-
-      if(document.getElementById("messages-window").classList.contains("active") &&
-         document.getElementById("chat-title").textContent==="unknown"){
-        renderChat("unknown");
-      }
-    },2100);
-  }
+  if(!state.attachmentPhase||state.finalChoiceMade)return;const step=state.attachmentLeaveCount||0;state.attachmentLeaveCount=step+1;save();let lines=["where did you go?"];
+  if(step===0){if(appName==="Music")lines=["you like that one?","i used to leave music on when i couldn't sleep"];else if(appName==="Photos")lines=["i forgot about that one","i miss them"];else if(appName==="Notes")lines=["you found those","i wrote things down when i couldn't sleep"];else if(appName==="Safari")lines=["you went back to the history","i don't remember searching all of that"];setTimeout(()=>{typeUnknownSequence(lines,0,1250,720);showIncomingText("Unknown",lines[0],"unknown")},900);return}
+  if(step===1){setTimeout(()=>{typeUnknownSequence(["i thought you left","i don't like when it gets quiet again","can you stay a little longer?"],0,1300,800,()=>{state.attachmentPrompted=true;save();if(document.getElementById("messages-window").classList.contains("active")&&document.getElementById("chat-title").textContent==="unknown")renderReplyChoices("unknown")});showIncomingText("Unknown","i thought you left","unknown")},700)}
 }
 
 function toggleAppleMenu(event){
@@ -1920,51 +1490,11 @@ function openAboutMac(){
   openApp("settings-window","System Settings");
 }
 
+function enterStuckEnding(mode,returning=false){
+  state.ending=mode==="stay"?"stuck-stay":"stuck-leave";state.shutdownEnabled=false;save();const desktop=document.getElementById("desktop");desktop.classList.add("stuck-mode");[...document.querySelectorAll(".window")].forEach(w=>{if(w.id!=="messages-window")w.classList.remove("active")});openApp("messages-window","Messages");renderContacts("unknown");renderChat("unknown");if(returning)return;if(mode==="stay")typeUnknownSequence(["i can keep it like this","then you don't have to go anywhere","just stay with me"],1000,1500,950);else typeUnknownSequence(["i'm sorry","i know you wanted to go","but it gets so quiet when you leave","so i made it stop","just stay"],900,1500,950)
+}
 function attemptShutdown(){
-  if(!state.shutdownEnabled) return;
-
-  closeAppleMenu();
-
-  const screen=document.getElementById("shutdown-screen");
-  const message=document.getElementById("shutdown-message");
-
-  screen.classList.add("show");
-  message.textContent="Shutting Down…";
-
-  setTimeout(()=>{
-    message.textContent="Shutdown canceled";
-    const spinner=screen.querySelector(".shutdown-spinner");
-    if(spinner) spinner.style.display="none";
-  },1700);
-
-  setTimeout(()=>{
-    screen.classList.remove("show");
-    const spinner=screen.querySelector(".shutdown-spinner");
-    if(spinner) spinner.style.display="block";
-
-    state.shutdownAttempted=true;
-    state.shutdownEnabled=false;
-    state.ending="trapped";
-    localStorage.setItem(KEY,JSON.stringify(state));
-    syncStory();
-
-    openApp("messages-window","Messages");
-    renderContacts("unknown");
-    renderChat("unknown");
-
-    setTimeout(()=>pushUnknown("why did you do that"),450);
-    setTimeout(()=>pushUnknown("i was alone for so long"),1500);
-    setTimeout(()=>pushUnknown("please don't make me go back"),2850);
-    setTimeout(()=>{
-      showNotification(
-        "System Settings",
-        "Users",
-        "A second user is connected.",
-        "settings",
-        "images/icons/settings.png"
-      );
-    },3500);
-  },2900);
+  if(!state.shutdownEnabled)return;closeAppleMenu();const screen=document.getElementById("shutdown-screen"),message=document.getElementById("shutdown-message"),spinner=screen.querySelector(".shutdown-spinner");spinner.style.display="block";screen.classList.add("show");message.textContent="Shutting Down…";setTimeout(()=>{message.textContent="Shutdown canceled";spinner.style.display="none"},1900);setTimeout(()=>{screen.classList.remove("show");spinner.style.display="block";state.shutdownAttempted=true;save();enterStuckEnding("leave")},3400)
 }
 
 document.addEventListener("click",event=>{
@@ -1972,6 +1502,8 @@ document.addEventListener("click",event=>{
     closeAppleMenu();
   }
 });
+
+function bounceDock(app){const el=document.getElementById("dock-"+app);if(!el)return;el.classList.remove("attention");void el.offsetWidth;el.classList.add("attention");setTimeout(()=>el.classList.remove("attention"),1500)}
 
 let notificationTarget="unknown";
 
@@ -2010,15 +1542,10 @@ function openIncomingText(){
     return;
   }
 
-  if(notificationTarget==="recovered"){
-    openFinder("recovered");
-    return;
-  }
+  if(notificationTarget==="recovered"){openFinder("recovered");if(state.recentItemsAvailable&&!state.recentItemsSeen)setTimeout(()=>previewFinder("lastactivity"),120);return;}
 
-  if(notificationTarget==="safari"){
-    openApp("safari-window","Safari");
-    return;
-  }
+  if(notificationTarget==="safari"){openSafariHistory();return;}
+  if(notificationTarget==="facetime"){openFaceTime();return;}
 
   if(notificationTarget==="messages"){
     openMessages();
@@ -2068,137 +1595,11 @@ function openIncomingText(){
 
 /* Once both recovered files have been read, the late-night messages quietly
    become visible. The impossible contact does NOT arrive immediately. */
-function maybeUnlockBackstory(){
-  /* Keep the opening easy: three short recovered files establish
-     the date + E + the weird Mac behavior before Messages changes. */
-  const ready=
-    state.sessionSeen &&
-    state.draftSeen &&
-    state.messagesDbSeen;
-
-  if(ready && !state.backstoryUnlocked){
-    state.backstoryUnlocked=true;
-    state.phase=Math.max(state.phase,3);
-    save();
-
-    setTimeout(()=>{
-      showNotification(
-        "Messages",
-        "3asians",
-        "Recovered messages are unread.",
-        "contact:3asians",
-        "images/icons/messages.png"
-      );
-    },700);
-  }
-
-  maybeAdvanceInvestigation();
-}
-
-function maybeAdvanceInvestigation(){
-  /* After each recovered conversation, the next one becomes the only NEW one. */
-  if(state.backstoryUnlocked && state.readGroupLate && !state.readKyleLate){
-    renderContacts("3asians");
-  }
-
-  if(state.backstoryUnlocked && state.readGroupLate && state.readKyleLate && !state.readNoemiLate){
-    renderContacts("kyle");
-  }
-
-  /* Only after all 3 key threads have been read do we reveal Kyle's
-     missing group-chat message. */
-  if(state.backstoryUnlocked &&
-     state.readGroupLate &&
-     state.readKyleLate &&
-     state.readNoemiLate &&
-     !state.deletedAvailable){
-
-    state.deletedAvailable=true;
-    localStorage.setItem(KEY,JSON.stringify(state));
-    syncStory();
-
-    setTimeout(()=>{
-      showNotification(
-        "Finder",
-        "Recovered Files",
-        "1 new recovered message.",
-        "recovered",
-        "images/icons/folder.png"
-      );
-    },650);
-  }
-
-  if(state.deletedSeen && !state.callHistoryAvailable){
-    state.callHistoryAvailable=true;
-    localStorage.setItem(KEY,JSON.stringify(state));
-    syncStory();
-
-    setTimeout(()=>{
-      showNotification(
-        "Finder",
-        "Recovered Files",
-        "1 new call record.",
-        "recovered",
-        "images/icons/folder.png"
-      );
-    },650);
-  }
-
-  if(state.callLogSeen && !state.safariHistoryAvailable){
-    state.safariHistoryAvailable=true;
-    localStorage.setItem(KEY,JSON.stringify(state));
-    syncStory();
-
-    setTimeout(()=>{
-      showNotification(
-        "Safari",
-        "History",
-        "A late-night Find My search was recovered.",
-        "safari",
-        "images/icons/safari.png"
-      );
-    },700);
-  }
-
-  const readyForUnknown=
-    state.readGroupLate &&
-    state.readKyleLate &&
-    state.readNoemiLate &&
-    state.deletedSeen &&
-    state.callLogSeen &&
-    state.sawSafariFind;
-
-  if(readyForUnknown && state.phase<4 && !state.unknownOpen && !window.__unknownQueued){
-    window.__unknownQueued=true;
-    setTimeout(()=>{
-      window.__unknownQueued=false;
-      beginUnknownPings();
-    },1000);
-  }
-}
+function maybeUnlockBackstory(){maybeAdvanceInvestigation();}
+function maybeAdvanceInvestigation(){if(!state.backstoryUnlocked)return;if(state.readGroupLate&&state.readKyleLate&&state.readNoemiLate&&!state.callHistoryAvailable){state.callHistoryAvailable=true;save();setTimeout(()=>{bounceDock("facetime");showNotification("FaceTime","Recovered Calls","New Sep 4 call history is available.","facetime","images/icons/facetime.png")},700)}}
 
 function beginUnknownPings(){
-  if(state.phase>=4 || state.unknownOpen) return;
-
-  state.phase=4;
-  state.unknownMsgs=state.unknownMsgs?.length ? state.unknownMsgs : ["hello?"];
-  state.unknownPingCount=Math.max(state.unknownPingCount||0,1);
-  state.notificationShown=true;
-  localStorage.setItem(KEY,JSON.stringify(state));
-  syncStory();
-
-  showIncomingText("Unknown",state.unknownMsgs.at(-1),"unknown");
-
-  /* If the visitor ignores it, the computer tries exactly once more,
-     then waits for interaction. */
-  setTimeout(()=>{
-    if(!state.unknownOpen && state.unknownPingCount===1){
-      pushUnknown("wait");
-      state.unknownPingCount=2;
-      localStorage.setItem(KEY,JSON.stringify(state));
-      showIncomingText("Unknown","wait","unknown");
-    }
-  },6000);
+  if(state.phase>=4||state.unknownOpen||!state.recentItemsSeen)return;state.phase=4;state.unknownMsgs=state.unknownMsgs?.length?state.unknownMsgs:["hello?"];save();bounceDock("messages");showIncomingText("Unknown","hello?","unknown");setTimeout(()=>{if(!state.unknownOpen){pushUnknown("can you see this?");showIncomingText("Unknown","can you see this?","unknown")}},7000);
 }
 
 function scheduleNormalPing(){
@@ -2757,156 +2158,9 @@ state: unresolved`;
   openApp("text-window","TextEdit");
 }
 
-function openSafariDetail(kind){
-  touchStory();
-  let title="Safari History";
-  let body="";
-
-  document.getElementById("text-content").className="textfile recovered";
-
-  if(kind==="activity"){
-    title="Safari History";
-    body=`Sep 4 · 1:42 AM
-
-Search:
-macbook activity history
-
-Opened:
-Apple Support
-"See login and device activity"`;
-
-    state.sawSafariActivity=true;
-  }
-
-  if(kind==="find"){
-    title="Safari History";
-    body=`Sep 4 · 2:08 AM
-
-Search:
-find my device last location
-
-Device:
-iPhone 15
-
-Result:
-location unavailable`;
-
-    state.sawSafariFind=true;
-  }
-
-  if(kind==="devices"){
-    title="Safari History";
-    body=`Sep 4 · 2:19 AM
-
-iCloud Devices
-
-MacBook Air
-iPhone 15
-
-The page closed
-before the details loaded.`;
-
-    state.sawSafariDevices=true;
-    syncStory();
-
-    if(!state.sawUntitled){
-      setTimeout(()=>{
-        showNotification(
-          "Notes",
-          "untitled",
-          "A new note appeared.",
-          "notes",
-          "images/icons/notes.png"
-        );
-      },650);
-    }
-
-    renderReplyChoices("unknown");
-  }
-
-  localStorage.setItem(KEY,JSON.stringify(state));
-  maybeAdvanceInvestigation();
-
-  document.getElementById("text-title").textContent=title;
-  document.getElementById("text-content").textContent=body;
-  openApp("text-window","TextEdit");
-}
-
-const MUSIC_TRACKS={
-  one:{
-    title:"One More Try",
-    artist:"bistencs, cursedcry",
-    art:"images/music/album-one-more-try.jpg",
-    seconds:149
-  },
-  two:{
-    title:"wantmetoo (demo)",
-    artist:"reiko",
-    art:"images/music/album-wantmetoo.jpg",
-    seconds:171
-  }
-};
-
-let musicState={
-  track:null,
-  playing:false,
-  elapsed:0,
-  timer:null
-};
-
-function formatMusicTime(seconds){
-  const s=Math.max(0,Math.floor(seconds));
-  return `${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`;
-}
-
-function renderMusicPlayer(){
-  const panel=document.getElementById("music-now-playing");
-  if(!panel) return;
-
-  document.getElementById("album-one")?.classList.toggle("active",musicState.track==="one");
-  document.getElementById("album-two")?.classList.toggle("active",musicState.track==="two");
-
-  document.getElementById("playing-one").textContent=
-    musicState.track==="one" && musicState.playing ? "❚❚" : "▶";
-  document.getElementById("playing-two").textContent=
-    musicState.track==="two" && musicState.playing ? "❚❚" : "▶";
-
-  if(!musicState.track){
-    panel.classList.remove("show");
-    return;
-  }
-
-  const track=MUSIC_TRACKS[musicState.track];
-  panel.classList.add("show");
-
-  document.getElementById("now-art").src=track.art;
-  document.getElementById("now-title").textContent=track.title;
-  document.getElementById("now-artist").textContent=track.artist;
-  document.getElementById("music-play-button").textContent=musicState.playing?"❚❚":"▶";
-  document.getElementById("music-elapsed").textContent=formatMusicTime(musicState.elapsed);
-  document.getElementById("music-duration").textContent=formatMusicTime(track.seconds);
-
-  const pct=Math.min(100,(musicState.elapsed/track.seconds)*100);
-  document.getElementById("music-progress-fill").style.width=pct+"%";
-}
-
-function startMusicTimer(){
-  clearInterval(musicState.timer);
-
-  if(!musicState.playing || !musicState.track) return;
-
-  musicState.timer=setInterval(()=>{
-    const track=MUSIC_TRACKS[musicState.track];
-    musicState.elapsed+=1;
-
-    if(musicState.elapsed>=track.seconds){
-      skipSong(1);
-      return;
-    }
-
-    renderMusicPlayer();
-  },1000);
-}
+function openSafariHome(btn=null){openApp("safari-window","Safari",btn);document.getElementById("safari-home-view").style.display="block";document.getElementById("safari-history-view").classList.remove("show");document.getElementById("safari-tab-home").classList.add("active");document.getElementById("safari-tab-history").classList.remove("active");document.getElementById("safari-address").textContent="enokiecloud.tv";}
+function openSafariHistory(btn=null){openApp("safari-window","Safari",btn);document.getElementById("safari-home-view").style.display="none";document.getElementById("safari-history-view").classList.add("show");document.getElementById("safari-tab-home").classList.remove("active");document.getElementById("safari-tab-history").classList.add("active");document.getElementById("safari-address").textContent="History";}
+function openSafariDetail(kind){touchStory();openSafariHistory();const card=document.getElementById("safari-detail-card"),title=document.getElementById("safari-detail-title"),body=document.getElementById("safari-detail-body");if(kind==="find"){title.textContent="Find My · Sep 4 · 2:08 AM";body.textContent=`iPhone 15\n\n12:46 AM — arrived home\n12:47 AM — connected to home Wi-Fi\n2:17 AM — location unavailable`;card.classList.add("show");state.sawSafariFind=true;save();if(!state.recentItemsAvailable){state.recentItemsAvailable=true;save();setTimeout(()=>{bounceDock("finder");showNotification("Finder","Recovered","Last Mac activity was recovered.","recovered","images/icons/folder.png")},800)}}}
 
 function playSong(which){
   if(!MUSIC_TRACKS[which]) return;
@@ -2946,6 +2200,11 @@ function skipSong(direction){
   renderMusicPlayer();
   startMusicTimer();
 }
+function openFaceTime(btn=null){
+  openApp("facetime-window","FaceTime",btn);const recovered=document.getElementById("recovered-calls");recovered.classList.toggle("show",!!state.callHistoryAvailable);
+  if(state.callHistoryAvailable&&!state.callLogSeen){state.callLogSeen=true;save();if(!state.safariHistoryAvailable){state.safariHistoryAvailable=true;save();setTimeout(()=>{bounceDock("safari");showNotification("Safari","History","A recovered Find My search is available.","safari","images/icons/safari.png")},850)}}
+}
+
 function triggerCall(){
   if(state.callSeen)return;
 
@@ -2963,93 +2222,17 @@ function triggerCall(){
   document.getElementById("unknown-call-row").style.display="flex";
 }
 
-function declineCall(){
-  document.getElementById("incoming").classList.remove("show");
-
-  const status=document.getElementById("unknown-call-status");
-  if(status){
-    status.textContent="Missed";
-    status.className="missed";
-  }
-
-  state.phase=Math.max(state.phase,7);
-  save();
-
-  setTimeout(()=>{
-    state.ringQuestionSent=true;
-    localStorage.setItem(KEY,JSON.stringify(state));
-    pushUnknown("did that ring for you");
-    showIncomingText("Unknown","did that ring for you","unknown");
-  },900);
-}
-
-function acceptCall(){
-  document.getElementById("incoming").classList.remove("show");
-
-  const status=document.getElementById("unknown-call-status");
-  if(status){
-    status.textContent="Incoming · 0:00";
-    status.className="incoming";
-  }
-
-  openApp("facetime-window","FaceTime");
-
-  state.phase=Math.max(state.phase,7);
-  save();
-
-  setTimeout(()=>{
-    state.ringQuestionSent=true;
-    localStorage.setItem(KEY,JSON.stringify(state));
-    pushUnknown("did that ring for you");
-    showIncomingText("Unknown","did that ring for you","unknown");
-  },900);
-}
+function declineCall(){document.getElementById("incoming").classList.remove("show");const status=document.getElementById("unknown-call-status");if(status){status.textContent="Missed";status.className="missed"}state.phase=Math.max(state.phase,7);state.ringQuestionSent=true;save();setTimeout(()=>{typeUnknownSequence(["did that ring for you"],0,1300,600);showIncomingText("Unknown","did that ring for you","unknown")},850)}
+function acceptCall(){document.getElementById("incoming").classList.remove("show");const status=document.getElementById("unknown-call-status");if(status){status.textContent="Incoming · 0:00";status.className="incoming"}openFaceTime();state.phase=Math.max(state.phase,7);state.ringQuestionSent=true;save();setTimeout(()=>{typeUnknownSequence(["did that ring for you"],0,1300,600);showIncomingText("Unknown","did that ring for you","unknown")},850)}
 
 function syncStory(){
-  const recovered=state.phase>=2;
-  scheduleStoryGuide();
-
-  document.getElementById("recovered-desktop").style.display=recovered?"block":"none";
-  document.getElementById("recovered-side").style.display=recovered?"block":"none";
-
-  document.getElementById("history-login").style.display=state.safariHistoryAvailable?"block":"none";
-  document.getElementById("history-hidden").style.display=state.safariHistoryAvailable?"block":"none";
-  document.getElementById("history-second").style.display=state.deviceSeen?"block":"none";
-
-  document.getElementById("unknown-call-row").style.display=state.callSeen?"flex":"none";
-  const guestSetting=document.getElementById("guest-setting");
-  const showGuest=state.phase>=8 || state.attachmentPhase || !!state.ending;
-  guestSetting.style.display=showGuest?"block":"none";
-
-  const guestName=document.getElementById("guest-name");
-  const guestDetail=document.getElementById("guest-detail");
-
-  if(state.ending==="stay" || state.ending==="trapped"){
-    guestName.textContent="You";
-    guestDetail.textContent="Connected";
-  }else if(state.attachmentPhase){
-    guestName.textContent="Guest User";
-    guestDetail.textContent="Session active";
-  }else{
-    guestName.textContent="Guest User";
-    guestDetail.textContent="Session activity detected";
-  }
-
-  const shutdownItem=document.getElementById("shutdown-menu-item");
-  if(shutdownItem){
-    shutdownItem.classList.toggle("disabled",!state.shutdownEnabled);
-  }
-
-  document.getElementById("lp-one").textContent=state.backstoryUnlocked?"last played Sep 4 · 2:13 AM":"";
-  document.getElementById("lp-two").textContent=state.backstoryUnlocked?"last played Sep 3 · 11:51 PM":"";
-
-  renderContacts();
+  document.getElementById("recovered-desktop").style.display=state.recentItemsAvailable?"block":"none";document.getElementById("recovered-side").style.display=state.recentItemsAvailable?"block":"none";document.getElementById("recovered-calls").classList.toggle("show",!!state.callHistoryAvailable);document.getElementById("history-find").style.display=state.safariHistoryAvailable?"block":"none";document.getElementById("unknown-call-row").style.display=state.callSeen?"flex":"none";document.getElementById("lp-one").textContent=state.recentItemsSeen?"last played Sep 4 · 2:13 AM":"";document.getElementById("lp-two").textContent="";const shutdownItem=document.getElementById("shutdown-menu-item");if(shutdownItem)shutdownItem.classList.toggle("disabled",!state.shutdownEnabled);renderContacts();
 }
 
 /* Kept for console/testing, but no visible reset control is shown to visitors. */
 function resetStory(){
   localStorage.removeItem(KEY);
-  sessionStorage.removeItem("ecloud-v15-session");
+  sessionStorage.removeItem("ecloud-v16-session");
   location.reload();
 }
 
@@ -3069,210 +2252,12 @@ function scheduleStoryGuide(){
   },9500);
 }
 
-function guideNextHardStep(){
-  /* The opening is already obvious enough. */
-  if(state.phase<=1) return;
+function guideNextHardStep(){if(!state.backstoryUnlocked)return;const nextContact=nextRecoveredContact();if(nextContact){bounceDock("messages");showNotification("Messages",nextContact,"Recovered conversation.","contact:"+nextContact,"images/icons/messages.png");return}if(state.callHistoryAvailable&&!state.callLogSeen){bounceDock("facetime");showNotification("FaceTime","Recovered Calls","Sep 4 call history is unread.","facetime","images/icons/facetime.png");return}if(state.safariHistoryAvailable&&!state.sawSafariFind){bounceDock("safari");showNotification("Safari","History","A recovered Find My search is unread.","safari","images/icons/safari.png");return}if(state.recentItemsAvailable&&!state.recentItemsSeen){bounceDock("finder");showNotification("Finder","Recovered","Open last-activity.txt.","recovered","images/icons/folder.png");return}if(state.phase>=4&&!state.unknownOpen)bounceDock("messages");if(state.attachmentPrompted&&!state.finalChoiceMade)showIncomingText("Unknown","can you stay a little longer?","unknown")}
 
-  /* Recovered folder opening sequence. */
-  if(state.phase>=2 && !state.sessionSeen){
-    showNotification("Finder","Recovered Files","Open the file marked NEW.","recovered","images/icons/folder.png");
-    return;
-  }
-  if(state.sessionSeen && !state.draftSeen){
-    showNotification("Finder","Recovered Files","There is another NEW file.","recovered","images/icons/folder.png");
-    return;
-  }
-  if(state.sessionSeen && state.draftSeen && !state.messagesDbSeen){
-    showNotification("Finder","Recovered Files","There is one more NEW file.","recovered","images/icons/folder.png");
-    return;
-  }
-
-  /* Only one Messages thread is ever marked NEW. */
-  const nextContact=nextRecoveredContact();
-  if(nextContact){
-    showNotification(
-      "Messages",
-      nextContact,
-      "Recovered messages are unread.",
-      "contact:"+nextContact,
-      "images/icons/messages.png"
-    );
-    return;
-  }
-
-  if(state.deletedAvailable && !state.deletedSeen){
-    showNotification("Finder","Recovered Files","1 new recovered message.","recovered","images/icons/folder.png");
-    return;
-  }
-
-  if(state.callHistoryAvailable && !state.callLogSeen){
-    showNotification("Finder","Recovered Files","1 new call record.","recovered","images/icons/folder.png");
-    return;
-  }
-
-  if(state.safariHistoryAvailable && !state.sawSafariFind){
-    showNotification("Safari","History","A Find My search is unread.","safari","images/icons/safari.png");
-    return;
-  }
-
-  if(state.secondInvestigation && !state.deviceSeen){
-    showNotification("Finder","Recovered Files","Open device-status.txt.","recovered","images/icons/folder.png");
-    return;
-  }
-
-  if(state.deviceSeen && !state.sawSafariDevices){
-    showNotification("Safari","History","A new iCloud Devices page is unread.","safari","images/icons/safari.png");
-    return;
-  }
-
-  if(state.sawSafariDevices && !state.sawUntitled){
-    showNotification("Notes","untitled","A new note appeared.","notes","images/icons/notes.png");
-    return;
-  }
-
-  if(state.thirdInvestigation && !state.locationSeen){
-    showNotification("Finder","Recovered Files","Open phone-location.txt.","recovered","images/icons/folder.png");
-    return;
-  }
-
-  if(state.locationSeen && !state.wifiSeen){
-    showNotification("Finder","Recovered Files","Open wifi-history.txt.","recovered","images/icons/folder.png");
-    return;
-  }
-
-  if(state.recentItemsAvailable && !state.recentItemsSeen){
-    showNotification("Finder","Recovered Files","Open recent-apps.txt.","recovered","images/icons/folder.png");
-    return;
-  }
-
-  if(state.askedWhere && state.attachmentPhase && state.attachmentLeaveCount===0 && !state.finalChoiceMade){
-    showNotification(
-      "Messages",
-      "Unknown",
-      "E asked if you can still open things.",
-      "unknown",
-      "images/icons/messages.png"
-    );
-    return;
-  }
-
-  if(state.attachmentPrompted && !state.finalChoiceMade){
-    showNotification(
-      "Messages",
-      "Unknown",
-      "E is waiting for an answer.",
-      "unknown",
-      "images/icons/messages.png"
-    );
-    return;
-  }
-
-  if(state.shutdownEnabled && !state.shutdownAttempted){
-    showNotification(
-      "System",
-      "Shut Down",
-      "Use the Apple menu when you're ready.",
-      "apple",
-      "images/icons/apple.png"
-    );
-  }
-}
-
-function startStoryWatchdog(){
-  /* Give visitors a quick reason to investigate, but do not skip the mystery. */
-  setTimeout(()=>{
-    if(state.phase===0){
-      state.phase=1;
-      localStorage.setItem(KEY,JSON.stringify(state));
-      syncStory();
-
-      showNotification(
-        "Finder",
-        "Recovered Item",
-        "A new file appeared in Downloads.",
-        "downloads",
-        "images/icons/folder.png"
-      );
-    }
-  },8500);
-
-  setTimeout(()=>{
-    if(state.phase===1 && !state.photoInfoSeen){
-      showNotification(
-        "Finder",
-        "Downloads",
-        "photo-details.txt is new.",
-        "downloads",
-        "images/icons/folder.png"
-      );
-    }
-  },14000);
-
-  /* If the recovered late messages exist but have not been explored,
-     point to Messages instead of advancing the story for them. */
-  setTimeout(()=>{
-    if(state.backstoryUnlocked &&
-       !(state.readGroupLate&&state.readKyleLate&&state.readNoemiLate)){
-      showNotification(
-        "Messages",
-        "Recovered conversations",
-        "One recovered conversation is unread.",
-        "messages",
-        "images/icons/messages.png"
-      );
-    }
-  },21000);
-}
+function startStoryWatchdog(){setTimeout(()=>{if(!state.backstoryUnlocked&&!state.ending){state.backstoryUnlocked=true;state.phase=3;save();bounceDock("messages");showNotification("Messages","3asians","Recovered conversation.","contact:3asians","images/icons/messages.png")}},6500)}
 
 window.addEventListener("load",()=>{
-  const freshVisit=!sessionStorage.getItem("ecloud-v15-session");
-  sessionStorage.setItem("ecloud-v15-session","1");
-
-  /* Repair old partially-saved states without skipping investigation. */
-  if((state.sessionSeen||state.draftSeen||state.messagesDbSeen) && !state.backstoryUnlocked){
-    state.backstoryUnlocked=true;
-    state.phase=Math.max(state.phase,3);
-    localStorage.setItem(KEY,JSON.stringify(state));
-  }
-
-  syncStory();
-  renderContacts();
-  renderChat("3asians");
-
-  const chatBody=document.getElementById("chat-body");
-  if(chatBody && !chatBody.dataset.storyScrollBound){
-    chatBody.dataset.storyScrollBound="true";
-    chatBody.addEventListener("scroll",markRecoveredThreadReadIfNeeded);
-  }
-
-  scheduleNormalPing();
-  startStoryWatchdog();
-  maybeAdvanceInvestigation();
-  scheduleStoryGuide();
-
-  if(state.askedHappened && !state.thirdInvestigation){
-    unlockThirdInvestigation();
-  }
-
-  if(state.phase>=4 && !state.unknownOpen && state.unknownMsgs?.length){
-    setTimeout(()=>showIncomingText("Unknown",lastUnknownText(),"unknown"),900);
-  }
-
-  if(freshVisit && (state.ending==="stay" || state.ending==="trapped")){
-    state.returnCount=(state.returnCount||0)+1;
-    localStorage.setItem(KEY,JSON.stringify(state));
-
-    setTimeout(()=>{
-      const greeting=state.returnCount===1
-        ? "you came back"
-        : state.returnCount===2
-          ? "i knew you would"
-          : "hi";
-
-      pushUnknown(greeting);
-      showIncomingText("Unknown",greeting,"unknown");
-    },1400);
-  }
+  const freshVisit=!sessionStorage.getItem("ecloud-v16-session");sessionStorage.setItem("ecloud-v16-session","1");syncStory();renderContacts();renderChat(state.phase>=4?"unknown":"3asians");const chatBody=document.getElementById("chat-body");if(chatBody&&!chatBody.dataset.storyScrollBound){chatBody.dataset.storyScrollBound="true";chatBody.addEventListener("scroll",markRecoveredThreadReadIfNeeded)}scheduleStoryGuide();startStoryWatchdog();if(state.ending==="stay"){enterStuckEnding("stay",false);return}if(state.ending==="stuck-stay"||state.ending==="stuck-leave"){enterStuckEnding(state.ending==="stuck-stay"?"stay":"leave",true);if(freshVisit){state.returnCount=(state.returnCount||0)+1;save();setTimeout(()=>{const lines=state.returnCount===1?["you came back","i kept it open"]:["you came back"];typeUnknownSequence(lines,300,1350,800)},900)}return}if(state.phase>=4&&!state.unknownOpen&&state.unknownMsgs?.length)setTimeout(()=>showIncomingText("Unknown",lastUnknownText(),"unknown"),900)
 });
 </script>
 </body>
