@@ -191,6 +191,40 @@ button{color:inherit}
 .incoming .actions{display:flex;gap:10px;margin-top:13px}
 .incoming button{flex:1;border:0;border-radius:8px;padding:8px;cursor:pointer}.decline{background:#ff5f57;color:#fff}.accept{background:#28c840;color:#fff}
 
+.message-notification{
+  position:absolute;
+  top:39px;
+  right:14px;
+  width:330px;
+  display:none;
+  align-items:flex-start;
+  gap:10px;
+  padding:11px 12px;
+  border:1px solid rgba(255,255,255,.34);
+  border-radius:15px;
+  background:rgba(241,242,245,.88);
+  box-shadow:0 16px 42px rgba(0,0,0,.28);
+  backdrop-filter:blur(24px) saturate(150%);
+  -webkit-backdrop-filter:blur(24px) saturate(150%);
+  z-index:11000;
+  cursor:pointer;
+  color:#202124;
+}
+.message-notification.show{display:flex;animation:notifyIn .28s cubic-bezier(.2,.8,.2,1)}
+@keyframes notifyIn{
+  from{opacity:0;transform:translateY(-12px) scale(.98)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.message-notification img{
+  width:38px;height:38px;object-fit:contain;border-radius:9px;flex:0 0 38px
+}
+.notification-copy{min-width:0;flex:1}
+.notification-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:2px}
+.notification-top strong{font-size:11px}
+.notification-top span{font-size:9px;color:#7e8085}
+.notification-sender{font-size:12px;font-weight:650;margin-bottom:2px}
+.notification-text{font-size:11px;color:#404247;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
 /* system/settings */
 .settings{padding:20px;height:390px;background:#f3f4f6;overflow:auto}
 .setting{padding:13px;border-radius:10px;background:#fff;margin-bottom:9px;box-shadow:0 1px 4px rgba(0,0,0,.07)}
@@ -389,11 +423,11 @@ button{color:inherit}
   </div>
   <div class="facetime">
     <h2 style="font-size:19px;margin-bottom:14px">Recents</h2>
-    <div class="call-row"><span>Mami</span><span class="when">Sep 2 · 8:12 PM</span></div>
+    <div class="call-row"><span>mami</span><span class="when">Sep 2 · 8:12 PM</span></div>
     <div class="call-row"><span>jadabae</span><span class="when">Sep 2 · 10:04 PM</span></div>
     <div class="call-row"><span>noemibae</span><span class="when">Sep 3 · 3:36 PM</span></div>
     <div class="call-row"><span>kyle</span><span class="when">Sep 3 · 9:18 PM</span></div>
-    <div class="call-row"><span>Mami</span><span class="when">Sep 3 · 11:47 PM</span></div>
+    <div class="call-row"><span>mami</span><span class="when">Sep 3 · 11:47 PM</span></div>
     <div id="unknown-call-row" class="call-row" style="display:none"><span>Unknown</span><span class="when">Sep 4 · 2:17 AM</span></div>
   </div>
 </section>
@@ -411,7 +445,6 @@ button{color:inherit}
     <div id="guest-setting" class="setting" style="display:none"><strong>Guest User</strong><span>Session activity detected</span></div>
     <div class="setting"><strong>Appearance</strong><span>Dark</span></div>
     <div class="setting"><strong>Desktop & Dock</strong><span>Customized</span></div>
-    <button class="reset" onclick="resetStory()">Reset story progress</button>
   </div>
 </section>
 
@@ -432,6 +465,16 @@ button{color:inherit}
   </div>
   <div class="pdfbody"><iframe src="school/syllabus.pdf"></iframe></div>
 </section>
+
+<!-- incoming Messages notification -->
+<div id="message-notification" class="message-notification" onclick="openIncomingText()">
+  <img src="images/icons/messages.png" alt="">
+  <div class="notification-copy">
+    <div class="notification-top"><strong>Messages</strong><span>now</span></div>
+    <div id="notification-sender" class="notification-sender">Unknown</div>
+    <div id="notification-text" class="notification-text">hello?</div>
+  </div>
+</div>
 
 <!-- incoming call -->
 <div id="incoming" class="incoming">
@@ -461,12 +504,24 @@ button{color:inherit}
 
 <script>
 let topZ=500;
-const KEY="enokieStoryV2";
+const KEY="enokieStoryV3";
+
+/* Testing shortcut:
+   open desktop.html?reset=1 to clear story progress without exposing a reset button to visitors. */
+const resetParams=new URLSearchParams(location.search);
+if(resetParams.get("reset")==="1"){
+  localStorage.removeItem(KEY);
+  history.replaceState({},document.title,location.pathname);
+}
+
 const DEFAULT_STATE={
   phase:0,
   metaSeen:false,
+  photoInfoSeen:false,
   sessionSeen:false,
   draftSeen:false,
+  backstoryUnlocked:false,
+  notificationShown:false,
   unknownOpen:false,
   windowMoved:false,
   callSeen:false,
@@ -519,12 +574,15 @@ document.querySelectorAll(".window").forEach(win=>{
     win.style.left=Math.max(0,Math.min(innerWidth-win.offsetWidth,e.clientX-ox))+"px";
     win.style.top=Math.max(29,Math.min(innerHeight-win.offsetHeight-60,e.clientY-oy))+"px";
     if(state.phase>=5 && !state.windowMoved){
-      state.windowMoved=true;save();
+      state.windowMoved=true;
+      state.phase=Math.max(state.phase,6);
+      save();
+
       setTimeout(()=>pushUnknown("wait"),500);
-      setTimeout(()=>pushUnknown("you can move those?"),1700);
-      setTimeout(()=>pushUnknown("i can't"),3200);
-      setTimeout(()=>pushUnknown("don't close it"),4500);
-      setTimeout(()=>triggerCall(),6500);
+      setTimeout(()=>pushUnknown("you did that?"),1600);
+      setTimeout(()=>pushUnknown("you can move those?"),2900);
+      setTimeout(()=>pushUnknown("i can't"),4400);
+      setTimeout(()=>triggerCall(),6800);
     }
   });
   document.addEventListener("mouseup",()=>drag=false);
@@ -603,36 +661,50 @@ function showPhoto(n){
     <div class="meta-row"><span>Device</span><span>${m[2]}</span></div>
     <div class="meta-row"><span>Info</span><span>${m[3]||"—"}</span></div>`;
   openApp("photo-window","Preview");
-  if(n===4 && state.phase<1){advance(1)}
+
+  /* First clue: this picture was edited days after it was taken. */
+  if(n===4 && !state.metaSeen){
+    state.metaSeen=true;
+    state.phase=Math.max(state.phase,1);
+    save();
+  }
 }
 
 const normalChats={
   "jadabae":[
     ["jadabae","where are u"],["me","girl im coming 😭"],["jadabae","you said that 20 mins ago"],
-    ["jadabae","bring the charger pls"],["me","I HAVE IT"],["jadabae","okay good bc noemi is at 4%"]
+    ["jadabae","bring the charger pls"],["me","I HAVE IT"],["jadabae","okay good bc noemi is at 4%"],
+    ["me","im outside"],["jadabae","WAIT FOR ME"]
   ],
   "noemibae":[
     ["noemibae","look at what i just sent u"],["me","LMFAOOO STOP"],["noemibae","i knew youd get it"],
-    ["me","why would u send that while im in class"],["noemibae","timing was important"],["me","blocked"]
+    ["me","why would u send that while im in class"],["noemibae","timing was important"],["me","blocked"],
+    ["noemibae","also do u still have my black top"],["me","probably 😭"]
   ],
   "kyle":[
     ["kyle","yall still going out"],["me","yes unfortunately"],["kyle","crazy"],
-    ["kyle","what time"],["me","idk ask jada"],["kyle","useless"]
+    ["kyle","what time"],["me","idk ask jada"],["kyle","useless"],
+    ["me","are u driving friday"],["kyle","probably"],["me","kk"]
   ],
   "lil sis ava":[
     ["lil sis ava","are u home later"],["me","yeah why"],["lil sis ava","i need to tell u something lol"],
-    ["me","that sounds threatening"],["lil sis ava","its not 😭"],["me","okayyy"]
+    ["me","that sounds threatening"],["lil sis ava","its not 😭"],["me","okayyy"],
+    ["lil sis ava","dont forget what u promised"],["me","i didnttt"]
   ],
   "kiddo jas":[
     ["kiddo jas","can i ask u something"],["me","ofc whats up"],["kiddo jas","nvm i figured it out"],
-    ["me","girl 😭"],["kiddo jas","SORRY"],["me","ur good lol"]
+    ["me","girl 😭"],["kiddo jas","SORRY"],["me","ur good lol"],
+    ["kiddo jas","ill tell u tomorrow"],["me","okie"]
   ],
   "mami":[
     ["mami","anak did you eat"],["me","yes ma"],["mami","what did you eat"],["me","rice and chicken"],
-    ["mami","okay text me when you get home"],["me","i will"]
+    ["mami","okay text me when you get home"],["me","i will"],["mami","before 1 please"],["me","yes ma"]
   ]
 };
 
+/* These aren't shown at first. Think of them as messages that become readable
+   after the restored Messages index is discovered. They give backstory without
+   immediately announcing "Enokie disappeared." */
 function groupChatData(){
   const chat=[
     ["jadabae","are we still going out friday"],
@@ -640,86 +712,195 @@ function groupChatData(){
     ["kyle","same"],
     ["me","okay ill text when im leaving"],
     ["jadabae","bring the charger pls"],
-    ["me","yes mother"]
+    ["me","yes mother"],
+    ["noemibae","who is picking the place"],
+    ["me","not me bc yall complain every time"],
+    ["kyle","valid"],
+    ["jadabae","rude"]
   ];
-  if(state.phase>=2){
+
+  if(state.backstoryUnlocked){
+    chat.push(["system","messages restored from Sep 4"]);
     chat.push(["jadabae","did she ever text u back"]);
     chat.push(["noemibae","no"]);
     chat.push(["kyle","she said she was going home"]);
+    chat.push(["jadabae","you were with her though"]);
+    chat.push(["kyle","until like 12:40"]);
+    chat.push(["noemibae","then why did she call me at 2:17"]);
+    chat.push(["kyle","what"]);
+    chat.push(["noemibae","she called and didn't say anything"]);
     chat.push(["system","1 message unavailable"]);
   }
-  if(state.phase>=3){
-    chat.push(["jadabae","kyle you were literally the last one with her"]);
-    chat.push(["kyle","i dropped her off"]);
-    chat.push(["noemibae","then why did she call me at 2"]);
-    chat.push(["kyle","i don't know"]);
-  }
+
   return chat;
 }
 
-function kyleChatData(){
-  const chat=[...normalChats["kyle"]];
-  if(state.phase>=3){
-    chat.push(["kyle","for the last time i dropped her off"]);
-    chat.push(["me","i didnt say anything"]);
-    chat.push(["kyle","everyone keeps acting like i know something"]);
-    chat.push(["me","do you"]);
-    chat.push(["kyle","no"]);
+function personChatData(name){
+  const chat=[...(normalChats[name]||[])];
+
+  if(!state.backstoryUnlocked) return chat;
+
+  /* Messages sent to the owner after she stopped replying. No blue replies
+     are added here, which keeps the timeline believable. */
+  if(name==="jadabae"){
+    chat.push(["system","Sep 4 · 1:46 AM"]);
+    chat.push(["jadabae","where are u"]);
+    chat.push(["jadabae","pls answer"]);
+    chat.push(["jadabae","noemi said ur phone rang once then stopped"]);
   }
+
+  if(name==="noemibae"){
+    chat.push(["system","Sep 4 · 2:18 AM"]);
+    chat.push(["noemibae","girl why did u call me"]);
+    chat.push(["noemibae","hello??"]);
+    chat.push(["noemibae","u literally didnt say anything"]);
+    chat.push(["noemibae","ur freaking me out"]);
+  }
+
+  if(name==="kyle"){
+    chat.push(["system","Sep 4 · 1:38 AM"]);
+    chat.push(["kyle","did u make it inside"]);
+    chat.push(["kyle","answer me"]);
+    chat.push(["kyle","everyone keeps asking me where u are"]);
+    chat.push(["kyle","i told them i dropped u off"]);
+  }
+
+  if(name==="mami"){
+    chat.push(["system","Sep 4 · 1:21 AM"]);
+    chat.push(["mami","anak are you home"]);
+    chat.push(["mami","call me please"]);
+    chat.push(["mami","i am awake"]);
+  }
+
   return chat;
 }
 
 function unknownMsgs(){
   return state.unknownMsgs||[];
 }
+
 function contactNames(){
   const names=["3asians","jadabae","noemibae","kyle","lil sis ava","kiddo jas","mami"];
-  if(state.phase>=4)names.unshift("unknown");
+  if(state.phase>=4) names.unshift("unknown");
   return names;
 }
+
 function renderContacts(active="3asians"){
-  const box=document.getElementById("contacts");box.innerHTML="";
+  const box=document.getElementById("contacts");
+  box.innerHTML="";
+
   contactNames().forEach(name=>{
-    const d=document.createElement("div");d.className="contact"+(name===active?" active":"");
+    const d=document.createElement("div");
+    d.className="contact"+(name===active?" active":"");
+
     const u=unknownMsgs();
-    const preview=name==="unknown"?(u.at(-1)||"hello?"):(name==="mami"?"mom":name==="3asians"?"group chat":"");
+    let preview="";
+    if(name==="unknown") preview=u.at(-1)||"hello?";
+    else if(name==="mami") preview="mom";
+    else if(name==="3asians") preview=state.backstoryUnlocked?"8 messages restored":"group chat";
+
     d.innerHTML=`<strong>${name}${name==="unknown"&&!state.unknownOpen?'<span class="unread"></span>':""}</strong><small>${preview}</small>`;
     d.onclick=()=>{renderContacts(name);renderChat(name)};
     box.appendChild(d);
   });
 }
+
 function renderChat(name){
   document.getElementById("chat-title").textContent=name;
-  const body=document.getElementById("chat-body");body.innerHTML="";
+  const body=document.getElementById("chat-body");
+  body.innerHTML="";
+
   let data;
   if(name==="unknown") data=unknownMsgs().map(t=>["unknown",t]);
   else if(name==="3asians") data=groupChatData();
-  else if(name==="kyle") data=kyleChatData();
-  else data=normalChats[name];
+  else data=personChatData(name);
 
-  data.forEach(([sender,text])=>{
-    if(sender==="system"){body.insertAdjacentHTML("beforeend",`<div class="system-line">${text}</div>`);return}
-    body.insertAdjacentHTML("beforeend",`<div class="msg ${sender==="me"?"me":""}"><div class="sender">${sender}</div><div class="bubble">${text}</div></div>`);
+  data.forEach(([sender,msg])=>{
+    if(sender==="system"){
+      body.insertAdjacentHTML("beforeend",`<div class="system-line">${msg}</div>`);
+      return;
+    }
+
+    body.insertAdjacentHTML(
+      "beforeend",
+      `<div class="msg ${sender==="me"?"me":""}">
+        <div class="sender">${sender==="me"?"":sender}</div>
+        <div class="bubble">${msg}</div>
+      </div>`
+    );
   });
+
   body.scrollTop=body.scrollHeight;
 
-  if(name==="unknown" && state.phase===4 && !state.unknownOpen){
+  /* Opening the impossible conversation causes it to answer in real time. */
+  if(name==="unknown" && state.phase>=4 && !state.unknownOpen){
     state.unknownOpen=true;
-    advance(5);
-    setTimeout(()=>pushUnknown("can you see this"),1100);
-    setTimeout(()=>pushUnknown("are you using this computer"),2800);
+    state.phase=Math.max(state.phase,5);
+    save();
+
+    setTimeout(()=>pushUnknown("is someone there"),1200);
+    setTimeout(()=>pushUnknown("can you read this"),2900);
+    setTimeout(()=>pushUnknown("don't close messages"),5000);
   }
 }
+
 function openMessages(btn=null){
   openApp("messages-window","Messages",btn);
-  const target=state.phase>=4?"unknown":"3asians";
-  renderContacts(target);renderChat(target);
+  renderContacts("3asians");
+  renderChat("3asians");
 }
-function pushUnknown(text){
+
+function pushUnknown(msg){
   state.unknownMsgs=state.unknownMsgs||[];
-  if(!state.unknownMsgs.includes(text)){state.unknownMsgs.push(text);save()}
-  if(document.getElementById("messages-window").classList.contains("active")){
-    renderContacts("unknown");renderChat("unknown");
+  if(!state.unknownMsgs.includes(msg)){
+    state.unknownMsgs.push(msg);
+    localStorage.setItem(KEY,JSON.stringify(state));
+  }
+
+  if(document.getElementById("messages-window").classList.contains("active") &&
+     document.getElementById("chat-title").textContent==="unknown"){
+    renderContacts("unknown");
+    renderChat("unknown");
+  }else{
+    renderContacts();
+  }
+}
+
+function showIncomingText(sender,msg){
+  const n=document.getElementById("message-notification");
+  document.getElementById("notification-sender").textContent=sender;
+  document.getElementById("notification-text").textContent=msg;
+  n.classList.add("show");
+
+  clearTimeout(window.__notificationTimer);
+  window.__notificationTimer=setTimeout(()=>n.classList.remove("show"),9000);
+}
+
+function openIncomingText(){
+  document.getElementById("message-notification").classList.remove("show");
+  openApp("messages-window","Messages");
+  renderContacts("unknown");
+  renderChat("unknown");
+}
+
+/* Once both recovered files have been read, old Messages data becomes readable.
+   A little later, a message arrives that is NOT part of the recovered history. */
+function maybeUnlockBackstory(){
+  if(state.sessionSeen && state.draftSeen && !state.backstoryUnlocked){
+    state.backstoryUnlocked=true;
+    state.phase=Math.max(state.phase,3);
+    save();
+
+    setTimeout(()=>{
+      if(state.phase<4){
+        state.phase=4;
+        state.unknownMsgs=["hello?"];
+        state.notificationShown=true;
+        localStorage.setItem(KEY,JSON.stringify(state));
+        syncStory();
+        showIncomingText("Unknown","hello?");
+      }
+    },4200);
   }
 }
 
@@ -738,41 +919,148 @@ const notes={
 ☐ 1 can coconut milk
 ☐ 1 dozen eggs
 ☐ 1 small bag jasmine rice`,
+  "school":`HCA 125
+- discussion post
+- chapter 4 reading
+- email prof about quiz
+- print slides before class`,
+  "friday":`friday
+- return jada's charger
+- noemi after 8
+- kyle said he can drive
+- pick somewhere everyone will actually eat
+- mami wants me home before 1`,
   "website stuff":`desktop
 photos
 music
 fix mobile later
-remember to back everything up`,
-  "school":`HCA 125
-- discussion post
-- chapter 4 reading
-- email prof about quiz`
+remember to back everything up`
 };
+
 function renderNotes(name="grocery list"){
-  const list=document.getElementById("notes-list");list.innerHTML="";
-  const names=["grocery list","school","website stuff"];
-  if(state.phase>=7)names.unshift("untitled");
+  const list=document.getElementById("notes-list");
+  list.innerHTML="";
+
+  const names=["grocery list","school","friday","website stuff"];
+  if(state.phase>=7) names.unshift("untitled");
+
   names.forEach(n=>{
-    const r=document.createElement("div");r.className="note-row"+(n===name?" active":"");
+    const r=document.createElement("div");
+    r.className="note-row"+(n===name?" active":"");
     r.innerHTML=`<strong>${n}</strong><small>${n==="untitled"?"now":"Sep 3"}</small>`;
-    r.onclick=()=>renderNotes(n);list.appendChild(r);
+    r.onclick=()=>renderNotes(n);
+    list.appendChild(r);
   });
+
   document.getElementById("note-title").textContent=name;
-  let text=notes[name]||"";
+  let body=notes[name]||"";
+
   if(name==="untitled"){
-    text=`what date is it
+    body=state.callSeen
+      ? `what date is it
 
 the clock says september 15
 
 mine stopped at 2:17
 
-please leave this open`;
+please leave this open`
+      : `are you there
+
+i can see when something opens
+
+i can't open anything myself`;
   }
-  document.getElementById("note-text").textContent=text;
+
+  document.getElementById("note-text").textContent=body;
 }
+
 function openNotes(btn=null){
   openApp("notes-window","Notes",btn);
   renderNotes(state.phase>=7?"untitled":"grocery list");
+}
+
+/* Recovered text files drive the investigation. */
+function openText(kind){
+  let title="";
+  let body="";
+
+  if(kind==="photo-info"){
+    title="IMG_4409-info.txt";
+    body=`file: IMG_4409.jpeg
+created: Sep 2, 2026 · 12:43 AM
+last opened: Sep 3, 2026 · 11:56 PM
+modified: Sep 11, 2026 · 2:13 AM
+
+source device: iPhone 15
+modification source: local user process
+
+the file changed after the last normal activity on this account.`;
+
+    state.photoInfoSeen=true;
+    state.phase=Math.max(state.phase,2);
+  }
+
+  if(kind==="session"){
+    title="session-cache.txt";
+    body=`session recovery
+-----------------------------
+account: e.cloud
+local user: enokie
+last foreground activity: Sep 4, 2026 · 2:14:03 AM
+network state: disconnected
+camera request: Sep 4 · 2:17:31 AM
+messages process: active
+session end: unavailable
+
+recovery note:
+the owner session was never closed normally.`;
+
+    state.sessionSeen=true;
+    state.phase=Math.max(state.phase,2);
+  }
+
+  if(kind==="unsent"){
+    title="draft-17.txt";
+    body=`i keep thinking something is opening after i close it
+
+probably just the laptop being weird
+
+kyle said it was nothing but it happened again
+
+if this is still here tomorrow remind me to change my password
+
+don't tell everyone yet`;
+
+    state.draftSeen=true;
+    state.phase=Math.max(state.phase,2);
+  }
+
+  if(kind==="system"){
+    title="system-log.txt";
+    body=`Sep 03 23:58:17  user=enokie login success
+Sep 04 02:14:03  owner session suspended
+Sep 04 02:17:31  camera request / no response
+Sep 11 02:13:09  IMG_4409 metadata updated
+Sep 15 ${new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})}  guest interaction active
+
+process:
+cloud.restore.enokie       running
+messages.bridge            running
+windowserver               running
+
+owner session:
+state: unresolved`;
+
+    state.phase=Math.max(state.phase,8);
+  }
+
+  localStorage.setItem(KEY,JSON.stringify(state));
+  syncStory();
+  maybeUnlockBackstory();
+
+  document.getElementById("text-title").textContent=title;
+  document.getElementById("text-content").textContent=body;
+  openApp("text-window","TextEdit");
 }
 
 function playSong(which){
@@ -790,7 +1078,7 @@ function declineCall(){
   document.getElementById("incoming").classList.remove("show");
   setTimeout(()=>pushUnknown("did that ring for you"),900);
   setTimeout(()=>pushUnknown("okay"),2200);
-  advance(7);
+  state.phase=Math.max(state.phase,7);save();
 }
 function acceptCall(){
   document.getElementById("incoming").classList.remove("show");
@@ -798,35 +1086,42 @@ function acceptCall(){
   setTimeout(()=>pushUnknown("did that ring for you"),900);
   setTimeout(()=>pushUnknown("i can't hear anything"),2300);
   setTimeout(()=>pushUnknown("what date is it"),4300);
-  advance(7);
+  state.phase=Math.max(state.phase,7);save();
 }
 function syncStory(){
-  const rec=state.phase>=2;
-  document.getElementById("recovered-desktop").style.display=rec?"block":"none";
-  document.getElementById("recovered-side").style.display=rec?"block":"none";
+  const recovered=state.phase>=2;
+
+  document.getElementById("recovered-desktop").style.display=recovered?"block":"none";
+  document.getElementById("recovered-side").style.display=recovered?"block":"none";
 
   document.getElementById("history-login").style.display=state.phase>=2?"block":"none";
-  document.getElementById("history-hidden").style.display=state.phase>=3?"block":"none";
-  document.getElementById("unknown-call-row").style.display=state.phase>=6?"flex":"none";
-  document.getElementById("guest-setting").style.display=state.phase>=7?"block":"none";
+  document.getElementById("history-hidden").style.display=state.backstoryUnlocked?"block":"none";
+  document.getElementById("unknown-call-row").style.display=state.callSeen?"flex":"none";
+  document.getElementById("guest-setting").style.display=state.phase>=8?"block":"none";
 
-  document.getElementById("lp-one").textContent=state.phase>=3?"last played Sep 4 · 2:13 AM":"";
-  document.getElementById("lp-two").textContent=state.phase>=3?"last played Sep 3 · 11:51 PM":"";
-
-  if(state.phase>=4 && (!state.unknownMsgs || state.unknownMsgs.length===0)){
-    state.unknownMsgs=["hello?"];
-    localStorage.setItem(KEY,JSON.stringify(state));
-  }
+  document.getElementById("lp-one").textContent=state.backstoryUnlocked?"last played Sep 4 · 2:13 AM":"";
+  document.getElementById("lp-two").textContent=state.backstoryUnlocked?"last played Sep 3 · 11:51 PM":"";
 
   renderContacts();
 }
+
+/* Kept for console/testing, but no visible reset control is shown to visitors. */
 function resetStory(){
-  if(confirm("Reset the mystery to the beginning?")){
-    localStorage.removeItem(KEY);location.reload();
-  }
+  localStorage.removeItem(KEY);
+  location.reload();
 }
 
-window.addEventListener("load",()=>{syncStory();renderContacts();renderChat("3asians")});
+window.addEventListener("load",()=>{
+  syncStory();
+  renderContacts();
+  renderChat("3asians");
+
+  /* If the visitor refreshes just after the impossible message unlocked,
+     gently surface it again instead of losing the moment. */
+  if(state.phase>=4 && !state.unknownOpen && state.unknownMsgs?.length){
+    setTimeout(()=>showIncomingText("Unknown",state.unknownMsgs.at(-1)),1800);
+  }
+});
 </script>
 </body>
 </html>
