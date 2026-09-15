@@ -7,1258 +7,1432 @@
 <title>enokiecloud</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-:root{
-  --glass:rgba(245,245,248,.78);
-  --glass-dark:rgba(35,35,40,.72);
-  --border:rgba(255,255,255,.25);
-  --text:#17171a;
-  --shadow:0 20px 50px rgba(0,0,0,.30);
+:root {
+  --menu-height: 29px;
 }
 
-html,body{
-  width:100%;
-  height:100%;
-  overflow:hidden;
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
   font-family:
     -apple-system,
     BlinkMacSystemFont,
     "SF Pro Display",
-    "Segoe UI",
+    "SF Pro Text",
+    "Helvetica Neue",
+    Arial,
     sans-serif;
-  background:#111;
+
+  background: #111820;
 }
 
-button,
-input{
-  font:inherit;
+button {
+  font: inherit;
 }
 
-/* ==============================
-   STARTUP
-============================== */
-
-#startup{
-  position:fixed;
-  inset:0;
-  z-index:999999;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-
-  background:#000;
-  color:white;
-
-  transition:opacity .8s ease;
-}
-
-.apple-mark{
-  font-size:72px;
-  margin-bottom:34px;
-}
-
-.start-track{
-  width:220px;
-  height:5px;
-  border-radius:20px;
-  background:#333;
-  overflow:hidden;
-}
-
-.start-progress{
-  width:0;
-  height:100%;
-  background:#e8e8e8;
-  border-radius:20px;
-  animation:startup 2.6s forwards ease-in-out;
-}
-
-@keyframes startup{
-  0%{width:0}
-  25%{width:21%}
-  55%{width:55%}
-  72%{width:69%}
-  100%{width:100%}
-}
-
-
-/* ==============================
+/* ========================================
    DESKTOP
-============================== */
+======================================== */
 
-#desktop{
-  position:relative;
-  width:100vw;
-  height:100vh;
+#desktop {
+  position: relative;
 
-  overflow:hidden;
+  width: 100vw;
+  height: 100vh;
+
+  overflow: hidden;
 
   background:
-    linear-gradient(
-      rgba(5,8,12,.12),
-      rgba(5,8,12,.30)
+    radial-gradient(
+      ellipse at 68% 19%,
+      rgba(168, 187, 205, .20),
+      transparent 23%
     ),
-    url("wallpaper-creepy.jpg"),
-    linear-gradient(
-      150deg,
-      #25313d,
-      #111820 58%,
-      #202934
-    );
-
-  background-size:cover;
-  background-position:center;
-  background-repeat:no-repeat;
-
-  transition:
-    background-image 1.2s ease,
-    filter .5s ease;
-}
-
-#desktop.wallpaper-two{
-  background:
-    linear-gradient(
-      rgba(4,6,9,.22),
-      rgba(4,6,9,.42)
+    radial-gradient(
+      ellipse at 36% 73%,
+      rgba(85, 101, 121, .15),
+      transparent 31%
     ),
-    url("wallpaper-creepy-2.jpg"),
-    linear-gradient(
-      150deg,
-      #171f28,
-      #090e13 60%,
-      #181e25
-    );
-
-  background-size:cover;
-  background-position:center;
-}
-
-#desktop.glitch{
-  animation:glitch .13s linear 3;
-}
-
-@keyframes glitch{
-  0%{transform:translate(0)}
-  25%{transform:translate(3px,-1px)}
-  50%{transform:translate(-4px,2px)}
-  75%{transform:translate(2px,1px)}
-  100%{transform:translate(0)}
-}
-
-
-/* ==============================
-   MENU BAR
-============================== */
-
-#menubar{
-  position:absolute;
-  left:0;
-  right:0;
-  top:0;
-
-  height:29px;
-
-  display:flex;
-  align-items:center;
-
-  padding:0 13px;
-
-  color:#fff;
-
-  background:rgba(15,18,22,.52);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-
-  border-bottom:1px solid rgba(255,255,255,.10);
-
-  font-size:13px;
-
-  z-index:9000;
-}
-
-.menu-left{
-  display:flex;
-  align-items:center;
-  gap:18px;
-}
-
-.apple{
-  font-size:17px;
-  font-weight:600;
-}
-
-.active-app{
-  font-weight:700;
-}
-
-.menu-right{
-  margin-left:auto;
-
-  display:flex;
-  align-items:center;
-  gap:13px;
-
-  font-size:12px;
-}
-
-#menu-clock{
-  min-width:150px;
-  text-align:right;
-}
-
-
-/* ==============================
-   DESKTOP FILES
-============================== */
-
-#desktop-files{
-  position:absolute;
-  top:49px;
-  right:18px;
-
-  display:flex;
-  flex-direction:column;
-
-  gap:15px;
-
-  z-index:20;
-}
-
-.desktop-file{
-  width:88px;
-
-  border:0;
-  background:transparent;
-
-  color:white;
-
-  text-align:center;
-
-  cursor:pointer;
-
-  padding:5px;
-
-  border-radius:7px;
-}
-
-.desktop-file:hover{
-  background:rgba(255,255,255,.13);
-}
-
-.file-icon{
-  width:54px;
-  height:45px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  margin:auto;
-
-  font-size:40px;
-
-  filter:drop-shadow(0 4px 5px rgba(0,0,0,.28));
-}
-
-.file-label{
-  display:inline-block;
-
-  margin-top:5px;
-
-  padding:2px 5px;
-
-  border-radius:4px;
-
-  font-size:11px;
-  line-height:1.25;
-
-  text-shadow:0 1px 3px #000;
-}
-
-#other-user-file,
-#capture-file{
-  display:none;
-}
-
-#other-user-file.visible,
-#capture-file.visible{
-  display:block;
-  animation:fileAppear .55s ease;
-}
-
-@keyframes fileAppear{
-  0%{
-    opacity:0;
-    transform:translateY(-4px);
-  }
-
-  100%{
-    opacity:1;
-    transform:translateY(0);
-  }
-}
-
-
-/* ==============================
-   WINDOWS
-============================== */
-
-.window{
-  position:absolute;
-
-  display:none;
-
-  width:min(720px,calc(100vw - 50px));
-  min-height:390px;
-
-  overflow:hidden;
-
-  background:rgba(245,245,248,.93);
-
-  border:1px solid rgba(255,255,255,.65);
-  border-radius:11px;
-
-  box-shadow:var(--shadow);
-
-  backdrop-filter:blur(28px);
-  -webkit-backdrop-filter:blur(28px);
-
-  z-index:100;
-}
-
-.window.active{
-  display:block;
-  animation:windowOpen .16s ease;
-}
-
-@keyframes windowOpen{
-  from{
-    opacity:.45;
-    transform:scale(.98);
-  }
-
-  to{
-    opacity:1;
-    transform:scale(1);
-  }
-}
-
-.window-top{
-  height:43px;
-
-  display:flex;
-  align-items:center;
-
-  padding:0 13px;
-
-  background:rgba(231,231,235,.88);
-
-  border-bottom:1px solid rgba(0,0,0,.09);
-
-  cursor:move;
-}
-
-.traffic-lights{
-  display:flex;
-  gap:8px;
-}
-
-.light{
-  width:12px;
-  height:12px;
-
-  border-radius:50%;
-
-  border:1px solid rgba(0,0,0,.1);
-
-  cursor:pointer;
-}
-
-.red{background:#ff5f57;}
-.yellow{background:#febc2e;}
-.green{background:#28c840;}
-
-.window-title{
-  position:absolute;
-  left:50%;
-  transform:translateX(-50%);
-
-  font-size:13px;
-  font-weight:600;
-
-  color:#333;
-}
-
-.window-body{
-  min-height:345px;
-  color:#222;
-}
-
-
-/* ==============================
-   FINDER
-============================== */
-
-.finder-layout{
-  display:flex;
-  min-height:345px;
-}
-
-.sidebar{
-  width:165px;
-
-  padding:15px 10px;
-
-  background:rgba(223,225,230,.72);
-
-  border-right:1px solid rgba(0,0,0,.08);
-
-  font-size:12px;
-}
-
-.sidebar-heading{
-  margin:8px 10px 5px;
-
-  color:#7b7d83;
-
-  font-size:10px;
-  font-weight:700;
-
-  text-transform:uppercase;
-}
-
-.sidebar-item{
-  padding:6px 10px;
-
-  border-radius:6px;
-
-  cursor:pointer;
-
-  margin-bottom:2px;
-}
-
-.sidebar-item:hover{
-  background:rgba(0,0,0,.07);
-}
-
-.sidebar-item.active{
-  background:#c7d8ef;
-}
-
-.finder-content{
-  flex:1;
-
-  padding:18px;
-
-  background:rgba(255,255,255,.80);
-}
-
-.finder-content h3{
-  font-size:15px;
-
-  margin-bottom:15px;
-}
-
-.finder-grid{
-  display:grid;
-  grid-template-columns:
-    repeat(4,minmax(90px,1fr));
-
-  gap:21px 15px;
-}
-
-.finder-item{
-  border:0;
-
-  background:transparent;
-
-  text-align:center;
-
-  cursor:pointer;
-
-  padding:7px;
-
-  border-radius:7px;
-}
-
-.finder-item:hover{
-  background:#e7eef8;
-}
-
-.finder-item-icon{
-  font-size:45px;
-
-  display:block;
-
-  margin-bottom:5px;
-}
-
-.finder-item-name{
-  font-size:11px;
-  line-height:1.25;
-}
-
-
-/* ==============================
-   BROWSER
-============================== */
-
-.browser-toolbar{
-  height:47px;
-
-  display:flex;
-  align-items:center;
-
-  gap:9px;
-
-  padding:7px 12px;
-
-  background:#e9e9ec;
-
-  border-bottom:1px solid #d2d2d5;
-}
-
-.browser-nav{
-  font-size:18px;
-  color:#666;
-}
-
-.address{
-  flex:1;
-
-  height:29px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  background:white;
-
-  border-radius:7px;
-
-  box-shadow:inset 0 0 0 1px #d8d8dc;
-
-  font-size:11px;
-
-  color:#555;
-}
-
-.browser-page{
-  min-height:298px;
-
-  background:#f7f7f7;
-
-  padding:23px;
-}
-
-.enokie-logo{
-  font-size:28px;
-  font-weight:700;
-
-  margin-bottom:18px;
-}
-
-.video-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:16px;
-}
-
-.video-card{
-  cursor:pointer;
-}
-
-.video-thumb{
-  aspect-ratio:16/9;
-
-  background:
-    linear-gradient(
-      140deg,
-      #3e4854,
-      #151b22
-    );
-
-  border-radius:8px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  font-size:32px;
-
-  margin-bottom:6px;
-}
-
-.video-card:nth-child(2) .video-thumb{
-  background:
-    linear-gradient(
-      140deg,
-      #6d5e69,
-      #241e26
-    );
-}
-
-.video-card:nth-child(3) .video-thumb{
-  background:
-    linear-gradient(
-      140deg,
-      #52605f,
-      #151a1b
-    );
-}
-
-.video-title{
-  font-size:12px;
-  font-weight:600;
-}
-
-.video-meta{
-  font-size:10px;
-  color:#767676;
-
-  margin-top:3px;
-}
-
-
-/* ==============================
-   MESSAGES
-============================== */
-
-.messages-layout{
-  display:flex;
-
-  min-height:345px;
-
-  background:white;
-}
-
-.conversation-list{
-  width:210px;
-
-  border-right:1px solid #ddd;
-
-  background:#f1f1f3;
-}
-
-.contact{
-  padding:13px;
-
-  border-bottom:1px solid #ddd;
-
-  cursor:pointer;
-
-  font-size:12px;
-}
-
-.contact.active{
-  background:#dce7f5;
-}
-
-.chat{
-  flex:1;
-
-  display:flex;
-  flex-direction:column;
-
-  min-width:0;
-}
-
-.chat-header{
-  height:48px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  border-bottom:1px solid #ddd;
-
-  font-size:12px;
-  font-weight:600;
-}
-
-.chat-messages{
-  flex:1;
-
-  padding:18px;
-
-  overflow:auto;
-}
-
-.bubble{
-  width:fit-content;
-  max-width:70%;
-
-  padding:8px 11px;
-
-  border-radius:15px;
-
-  margin-bottom:9px;
-
-  font-size:12px;
-
-  background:#e9e9ec;
-}
-
-.bubble.unknown{
-  background:#e9e9ec;
-}
-
-.typing{
-  font-size:11px;
-  color:#999;
-
-  margin-top:7px;
-}
-
-
-/* ==============================
-   NOTES
-============================== */
-
-.note-area{
-  padding:22px;
-
-  min-height:345px;
-
-  background:#fffdf1;
-
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    sans-serif;
-}
-
-.note-area h2{
-  margin-bottom:13px;
-
-  font-size:20px;
-}
-
-#note-content{
-  white-space:pre-line;
-
-  font-size:14px;
-  line-height:1.65;
-}
-
-
-/* ==============================
-   MUSIC
-============================== */
-
-.music-page{
-  min-height:345px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-
-  background:
+    radial-gradient(
+      ellipse at 76% 81%,
+      rgba(105, 84, 117, .08),
+      transparent 23%
+    ),
     linear-gradient(
       145deg,
-      #f3f3f6,
-      #d7d8de
+      #222e3b 0%,
+      #17212b 33%,
+      #101820 65%,
+      #091016 100%
     );
 }
 
-.album{
-  width:145px;
-  height:145px;
+/* cloudy/fog texture */
+#desktop::before {
+  content: "";
 
-  border-radius:10px;
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
 
   background:
-    linear-gradient(
-      145deg,
-      #404853,
-      #14191f
+    radial-gradient(
+      ellipse at 58% 25%,
+      rgba(255,255,255,.055),
+      transparent 17%
+    ),
+    radial-gradient(
+      ellipse at 77% 51%,
+      rgba(255,255,255,.025),
+      transparent 28%
     );
 
-  box-shadow:
-    0 15px 30px rgba(0,0,0,.25);
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  color:white;
-
-  font-size:55px;
-
-  margin-bottom:18px;
+  filter: blur(14px);
 }
 
-.track-title{
-  font-weight:700;
-}
+#desktop::after {
+  content: "";
 
-.track-artist{
-  color:#777;
+  position: absolute;
+  inset: 0;
 
-  margin-top:3px;
-}
+  pointer-events: none;
 
-.controls{
-  margin-top:18px;
+  opacity: .035;
 
-  display:flex;
-  gap:25px;
-
-  font-size:25px;
-}
-
-
-/* ==============================
-   CLOUD GAME APP
-============================== */
-
-.cloud-app{
-  min-height:345px;
-
-  background:#161b22;
-
-  color:#eee;
-
-  padding:20px;
-}
-
-.cloud-header{
-  font-size:22px;
-  font-weight:700;
-
-  margin-bottom:17px;
-}
-
-.game-list{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:13px;
-}
-
-.game{
-  min-height:110px;
-
-  padding:13px;
-
-  border-radius:8px;
-
-  background:#222933;
-
-  cursor:pointer;
-}
-
-.game:hover{
-  background:#29323e;
-}
-
-.game-icon{
-  font-size:32px;
-}
-
-.game-name{
-  margin-top:14px;
-
-  font-size:12px;
-}
-
-
-/* ==============================
-   PHOTOS
-============================== */
-
-.photos-page{
-  min-height:345px;
-
-  padding:20px;
-
-  background:#f7f7f8;
-}
-
-.photo-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:6px;
-}
-
-.photo{
-  aspect-ratio:1/1;
-
-  cursor:pointer;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  font-size:27px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #46515d,
-      #171c23
-    );
-
-  overflow:hidden;
-}
-
-.photo:nth-child(even){
-  background:
-    linear-gradient(
-      135deg,
-      #71646d,
-      #292228
-    );
-}
-
-
-/* ==============================
-   PREVIEW
-============================== */
-
-#preview-window{
-  width:min(610px,calc(100vw - 40px));
-}
-
-.preview-area{
-  min-height:350px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  text-align:center;
-
-  padding:30px;
-
-  background:#101317;
-
-  color:#e8ebef;
-
-  font-size:13px;
-
-  white-space:pre-line;
-}
-
-.preview-area.corrupt{
   background:
     repeating-linear-gradient(
-      90deg,
-      #15181c 0 22px,
-      #79616d 22px 27px,
-      #20242a 27px 58px,
-      #9f8d94 58px 62px
+      0deg,
+      rgba(255,255,255,.18) 0,
+      rgba(255,255,255,.18) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+
+  z-index: 2;
+}
+
+/* ========================================
+   MENU BAR
+======================================== */
+
+#menu-bar {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: var(--menu-height);
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 12px;
+
+  color: rgba(255,255,255,.96);
+
+  background: rgba(12, 16, 21, .58);
+
+  border-bottom: 1px solid rgba(255,255,255,.07);
+
+  backdrop-filter: blur(28px) saturate(140%);
+  -webkit-backdrop-filter: blur(28px) saturate(140%);
+
+  font-size: 13px;
+
+  z-index: 9000;
+}
+
+.menu-left,
+.menu-right {
+  display: flex;
+  align-items: center;
+}
+
+.menu-left {
+  gap: 18px;
+}
+
+.menu-right {
+  margin-left: auto;
+  gap: 15px;
+}
+
+.apple-mark {
+  width: 15px;
+  height: 17px;
+
+  position: relative;
+
+  margin-right: 2px;
+}
+
+/* simple Apple-ish silhouette without using an image */
+.apple-mark::before {
+  content: "";
+
+  position: absolute;
+
+  width: 12px;
+  height: 12px;
+
+  left: 1px;
+  top: 4px;
+
+  border-radius: 55% 50% 55% 45%;
+
+  background: white;
+}
+
+.apple-mark::after {
+  content: "";
+
+  position: absolute;
+
+  width: 5px;
+  height: 3px;
+
+  top: 0;
+  left: 8px;
+
+  border-radius: 80% 20%;
+
+  background: white;
+
+  transform: rotate(-35deg);
+}
+
+.menu-active {
+  font-weight: 700;
+}
+
+.menu-symbol {
+  opacity: .95;
+  font-size: 13px;
+}
+
+#menu-clock {
+  min-width: 145px;
+  text-align: right;
+}
+
+/* ========================================
+   DESKTOP ITEMS
+======================================== */
+
+#desktop-icons {
+  position: absolute;
+
+  top: 50px;
+  right: 24px;
+
+  display: grid;
+
+  grid-template-columns: 96px;
+  gap: 13px;
+
+  z-index: 20;
+}
+
+.desktop-item {
+  width: 96px;
+
+  border: 1px solid transparent;
+  border-radius: 7px;
+
+  background: transparent;
+
+  color: white;
+
+  text-align: center;
+
+  cursor: default;
+
+  padding: 6px 3px;
+
+  transition:
+    background .12s ease,
+    border-color .12s ease;
+}
+
+.desktop-item:hover {
+  background: rgba(255,255,255,.10);
+
+  border-color: rgba(255,255,255,.10);
+}
+
+.desktop-icon-art {
+  height: 52px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  filter:
+    drop-shadow(
+      0 5px 5px rgba(0,0,0,.28)
     );
 }
 
+.desktop-label {
+  display: inline-block;
 
-/* ==============================
-   SYSTEM DIALOG
-============================== */
+  margin-top: 4px;
 
-#dialog{
-  position:fixed;
+  padding: 2px 5px;
 
-  left:50%;
-  top:43%;
+  border-radius: 4px;
 
-  transform:translate(-50%,-50%);
+  font-size: 11px;
 
-  width:min(370px,calc(100vw - 30px));
+  line-height: 1.18;
 
-  display:none;
-
-  z-index:99999;
-
-  background:rgba(245,245,247,.96);
-
-  border:1px solid rgba(0,0,0,.18);
-  border-radius:12px;
-
-  box-shadow:0 25px 70px rgba(0,0,0,.4);
-
-  padding:22px;
-
-  text-align:center;
-
-  backdrop-filter:blur(25px);
+  text-shadow:
+    0 1px 3px rgba(0,0,0,.95);
 }
 
-#dialog.show{
-  display:block;
+/* blue mac-style folder */
+.folder-svg {
+  width: 58px;
+  height: 48px;
 }
 
-.dialog-icon{
-  font-size:45px;
-
-  margin-bottom:13px;
+/* drive */
+.drive-svg {
+  width: 55px;
+  height: 48px;
 }
 
-#dialog-title{
-  font-size:15px;
-  font-weight:700;
+/* ========================================
+   WINDOWS
+======================================== */
 
-  margin-bottom:6px;
-}
+.window {
+  position: absolute;
 
-#dialog-message{
-  font-size:12px;
-  color:#555;
+  display: none;
 
-  line-height:1.45;
-}
+  width: min(
+    760px,
+    calc(100vw - 60px)
+  );
 
-.dialog-buttons{
-  display:flex;
-  justify-content:center;
+  min-height: 430px;
 
-  margin-top:17px;
-}
+  overflow: hidden;
 
-.dialog-btn{
-  padding:6px 22px;
+  border-radius: 12px;
 
-  border:0;
-  border-radius:6px;
+  background:
+    rgba(246, 247, 249, .94);
 
-  background:#1977e8;
-  color:white;
-
-  cursor:pointer;
-}
-
-
-/* ==============================
-   DOCK
-============================== */
-
-#dock-wrap{
-  position:absolute;
-
-  bottom:8px;
-  left:50%;
-
-  transform:translateX(-50%);
-
-  z-index:9500;
-}
-
-#dock{
-  display:flex;
-  align-items:flex-end;
-
-  gap:8px;
-
-  padding:7px 9px;
-
-  border-radius:17px;
-
-  background:rgba(220,224,230,.27);
-
-  border:1px solid rgba(255,255,255,.35);
+  border:
+    1px solid rgba(255,255,255,.65);
 
   box-shadow:
-    0 8px 30px rgba(0,0,0,.28);
+    0 22px 65px rgba(0,0,0,.35);
 
-  backdrop-filter:blur(25px);
-  -webkit-backdrop-filter:blur(25px);
+  backdrop-filter:
+    blur(35px) saturate(150%);
+
+  -webkit-backdrop-filter:
+    blur(35px) saturate(150%);
+
+  z-index: 200;
 }
 
-.dock-app{
-  width:48px;
-  height:48px;
+.window.active {
+  display: block;
 
-  border:0;
+  animation:
+    windowOpen .16s ease;
+}
 
-  border-radius:11px;
+@keyframes windowOpen {
+  from {
+    opacity: .4;
 
-  display:flex;
-  align-items:center;
-  justify-content:center;
+    transform:
+      scale(.975);
+  }
 
-  font-size:29px;
+  to {
+    opacity: 1;
 
-  cursor:pointer;
+    transform:
+      scale(1);
+  }
+}
 
-  position:relative;
+.window-top {
+  position: relative;
+
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 14px;
+
+  background:
+    rgba(229, 231, 235, .95);
+
+  border-bottom:
+    1px solid rgba(0,0,0,.09);
+
+  cursor: move;
+}
+
+.traffic-lights {
+  display: flex;
+
+  gap: 8px;
+
+  z-index: 4;
+}
+
+.traffic {
+  width: 12px;
+  height: 12px;
+
+  border-radius: 50%;
+
+  border:
+    1px solid rgba(0,0,0,.12);
+
+  cursor: pointer;
+}
+
+.traffic.red {
+  background: #ff5f57;
+}
+
+.traffic.yellow {
+  background: #febc2e;
+}
+
+.traffic.green {
+  background: #28c840;
+}
+
+.window-title {
+  position: absolute;
+
+  left: 50%;
+
+  transform:
+    translateX(-50%);
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  color: #36383d;
+}
+
+.window-body {
+  min-height: 383px;
+}
+
+/* ========================================
+   FINDER
+======================================== */
+
+.finder {
+  display: flex;
+
+  min-height: 383px;
+}
+
+.finder-sidebar {
+  width: 184px;
+
+  padding: 13px 9px;
+
+  background:
+    rgba(221, 225, 230, .72);
+
+  border-right:
+    1px solid rgba(0,0,0,.06);
+}
+
+.sidebar-section {
+  margin:
+    10px 9px 5px;
+
+  color: #777c83;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+}
+
+.sidebar-row {
+  padding: 6px 9px;
+
+  border-radius: 6px;
+
+  font-size: 12px;
+
+  cursor: pointer;
+
+  color: #30343a;
+}
+
+.sidebar-row:hover {
+  background:
+    rgba(0,0,0,.06);
+}
+
+.sidebar-row.active {
+  background:
+    rgba(125, 167, 220, .32);
+}
+
+.finder-main {
+  flex: 1;
+
+  padding: 20px;
+
+  background:
+    rgba(255,255,255,.83);
+}
+
+.finder-heading {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 17px;
+}
+
+.finder-heading h3 {
+  font-size: 16px;
+}
+
+.view-buttons {
+  display: flex;
+
+  gap: 4px;
+}
+
+.view-button {
+  width: 29px;
+  height: 26px;
+
+  border:
+    1px solid #cdd2d9;
+
+  border-radius: 5px;
+
+  background: white;
+
+  cursor: pointer;
+
+  font-size: 11px;
+}
+
+.finder-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(90px,1fr));
+
+  gap: 21px 15px;
+}
+
+.finder-item {
+  border: 0;
+
+  background:
+    transparent;
+
+  border-radius: 8px;
+
+  padding: 8px 5px;
+
+  text-align: center;
+
+  cursor: pointer;
+}
+
+.finder-item:hover {
+  background:
+    rgba(65,128,210,.10);
+}
+
+.finder-item-icon {
+  height: 57px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 5px;
+}
+
+.finder-name {
+  font-size: 11px;
+
+  color: #2b2e34;
+}
+
+/* ========================================
+   BROWSER / ENOKIE
+======================================== */
+
+.browser-toolbar {
+  height: 47px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 7px 12px;
+
+  background: #e8e9ec;
+
+  border-bottom:
+    1px solid #d5d7db;
+}
+
+.browser-controls {
+  color: #656970;
+
+  font-size: 18px;
+}
+
+.address-bar {
+  flex: 1;
+
+  height: 30px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 7px;
+
+  background: white;
+
+  box-shadow:
+    inset 0 0 0 1px #d7d9dc;
+
+  color: #585b62;
+
+  font-size: 11px;
+}
+
+.browser-page {
+  min-height: 336px;
+
+  padding: 23px;
+
+  background: #f8f8f9;
+}
+
+.enokie-logo {
+  margin-bottom: 18px;
+
+  font-size: 27px;
+
+  font-weight: 750;
+}
+
+.video-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap: 18px;
+}
+
+.video-card {
+  cursor: pointer;
+}
+
+.video-thumb {
+  position: relative;
+
+  aspect-ratio: 16 / 9;
+
+  border-radius: 9px;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      #5d6673,
+      #252b34
+    );
+
+  box-shadow:
+    0 4px 12px rgba(0,0,0,.12);
+
+  margin-bottom: 7px;
+}
+
+.video-card:nth-child(2)
+.video-thumb {
+  background:
+    linear-gradient(
+      145deg,
+      #9b8393,
+      #3f3540
+    );
+}
+
+.video-card:nth-child(3)
+.video-thumb {
+  background:
+    linear-gradient(
+      145deg,
+      #81959b,
+      #293437
+    );
+}
+
+.video-play {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  transform:
+    translate(-50%,-50%);
+
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    rgba(255,255,255,.86);
+
+  color: #222;
+
+  font-size: 15px;
+}
+
+.video-title {
+  font-size: 12px;
+
+  font-weight: 650;
+}
+
+.video-meta {
+  margin-top: 3px;
+
+  color: #85878b;
+
+  font-size: 10px;
+}
+
+/* ========================================
+   PHOTOS
+======================================== */
+
+.photos-content {
+  padding: 20px;
+
+  min-height: 383px;
+
+  background: #f6f6f8;
+}
+
+.photo-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(5,1fr);
+
+  gap: 6px;
+}
+
+.photo-thumb {
+  aspect-ratio: 1;
+
+  border: 0;
+
+  border-radius: 3px;
+
+  cursor: pointer;
+
+  background:
+    linear-gradient(
+      145deg,
+      #46535f,
+      #151c23
+    );
+}
+
+.photo-thumb:nth-child(2) {
+  background:
+    linear-gradient(
+      145deg,
+      #8e7887,
+      #342c35
+    );
+}
+
+.photo-thumb:nth-child(3) {
+  background:
+    linear-gradient(
+      145deg,
+      #7b8992,
+      #283036
+    );
+}
+
+.photo-thumb:nth-child(4) {
+  background:
+    linear-gradient(
+      145deg,
+      #7e6c86,
+      #27222a
+    );
+}
+
+.photo-thumb:nth-child(5) {
+  background:
+    linear-gradient(
+      145deg,
+      #5b6870,
+      #1c2428
+    );
+}
+
+/* ========================================
+   MESSAGES
+======================================== */
+
+.messages {
+  display: flex;
+
+  min-height: 383px;
+
+  background: white;
+}
+
+.message-sidebar {
+  width: 230px;
+
+  border-right:
+    1px solid #dedfe2;
+
+  background:
+    #f1f1f3;
+}
+
+.message-search {
+  margin: 12px;
+
+  height: 29px;
+
+  display: flex;
+
+  align-items: center;
+
+  padding-left: 11px;
+
+  border-radius: 7px;
+
+  background: #dedfe2;
+
+  color: #7c7d82;
+
+  font-size: 11px;
+}
+
+.contact {
+  padding: 12px 14px;
+
+  border-top:
+    1px solid rgba(0,0,0,.04);
+
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+.contact.active {
+  background:
+    #d7e3f3;
+}
+
+.chat {
+  flex: 1;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+.chat-header {
+  height: 50px;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  border-bottom:
+    1px solid #ddd;
+
+  font-size: 12px;
+
+  font-weight: 650;
+}
+
+.chat-body {
+  flex: 1;
+
+  padding: 18px;
+}
+
+.message-bubble {
+  width: fit-content;
+
+  max-width: 72%;
+
+  padding: 8px 11px;
+
+  border-radius: 15px;
+
+  background: #e8e8ec;
+
+  font-size: 12px;
+
+  margin-bottom: 8px;
+}
+
+/* ========================================
+   MUSIC
+======================================== */
+
+.music-content {
+  min-height: 383px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background:
+    linear-gradient(
+      150deg,
+      #eeeeF2,
+      #d3d6dc
+    );
+}
+
+.album-art {
+  width: 150px;
+  height: 150px;
+
+  border-radius: 12px;
+
+  background:
+    radial-gradient(
+      circle at center,
+      #222 0 14%,
+      #444 15% 17%,
+      #15191f 18% 100%
+    );
+
+  box-shadow:
+    0 16px 35px rgba(0,0,0,.25);
+
+  margin-bottom: 18px;
+}
+
+.track-name {
+  font-size: 14px;
+
+  font-weight: 700;
+}
+
+.track-artist {
+  margin-top: 3px;
+
+  font-size: 12px;
+
+  color: #767980;
+}
+
+.music-controls {
+  display: flex;
+
+  gap: 28px;
+
+  align-items: center;
+
+  margin-top: 17px;
+
+  font-size: 22px;
+}
+
+/* ========================================
+   CLOUD GAME APP
+======================================== */
+
+.cloud-content {
+  min-height: 383px;
+
+  padding: 20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #20252d,
+      #12161c
+    );
+
+  color: white;
+}
+
+.cloud-title {
+  margin-bottom: 17px;
+
+  font-size: 22px;
+
+  font-weight: 750;
+}
+
+.games {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap: 13px;
+}
+
+.game {
+  min-height: 125px;
+
+  padding: 14px;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #343d49,
+      #202630
+    );
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.06);
+
+  cursor: pointer;
+}
+
+.game:hover {
+  background:
+    linear-gradient(
+      145deg,
+      #3b4654,
+      #252d38
+    );
+}
+
+.game-art {
+  font-size: 32px;
+}
+
+.game-name {
+  margin-top: 25px;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+/* ========================================
+   NOTES
+======================================== */
+
+.notes-content {
+  min-height: 383px;
+
+  display: flex;
+}
+
+.notes-list {
+  width: 205px;
+
+  border-right:
+    1px solid #dedfe2;
+
+  background: #f0f0f2;
+}
+
+.note-preview {
+  padding: 12px;
+
+  border-bottom:
+    1px solid rgba(0,0,0,.06);
+
+  cursor: pointer;
+}
+
+.note-preview.active {
+  background: #fff1ba;
+}
+
+.note-preview strong {
+  display: block;
+
+  font-size: 12px;
+}
+
+.note-preview small {
+  color: #777;
+
+  font-size: 10px;
+}
+
+.note-page {
+  flex: 1;
+
+  padding: 22px;
+
+  background: #fffdf5;
+}
+
+.note-page h2 {
+  margin-bottom: 15px;
+}
+
+.note-page p {
+  line-height: 1.7;
+
+  font-size: 13px;
+
+  white-space: pre-line;
+}
+
+/* ========================================
+   SETTINGS
+======================================== */
+
+.settings-content {
+  min-height: 383px;
+
+  padding: 20px;
+
+  background: #f3f4f6;
+}
+
+.settings-title {
+  margin-bottom: 16px;
+
+  font-size: 21px;
+
+  font-weight: 700;
+}
+
+.settings-card {
+  padding: 14px;
+
+  border-radius: 11px;
+
+  background: white;
+
+  box-shadow:
+    0 1px 4px rgba(0,0,0,.08);
+
+  margin-bottom: 10px;
+}
+
+.settings-card strong {
+  display: block;
+
+  margin-bottom: 3px;
+
+  font-size: 13px;
+}
+
+.settings-card span {
+  color: #777;
+
+  font-size: 11px;
+}
+
+/* ========================================
+   DOCK
+======================================== */
+
+#dock-wrap {
+  position: absolute;
+
+  bottom: 8px;
+  left: 50%;
+
+  transform:
+    translateX(-50%);
+
+  z-index: 9500;
+}
+
+#dock {
+  display: flex;
+
+  align-items: flex-end;
+
+  gap: 8px;
+
+  padding: 7px 8px;
+
+  border-radius: 18px;
+
+  border:
+    1px solid rgba(255,255,255,.35);
+
+  background:
+    rgba(204, 211, 220, .29);
+
+  box-shadow:
+    0 10px 35px rgba(0,0,0,.35);
+
+  backdrop-filter:
+    blur(28px) saturate(160%);
+
+  -webkit-backdrop-filter:
+    blur(28px) saturate(160%);
+}
+
+.dock-item {
+  position: relative;
+
+  width: 52px;
+  height: 52px;
+
+  border: 0;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  padding: 0;
+
+  background: transparent;
 
   transition:
     transform .13s ease,
     margin .13s ease;
 }
 
-.dock-app:hover{
-  transform:translateY(-9px) scale(1.18);
-  margin:0 3px;
+.dock-item:hover {
+  transform:
+    translateY(-9px)
+    scale(1.16);
+
+  margin: 0 3px;
 }
 
-.dock-separator{
-  height:42px;
-  width:1px;
+.dock-app-icon {
+  width: 100%;
+  height: 100%;
 
-  margin:0 3px;
+  border-radius: 12px;
 
-  background:rgba(255,255,255,.35);
+  box-shadow:
+    0 3px 8px rgba(0,0,0,.28);
 }
 
-.finder-app{
+.dock-dot {
+  position: absolute;
+
+  left: 50%;
+  bottom: -6px;
+
+  width: 4px;
+  height: 4px;
+
+  border-radius: 50%;
+
+  background: rgba(255,255,255,.82);
+
+  transform:
+    translateX(-50%);
+
+  display: none;
+}
+
+.dock-item.running .dock-dot {
+  display: block;
+}
+
+.dock-divider {
+  width: 1px;
+  height: 42px;
+
+  margin: 0 4px;
+
   background:
-    linear-gradient(
-      90deg,
-      #7cc3ff 0 50%,
-      #e7f4ff 50%
-    );
+    rgba(255,255,255,.35);
 }
 
-.browser-app{
-  background:#fff;
-}
+/* ========================================
+   TOOLTIP
+======================================== */
 
-.message-app{
-  background:#55c95a;
-}
+.dock-item::before {
+  content: attr(data-label);
 
-.photo-app{
-  background:#fff;
-}
+  position: absolute;
 
-.music-app{
+  left: 50%;
+  bottom: calc(100% + 12px);
+
+  transform:
+    translateX(-50%);
+
+  padding: 5px 8px;
+
+  border-radius: 6px;
+
   background:
-    linear-gradient(
-      #fa5471,
-      #ee244d
-    );
+    rgba(30,30,33,.92);
+
+  color: white;
+
+  font-size: 11px;
+
+  white-space: nowrap;
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  transition:
+    opacity .12s ease;
 }
 
-.cloud-game-app{
-  background:
-    linear-gradient(
-      #303846,
-      #161b22
-    );
+.dock-item:hover::before {
+  opacity: 1;
 }
 
-.notes-app{
-  background:
-    linear-gradient(
-      #ffd955 0 25%,
-      #fff 25%
-    );
-}
-
-.trash-app{
-  background:rgba(235,235,235,.9);
-}
-
-
-/* ==============================
+/* ========================================
    MOBILE
-============================== */
+======================================== */
 
-@media(max-width:700px){
+@media(max-width:700px) {
 
-  .menu-left span:not(.apple):not(.active-app){
-    display:none;
+  .menu-left span:not(
+    .menu-active
+  ) {
+    display: none;
   }
 
-  .menu-right span:not(#menu-clock){
-    display:none;
+  .menu-left .apple-mark {
+    display: block;
   }
 
-  #menu-clock{
-    min-width:auto;
+  .menu-right .menu-symbol {
+    display: none;
   }
 
-  .window{
-    position:fixed !important;
+  #menu-clock {
+    min-width: auto;
+  }
 
-    left:10px !important;
-    top:42px !important;
+  .window {
+    position: fixed !important;
 
-    width:calc(100vw - 20px);
+    left: 10px !important;
+    top: 42px !important;
+
+    width:
+      calc(100vw - 20px);
 
     max-height:
-      calc(100vh - 110px);
+      calc(100vh - 105px);
 
-    overflow:auto;
+    overflow: auto;
   }
 
-  .sidebar{
-    width:120px;
+  .finder-sidebar {
+    width: 125px;
   }
 
-  .finder-grid{
+  .finder-grid {
     grid-template-columns:
       repeat(2,1fr);
   }
 
   .video-grid,
-  .game-list{
-    grid-template-columns:1fr;
+  .games {
+    grid-template-columns:
+      1fr;
   }
 
-  #dock{
-    gap:5px;
+  #dock {
+    gap: 4px;
 
-    padding:6px;
+    padding: 5px;
   }
 
-  .dock-app{
-    width:39px;
-    height:39px;
+  .dock-item {
+    width: 39px;
+    height: 39px;
 
-    font-size:23px;
+    border-radius: 9px;
   }
 
 }
-
 </style>
 </head>
 
-
 <body>
-
-<!-- STARTUP -->
-
-<div id="startup">
-
-  <div class="apple-mark">
-    ●
-  </div>
-
-  <div class="start-track">
-    <div class="start-progress"></div>
-  </div>
-
-</div>
-
-
-
-<!-- DESKTOP -->
 
 <main id="desktop">
 
+  <!-- ===============================
+       MENU BAR
+  ================================ -->
 
-  <!-- MENU BAR -->
-
-  <header id="menubar">
+  <header id="menu-bar">
 
     <div class="menu-left">
 
-      <span class="apple">
-        ●
-      </span>
+      <span class="apple-mark"></span>
 
       <span
-        class="active-app"
-        id="active-app-name"
+        id="active-app"
+        class="menu-active"
       >
         Finder
       </span>
@@ -1275,12 +1449,19 @@ input{
 
     <div class="menu-right">
 
-      <span>⌁</span>
-      <span>◉</span>
-      <span>⌁⌁</span>
+      <span class="menu-symbol">
+        ◉
+      </span>
+
+      <span class="menu-symbol">
+        ))) 
+      </span>
+
+      <span class="menu-symbol">
+        ▰
+      </span>
 
       <span id="menu-clock">
-        Tue Sep 15 12:00 AM
       </span>
 
     </div>
@@ -1288,66 +1469,373 @@ input{
   </header>
 
 
+  <!-- ===============================
+       DESKTOP FILES
+  ================================ -->
 
-  <!-- DESKTOP FILES -->
+  <section id="desktop-icons">
 
-  <div id="desktop-files">
+    <!-- Macintosh HD -->
 
     <button
-      class="desktop-file"
-      onclick="openWindow('drive-window','Finder')"
+      class="desktop-item"
+      onclick="
+        openWindow(
+          'finder-window',
+          'Finder'
+        )
+      "
     >
-      <div class="file-icon">
-        💽
+
+      <div class="desktop-icon-art">
+
+        <svg
+          class="drive-svg"
+          viewBox="0 0 80 65"
+        >
+
+          <defs>
+
+            <linearGradient
+              id="driveGradient"
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="1"
+            >
+
+              <stop
+                offset="0%"
+                stop-color="#f5f6f7"
+              />
+
+              <stop
+                offset="48%"
+                stop-color="#c9cdd1"
+              />
+
+              <stop
+                offset="100%"
+                stop-color="#90969b"
+              />
+
+            </linearGradient>
+
+          </defs>
+
+          <rect
+            x="8"
+            y="5"
+            width="64"
+            height="52"
+            rx="8"
+            fill="url(#driveGradient)"
+            stroke="#70767b"
+          />
+
+          <circle
+            cx="40"
+            cy="29"
+            r="16"
+            fill="#454a4f"
+          />
+
+          <circle
+            cx="40"
+            cy="29"
+            r="12"
+            fill="#bfc5ca"
+          />
+
+          <circle
+            cx="40"
+            cy="29"
+            r="4"
+            fill="#4d5358"
+          />
+
+          <circle
+            cx="61"
+            cy="50"
+            r="2"
+            fill="#78c88b"
+          />
+
+        </svg>
+
       </div>
 
-      <div class="file-label">
+      <span class="desktop-label">
         Macintosh HD
-      </div>
+      </span>
+
     </button>
 
+
+    <!-- school -->
 
     <button
-      class="desktop-file"
-      id="other-user-file"
-      onclick="openOtherUser()"
+      class="desktop-item"
+      onclick="
+        openFolder(
+          'school'
+        )
+      "
     >
-      <div class="file-icon">
-        📁
+
+      <div class="desktop-icon-art">
+        <svg
+          class="folder-svg"
+          viewBox="0 0 80 60"
+        >
+          <path
+            d="M7 15 Q7 9 13 9 H31 L37 15 H68 Q73 15 73 21 V49 Q73 54 68 54 H12 Q7 54 7 49Z"
+            fill="#53a8ef"
+          />
+          <path
+            d="M7 21 H73 V49 Q73 54 68 54 H12 Q7 54 7 49Z"
+            fill="#66b8f6"
+          />
+          <path
+            d="M9 22 H71"
+            stroke="#9cd5ff"
+            stroke-width="2"
+          />
+        </svg>
       </div>
 
-      <div class="file-label">
-        user_02
-      </div>
+      <span class="desktop-label">
+        school
+      </span>
+
     </button>
 
+
+    <!-- pictures -->
 
     <button
-      class="desktop-file"
-      id="capture-file"
-      onclick="openPreview('capture')"
+      class="desktop-item"
+      onclick="
+        openWindow(
+          'photos-window',
+          'Photos'
+        )
+      "
     >
-      <div class="file-icon">
-        🖼️
+
+      <div class="desktop-icon-art">
+
+        <svg
+          class="folder-svg"
+          viewBox="0 0 80 60"
+        >
+
+          <path
+            d="M7 15 Q7 9 13 9 H31 L37 15 H68 Q73 15 73 21 V49 Q73 54 68 54 H12 Q7 54 7 49Z"
+            fill="#53a8ef"
+          />
+
+          <path
+            d="M7 21 H73 V49 Q73 54 68 54 H12 Q7 54 7 49Z"
+            fill="#66b8f6"
+          />
+
+          <rect
+            x="27"
+            y="26"
+            width="27"
+            height="19"
+            rx="2"
+            fill="#f2f4f6"
+          />
+
+          <circle
+            cx="46"
+            cy="31"
+            r="3"
+            fill="#ffd56a"
+          />
+
+          <path
+            d="M29 43 L37 35 L42 39 L47 34 L53 43Z"
+            fill="#6baa71"
+          />
+
+        </svg>
+
       </div>
 
-      <div class="file-label">
-        Screen Shot
-      </div>
+      <span class="desktop-label">
+        pictures
+      </span>
+
     </button>
 
-  </div>
+
+    <!-- downloads -->
+
+    <button
+      class="desktop-item"
+      onclick="
+        openFolder(
+          'downloads'
+        )
+      "
+    >
+
+      <div class="desktop-icon-art">
+
+        <svg
+          class="folder-svg"
+          viewBox="0 0 80 60"
+        >
+
+          <path
+            d="M7 15 Q7 9 13 9 H31 L37 15 H68 Q73 15 73 21 V49 Q73 54 68 54 H12 Q7 54 7 49Z"
+            fill="#53a8ef"
+          />
+
+          <path
+            d="M7 21 H73 V49 Q73 54 68 54 H12 Q7 54 7 49Z"
+            fill="#66b8f6"
+          />
+
+          <path
+            d="M40 26 V40"
+            stroke="white"
+            stroke-width="4"
+            stroke-linecap="round"
+          />
+
+          <path
+            d="M33 35 L40 42 L47 35"
+            fill="none"
+            stroke="white"
+            stroke-width="4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+
+        </svg>
+
+      </div>
+
+      <span class="desktop-label">
+        downloads
+      </span>
+
+    </button>
 
 
+    <!-- archive -->
 
-  <!-- FINDER -->
+    <button
+      class="desktop-item"
+      onclick="
+        location.href='memory-box.html'
+      "
+    >
+
+      <div class="desktop-icon-art">
+
+        <svg
+          class="folder-svg"
+          viewBox="0 0 80 60"
+        >
+
+          <path
+            d="M7 15 Q7 9 13 9 H31 L37 15 H68 Q73 15 73 21 V49 Q73 54 68 54 H12 Q7 54 7 49Z"
+            fill="#53a8ef"
+          />
+
+          <path
+            d="M7 21 H73 V49 Q73 54 68 54 H12 Q7 54 7 49Z"
+            fill="#66b8f6"
+          />
+
+          <rect
+            x="30"
+            y="27"
+            width="20"
+            height="17"
+            rx="2"
+            fill="#ecf1f5"
+          />
+
+          <path
+            d="M32 31 H48"
+            stroke="#798894"
+            stroke-width="2"
+          />
+
+          <path
+            d="M36 36 H44"
+            stroke="#798894"
+            stroke-width="2"
+          />
+
+        </svg>
+
+      </div>
+
+      <span class="desktop-label">
+        archive
+      </span>
+
+    </button>
+
+
+    <!-- random -->
+
+    <button
+      class="desktop-item"
+      onclick="
+        openFolder(
+          'random'
+        )
+      "
+    >
+
+      <div class="desktop-icon-art">
+
+        <svg
+          class="folder-svg"
+          viewBox="0 0 80 60"
+        >
+
+          <path
+            d="M7 15 Q7 9 13 9 H31 L37 15 H68 Q73 15 73 21 V49 Q73 54 68 54 H12 Q7 54 7 49Z"
+            fill="#53a8ef"
+          />
+
+          <path
+            d="M7 21 H73 V49 Q73 54 68 54 H12 Q7 54 7 49Z"
+            fill="#66b8f6"
+          />
+
+        </svg>
+
+      </div>
+
+      <span class="desktop-label">
+        random stuff
+      </span>
+
+    </button>
+
+  </section>
+
+
+  <!-- ===============================
+       FINDER WINDOW
+  ================================ -->
 
   <section
-    class="window"
     id="finder-window"
+    class="window"
     style="
-      left:130px;
-      top:72px;
+      left: 155px;
+      top: 72px;
     "
   >
 
@@ -1356,14 +1844,24 @@ input{
       <div class="traffic-lights">
 
         <button
-          class="light red"
-          onclick="closeWindow('finder-window')"
+          class="traffic red"
+          onclick="
+            closeWindow(
+              'finder-window'
+            )
+          "
         ></button>
 
-        <button class="light yellow"></button>
-        <button class="light green"></button>
+        <button
+          class="traffic yellow"
+        ></button>
+
+        <button
+          class="traffic green"
+        ></button>
 
       </div>
+
 
       <div class="window-title">
         Finder
@@ -1372,61 +1870,92 @@ input{
     </div>
 
 
-    <div class="window-body finder-layout">
+    <div class="window-body finder">
 
-      <aside class="sidebar">
+      <aside class="finder-sidebar">
 
-        <div class="sidebar-heading">
+        <div class="sidebar-section">
           Favorites
         </div>
 
-        <div class="sidebar-item active">
-          ☁ AirDrop
+        <div class="sidebar-row">
+          AirDrop
         </div>
 
-        <div class="sidebar-item">
-          ◷ Recents
+        <div class="sidebar-row">
+          Recents
         </div>
 
-        <div class="sidebar-item">
-          📁 Applications
+        <div class="sidebar-row">
+          Applications
         </div>
 
-        <div class="sidebar-item">
-          🖥 Desktop
+        <div class="sidebar-row active">
+          Desktop
         </div>
 
-        <div class="sidebar-item">
-          📄 Documents
+        <div class="sidebar-row">
+          Documents
         </div>
 
         <div
-          class="sidebar-item"
-          onclick="openPhotos()"
+          class="sidebar-row"
+          onclick="
+            openWindow(
+              'photos-window',
+              'Photos'
+            )
+          "
         >
-          🖼 Pictures
+          Pictures
         </div>
 
 
-        <div class="sidebar-heading">
+        <div class="sidebar-section">
+          iCloud
+        </div>
+
+        <div class="sidebar-row">
+          iCloud Drive
+        </div>
+
+
+        <div class="sidebar-section">
           Locations
         </div>
 
-        <div
-          class="sidebar-item"
-          onclick="openWindow('drive-window','Finder')"
-        >
-          💽 Macintosh HD
+        <div class="sidebar-row">
+          Macintosh HD
         </div>
 
       </aside>
 
 
-      <section class="finder-content">
+      <div class="finder-main">
 
-        <h3>
-          kels
-        </h3>
+        <div class="finder-heading">
+
+          <h3>
+            Desktop
+          </h3>
+
+          <div class="view-buttons">
+
+            <button
+              class="view-button"
+            >
+              ▦
+            </button>
+
+            <button
+              class="view-button"
+            >
+              ☷
+            </button>
+
+          </div>
+
+        </div>
 
 
         <div class="finder-grid">
@@ -1434,217 +1963,168 @@ input{
           <button
             class="finder-item"
             onclick="
-              location.href='memory-box.html'
+              openFolder(
+                'school'
+              )
             "
           >
-            <span class="finder-item-icon">
-              📦
-            </span>
+            <div class="finder-item-icon">
 
-            <span class="finder-item-name">
-              Memory Box
-            </span>
-          </button>
+              <svg
+                width="64"
+                viewBox="0 0 80 60"
+              >
 
+                <path
+                  d="M7 15 Q7 9 13 9 H31 L37 15 H68 Q73 15 73 21 V49 Q73 54 68 54 H12 Q7 54 7 49Z"
+                  fill="#53a8ef"
+                />
 
-          <button
-            class="finder-item"
-            onclick="openPhotos()"
-          >
-            <span class="finder-item-icon">
-              🖼️
-            </span>
+                <path
+                  d="M7 21 H73 V49 Q73 54 68 54 H12 Q7 54 7 49Z"
+                  fill="#66b8f6"
+                />
 
-            <span class="finder-item-name">
-              Pictures
-            </span>
-          </button>
+              </svg>
 
+            </div>
 
-          <button
-            class="finder-item"
-            onclick="openWindow('notes-window','Notes')"
-          >
-            <span class="finder-item-icon">
-              📝
-            </span>
+            <div class="finder-name">
+              school
+            </div>
 
-            <span class="finder-item-name">
-              Notes
-            </span>
           </button>
 
 
           <button
             class="finder-item"
             onclick="
-              location.href='guestbook.html'
+              openWindow(
+                'photos-window',
+                'Photos'
+              )
             "
           >
-            <span class="finder-item-icon">
-              💌
-            </span>
 
-            <span class="finder-item-name">
-              Guestbook
-            </span>
+            <div class="finder-item-icon">
+
+              <svg
+                width="64"
+                viewBox="0 0 80 60"
+              >
+
+                <path
+                  d="M7 15 Q7 9 13 9 H31 L37 15 H68 Q73 15 73 21 V49 Q73 54 68 54 H12 Q7 54 7 49Z"
+                  fill="#53a8ef"
+                />
+
+                <path
+                  d="M7 21 H73 V49 Q73 54 68 54 H12 Q7 54 7 49Z"
+                  fill="#66b8f6"
+                />
+
+              </svg>
+
+            </div>
+
+            <div class="finder-name">
+              pictures
+            </div>
+
           </button>
 
 
           <button
             class="finder-item"
             onclick="
-              location.href='fortune-cat.html'
+              openFolder(
+                'downloads'
+              )
             "
           >
-            <span class="finder-item-icon">
-              🐈‍⬛
-            </span>
 
-            <span class="finder-item-name">
-              Fortune Cat
-            </span>
+            <div class="finder-item-icon">
+
+              <svg
+                width="64"
+                viewBox="0 0 80 60"
+              >
+
+                <path
+                  d="M7 15 Q7 9 13 9 H31 L37 15 H68 Q73 15 73 21 V49 Q73 54 68 54 H12 Q7 54 7 49Z"
+                  fill="#53a8ef"
+                />
+
+                <path
+                  d="M7 21 H73 V49 Q73 54 68 54 H12 Q7 54 7 49Z"
+                  fill="#66b8f6"
+                />
+
+              </svg>
+
+            </div>
+
+            <div class="finder-name">
+              downloads
+            </div>
+
           </button>
 
 
           <button
             class="finder-item"
-            onclick="oddDocument()"
+            onclick="
+              location.href=
+              'memory-box.html'
+            "
           >
-            <span class="finder-item-icon">
-              📄
-            </span>
 
-            <span class="finder-item-name">
-              untitled.txt
-            </span>
+            <div class="finder-item-icon">
+
+              <svg
+                width="64"
+                viewBox="0 0 80 60"
+              >
+
+                <path
+                  d="M7 15 Q7 9 13 9 H31 L37 15 H68 Q73 15 73 21 V49 Q73 54 68 54 H12 Q7 54 7 49Z"
+                  fill="#53a8ef"
+                />
+
+                <path
+                  d="M7 21 H73 V49 Q73 54 68 54 H12 Q7 54 7 49Z"
+                  fill="#66b8f6"
+                />
+
+              </svg>
+
+            </div>
+
+            <div class="finder-name">
+              archive
+            </div>
+
           </button>
 
         </div>
 
-      </section>
+      </div>
 
     </div>
 
   </section>
 
 
-
-  <!-- MACINTOSH HD -->
-
-  <section
-    class="window"
-    id="drive-window"
-    style="
-      left:210px;
-      top:110px;
-    "
-  >
-
-    <div class="window-top">
-
-      <div class="traffic-lights">
-
-        <button
-          class="light red"
-          onclick="closeWindow('drive-window')"
-        ></button>
-
-        <button class="light yellow"></button>
-        <button class="light green"></button>
-
-      </div>
-
-      <div class="window-title">
-        Macintosh HD
-      </div>
-
-    </div>
-
-
-    <div class="window-body finder-layout">
-
-      <aside class="sidebar">
-
-        <div class="sidebar-heading">
-          Locations
-        </div>
-
-        <div class="sidebar-item active">
-          💽 Macintosh HD
-        </div>
-
-      </aside>
-
-
-      <section class="finder-content">
-
-        <div class="finder-grid">
-
-          <button class="finder-item">
-            <span class="finder-item-icon">
-              📁
-            </span>
-
-            <span class="finder-item-name">
-              Applications
-            </span>
-          </button>
-
-
-          <button class="finder-item">
-            <span class="finder-item-icon">
-              📁
-            </span>
-
-            <span class="finder-item-name">
-              Library
-            </span>
-          </button>
-
-
-          <button class="finder-item">
-            <span class="finder-item-icon">
-              📁
-            </span>
-
-            <span class="finder-item-name">
-              System
-            </span>
-          </button>
-
-
-          <button
-            class="finder-item"
-            onclick="revealOtherUser()"
-          >
-            <span class="finder-item-icon">
-              📁
-            </span>
-
-            <span class="finder-item-name">
-              Users
-            </span>
-          </button>
-
-        </div>
-
-      </section>
-
-    </div>
-
-  </section>
-
-
-
-  <!-- ENOKIE BROWSER -->
+  <!-- ===============================
+       ENOKIE BROWSER
+  ================================ -->
 
   <section
-    class="window"
     id="browser-window"
+    class="window"
     style="
-      left:230px;
-      top:70px;
+      left: 250px;
+      top: 75px;
     "
   >
 
@@ -1653,14 +2133,24 @@ input{
       <div class="traffic-lights">
 
         <button
-          class="light red"
-          onclick="closeWindow('browser-window')"
+          class="traffic red"
+          onclick="
+            closeWindow(
+              'browser-window'
+            )
+          "
         ></button>
 
-        <button class="light yellow"></button>
-        <button class="light green"></button>
+        <button
+          class="traffic yellow"
+        ></button>
+
+        <button
+          class="traffic green"
+        ></button>
 
       </div>
+
 
       <div class="window-title">
         Enokie
@@ -1671,16 +2161,16 @@ input{
 
     <div class="browser-toolbar">
 
-      <span class="browser-nav">
+      <span class="browser-controls">
         ‹
       </span>
 
-      <span class="browser-nav">
+      <span class="browser-controls">
         ›
       </span>
 
-      <div class="address">
-        enokie://home
+      <div class="address-bar">
+        enokiecloud://home
       </div>
 
     </div>
@@ -1692,20 +2182,23 @@ input{
         enokie
       </div>
 
+
       <div class="video-grid">
 
         <div class="video-card">
 
           <div class="video-thumb">
-            ▶
+            <div class="video-play">
+              ▶
+            </div>
           </div>
 
           <div class="video-title">
-            bedroom ambience ~ 3 hours
+            late night room ambience
           </div>
 
           <div class="video-meta">
-            148 views
+            34K views
           </div>
 
         </div>
@@ -1714,11 +2207,13 @@ input{
         <div class="video-card">
 
           <div class="video-thumb">
-            ▶
+            <div class="video-play">
+              ▶
+            </div>
           </div>
 
           <div class="video-title">
-            old camcorder footage
+            playlist i forgot about
           </div>
 
           <div class="video-meta">
@@ -1728,21 +2223,20 @@ input{
         </div>
 
 
-        <div
-          class="video-card"
-          onclick="strangeVideo()"
-        >
+        <div class="video-card">
 
           <div class="video-thumb">
-            ▶
+            <div class="video-play">
+              ▶
+            </div>
           </div>
 
           <div class="video-title">
-            IMG_2847
+            internet things i saved
           </div>
 
           <div class="video-meta">
-            uploaded tomorrow
+            814 views
           </div>
 
         </div>
@@ -1754,290 +2248,17 @@ input{
   </section>
 
 
-
-  <!-- NOTES -->
-
-  <section
-    class="window"
-    id="notes-window"
-    style="
-      left:370px;
-      top:105px;
-      width:500px;
-    "
-  >
-
-    <div class="window-top">
-
-      <div class="traffic-lights">
-
-        <button
-          class="light red"
-          onclick="closeWindow('notes-window')"
-        ></button>
-
-        <button class="light yellow"></button>
-        <button class="light green"></button>
-
-      </div>
-
-      <div class="window-title">
-        Notes
-      </div>
-
-    </div>
-
-
-    <div class="window-body note-area">
-
-      <h2>
-        reminders
-      </h2>
-
-      <div id="note-content">
-- update website
-- homework
-- feed cat
-- clean desktop
-      </div>
-
-    </div>
-
-  </section>
-
-
-
-  <!-- MESSAGES -->
+  <!-- ===============================
+       PHOTOS
+  ================================ -->
 
   <section
-    class="window"
-    id="messages-window"
-    style="
-      left:420px;
-      top:95px;
-      width:600px;
-    "
-  >
-
-    <div class="window-top">
-
-      <div class="traffic-lights">
-
-        <button
-          class="light red"
-          onclick="closeWindow('messages-window')"
-        ></button>
-
-        <button class="light yellow"></button>
-        <button class="light green"></button>
-
-      </div>
-
-      <div class="window-title">
-        Messages
-      </div>
-
-    </div>
-
-
-    <div class="window-body messages-layout">
-
-      <aside class="conversation-list">
-
-        <div class="contact active">
-          Unknown
-        </div>
-
-      </aside>
-
-
-      <section class="chat">
-
-        <div class="chat-header">
-          Unknown
-        </div>
-
-
-        <div
-          class="chat-messages"
-          id="chat-messages"
-        >
-
-          <div class="bubble unknown">
-            hey
-          </div>
-
-          <div
-            class="typing"
-            id="typing"
-          >
-            ...
-          </div>
-
-        </div>
-
-      </section>
-
-    </div>
-
-  </section>
-
-
-
-  <!-- MUSIC -->
-
-  <section
-    class="window"
-    id="music-window"
-    style="
-      left:315px;
-      top:125px;
-      width:470px;
-    "
-  >
-
-    <div class="window-top">
-
-      <div class="traffic-lights">
-
-        <button
-          class="light red"
-          onclick="closeWindow('music-window')"
-        ></button>
-
-        <button class="light yellow"></button>
-        <button class="light green"></button>
-
-      </div>
-
-      <div class="window-title">
-        Music
-      </div>
-
-    </div>
-
-
-    <div class="window-body music-page">
-
-      <div class="album">
-        ♪
-      </div>
-
-      <div class="track-title">
-        hallway recording
-      </div>
-
-      <div class="track-artist">
-        Unknown Artist
-      </div>
-
-      <div class="controls">
-        ◀︎
-        ▶︎
-        ▶︎|
-      </div>
-
-    </div>
-
-  </section>
-
-
-
-  <!-- CLOUD -->
-
-  <section
-    class="window"
-    id="cloud-window"
-    style="
-      left:280px;
-      top:90px;
-      width:650px;
-    "
-  >
-
-    <div class="window-top">
-
-      <div class="traffic-lights">
-
-        <button
-          class="light red"
-          onclick="closeWindow('cloud-window')"
-        ></button>
-
-        <button class="light yellow"></button>
-        <button class="light green"></button>
-
-      </div>
-
-      <div class="window-title">
-        Cloud
-      </div>
-
-    </div>
-
-
-    <div class="window-body cloud-app">
-
-      <div class="cloud-header">
-        Library
-      </div>
-
-      <div class="game-list">
-
-        <div class="game">
-          <div class="game-icon">
-            🐈
-          </div>
-
-          <div class="game-name">
-            cat.exe
-          </div>
-        </div>
-
-
-        <div class="game">
-          <div class="game-icon">
-            ☁️
-          </div>
-
-          <div class="game-name">
-            enokie simulator
-          </div>
-        </div>
-
-
-        <div
-          class="game"
-          onclick="sessionGame()"
-        >
-
-          <div class="game-icon">
-            ◉
-          </div>
-
-          <div class="game-name">
-            session_02
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-
-  <!-- PHOTOS -->
-
-  <section
-    class="window"
     id="photos-window"
+    class="window"
     style="
-      left:270px;
-      top:85px;
-      width:650px;
+      left: 285px;
+      top: 88px;
+      width: 680px;
     "
   >
 
@@ -2046,14 +2267,24 @@ input{
       <div class="traffic-lights">
 
         <button
-          class="light red"
-          onclick="closeWindow('photos-window')"
+          class="traffic red"
+          onclick="
+            closeWindow(
+              'photos-window'
+            )
+          "
         ></button>
 
-        <button class="light yellow"></button>
-        <button class="light green"></button>
+        <button
+          class="traffic yellow"
+        ></button>
+
+        <button
+          class="traffic green"
+        ></button>
 
       </div>
+
 
       <div class="window-title">
         Photos
@@ -2062,37 +2293,15 @@ input{
     </div>
 
 
-    <div class="window-body photos-page">
+    <div class="window-body photos-content">
 
       <div class="photo-grid">
 
-        <div
-          class="photo"
-          onclick="openPreview('room')"
-        >
-          🌃
-        </div>
-
-        <div
-          class="photo"
-          onclick="openPreview('dark')"
-        >
-          🛏️
-        </div>
-
-        <div
-          class="photo"
-          onclick="openPreview('corrupt')"
-        >
-          ▒
-        </div>
-
-        <div
-          class="photo"
-          onclick="openPreview('future')"
-        >
-          ◉
-        </div>
+        <button class="photo-thumb"></button>
+        <button class="photo-thumb"></button>
+        <button class="photo-thumb"></button>
+        <button class="photo-thumb"></button>
+        <button class="photo-thumb"></button>
 
       </div>
 
@@ -2101,15 +2310,17 @@ input{
   </section>
 
 
-
-  <!-- PREVIEW -->
+  <!-- ===============================
+       MESSAGES
+  ================================ -->
 
   <section
+    id="messages-window"
     class="window"
-    id="preview-window"
     style="
-      left:340px;
-      top:70px;
+      left: 355px;
+      top: 95px;
+      width: 650px;
     "
   >
 
@@ -2118,320 +2329,1156 @@ input{
       <div class="traffic-lights">
 
         <button
-          class="light red"
-          onclick="closeWindow('preview-window')"
+          class="traffic red"
+          onclick="
+            closeWindow(
+              'messages-window'
+            )
+          "
         ></button>
-
-        <button class="light yellow"></button>
-        <button class="light green"></button>
-
-      </div>
-
-      <div
-        class="window-title"
-        id="preview-title"
-      >
-        Preview
-      </div>
-
-    </div>
-
-
-    <div
-      class="preview-area"
-      id="preview-area"
-    >
-      loading
-    </div>
-
-  </section>
-
-
-
-  <!-- OTHER USER -->
-
-  <section
-    class="window"
-    id="other-user-window"
-    style="
-      left:330px;
-      top:95px;
-      width:520px;
-    "
-  >
-
-    <div class="window-top">
-
-      <div class="traffic-lights">
 
         <button
-          class="light red"
-          onclick="closeWindow('other-user-window')"
+          class="traffic yellow"
         ></button>
 
-        <button class="light yellow"></button>
-        <button class="light green"></button>
+        <button
+          class="traffic green"
+        ></button>
 
       </div>
+
 
       <div class="window-title">
-        user_02
+        Messages
       </div>
 
     </div>
 
 
-    <div class="window-body finder-layout">
+    <div class="window-body messages">
 
-      <aside class="sidebar">
+      <aside class="message-sidebar">
 
-        <div class="sidebar-heading">
-          user_02
+        <div class="message-search">
+          Search
         </div>
 
-        <div class="sidebar-item active">
-          Home
+        <div class="contact active">
+          enokiecloud
+        </div>
+
+        <div class="contact">
+          archive bot
         </div>
 
       </aside>
 
 
-      <section class="finder-content">
+      <div class="chat">
 
-        <div class="finder-grid">
+        <div class="chat-header">
+          enokiecloud
+        </div>
 
-          <button
-            class="finder-item"
-            onclick="openPhotos()"
-          >
-            <span class="finder-item-icon">
-              🖼️
-            </span>
+        <div class="chat-body">
 
-            <span class="finder-item-name">
-              Pictures
-            </span>
-          </button>
-
-
-          <button
-            class="finder-item"
-            onclick="otherNote()"
-          >
-            <span class="finder-item-icon">
-              📄
-            </span>
-
-            <span class="finder-item-name">
-              note.txt
-            </span>
-          </button>
-
-
-          <button
-            class="finder-item"
-            onclick="openPreview('capture')"
-          >
-            <span class="finder-item-icon">
-              🖥️
-            </span>
-
-            <span class="finder-item-name">
-              screen_capture.png
-            </span>
-          </button>
+          <div class="message-bubble">
+            welcome back :)
+          </div>
 
         </div>
 
-      </section>
+      </div>
 
     </div>
 
   </section>
 
 
+  <!-- ===============================
+       MUSIC
+  ================================ -->
 
-  <!-- DIALOG -->
+  <section
+    id="music-window"
+    class="window"
+    style="
+      left: 380px;
+      top: 115px;
+      width: 480px;
+    "
+  >
 
-  <div id="dialog">
+    <div class="window-top">
 
-    <div class="dialog-icon">
-      ⚠︎
+      <div class="traffic-lights">
+
+        <button
+          class="traffic red"
+          onclick="
+            closeWindow(
+              'music-window'
+            )
+          "
+        ></button>
+
+        <button class="traffic yellow"></button>
+        <button class="traffic green"></button>
+
+      </div>
+
+
+      <div class="window-title">
+        Music
+      </div>
+
     </div>
 
-    <div id="dialog-title">
-      Alert
+
+    <div class="window-body music-content">
+
+      <div class="album-art"></div>
+
+      <div class="track-name">
+        cloud after midnight
+      </div>
+
+      <div class="track-artist">
+        enokie playlist
+      </div>
+
+      <div class="music-controls">
+        ◀
+        ▶
+        ▶|
+      </div>
+
     </div>
 
-    <div id="dialog-message">
-      Something happened.
+  </section>
+
+
+  <!-- ===============================
+       CLOUD
+  ================================ -->
+
+  <section
+    id="cloud-window"
+    class="window"
+    style="
+      left: 265px;
+      top: 83px;
+      width: 680px;
+    "
+  >
+
+    <div class="window-top">
+
+      <div class="traffic-lights">
+
+        <button
+          class="traffic red"
+          onclick="
+            closeWindow(
+              'cloud-window'
+            )
+          "
+        ></button>
+
+        <button
+          class="traffic yellow"
+        ></button>
+
+        <button
+          class="traffic green"
+        ></button>
+
+      </div>
+
+
+      <div class="window-title">
+        Cloud
+      </div>
+
     </div>
 
-    <div class="dialog-buttons">
 
-      <button
-        class="dialog-btn"
-        onclick="closeDialog()"
-      >
-        OK
-      </button>
+    <div class="window-body cloud-content">
+
+      <div class="cloud-title">
+        Library
+      </div>
+
+      <div class="games">
+
+        <div class="game">
+
+          <div class="game-art">
+            ☁
+          </div>
+
+          <div class="game-name">
+            enokie simulator
+          </div>
+
+        </div>
+
+
+        <div class="game">
+
+          <div class="game-art">
+            ♡
+          </div>
+
+          <div class="game-name">
+            fortune cat
+          </div>
+
+        </div>
+
+
+        <div class="game">
+
+          <div class="game-art">
+            ◉
+          </div>
+
+          <div class="game-name">
+            lost files
+          </div>
+
+        </div>
+
+      </div>
 
     </div>
 
-  </div>
+  </section>
 
 
+  <!-- ===============================
+       NOTES
+  ================================ -->
 
-  <!-- DOCK -->
+  <section
+    id="notes-window"
+    class="window"
+    style="
+      left: 405px;
+      top: 100px;
+      width: 590px;
+    "
+  >
+
+    <div class="window-top">
+
+      <div class="traffic-lights">
+
+        <button
+          class="traffic red"
+          onclick="
+            closeWindow(
+              'notes-window'
+            )
+          "
+        ></button>
+
+        <button class="traffic yellow"></button>
+        <button class="traffic green"></button>
+
+      </div>
+
+
+      <div class="window-title">
+        Notes
+      </div>
+
+    </div>
+
+
+    <div class="window-body notes-content">
+
+      <aside class="notes-list">
+
+        <div class="note-preview active">
+
+          <strong>
+            currently
+          </strong>
+
+          <small>
+            today
+          </small>
+
+        </div>
+
+
+        <div class="note-preview">
+
+          <strong>
+            random
+          </strong>
+
+          <small>
+            yesterday
+          </small>
+
+        </div>
+
+      </aside>
+
+
+      <article class="note-page">
+
+        <h2>
+          currently
+        </h2>
+
+        <p>- building enokiecloud
+- probably procrastinating
+- listening to music
+- reorganizing things again</p>
+
+      </article>
+
+    </div>
+
+  </section>
+
+
+  <!-- ===============================
+       SETTINGS
+  ================================ -->
+
+  <section
+    id="settings-window"
+    class="window"
+    style="
+      left: 405px;
+      top: 90px;
+      width: 560px;
+    "
+  >
+
+    <div class="window-top">
+
+      <div class="traffic-lights">
+
+        <button
+          class="traffic red"
+          onclick="
+            closeWindow(
+              'settings-window'
+            )
+          "
+        ></button>
+
+        <button class="traffic yellow"></button>
+        <button class="traffic green"></button>
+
+      </div>
+
+
+      <div class="window-title">
+        System Settings
+      </div>
+
+    </div>
+
+
+    <div class="window-body settings-content">
+
+      <div class="settings-title">
+        System Settings
+      </div>
+
+
+      <div class="settings-card">
+
+        <strong>
+          Appearance
+        </strong>
+
+        <span>
+          Dark
+        </span>
+
+      </div>
+
+
+      <div class="settings-card">
+
+        <strong>
+          Wallpaper
+        </strong>
+
+        <span>
+          enokie dusk
+        </span>
+
+      </div>
+
+
+      <div class="settings-card">
+
+        <strong>
+          Desktop & Dock
+        </strong>
+
+        <span>
+          customized
+        </span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ===============================
+       DOCK
+  ================================ -->
 
   <div id="dock-wrap">
 
-    <div id="dock">
+    <nav id="dock">
+
+
+      <!-- Finder -->
 
       <button
-        class="dock-app finder-app"
-        onclick="openWindow('finder-window','Finder')"
-        title="Finder"
+        class="dock-item"
+        data-label="Finder"
+        onclick="
+          openWindow(
+            'finder-window',
+            'Finder',
+            this
+          )
+        "
       >
-        ◐
+
+        <svg
+          class="dock-app-icon"
+          viewBox="0 0 100 100"
+        >
+
+          <defs>
+
+            <linearGradient
+              id="finderBlue"
+              x1="0"
+              x2="1"
+            >
+
+              <stop
+                offset="0"
+                stop-color="#7cc8ff"
+              />
+
+              <stop
+                offset=".5"
+                stop-color="#7cc8ff"
+              />
+
+              <stop
+                offset=".5"
+                stop-color="#eaf7ff"
+              />
+
+              <stop
+                offset="1"
+                stop-color="#eaf7ff"
+              />
+
+            </linearGradient>
+
+          </defs>
+
+          <rect
+            width="100"
+            height="100"
+            rx="21"
+            fill="url(#finderBlue)"
+          />
+
+          <path
+            d="M50 8 C45 31 45 69 50 92"
+            fill="none"
+            stroke="#263543"
+            stroke-width="3"
+          />
+
+          <circle
+            cx="31"
+            cy="39"
+            r="3"
+            fill="#263543"
+          />
+
+          <circle
+            cx="69"
+            cy="39"
+            r="3"
+            fill="#263543"
+          />
+
+          <path
+            d="M21 64 Q35 75 50 64"
+            fill="none"
+            stroke="#263543"
+            stroke-width="3"
+            stroke-linecap="round"
+          />
+
+          <path
+            d="M50 64 Q66 76 80 60"
+            fill="none"
+            stroke="#263543"
+            stroke-width="3"
+            stroke-linecap="round"
+          />
+
+        </svg>
+
+        <span class="dock-dot"></span>
+
       </button>
 
 
+      <!-- Enokie Browser -->
+
       <button
-        class="dock-app browser-app"
-        onclick="openWindow('browser-window','Enokie')"
-        title="Enokie"
+        class="dock-item"
+        data-label="Enokie"
+        onclick="
+          openWindow(
+            'browser-window',
+            'Enokie',
+            this
+          )
+        "
       >
-        🧭
+
+        <svg
+          class="dock-app-icon"
+          viewBox="0 0 100 100"
+        >
+
+          <defs>
+
+            <radialGradient
+              id="browserWhite"
+            >
+              <stop
+                offset="0"
+                stop-color="#ffffff"
+              />
+              <stop
+                offset="1"
+                stop-color="#e3e7ec"
+              />
+            </radialGradient>
+
+          </defs>
+
+          <rect
+            width="100"
+            height="100"
+            rx="22"
+            fill="url(#browserWhite)"
+          />
+
+          <circle
+            cx="50"
+            cy="50"
+            r="34"
+            fill="#eaf6ff"
+            stroke="#687a8e"
+            stroke-width="2"
+          />
+
+          <circle
+            cx="50"
+            cy="50"
+            r="29"
+            fill="#5eb8ef"
+          />
+
+          <path
+            d="M56 24 L45 49 L30 70 L52 57 L70 31Z"
+            fill="#f25f68"
+          />
+
+          <path
+            d="M44 76 L55 51 L70 30 L48 43 L30 69Z"
+            fill="#f8f8f8"
+          />
+
+          <circle
+            cx="50"
+            cy="50"
+            r="4"
+            fill="#25394b"
+          />
+
+        </svg>
+
+        <span class="dock-dot"></span>
+
       </button>
 
 
+      <!-- Messages -->
+
       <button
-        class="dock-app message-app"
-        onclick="openWindow('messages-window','Messages')"
-        title="Messages"
+        class="dock-item"
+        data-label="Messages"
+        onclick="
+          openWindow(
+            'messages-window',
+            'Messages',
+            this
+          )
+        "
       >
-        💬
+
+        <svg
+          class="dock-app-icon"
+          viewBox="0 0 100 100"
+        >
+
+          <defs>
+
+            <linearGradient
+              id="messagesGreen"
+              y1="0"
+              y2="1"
+            >
+
+              <stop
+                offset="0"
+                stop-color="#66e56d"
+              />
+
+              <stop
+                offset="1"
+                stop-color="#27b83c"
+              />
+
+            </linearGradient>
+
+          </defs>
+
+          <rect
+            width="100"
+            height="100"
+            rx="22"
+            fill="url(#messagesGreen)"
+          />
+
+          <ellipse
+            cx="50"
+            cy="47"
+            rx="30"
+            ry="24"
+            fill="white"
+          />
+
+          <path
+            d="M38 68 L28 78 L31 62Z"
+            fill="white"
+          />
+
+        </svg>
+
+        <span class="dock-dot"></span>
+
       </button>
 
 
+      <!-- Photos -->
+
       <button
-        class="dock-app photo-app"
-        onclick="openPhotos()"
-        title="Photos"
+        class="dock-item"
+        data-label="Photos"
+        onclick="
+          openWindow(
+            'photos-window',
+            'Photos',
+            this
+          )
+        "
       >
-        🌈
+
+        <svg
+          class="dock-app-icon"
+          viewBox="0 0 100 100"
+        >
+
+          <rect
+            width="100"
+            height="100"
+            rx="22"
+            fill="#f8f8f8"
+          />
+
+          <g transform="translate(50 50)">
+
+            <ellipse
+              rx="13"
+              ry="28"
+              fill="#f15b64"
+              transform="rotate(0) translate(0 -20)"
+            />
+
+            <ellipse
+              rx="13"
+              ry="28"
+              fill="#f29c45"
+              transform="rotate(45) translate(0 -20)"
+            />
+
+            <ellipse
+              rx="13"
+              ry="28"
+              fill="#f4d84c"
+              transform="rotate(90) translate(0 -20)"
+            />
+
+            <ellipse
+              rx="13"
+              ry="28"
+              fill="#65c975"
+              transform="rotate(135) translate(0 -20)"
+            />
+
+            <ellipse
+              rx="13"
+              ry="28"
+              fill="#56c4d9"
+              transform="rotate(180) translate(0 -20)"
+            />
+
+            <ellipse
+              rx="13"
+              ry="28"
+              fill="#5888dc"
+              transform="rotate(225) translate(0 -20)"
+            />
+
+            <ellipse
+              rx="13"
+              ry="28"
+              fill="#956acb"
+              transform="rotate(270) translate(0 -20)"
+            />
+
+            <ellipse
+              rx="13"
+              ry="28"
+              fill="#d66ca5"
+              transform="rotate(315) translate(0 -20)"
+            />
+
+            <circle
+              r="9"
+              fill="white"
+            />
+
+          </g>
+
+        </svg>
+
+        <span class="dock-dot"></span>
+
       </button>
 
 
+      <!-- Music -->
+
       <button
-        class="dock-app music-app"
-        onclick="openWindow('music-window','Music')"
-        title="Music"
+        class="dock-item"
+        data-label="Music"
+        onclick="
+          openWindow(
+            'music-window',
+            'Music',
+            this
+          )
+        "
       >
-        ♪
+
+        <svg
+          class="dock-app-icon"
+          viewBox="0 0 100 100"
+        >
+
+          <defs>
+
+            <linearGradient
+              id="musicGradient"
+              y1="0"
+              y2="1"
+            >
+
+              <stop
+                offset="0"
+                stop-color="#fa6f8c"
+              />
+
+              <stop
+                offset="1"
+                stop-color="#e62450"
+              />
+
+            </linearGradient>
+
+          </defs>
+
+          <rect
+            width="100"
+            height="100"
+            rx="22"
+            fill="url(#musicGradient)"
+          />
+
+          <path
+            d="M61 28 V61"
+            stroke="white"
+            stroke-width="7"
+            stroke-linecap="round"
+          />
+
+          <path
+            d="M61 31 L79 27 V53"
+            fill="none"
+            stroke="white"
+            stroke-width="7"
+            stroke-linejoin="round"
+          />
+
+          <circle
+            cx="48"
+            cy="67"
+            r="10"
+            fill="white"
+          />
+
+          <circle
+            cx="72"
+            cy="58"
+            r="10"
+            fill="white"
+          />
+
+        </svg>
+
+        <span class="dock-dot"></span>
+
       </button>
 
 
+      <!-- Cloud -->
+
       <button
-        class="dock-app cloud-game-app"
-        onclick="openWindow('cloud-window','Cloud')"
-        title="Cloud"
+        class="dock-item"
+        data-label="Cloud"
+        onclick="
+          openWindow(
+            'cloud-window',
+            'Cloud',
+            this
+          )
+        "
       >
-        ☁
+
+        <svg
+          class="dock-app-icon"
+          viewBox="0 0 100 100"
+        >
+
+          <defs>
+
+            <linearGradient
+              id="cloudGradient"
+              y1="0"
+              y2="1"
+            >
+
+              <stop
+                offset="0"
+                stop-color="#333c48"
+              />
+
+              <stop
+                offset="1"
+                stop-color="#171c23"
+              />
+
+            </linearGradient>
+
+          </defs>
+
+          <rect
+            width="100"
+            height="100"
+            rx="22"
+            fill="url(#cloudGradient)"
+          />
+
+          <path
+            d="M29 66
+               C18 66 15 50 25 45
+               C25 31 43 25 51 37
+               C60 25 79 32 78 46
+               C89 49 87 66 76 66Z"
+            fill="#dfe6ee"
+          />
+
+        </svg>
+
+        <span class="dock-dot"></span>
+
       </button>
 
 
+      <!-- Notes -->
+
       <button
-        class="dock-app notes-app"
-        onclick="openWindow('notes-window','Notes')"
-        title="Notes"
+        class="dock-item"
+        data-label="Notes"
+        onclick="
+          openWindow(
+            'notes-window',
+            'Notes',
+            this
+          )
+        "
       >
-        📝
+
+        <svg
+          class="dock-app-icon"
+          viewBox="0 0 100 100"
+        >
+
+          <rect
+            width="100"
+            height="100"
+            rx="22"
+            fill="#f7f7f7"
+          />
+
+          <path
+            d="M0 0 H100 V25 H0Z"
+            fill="#ffd94d"
+          />
+
+          <path
+            d="M18 42 H82"
+            stroke="#d0d0d0"
+            stroke-width="3"
+          />
+
+          <path
+            d="M18 56 H82"
+            stroke="#d0d0d0"
+            stroke-width="3"
+          />
+
+          <path
+            d="M18 70 H82"
+            stroke="#d0d0d0"
+            stroke-width="3"
+          />
+
+        </svg>
+
+        <span class="dock-dot"></span>
+
       </button>
 
 
-      <div class="dock-separator"></div>
-
+      <!-- Settings -->
 
       <button
-        class="dock-app trash-app"
-        onclick="trashEvent()"
-        title="Trash"
+        class="dock-item"
+        data-label="System Settings"
+        onclick="
+          openWindow(
+            'settings-window',
+            'System Settings',
+            this
+          )
+        "
       >
-        🗑
+
+        <svg
+          class="dock-app-icon"
+          viewBox="0 0 100 100"
+        >
+
+          <defs>
+
+            <linearGradient
+              id="settingsGradient"
+              y1="0"
+              y2="1"
+            >
+
+              <stop
+                offset="0"
+                stop-color="#aeb4bc"
+              />
+
+              <stop
+                offset="1"
+                stop-color="#727a84"
+              />
+
+            </linearGradient>
+
+          </defs>
+
+          <rect
+            width="100"
+            height="100"
+            rx="22"
+            fill="url(#settingsGradient)"
+          />
+
+          <circle
+            cx="50"
+            cy="50"
+            r="25"
+            fill="none"
+            stroke="#edf0f3"
+            stroke-width="9"
+          />
+
+          <circle
+            cx="50"
+            cy="50"
+            r="8"
+            fill="#edf0f3"
+          />
+
+          <path
+            d="M50 16 V27
+               M50 73 V84
+               M16 50 H27
+               M73 50 H84
+               M26 26 L34 34
+               M66 66 L74 74
+               M74 26 L66 34
+               M34 66 L26 74"
+            stroke="#edf0f3"
+            stroke-width="7"
+            stroke-linecap="round"
+          />
+
+        </svg>
+
+        <span class="dock-dot"></span>
+
       </button>
 
-    </div>
+
+      <div class="dock-divider"></div>
+
+
+      <!-- Trash -->
+
+      <button
+        class="dock-item"
+        data-label="Trash"
+      >
+
+        <svg
+          class="dock-app-icon"
+          viewBox="0 0 100 100"
+        >
+
+          <defs>
+
+            <linearGradient
+              id="trashGradient"
+              y1="0"
+              y2="1"
+            >
+
+              <stop
+                offset="0"
+                stop-color="#f4f4f4"
+              />
+
+              <stop
+                offset="1"
+                stop-color="#bebfc2"
+              />
+
+            </linearGradient>
+
+          </defs>
+
+          <rect
+            width="100"
+            height="100"
+            rx="22"
+            fill="rgba(225,228,232,.65)"
+          />
+
+          <path
+            d="M29 31 H71 L66 79 H34Z"
+            fill="url(#trashGradient)"
+            stroke="#71767b"
+            stroke-width="2"
+          />
+
+          <path
+            d="M26 28 H74"
+            stroke="#71767b"
+            stroke-width="4"
+            stroke-linecap="round"
+          />
+
+          <path
+            d="M41 21 H59"
+            stroke="#71767b"
+            stroke-width="4"
+            stroke-linecap="round"
+          />
+
+          <path
+            d="M42 39 V68
+               M50 39 V68
+               M58 39 V68"
+            stroke="#868b90"
+            stroke-width="2"
+          />
+
+        </svg>
+
+      </button>
+
+    </nav>
 
   </div>
 
 </main>
 
 
-
 <script>
 
-let zIndex = 100;
-let noteOpens = 0;
-let otherUserRevealed = false;
-let wallpaperChanged = false;
-let messagesTriggered = false;
+let topZ = 200;
 
 
-/* ==============================
-   START
-============================== */
-
-window.addEventListener(
-  "load",
-  () => {
-
-    setTimeout(
-      () => {
-
-        const startup =
-          document.getElementById(
-            "startup"
-          );
-
-        startup.style.opacity =
-          "0";
-
-        setTimeout(
-          () => {
-            startup.style.display =
-              "none";
-          },
-          800
-        );
-
-      },
-      2600
-    );
-
-
-    updateClock();
-
-    setInterval(
-      updateClock,
-      1000
-    );
-
-
-    makeDraggable();
-
-    scheduleEvents();
-
-  }
-);
-
-
-/* ==============================
+/* ========================================
    CLOCK
-============================== */
+======================================== */
 
-function updateClock(){
+function updateClock() {
 
   const now =
     new Date();
@@ -2440,9 +3487,9 @@ function updateClock(){
     now.toLocaleDateString(
       [],
       {
-        weekday:"short",
-        month:"short",
-        day:"numeric"
+        weekday: "short",
+        month: "short",
+        day: "numeric"
       }
     );
 
@@ -2450,8 +3497,8 @@ function updateClock(){
     now.toLocaleTimeString(
       [],
       {
-        hour:"numeric",
-        minute:"2-digit"
+        hour: "numeric",
+        minute: "2-digit"
       }
     );
 
@@ -2462,677 +3509,306 @@ function updateClock(){
 
 }
 
+updateClock();
 
-/* ==============================
+setInterval(
+  updateClock,
+  1000
+);
+
+
+/* ========================================
    WINDOWS
-============================== */
+======================================== */
 
 function openWindow(
   id,
-  name="Finder"
-){
+  appName,
+  dockButton = null
+) {
 
-  const el =
+  const win =
     document.getElementById(id);
 
-  el.classList.add(
+  win.classList.add(
     "active"
   );
 
-  zIndex++;
+  topZ++;
 
-  el.style.zIndex =
-    zIndex;
+  win.style.zIndex =
+    topZ;
 
   document.getElementById(
-    "active-app-name"
+    "active-app"
   ).textContent =
-    name;
+    appName;
 
 
-  if(
-    id === "notes-window"
-  ){
-    changeNote();
+  if(dockButton) {
+
+    dockButton.classList.add(
+      "running"
+    );
+
   }
 
 }
 
 
-function closeWindow(id){
+function closeWindow(id) {
 
-  document.getElementById(
-    id
-  ).classList.remove(
+  const win =
+    document.getElementById(id);
+
+  win.classList.remove(
     "active"
   );
 
-}
-
-
-function makeDraggable(){
-
-  document.querySelectorAll(
-    ".window"
-  ).forEach(
-    win => {
-
-      const bar =
-        win.querySelector(
-          ".window-top"
-        );
-
-      let dragging = false;
-      let offsetX = 0;
-      let offsetY = 0;
-
-
-      bar.addEventListener(
-        "mousedown",
-        e => {
-
-          if(
-            e.target.classList
-            .contains("light")
-          ){
-            return;
-          }
-
-          dragging = true;
-
-          zIndex++;
-
-          win.style.zIndex =
-            zIndex;
-
-          const rect =
-            win.getBoundingClientRect();
-
-          offsetX =
-            e.clientX - rect.left;
-
-          offsetY =
-            e.clientY - rect.top;
-
-        }
-      );
-
-
-      document.addEventListener(
-        "mousemove",
-        e => {
-
-          if(!dragging) return;
-
-          if(
-            window.innerWidth
-            < 700
-          ){
-            return;
-          }
-
-          win.style.left =
-            e.clientX
-            - offsetX
-            + "px";
-
-          win.style.top =
-            e.clientY
-            - offsetY
-            + "px";
-
-        }
-      );
-
-
-      document.addEventListener(
-        "mouseup",
-        () => {
-          dragging = false;
-        }
-      );
-
-    }
-  );
-
-}
-
-
-/* ==============================
-   NOTES
-============================== */
-
-function changeNote(){
-
-  noteOpens++;
-
-  const note =
-    document.getElementById(
-      "note-content"
-    );
-
-
-  if(
-    noteOpens === 1
-  ){
-
-    note.textContent =
-`- update website
-- homework
-- feed cat
-- clean desktop`;
-
-  }
-
-
-  else if(
-    noteOpens === 2
-  ){
-
-    note.textContent =
-`- update website
-- homework
-- feed cat
-- clean desktop
-
-remember to log out before leaving`;
-
-  }
-
-
-  else if(
-    noteOpens >= 3
-  ){
-
-    note.textContent =
-`- update website
-- homework
-- feed cat
-- clean desktop
-
-who added the last line?`;
-
-    revealOtherUser();
-
-  }
-
-}
-
-
-/* ==============================
-   FINDER EVENTS
-============================== */
-
-function oddDocument(){
-
-  showDialog(
-    "The document could not be opened.",
-    "The file belongs to another user."
-  );
-
-  revealOtherUser();
-
-}
-
-
-function revealOtherUser(){
-
-  if(
-    otherUserRevealed
-  ){
-    return;
-  }
-
-  otherUserRevealed =
-    true;
-
   document.getElementById(
-    "other-user-file"
-  ).classList.add(
-    "visible"
-  );
-
-
-  setTimeout(
-    () => {
-
-      showDialog(
-        "New Home Folder",
-        "A second user folder was found on this Mac."
-      );
-
-    },
-    500
-  );
-
-}
-
-
-function openOtherUser(){
-
-  openWindow(
-    "other-user-window",
-    "Finder"
-  );
-
-}
-
-
-function otherNote(){
-
-  showDialog(
-    "note.txt",
-    "you weren't supposed to find this folder yet."
-  );
-
-}
-
-
-/* ==============================
-   PHOTOS
-============================== */
-
-function openPhotos(){
-
-  openWindow(
-    "photos-window",
-    "Photos"
-  );
-
-}
-
-
-function openPreview(type){
-
-  const area =
-    document.getElementById(
-      "preview-area"
-    );
-
-  const title =
-    document.getElementById(
-      "preview-title"
-    );
-
-  area.className =
-    "preview-area";
-
-
-  if(type === "room"){
-
-    title.textContent =
-      "IMG_2841.JPG";
-
-    area.textContent =
-`a dim bedroom.
-
-the doorway is open.
-
-there's something in the hallway,
-but the image is too dark to tell what.`;
-
-  }
-
-
-  if(type === "dark"){
-
-    title.textContent =
-      "IMG_2842.JPG";
-
-    area.textContent =
-`the same bedroom.
-
-the hallway looks empty now.`;
-
-  }
-
-
-  if(type === "corrupt"){
-
-    title.textContent =
-      "IMG_2843.JPG";
-
-    area.classList.add(
-      "corrupt"
-    );
-
-    area.textContent =
-`The image could not be fully recovered.
-
-1 face detected.`;
-
-    glitch();
-
-  }
-
-
-  if(type === "future"){
-
-    title.textContent =
-      "IMG_2847.JPG";
-
-    area.textContent =
-`No preview available.
-
-Date Created:
-Tomorrow
-
-Location:
-Desktop`;
-
-    revealOtherUser();
-
-  }
-
-
-  if(type === "capture"){
-
-    title.textContent =
-      "Screen Shot.png";
-
-    area.textContent =
-`this appears to be a screenshot
-of the desktop you are currently using.
-
-Messages is open in the screenshot.
-
-you haven't opened it yet.`;
-
-    document.getElementById(
-      "capture-file"
-    ).classList.add(
-      "visible"
-    );
-
-  }
-
-
-  openWindow(
-    "preview-window",
-    "Preview"
-  );
-
-}
-
-
-/* ==============================
-   ENOKIE
-============================== */
-
-function strangeVideo(){
-
-  showDialog(
-    "Enokie",
-    "This video is not available yet."
-  );
-
-  setTimeout(
-    () => {
-
-      openPreview(
-        "future"
-      );
-
-    },
-    900
-  );
-
-}
-
-
-/* ==============================
-   CLOUD
-============================== */
-
-function sessionGame(){
-
-  showDialog(
-    "Cloud",
-    "session_02 is already running."
-  );
-
-  revealOtherUser();
-
-}
-
-
-/* ==============================
-   MESSAGES
-============================== */
-
-function triggerMessages(){
-
-  if(messagesTriggered){
-    return;
-  }
-
-  messagesTriggered =
-    true;
-
-
-  openWindow(
-    "messages-window",
-    "Messages"
-  );
-
-
-  const chat =
-    document.getElementById(
-      "chat-messages"
-    );
-
-  const typing =
-    document.getElementById(
-      "typing"
-    );
-
-
-  setTimeout(
-    () => {
-
-      typing.remove();
-
-      chat.innerHTML +=
-      `<div class="bubble unknown">
-        are you still there?
-      </div>`;
-
-    },
-    2400
-  );
-
-
-  setTimeout(
-    () => {
-
-      chat.innerHTML +=
-      `<div class="bubble unknown">
-        i thought you left.
-      </div>`;
-
-      revealOtherUser();
-
-    },
-    6500
-  );
-
-}
-
-
-/* ==============================
-   WALLPAPER
-============================== */
-
-function changeWallpaper(){
-
-  if(
-    wallpaperChanged
-  ){
-    return;
-  }
-
-  wallpaperChanged =
-    true;
-
-  document.getElementById(
-    "desktop"
-  ).classList.add(
-    "wallpaper-two"
-  );
-
-}
-
-
-/* ==============================
-   TRASH
-============================== */
-
-function trashEvent(){
-
-  showDialog(
-    "Trash",
-    "Some items cannot be deleted because they are currently in use."
-  );
-
-  revealOtherUser();
-
-}
-
-
-/* ==============================
-   AUTOMATIC EVENTS
-============================== */
-
-function scheduleEvents(){
-
-  /* looks totally normal initially */
-
-  setTimeout(
-    () => {
-
-      showDialog(
-        "Accessory Connected",
-        "USB camera connected."
-      );
-
-    },
-    13000
-  );
-
-
-  setTimeout(
-    () => {
-
-      document.getElementById(
-        "active-app-name"
-      ).textContent =
-        "Finder";
-
-    },
-    20000
-  );
-
-
-  setTimeout(
-    () => {
-
-      triggerMessages();
-
-    },
-    29000
-  );
-
-
-  setTimeout(
-    () => {
-
-      changeWallpaper();
-
-    },
-    47000
-  );
-
-
-  setTimeout(
-    () => {
-
-      document.getElementById(
-        "capture-file"
-      ).classList.add(
-        "visible"
-      );
-
-    },
-    61000
-  );
-
-}
-
-
-/* ==============================
-   DIALOG
-============================== */
-
-function showDialog(
-  title,
-  message
-){
-
-  document.getElementById(
-    "dialog-title"
+    "active-app"
   ).textContent =
-    title;
-
-  document.getElementById(
-    "dialog-message"
-  ).textContent =
-    message;
-
-  document.getElementById(
-    "dialog"
-  ).classList.add(
-    "show"
-  );
+    "Finder";
 
 }
 
 
-function closeDialog(){
+/* ========================================
+   DRAGGABLE WINDOWS
+======================================== */
 
-  document.getElementById(
-    "dialog"
-  ).classList.remove(
-    "show"
-  );
+document.querySelectorAll(
+  ".window"
+).forEach(
+  win => {
 
-}
-
-
-/* ==============================
-   GLITCH
-============================== */
-
-function glitch(){
-
-  const desktop =
-    document.getElementById(
-      "desktop"
-    );
-
-  desktop.classList.add(
-    "glitch"
-  );
-
-  setTimeout(
-    () => {
-
-      desktop.classList.remove(
-        "glitch"
+    const bar =
+      win.querySelector(
+        ".window-top"
       );
 
-    },
-    450
+    let moving = false;
+
+    let offsetX = 0;
+    let offsetY = 0;
+
+
+    bar.addEventListener(
+      "mousedown",
+      e => {
+
+        if(
+          e.target.classList
+          .contains("traffic")
+        ) {
+          return;
+        }
+
+
+        moving = true;
+
+        topZ++;
+
+        win.style.zIndex =
+          topZ;
+
+
+        const rect =
+          win.getBoundingClientRect();
+
+        offsetX =
+          e.clientX - rect.left;
+
+        offsetY =
+          e.clientY - rect.top;
+
+      }
+    );
+
+
+    document.addEventListener(
+      "mousemove",
+      e => {
+
+        if(!moving) {
+          return;
+        }
+
+        if(
+          window.innerWidth
+          <= 700
+        ) {
+          return;
+        }
+
+
+        win.style.left =
+          e.clientX
+          - offsetX
+          + "px";
+
+        win.style.top =
+          e.clientY
+          - offsetY
+          + "px";
+
+      }
+    );
+
+
+    document.addEventListener(
+      "mouseup",
+      () => {
+
+        moving = false;
+
+      }
+    );
+
+  }
+);
+
+
+/* ========================================
+   FOLDER CONTENT
+======================================== */
+
+function openFolder(folder) {
+
+  const finder =
+    document.getElementById(
+      "finder-window"
+    );
+
+  finder.classList.add(
+    "active"
   );
+
+  topZ++;
+
+  finder.style.zIndex =
+    topZ;
+
+  document.getElementById(
+    "active-app"
+  ).textContent =
+    "Finder";
+
+
+  const heading =
+    finder.querySelector(
+      ".finder-heading h3"
+    );
+
+  const grid =
+    finder.querySelector(
+      ".finder-grid"
+    );
+
+
+  if(folder === "school") {
+
+    heading.textContent =
+      "school";
+
+    grid.innerHTML =
+    `
+      ${folderTile("classes")}
+      ${folderTile("assignments")}
+      ${folderTile("group projects")}
+      ${fileTile("syllabus.pdf")}
+    `;
+
+  }
+
+
+  if(folder === "downloads") {
+
+    heading.textContent =
+      "downloads";
+
+    grid.innerHTML =
+    `
+      ${fileTile("image_04.png")}
+      ${fileTile("random.pdf")}
+      ${fileTile("screenshot.png")}
+      ${folderTile("old downloads")}
+    `;
+
+  }
+
+
+  if(folder === "random") {
+
+    heading.textContent =
+      "random stuff";
+
+    grid.innerHTML =
+    `
+      ${folderTile("screenshots")}
+      ${folderTile("internet")}
+      ${fileTile("untitled.txt")}
+      ${fileTile("whatever.png")}
+    `;
+
+  }
+
+}
+
+
+function folderTile(name) {
+
+  return `
+    <button class="finder-item">
+
+      <div class="finder-item-icon">
+
+        <svg width="64" viewBox="0 0 80 60">
+
+          <path
+            d="M7 15 Q7 9 13 9 H31 L37 15 H68 Q73 15 73 21 V49 Q73 54 68 54 H12 Q7 54 7 49Z"
+            fill="#53a8ef"
+          />
+
+          <path
+            d="M7 21 H73 V49 Q73 54 68 54 H12 Q7 54 7 49Z"
+            fill="#66b8f6"
+          />
+
+        </svg>
+
+      </div>
+
+      <div class="finder-name">
+        ${name}
+      </div>
+
+    </button>
+  `;
+
+}
+
+
+function fileTile(name) {
+
+  return `
+    <button class="finder-item">
+
+      <div
+        class="finder-item-icon"
+        style="
+          font-size:44px;
+        "
+      >
+        📄
+      </div>
+
+      <div class="finder-name">
+        ${name}
+      </div>
+
+    </button>
+  `;
 
 }
 
