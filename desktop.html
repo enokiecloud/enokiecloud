@@ -188,13 +188,181 @@ button{color:inherit}
 .history-row{padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:11px}.history-row small{display:block;color:#8a8b90;margin-top:2px}
 
 /* music */
-.music-layout{display:flex;height:400px;background:linear-gradient(145deg,#151517,#25242a);color:#fff}
-.music-side{width:175px;padding:18px 12px;border-right:1px solid rgba(255,255,255,.08)}
-.music-side h2{font-size:20px;margin-bottom:16px}.music-nav{padding:7px 8px;border-radius:6px;font-size:12px}.music-nav.active{background:rgba(255,255,255,.1)}
-.music-main{flex:1;padding:21px;overflow:auto}.music-main h3{font-size:17px;margin-bottom:15px}
-.albums{display:grid;grid-template-columns:repeat(2,minmax(150px,205px));gap:18px}
-.album{cursor:pointer}.album img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px}.album strong{display:block;font-size:12px;margin-top:7px}.album small{font-size:10px;color:#aaa}
+.music-shell{
+  position:relative;
+  height:455px;
+  overflow:hidden;
+  background:linear-gradient(145deg,#151517,#25242a);
+  color:#fff;
+}
+.music-layout{
+  display:flex;
+  height:100%;
+  padding-bottom:78px;
+}
+.music-side{
+  width:175px;
+  padding:18px 12px;
+  border-right:1px solid rgba(255,255,255,.08)
+}
+.music-side h2{font-size:20px;margin-bottom:16px}
+.music-nav{padding:7px 8px;border-radius:6px;font-size:12px}
+.music-nav.active{background:rgba(255,255,255,.1)}
+.music-main{
+  flex:1;
+  padding:21px;
+  overflow:auto
+}
+.music-main h3{font-size:17px;margin-bottom:15px}
+.albums{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(150px,205px));
+  gap:18px
+}
+.album{
+  position:relative;
+  padding:6px;
+  margin:-6px;
+  border-radius:10px;
+  cursor:pointer;
+  transition:.14s
+}
+.album:hover{background:rgba(255,255,255,.055)}
+.album.active{background:rgba(255,255,255,.09)}
+.album img{
+  width:100%;
+  aspect-ratio:1;
+  object-fit:cover;
+  border-radius:8px
+}
+.album strong{display:block;font-size:12px;margin-top:7px}
+.album small{font-size:10px;color:#aaa}
 .last-played{margin-top:7px;font-size:9px;color:#8f8f95}
+.album-playing{
+  position:absolute;
+  right:12px;
+  top:12px;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  background:rgba(15,15,17,.82);
+  box-shadow:0 2px 8px rgba(0,0,0,.35);
+  font-size:10px
+}
+.album.active .album-playing{display:flex}
+
+.music-now-playing{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  height:78px;
+  display:none;
+  align-items:center;
+  gap:11px;
+  padding:10px 14px;
+  border-top:1px solid rgba(255,255,255,.09);
+  background:rgba(17,17,19,.92);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  z-index:5
+}
+.music-now-playing.show{display:flex}
+.now-art{
+  width:52px;
+  height:52px;
+  border-radius:7px;
+  object-fit:cover;
+  box-shadow:0 4px 14px rgba(0,0,0,.38)
+}
+.now-meta{
+  width:145px;
+  min-width:0
+}
+.now-meta strong{
+  display:block;
+  font-size:11px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis
+}
+.now-meta small{
+  display:block;
+  margin-top:3px;
+  color:#96969c;
+  font-size:9px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis
+}
+.now-center{
+  flex:1;
+  min-width:120px
+}
+.music-controls{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:16px;
+  margin-bottom:8px
+}
+.music-control{
+  border:0;
+  background:transparent;
+  color:#fff;
+  cursor:pointer;
+  font-size:13px;
+  line-height:1;
+  padding:2px
+}
+.music-control.play{
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  background:#fff;
+  color:#111;
+  font-size:12px
+}
+.music-progress-wrap{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:#828288;
+  font-size:8px
+}
+.music-progress{
+  position:relative;
+  height:3px;
+  flex:1;
+  overflow:hidden;
+  border-radius:10px;
+  background:#3d3d41
+}
+.music-progress > span{
+  position:absolute;
+  inset:0 auto 0 0;
+  width:0%;
+  border-radius:10px;
+  background:#d5d5d8;
+  transition:width .4s linear
+}
+.now-volume{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  width:105px;
+  color:#9a9aa0;
+  font-size:9px
+}
+.volume-line{
+  flex:1;
+  height:3px;
+  border-radius:5px;
+  background:linear-gradient(90deg,#d1d1d5 62%,#48484c 62%)
+}
 
 /* facetime */
 .facetime{height:400px;background:linear-gradient(145deg,#eef0f4,#d8dce3);padding:20px;overflow:auto}
@@ -267,20 +435,31 @@ button{color:inherit}
 .reset{border:0;border-radius:8px;padding:8px 10px;background:#eee;cursor:pointer;margin-top:5px}
 
 /* text files */
-.textfile{padding:20px;height:390px;background:#111;color:#d7d7da;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;line-height:1.65;white-space:pre-wrap;overflow:auto}
-.textfile .warn{color:#ffcc66}
+.textfile{
+  padding:24px 28px;
+  height:390px;
+  white-space:pre-wrap;
+  overflow:auto;
+  background:#fff;
+  color:#202124;
+  font-size:13px;
+  line-height:1.65;
+}
+.textfile.document{
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+}
+.textfile.recovered{
+  background:#f4f4f2;
+  color:#27272a;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,monospace;
+  font-size:12px;
+  line-height:1.7;
+}
+.textfile .warn{color:#9b5c16}
 
 /* pdf */
 #pdf-window{width:min(820px,90vw);height:min(660px,calc(100vh - 90px))}
 .pdfbody{height:calc(100% - 43px)}.pdfbody iframe{width:100%;height:100%;border:0}
-
-/* music player image */
-#player{
-  position:absolute;left:50%;bottom:92px;transform:translateX(-50%);
-  width:min(900px,92vw);display:none;padding:7px;border-radius:11px;background:rgba(0,0,0,.9);
-  z-index:9400;box-shadow:0 15px 45px rgba(0,0,0,.45)
-}
-#player.show{display:block}#player img{display:block;width:100%;border-radius:6px}
 
 /* dock */
 #dock-wrap{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);z-index:9000}
@@ -450,18 +629,73 @@ button{color:inherit}
 </section>
 
 <!-- Music -->
-<section id="music-window" class="window" style="left:10vw;top:8vh;width:min(640px,86vw)">
+<section id="music-window" class="window" style="left:10vw;top:8vh;width:min(660px,88vw)">
   <div class="window-top">
-    <div class="traffic"><button class="dot red" onclick="closeWindow('music-window')"></button><button class="dot yellow"></button><button class="dot green"></button></div>
+    <div class="traffic">
+      <button class="dot red" onclick="closeWindow('music-window')"></button>
+      <button class="dot yellow"></button>
+      <button class="dot green"></button>
+    </div>
     <div class="window-title">Music</div>
   </div>
-  <div class="music-layout">
-    <aside class="music-side"><h2>Music</h2><div class="music-nav active">Listen Now</div><div class="music-nav">Browse</div><div class="music-nav">Recently Added</div></aside>
-    <div class="music-main">
-      <h3>Recently Played</h3>
-      <div class="albums">
-        <div class="album" onclick="playSong('one')"><img src="images/music/album-one-more-try.jpg"><strong>One More Try</strong><small>bistencs, cursedcry</small><div id="lp-one" class="last-played"></div></div>
-        <div class="album" onclick="playSong('two')"><img src="images/music/album-wantmetoo.jpg"><strong>wantmetoo (demo)</strong><small>reiko</small><div id="lp-two" class="last-played"></div></div>
+
+  <div class="music-shell">
+    <div class="music-layout">
+      <aside class="music-side">
+        <h2>Music</h2>
+        <div class="music-nav active">Listen Now</div>
+        <div class="music-nav">Browse</div>
+        <div class="music-nav">Recently Added</div>
+      </aside>
+
+      <div class="music-main">
+        <h3>Recently Played</h3>
+
+        <div class="albums">
+          <div id="album-one" class="album" onclick="playSong('one')">
+            <img src="images/music/album-one-more-try.jpg">
+            <span class="album-playing" id="playing-one">▶</span>
+            <strong>One More Try</strong>
+            <small>bistencs, cursedcry</small>
+            <div id="lp-one" class="last-played"></div>
+          </div>
+
+          <div id="album-two" class="album" onclick="playSong('two')">
+            <img src="images/music/album-wantmetoo.jpg">
+            <span class="album-playing" id="playing-two">▶</span>
+            <strong>wantmetoo (demo)</strong>
+            <small>reiko</small>
+            <div id="lp-two" class="last-played"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="music-now-playing" class="music-now-playing">
+      <img id="now-art" class="now-art" src="images/music/album-one-more-try.jpg">
+
+      <div class="now-meta">
+        <strong id="now-title">One More Try</strong>
+        <small id="now-artist">bistencs, cursedcry</small>
+      </div>
+
+      <div class="now-center">
+        <div class="music-controls">
+          <button class="music-control" onclick="skipSong(-1)" aria-label="Previous">◀︎</button>
+          <button id="music-play-button" class="music-control play" onclick="toggleMusicPlayback()" aria-label="Play or pause">❚❚</button>
+          <button class="music-control" onclick="skipSong(1)" aria-label="Next">▶︎</button>
+        </div>
+
+        <div class="music-progress-wrap">
+          <span id="music-elapsed">0:00</span>
+          <div class="music-progress"><span id="music-progress-fill"></span></div>
+          <span id="music-duration">2:29</span>
+        </div>
+      </div>
+
+      <div class="now-volume">
+        <span>◖)))</span>
+        <div class="volume-line"></div>
       </div>
     </div>
   </div>
@@ -526,7 +760,7 @@ button{color:inherit}
     <div class="traffic"><button class="dot red" onclick="closeWindow('text-window')"></button><button class="dot yellow"></button><button class="dot green"></button></div>
     <div id="text-title" class="window-title">file.txt</div>
   </div>
-  <div id="text-content" class="textfile"></div>
+  <div id="text-content" class="textfile document"></div>
 </section>
 
 <!-- PDF -->
@@ -555,7 +789,6 @@ button{color:inherit}
   <div class="actions"><button class="decline" onclick="declineCall()">Decline</button><button class="accept" onclick="acceptCall()">Accept</button></div>
 </div>
 
-<div id="player"><img id="player-img" src=""></div>
 <div id="screen-flash"></div>
 
 <!-- Dock -->
@@ -576,7 +809,7 @@ button{color:inherit}
 
 <script>
 let topZ=500;
-const KEY="enokieStoryV8";
+const KEY="enokieStoryV10";
 
 /* Testing shortcut:
    open desktop.html?reset=1 to clear story progress without exposing a reset button to visitors. */
@@ -661,7 +894,7 @@ function tidyWindows(currentId){
 
   /* Keep the desktop readable. Once a fourth app opens, the oldest background
      window quietly closes instead of leaving a pile of window slivers. */
-  if(active.length>3){
+  if(active.length>2){
     const victim=openWindows.find(id=>id!==currentId && document.getElementById(id)?.classList.contains("active"));
     if(victim) closeWindow(victim,true);
   }
@@ -713,6 +946,7 @@ function openApp(id,name,btn=null){
 function closeWindow(id,silent=false){
   const w=document.getElementById(id);
   w.classList.remove("active");
+  w.dataset.positioned="false";
 
   const i=openWindows.indexOf(id);
   if(i>=0) openWindows.splice(i,1);
@@ -723,7 +957,15 @@ function closeWindow(id,silent=false){
 function run(btn){btn.classList.add("running")}
 
 document.querySelectorAll(".window").forEach(win=>{
-  win.addEventListener("mousedown",()=>{win.style.zIndex=++topZ});
+  win.addEventListener("mousedown",()=>{
+    win.style.zIndex=++topZ;
+    const id=win.id;
+    const i=openWindows.indexOf(id);
+    if(i>=0){
+      openWindows.splice(i,1);
+      openWindows.push(id);
+    }
+  });
   const bar=win.querySelector(".window-top");let drag=false,ox=0,oy=0;
   bar.addEventListener("mousedown",e=>{
     if(e.target.classList.contains("dot"))return;
@@ -1305,10 +1547,10 @@ function chooseUnknownReply(key,label){
     renderReplyChoices("unknown");
 
     setTimeout(()=>pushUnknown("i don't know"),700);
-    setTimeout(()=>pushUnknown("there's a name everywhere"),1700);
-    setTimeout(()=>pushUnknown("enokie"),2600);
-    setTimeout(()=>pushUnknown("i think it's supposed to be me"),3600);
-    setTimeout(()=>pushUnknown("but i don't remember it"),4700);
+    setTimeout(()=>pushUnknown("there's one name on everything"),1700);
+    setTimeout(()=>pushUnknown("e"),2600);
+    setTimeout(()=>pushUnknown("i think that's me"),3600);
+    setTimeout(()=>pushUnknown("i don't remember why"),4700);
     finishUnknownReply(5400);
     return;
   }
@@ -1613,10 +1855,27 @@ function openText(kind){
   let title="";
   let body="";
 
+  const recoveredKinds=new Set([
+    "photo-info",
+    "session",
+    "unsent",
+    "messagesdb",
+    "windowstate",
+    "deleted",
+    "calls",
+    "device",
+    "system"
+  ]);
+
+  const textEl=document.getElementById("text-content");
+  textEl.className=recoveredKinds.has(kind)
+    ? "textfile recovered"
+    : "textfile document";
+
   /* ---------- ordinary life / school ---------- */
   if(kind==="healthnotes"){
     title="health-admin-notes.txt";
-    body=`enokie — HCA 125
+    body=`E — HCA 125
 week 3
 
 health administration:
@@ -1632,7 +1891,7 @@ finish discussion response before going out`;
     title="discussion-post-draft.txt";
     body=`HCA 125 · introduction draft
 
-hi! i'm enokie. i'm studying health administration because i like the behind-the-scenes side of healthcare and how policy/operations affect patients.
+hi! i'm e. i'm studying health administration because i like the behind-the-scenes side of healthcare and how policy/operations affect patients.
 
 outside of school i spend way too much time fixing random website stuff, taking pictures, and going out with my friends even when i say i'm staying home.
 
@@ -1673,7 +1932,7 @@ draft started: 9/1`;
     title="presentation-outline.txt";
     body=`group presentation
 
-enokie:
+e:
 - intro slide
 - patient access section
 - clean up citations
@@ -1815,7 +2074,7 @@ modification source: local user process`;
 -----------------------------
 
 account: e.cloud
-local user: enokie
+local user: e
 
 last foreground activity:
 Sep 4, 2026 · 2:14:03 AM
@@ -1914,12 +2173,12 @@ data incomplete`;
 partial recovery
 -----------------------------
 
-Sep 4 · 1:41 AM   kyle → enokie      missed
-Sep 4 · 1:44 AM   kyle → enokie      missed
+Sep 4 · 1:41 AM   kyle → e           missed
+Sep 4 · 1:44 AM   kyle → e           missed
 Sep 4 · 1:49 AM   kyle → jadabae     03:12
 Sep 4 · 1:53 AM   kyle → noemibae    01:47
-Sep 4 · 2:02 AM   kyle → enokie      missed
-Sep 4 · 2:09 AM   kyle → enokie      missed
+Sep 4 · 2:02 AM   kyle → e           missed
+Sep 4 · 2:09 AM   kyle → e           missed
 
 location data: unavailable
 end of recovered records`;
@@ -1951,14 +2210,14 @@ active now`;
 
   if(kind==="system"){
     title="system-log.txt";
-    body=`Sep 03 23:58:17  user=enokie login success
+    body=`Sep 03 23:58:17  user=e login success
 Sep 04 02:14:03  owner session suspended
 Sep 04 02:17:31  camera request / no response
 Sep 11 02:13:09  IMG_4409 metadata updated
 Sep 15 ${new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})}  guest interaction active
 
 process:
-cloud.restore.enokie       running
+cloud.restore.e            running
 messages.bridge            running
 windowserver               running
 
@@ -1981,6 +2240,8 @@ state: unresolved`;
 function openSafariDetail(kind){
   let title="Safari History";
   let body="";
+
+  document.getElementById("text-content").className="textfile recovered";
 
   if(kind==="activity"){
     title="Recovered Safari History";
@@ -2035,10 +2296,119 @@ session ended before details finished loading`;
   openApp("text-window","TextEdit");
 }
 
+const MUSIC_TRACKS={
+  one:{
+    title:"One More Try",
+    artist:"bistencs, cursedcry",
+    art:"images/music/album-one-more-try.jpg",
+    seconds:149
+  },
+  two:{
+    title:"wantmetoo (demo)",
+    artist:"reiko",
+    art:"images/music/album-wantmetoo.jpg",
+    seconds:171
+  }
+};
+
+let musicState={
+  track:null,
+  playing:false,
+  elapsed:0,
+  timer:null
+};
+
+function formatMusicTime(seconds){
+  const s=Math.max(0,Math.floor(seconds));
+  return `${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`;
+}
+
+function renderMusicPlayer(){
+  const panel=document.getElementById("music-now-playing");
+  if(!panel) return;
+
+  document.getElementById("album-one")?.classList.toggle("active",musicState.track==="one");
+  document.getElementById("album-two")?.classList.toggle("active",musicState.track==="two");
+
+  document.getElementById("playing-one").textContent=
+    musicState.track==="one" && musicState.playing ? "❚❚" : "▶";
+  document.getElementById("playing-two").textContent=
+    musicState.track==="two" && musicState.playing ? "❚❚" : "▶";
+
+  if(!musicState.track){
+    panel.classList.remove("show");
+    return;
+  }
+
+  const track=MUSIC_TRACKS[musicState.track];
+  panel.classList.add("show");
+
+  document.getElementById("now-art").src=track.art;
+  document.getElementById("now-title").textContent=track.title;
+  document.getElementById("now-artist").textContent=track.artist;
+  document.getElementById("music-play-button").textContent=musicState.playing?"❚❚":"▶";
+  document.getElementById("music-elapsed").textContent=formatMusicTime(musicState.elapsed);
+  document.getElementById("music-duration").textContent=formatMusicTime(track.seconds);
+
+  const pct=Math.min(100,(musicState.elapsed/track.seconds)*100);
+  document.getElementById("music-progress-fill").style.width=pct+"%";
+}
+
+function startMusicTimer(){
+  clearInterval(musicState.timer);
+
+  if(!musicState.playing || !musicState.track) return;
+
+  musicState.timer=setInterval(()=>{
+    const track=MUSIC_TRACKS[musicState.track];
+    musicState.elapsed+=1;
+
+    if(musicState.elapsed>=track.seconds){
+      skipSong(1);
+      return;
+    }
+
+    renderMusicPlayer();
+  },1000);
+}
+
 function playSong(which){
-  const p=document.getElementById("player"),img=document.getElementById("player-img");
-  img.src=which==="one"?"images/music/player-one-more-try.png":"images/music/player-wantmetoo.png";
-  p.classList.add("show");setTimeout(()=>p.classList.remove("show"),7000);
+  if(!MUSIC_TRACKS[which]) return;
+
+  if(musicState.track===which){
+    musicState.playing=!musicState.playing;
+  }else{
+    musicState.track=which;
+    musicState.elapsed=which==="one"?63:18;
+    musicState.playing=true;
+  }
+
+  renderMusicPlayer();
+  startMusicTimer();
+}
+
+function toggleMusicPlayback(){
+  if(!musicState.track){
+    playSong("one");
+    return;
+  }
+
+  musicState.playing=!musicState.playing;
+  renderMusicPlayer();
+  startMusicTimer();
+}
+
+function skipSong(direction){
+  const order=["one","two"];
+  let index=musicState.track ? order.indexOf(musicState.track) : 0;
+
+  index=(index+direction+order.length)%order.length;
+  musicState.track=order[index];
+  musicState.elapsed=0;
+  musicState.playing=true;
+
+  renderMusicPlayer();
+  startMusicTimer();
 }
 function triggerCall(){
   if(state.callSeen)return;
