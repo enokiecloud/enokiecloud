@@ -504,7 +504,7 @@ button{color:inherit}
 
 <script>
 let topZ=500;
-const KEY="enokieStoryV5";
+const KEY="enokieStoryV6";
 
 /* Testing shortcut:
    open desktop.html?reset=1 to clear story progress without exposing a reset button to visitors. */
@@ -643,10 +643,12 @@ document.querySelectorAll(".window").forEach(win=>{
       save();
 
       setTimeout(()=>pushUnknown("wait"),350);
-      setTimeout(()=>pushUnknown("you did that?"),1100);
-      setTimeout(()=>pushUnknown("you can move those?"),2200);
-      setTimeout(()=>pushUnknown("i can't"),3400);
-      setTimeout(()=>triggerCall(),5200);
+      setTimeout(()=>pushUnknown("you did that?"),1200);
+      setTimeout(()=>pushUnknown("you can move those?"),2400);
+
+      /* The FaceTime call is a consequence of the visitor proving they can
+         control the desktop, not another timer-driven exposition dump. */
+      setTimeout(()=>triggerCall(),4800);
     }
   });
   document.addEventListener("mouseup",()=>drag=false);
@@ -919,15 +921,15 @@ function renderChat(name){
 
   body.scrollTop=body.scrollHeight;
 
-  /* The first impossible contact is deliberately slow. It should feel like
-     somebody is testing whether the visitor can actually see them. */
+  /* Opening Unknown only confirms that someone is actively on the other side.
+     From here on, the visitor's actions drive the story. */
   if(name==="unknown" && state.phase>=4 && !state.unknownOpen){
     state.unknownOpen=true;
     state.phase=Math.max(state.phase,5);
     save();
 
-    setTimeout(()=>pushUnknown("is someone there"),1600);
-    setTimeout(()=>pushUnknown("can you read this"),3400);
+    setTimeout(()=>pushUnknown("is someone there"),1200);
+    setTimeout(()=>pushUnknown("can you read this"),3000);
   }
 }
 
@@ -1037,7 +1039,8 @@ function beginUnknownPings(){
 
   showIncomingText("Unknown",state.unknownMsgs.at(-1),"unknown");
 
-  /* If the visitor ignores it, the computer tries once more. */
+  /* If the visitor ignores it, the computer tries exactly once more,
+     then waits for interaction. */
   setTimeout(()=>{
     if(!state.unknownOpen && state.unknownPingCount===1){
       pushUnknown("wait");
@@ -1045,7 +1048,7 @@ function beginUnknownPings(){
       localStorage.setItem(KEY,JSON.stringify(state));
       showIncomingText("Unknown","wait","unknown");
     }
-  },6500);
+  },6000);
 }
 
 function scheduleNormalPing(){
@@ -1122,13 +1125,13 @@ function renderNotes(name="grocery list"){
 
   if(name==="untitled"){
     body=state.callSeen
-      ? `what date is it
+      ? `can you open this?
 
-the clock says september 15
+i saw the call window
 
-mine stopped at 2:17
+i couldn't hear anything
 
-please leave this open`
+don't close this yet`
       : `are you there
 
 i can see when something opens
@@ -1215,15 +1218,17 @@ don't tell everyone yet`;
     body=`messages-index.db
 partial recovery
 -----------------------------
+
 thread: 3asians
 Sep 4, 2026 · 12:52 AM
 
 kyle:
 don't tell jada we stopped there
 
-status:
-deleted from visible conversation
-recovery confidence: 71%`;
+[fragment unavailable]
+
+next record: 1:04 AM
+data incomplete`;
 
     state.deletedSeen=true;
     state.phase=Math.max(state.phase,3);
@@ -1231,8 +1236,10 @@ recovery confidence: 71%`;
 
   if(kind==="calls"){
     title="call-history.txt";
-    body=`recovered call attempts
+    body=`call_history.cache
+partial recovery
 -----------------------------
+
 Sep 4 · 1:41 AM   kyle → enokie      missed
 Sep 4 · 1:44 AM   kyle → enokie      missed
 Sep 4 · 1:49 AM   kyle → jadabae     03:12
@@ -1240,11 +1247,8 @@ Sep 4 · 1:53 AM   kyle → noemibae    01:47
 Sep 4 · 2:02 AM   kyle → enokie      missed
 Sep 4 · 2:09 AM   kyle → enokie      missed
 
-note:
-the deleted message predates these calls.
-
-location attachment:
-unavailable`;
+location data: unavailable
+end of recovered records`;
 
     state.callLogSeen=true;
     state.phase=Math.max(state.phase,3);
@@ -1291,17 +1295,24 @@ function triggerCall(){
 }
 function declineCall(){
   document.getElementById("incoming").classList.remove("show");
-  setTimeout(()=>pushUnknown("did that ring for you"),900);
-  setTimeout(()=>pushUnknown("okay"),2200);
-  state.phase=Math.max(state.phase,7);save();
+  state.phase=Math.max(state.phase,7);
+  save();
+
+  setTimeout(()=>{
+    pushUnknown("did that ring for you");
+    showIncomingText("Unknown","did that ring for you","unknown");
+  },1000);
 }
 function acceptCall(){
   document.getElementById("incoming").classList.remove("show");
   openApp("facetime-window","FaceTime");
-  setTimeout(()=>pushUnknown("did that ring for you"),900);
-  setTimeout(()=>pushUnknown("i can't hear anything"),2300);
-  setTimeout(()=>pushUnknown("what date is it"),4300);
-  state.phase=Math.max(state.phase,7);save();
+  state.phase=Math.max(state.phase,7);
+  save();
+
+  setTimeout(()=>{
+    pushUnknown("did that ring for you");
+    showIncomingText("Unknown","did that ring for you","unknown");
+  },1000);
 }
 function syncStory(){
   const recovered=state.phase>=2;
@@ -1380,8 +1391,8 @@ function startStoryWatchdog(){
     }
   },17500);
 
-  /* Absolute fallback. If someone spends ~24 seconds clicking around but
-     somehow avoids every clue, the Mac still proves that it is active. */
+  /* Absolute fallback: the Mac may surface hello?, but nothing after that
+     advances without the visitor interacting with it. */
   setTimeout(()=>{
     if(state.phase<4 && !state.unknownOpen){
       state.backstoryUnlocked=true;
@@ -1390,7 +1401,7 @@ function startStoryWatchdog(){
       syncStory();
       beginUnknownPings();
     }
-  },24000);
+  },21000);
 }
 
 window.addEventListener("load",()=>{
