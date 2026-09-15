@@ -556,6 +556,58 @@ button{color:inherit}
 .message-notification{top:42px;right:18px;width:340px;border-radius:16px;background:rgba(245,246,248,.88);box-shadow:0 18px 50px rgba(0,0,0,.26)}
 #ending-shade{position:absolute;inset:0;pointer-events:none;background:rgba(0,0,0,0);z-index:21000;transition:background 1.2s ease}#desktop.stuck-mode #ending-shade{background:rgba(0,0,0,.38)}#desktop.stuck-mode #menubar,#desktop.stuck-mode #desktop-icons,#desktop.stuck-mode #dock-wrap,#desktop.stuck-mode #apple-menu,#desktop.stuck-mode #message-notification{opacity:0!important;pointer-events:none!important;transition:opacity .9s ease}#desktop.stuck-mode .window:not(#messages-window){display:none!important}#desktop.stuck-mode #messages-window{display:block!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;width:min(650px,88vw)!important;height:560px!important;min-height:0!important;max-height:78vh!important;z-index:24000!important;border-radius:19px!important;box-shadow:0 38px 120px rgba(0,0,0,.68)!important;transition:all .9s cubic-bezier(.2,.8,.2,1)}#desktop.stuck-mode #messages-window .message-list{display:none!important}#desktop.stuck-mode #messages-window .messages-layout{height:514px!important}#desktop.stuck-mode #messages-window .chat{width:100%!important}#desktop.stuck-mode #messages-window .traffic{visibility:hidden!important}#desktop.stuck-mode #messages-window .window-top{cursor:default!important}#desktop.stuck-mode #messages-window .reply-panel{display:none!important}#desktop.stuck-mode #messages-window .chat-head{height:58px!important;background:rgba(255,255,255,.78)}#desktop.stuck-mode #messages-window .chat-body{padding:25px 32px}
 
+
+/* ============================================================
+   V17 ~ slower emotional middle + stronger stuck ending
+   ============================================================ */
+#desktop.stuck-mode #ending-shade{
+  background:rgba(0,0,0,.62)!important
+}
+#desktop.stuck-mode{
+  background:
+    linear-gradient(rgba(0,0,0,.18),rgba(0,0,0,.18)),
+    url("images/photos/wallpaper.jpg") center/cover no-repeat!important
+}
+#desktop.stuck-mode #messages-window{
+  width:min(540px,86vw)!important;
+  height:500px!important;
+  max-height:74vh!important;
+  background:rgba(247,247,250,.97)!important
+}
+#desktop.stuck-mode #messages-window .messages-layout{
+  height:454px!important
+}
+#desktop.stuck-mode #messages-window .chat-body{
+  padding:24px 30px 30px!important;
+  background:linear-gradient(#fbfbfc,#f6f6f8)!important
+}
+#desktop.stuck-mode #messages-window .bubble{
+  max-width:76%!important;
+  font-size:13px!important;
+  padding:9px 13px!important
+}
+#desktop.stuck-mode #messages-window .chat-head strong{
+  font-size:13px!important;
+  text-transform:lowercase
+}
+#desktop.stuck-mode #messages-window .chat-avatar{
+  background:linear-gradient(145deg,#bfc3ca,#8f949d)!important
+}
+.end-connected{
+  width:max-content;
+  margin:18px auto 13px;
+  padding:4px 9px;
+  border-radius:10px;
+  background:#e8e9ed;
+  color:#8a8d94;
+  font-size:8.5px;
+  letter-spacing:.03em;
+  text-transform:lowercase
+}
+#desktop.stuck-mode .typing-bubble{
+  background:#e4e5e9!important
+}
+
 </style>
 </head>
 <body>
@@ -879,14 +931,14 @@ button{color:inherit}
 
 <script>
 let topZ=500;
-const KEY="enokieStoryV16";
+const KEY="enokieStoryV18";
 
 /* Testing shortcut:
    open desktop.html?reset=1 to clear story progress without exposing a reset button to visitors. */
 const resetParams=new URLSearchParams(location.search);
 if(resetParams.get("reset")==="1"){
   localStorage.removeItem(KEY);
-  sessionStorage.removeItem("ecloud-v16-session");
+  sessionStorage.removeItem("ecloud-v18-session");
   history.replaceState({},document.title,location.pathname);
 }
 
@@ -904,23 +956,40 @@ const DEFAULT_STATE={
   sawSafariFind:false,
   recentItemsAvailable:false,
   recentItemsSeen:false,
+
   unknownOpen:false,
   unknownMsgs:[],
   windowMoved:false,
   callSeen:false,
   ringQuestionSent:false,
+
   answeredRing:false,
   askedIdentity:false,
   askedHappened:false,
   askedWhere:false,
+
   attachmentPhase:false,
   attachmentArmed:false,
   attachmentLeaveCount:0,
   attachmentPrompted:false,
+
+  bondApps:[],
+  askedSee:false,
+  askedFriends:false,
+  askedOut:false,
+  returnPromiseAnswered:false,
+  returnPromise:null,
+  quietBeatStarted:false,
+  quietBeatDone:false,
+
+  friendPingStage:0,
+  friendChatsOpened:[],
+
   replyBusy:false,
   shutdownEnabled:false,
   shutdownAttempted:false,
   finalChoiceMade:false,
+  endSceneDone:false,
   ending:null,
   returnCount:0
 };
@@ -1119,11 +1188,19 @@ function showPhoto(n){
 
 const normalChats={
   "jadabae":[
+    ["system","Aug 30, 2026 · 11:12 PM"],
+    ["jadabae","i still cant believe u made us walk 3 blocks bc u swore the car was 'right here'"],
+    ["me","IT LOOKED DIFFERENT AT NIGHT"],
+    ["jadabae","we passed it twice"],
+    ["me","we were bonding"],
+    ["jadabae","we were lost"],
     ["system","Sep 2, 2026 · 4:18 PM"],
     ["jadabae","did u submit ur discussion post"],
     ["me","no pls dont remind me"],
     ["jadabae","girl its due tonight"],
     ["me","i knowww im doing it after dinner"],
+    ["jadabae","you said that yesterday"],
+    ["me","different yesterday"],
     ["system","Sep 3, 2026 · 7:42 PM"],
     ["jadabae","where are u"],
     ["me","girl im coming 😭"],
@@ -1136,11 +1213,19 @@ const normalChats={
   ],
 
   "noemibae":[
+    ["system","Aug 31, 2026 · 1:03 AM"],
+    ["noemibae","remember when u said 'one drink' and started giving everybody life advice"],
+    ["me","i was helping"],
+    ["noemibae","u told a stranger to break up w her bf"],
+    ["me","did she"],
+    ["noemibae","YES 😭"],
+    ["me","see"],
     ["system","Sep 1, 2026 · 9:14 PM"],
     ["noemibae","also do u still have my black top"],
     ["me","probably 😭"],
     ["noemibae","THIEF"],
     ["me","finders keepers"],
+    ["noemibae","that is literally not how borrowing works"],
     ["system","Sep 3, 2026 · 2:06 PM"],
     ["noemibae","look at what i just sent u"],
     ["me","LMFAOOO STOP"],
@@ -1151,11 +1236,22 @@ const normalChats={
   ],
 
   "kyle":[
+    ["system","Aug 29, 2026 · 10:41 PM"],
+    ["kyle","u left ur wallet in my car again"],
+    ["me","KEEP IT SAFE"],
+    ["kyle","how do u function"],
+    ["me","community support"],
+    ["kyle","thats not a real answer"],
+    ["me","and yet it works"],
     ["system","Sep 2, 2026 · 8:31 PM"],
     ["kyle","did u ever fix that website thing"],
     ["me","kind of"],
     ["kyle","so no"],
     ["me","shut up 😭"],
+    ["kyle","send it when its done"],
+    ["me","why"],
+    ["kyle","so i can judge it professionally"],
+    ["me","ur banned"],
     ["system","Sep 3, 2026 · 6:48 PM"],
     ["kyle","yall still going out"],
     ["me","yes unfortunately"],
@@ -1168,6 +1264,12 @@ const normalChats={
   ],
 
   "lil sis ava":[
+    ["system","Aug 31, 2026 · 5:26 PM"],
+    ["lil sis ava","do u remember when u tried cutting my bangs"],
+    ["me","we agreed to never discuss that"],
+    ["lil sis ava","MOM STILL HAS THE PICTURE"],
+    ["me","delete it from the family archives"],
+    ["lil sis ava","never"],
     ["system","Sep 2, 2026 · 6:02 PM"],
     ["lil sis ava","are u home later"],
     ["me","yeah why"],
@@ -1181,6 +1283,14 @@ const normalChats={
   ],
 
   "kiddo jas":[
+    ["system","Sep 1, 2026 · 3:19 PM"],
+    ["kiddo jas","i used ur advice btw"],
+    ["me","which advice that sounds dangerous"],
+    ["kiddo jas","the email thing"],
+    ["me","OH did it work"],
+    ["kiddo jas","she gave me the extension"],
+    ["me","SEE I AM WISE"],
+    ["kiddo jas","relax"],
     ["system","Sep 3, 2026 · 12:24 PM"],
     ["kiddo jas","can i ask u something"],
     ["me","ofc whats up"],
@@ -1194,11 +1304,22 @@ const normalChats={
   ],
 
   "mami":[
+    ["system","Aug 30, 2026 · 8:08 PM"],
+    ["mami","anak did you take the leftovers"],
+    ["me","yes ma"],
+    ["mami","all of it?"],
+    ["me","why do u sound suspicious 😭"],
+    ["mami","because last time you said yes and left it here"],
+    ["me","THIS TIME YES"],
+    ["mami","okay good"],
     ["system","Sep 3, 2026 · 5:37 PM"],
     ["mami","anak did you eat"],
     ["me","yes ma"],
     ["mami","what did you eat"],
     ["me","rice and chicken"],
+    ["mami","that is not enough vegetables"],
+    ["me","there was green onion"],
+    ["mami","that does not count"],
     ["system","Sep 3, 2026 · 10:52 PM"],
     ["mami","okay text me when you get home"],
     ["me","i will"],
@@ -1221,7 +1342,11 @@ function groupChatData(){
     ["noemibae","who is picking the place"],
     ["me","not me bc yall complain every time"],
     ["kyle","valid"],
-    ["jadabae","rude"]
+    ["jadabae","rude"],
+    ["noemibae","last time e picked a place that was closed"],
+    ["me","GOOGLE SAID OPEN"],
+    ["kyle","the lights being off said closed"],
+    ["jadabae","we still stood outside for like 5 mins 😭"]
   ];
 
   if(state.backstoryUnlocked){
@@ -1243,11 +1368,6 @@ function groupChatData(){
 function personChatData(name){
   const chat=[...(normalChats[name]||[])];
 
-  if(name==="mami" && state.normalPingSeen){
-    chat.push(["system","Sep 15, 2026 · now"]);
-    chat.push(["mami","anak please call me when you see this"]);
-  }
-
   if(!state.backstoryUnlocked) return chat;
 
   if(name==="jadabae"){
@@ -1255,6 +1375,13 @@ function personChatData(name){
     chat.push(["jadabae","where are u"]);
     chat.push(["jadabae","pls answer"]);
     chat.push(["jadabae","noemi said ur phone rang once then stopped"]);
+
+    if(state.friendPingStage>=1){
+      chat.push(["system","Sep 7, 2026 · 11:38 PM"]);
+      chat.push(["jadabae","i keep opening this chat like ur randomly gonna answer"]);
+      chat.push(["jadabae","i know thats stupid"]);
+      chat.push(["jadabae","but if u see this somehow just say literally anything"]);
+    }
   }
 
   if(name==="noemibae"){
@@ -1263,6 +1390,13 @@ function personChatData(name){
     chat.push(["noemibae","hello??"]);
     chat.push(["noemibae","u literally didnt say anything"]);
     chat.push(["noemibae","ur freaking me out"]);
+
+    if(state.friendPingStage>=2){
+      chat.push(["system","Sep 10, 2026 · 8:21 PM"]);
+      chat.push(["noemibae","ur black top is still here btw"]);
+      chat.push(["noemibae","im not giving it away"]);
+      chat.push(["noemibae","so u better come get it eventually"]);
+    }
   }
 
   if(name==="kyle"){
@@ -1271,6 +1405,27 @@ function personChatData(name){
     chat.push(["kyle","answer me"]);
     chat.push(["kyle","everyone keeps asking me where u are"]);
     chat.push(["kyle","i told them i dropped u off"]);
+
+    if(state.friendPingStage>=3){
+      chat.push(["system","Sep 11, 2026 · 1:12 AM"]);
+      chat.push(["kyle","i keep going over that night"]);
+      chat.push(["kyle","i shouldve waited until u got inside"]);
+      chat.push(["kyle","im sorry"]);
+    }
+  }
+
+  if(name==="lil sis ava" && state.friendPingStage>=2){
+    chat.push(["system","Sep 9, 2026 · 4:05 PM"]);
+    chat.push(["lil sis ava","i found the picture of my bangs"]);
+    chat.push(["lil sis ava","u still owe me for emotional damages btw"]);
+    chat.push(["lil sis ava","come home so i can make fun of u properly"]);
+  }
+
+  if(name==="kiddo jas" && state.friendPingStage>=3){
+    chat.push(["system","Sep 12, 2026 · 3:44 PM"]);
+    chat.push(["kiddo jas","remember how i said id tell u tomorrow"]);
+    chat.push(["kiddo jas","i still havent told u"]);
+    chat.push(["kiddo jas","so technically u still have to come back"]);
   }
 
   if(name==="mami"){
@@ -1278,6 +1433,18 @@ function personChatData(name){
     chat.push(["mami","anak are you home"]);
     chat.push(["mami","call me please"]);
     chat.push(["mami","i am awake"]);
+
+    if(state.friendPingStage>=1){
+      chat.push(["system","Sep 6, 2026 · 9:14 PM"]);
+      chat.push(["mami","anak i left the light on"]);
+      chat.push(["mami","your food is in the fridge"]);
+    }
+
+    if(state.friendPingStage>=3){
+      chat.push(["system","Sep 13, 2026 · 10:02 PM"]);
+      chat.push(["mami","goodnight anak"]);
+      chat.push(["mami","i love you"]);
+    }
   }
 
   return chat;
@@ -1309,20 +1476,82 @@ function contactNames(){
 function nextRecoveredContact(){if(!state.backstoryUnlocked)return null;if(!state.readGroupLate)return "3asians";if(!state.readKyleLate)return "kyle";if(!state.readNoemiLate)return "noemibae";return null;}
 function avatarLabel(name){if(name==="3asians")return "3A";if(name==="unknown")return "?";if(name==="lil sis ava")return "A";if(name==="kiddo jas")return "J";return name.slice(0,1).toUpperCase();}
 function renderContacts(active="3asians"){
-  const box=document.getElementById("contacts");box.innerHTML="";const lead=nextRecoveredContact();
-  contactNames().forEach(name=>{const d=document.createElement("div");d.className="contact"+(name===active?" active":"")+(name===lead?" story-lead":"");let preview="";if(name==="unknown")preview=lastUnknownText();else if(name==="3asians")preview=name===lead?"recovered conversation":"group chat";else if(name==="kyle")preview=name===lead?"recovered conversation":"then drive better";else if(name==="noemibae")preview=name===lead?"recovered conversation":"blocked";else if(name==="mami")preview="mom";else if(name==="jadabae")preview="WAIT FOR ME";else if(name==="lil sis ava")preview="have faith in me pls";else if(name==="kiddo jas")preview="NOW U HAVE ME CURIOUS";
-    d.innerHTML=`<div class="contact-avatar">${avatarLabel(name)}</div><div class="contact-copy"><strong>${name}</strong><small>${preview}</small></div>${name===lead?'<span class="lead-pill">RECOVERED</span>':""}`;
-    d.onclick=()=>{touchStory();if(name==="unknown"&&state.attachmentPhase){state.attachmentArmed=true;save()}renderContacts(name);renderChat(name)};box.appendChild(d);
+  const box=document.getElementById("contacts");
+  box.innerHTML="";
+  const lead=nextRecoveredContact();
+
+  contactNames().forEach(name=>{
+    const d=document.createElement("div");
+    d.className="contact"+(name===active?" active":"")+(name===lead?" story-lead":"");
+
+    let preview="";
+
+    if(name==="unknown"){
+      preview=lastUnknownText();
+    }else if(name==="3asians"){
+      preview=name===lead?"recovered conversation":"group chat";
+    }else if(name==="kyle"){
+      preview=name===lead
+        ?"recovered conversation"
+        :state.friendPingStage>=3?"im sorry":"then drive better";
+    }else if(name==="noemibae"){
+      preview=name===lead
+        ?"recovered conversation"
+        :state.friendPingStage>=2?"u better come get it eventually":"blocked";
+    }else if(name==="mami"){
+      preview=state.friendPingStage>=3
+        ?"i love you"
+        :state.friendPingStage>=1?"your food is in the fridge":"mom";
+    }else if(name==="jadabae"){
+      preview=state.friendPingStage>=1
+        ?"just say literally anything"
+        :"WAIT FOR ME";
+    }else if(name==="lil sis ava"){
+      preview=state.friendPingStage>=2
+        ?"come home so i can make fun of u"
+        :"have faith in me pls";
+    }else if(name==="kiddo jas"){
+      preview=state.friendPingStage>=3
+        ?"u still have to come back"
+        :"NOW U HAVE ME CURIOUS";
+    }
+
+    d.innerHTML=`
+      <div class="contact-avatar">${avatarLabel(name)}</div>
+      <div class="contact-copy">
+        <strong>${name}</strong>
+        <small>${preview}</small>
+      </div>
+      ${name===lead?'<span class="lead-pill">RECOVERED</span>':""}
+    `;
+
+    d.onclick=()=>{
+      touchStory();
+
+      if(name==="unknown" && state.attachmentPhase){
+        state.attachmentArmed=true;
+        save();
+      }
+
+      renderContacts(name);
+      renderChat(name);
+    };
+
+    box.appendChild(d);
   });
 }
 
 function renderChat(name){
-  document.getElementById("chat-title").textContent=name;
-  document.getElementById("chat-avatar").textContent=avatarLabel(name);
+  const isFinalE=
+    name==="unknown" &&
+    (state.ending==="stuck-stay" || state.ending==="stuck-leave");
+
+  document.getElementById("chat-title").textContent=isFinalE?"e":name;
+  document.getElementById("chat-avatar").textContent=isFinalE?"e":avatarLabel(name);
 
   const dateEl=document.getElementById("chat-date");
   if(name==="unknown"){
-    dateEl.textContent="now";
+    dateEl.textContent=isFinalE?"connected":"now";
   }else if(state.backstoryUnlocked && ["3asians","jadabae","noemibae","kyle","mami"].includes(name)){
     dateEl.textContent="Sep 3–4, 2026";
   }else{
@@ -1367,6 +1596,17 @@ function renderChat(name){
     );
   });
 
+  if(name==="unknown" && state.endSceneDone &&
+     (state.ending==="stuck-stay" || state.ending==="stuck-leave")){
+    body.insertAdjacentHTML(
+      "beforeend",
+      `<div class="end-connected">connection remains active</div>
+       <div id="unknown-typing" class="typing-wrap">
+         <div class="typing-bubble"><i></i><i></i><i></i></div>
+       </div>`
+    );
+  }
+
   /* Important pacing fix:
      ordinary/recovered conversations open at the TOP so the player has to
      read through E's normal life before reaching the Sep 4 messages.
@@ -1375,6 +1615,44 @@ function renderChat(name){
     body.scrollTop=body.scrollHeight;
   }else{
     body.scrollTop=0;
+  }
+
+  if(name==="unknown" && state.attachmentPhase && !state.finalChoiceMade){
+    state.attachmentArmed=true;
+    save();
+  }
+
+  if(state.attachmentPhase && name!=="unknown"){
+    state.friendChatsOpened=state.friendChatsOpened||[];
+
+    const canReact=
+      (name==="jadabae" && state.friendPingStage>=1) ||
+      (name==="noemibae" && state.friendPingStage>=2) ||
+      (name==="mami" && state.friendPingStage>=1) ||
+      (name==="lil sis ava" && state.friendPingStage>=2) ||
+      (name==="kiddo jas" && state.friendPingStage>=3) ||
+      (name==="kyle" && state.friendPingStage>=3);
+
+    if(canReact && !state.friendChatsOpened.includes(name)){
+      state.friendChatsOpened.push(name);
+      save();
+
+      const memory={
+        "jadabae":"jada always double texts when she's worried",
+        "noemibae":"that's noemi. she never lets anything go",
+        "mami":"mami always leaves the light on",
+        "lil sis ava":"ava still has that terrible bangs picture",
+        "kiddo jas":"jas was supposed to tell me something",
+        "kyle":"he really did wait sometimes"
+      }[name];
+
+      if(memory){
+        setTimeout(()=>{
+          pushUnknown(memory);
+          showIncomingText("Unknown",memory,"unknown");
+        },1700);
+      }
+    }
   }
 
   renderReplyChoices(name);
@@ -1435,7 +1713,61 @@ function thirdClueCount(){
   return [state.locationSeen,state.wifiSeen].filter(Boolean).length;
 }
 
-function renderReplyChoices(name){const panel=document.getElementById("reply-panel");if(!panel)return;panel.innerHTML="";panel.classList.remove("show");if(name!=="unknown"||state.replyBusy)return;const choices=[];if(state.ringQuestionSent&&!state.answeredRing)choices.push(["yes","yes"]);else if(state.answeredRing&&!state.askedIdentity)choices.push(["who are you?","identity"]);else if(state.askedIdentity&&!state.askedHappened)choices.push(["what happened to you?","happened"]);else if(state.askedHappened&&!state.askedWhere)choices.push(["where are you?","where"]);else if(state.attachmentPrompted&&!state.finalChoiceMade){choices.push(["i can stay","stay"]);choices.push(["i have to go","leave"])}if(!choices.length)return;choices.forEach(([label,key])=>{const b=document.createElement("button");b.className="reply-choice";b.textContent=label;b.onclick=()=>chooseUnknownReply(key,label);panel.appendChild(b)});panel.classList.add("show")}
+function renderReplyChoices(name){
+  const panel=document.getElementById("reply-panel");
+  if(!panel) return;
+
+  panel.innerHTML="";
+  panel.classList.remove("show");
+
+  if(name!=="unknown" || state.replyBusy || state.endSceneDone) return;
+
+  const choices=[];
+
+  if(state.ringQuestionSent && !state.answeredRing){
+    choices.push(["yes","yes"]);
+  }
+  else if(state.answeredRing && !state.askedIdentity){
+    choices.push(["who are you?","identity"]);
+  }
+  else if(state.askedIdentity && !state.askedHappened){
+    choices.push(["what happened to you?","happened"]);
+  }
+  else if(state.askedHappened && !state.askedWhere){
+    choices.push(["where are you?","where"]);
+  }
+
+  /* The visitor now has to spend time with E before the ending. */
+  else if(state.askedWhere && state.bondApps.length>=1 && !state.askedSee){
+    choices.push(["what can you see?","see"]);
+  }
+  else if(state.askedSee && state.bondApps.length>=2 && !state.askedFriends){
+    choices.push(["do you remember them?","friends"]);
+  }
+  else if(state.askedFriends && state.bondApps.length>=3 && !state.askedOut){
+    choices.push(["can you get out?","out"]);
+  }
+  else if(state.askedOut && !state.returnPromiseAnswered){
+    choices.push(["i can come back","come-back"]);
+    choices.push(["i don't know","dont-know"]);
+  }
+  else if(state.attachmentPrompted && !state.finalChoiceMade){
+    choices.push(["i can stay","stay"]);
+    choices.push(["i have to go","leave"]);
+  }
+
+  if(!choices.length) return;
+
+  choices.forEach(([label,key])=>{
+    const b=document.createElement("button");
+    b.className="reply-choice";
+    b.textContent=label;
+    b.onclick=()=>chooseUnknownReply(key,label);
+    panel.appendChild(b);
+  });
+
+  panel.classList.add("show");
+}
 
 function unlockSecondInvestigation(){}
 function unlockThirdInvestigation(){}
@@ -1453,20 +1785,372 @@ function finishUnknownReply(delay=2600){
   },delay);
 }
 
+function beginQuietBeat(){
+  if(state.quietBeatStarted) return;
+
+  state.quietBeatStarted=true;
+  state.replyBusy=true;
+  save();
+  renderReplyChoices("unknown");
+
+  typeUnknownSequence(
+    ["can we just stay here for a second?"],
+    550,1500,750,
+    ()=>{
+      /* Deliberate silence so this feels like a scene, not a text dump. */
+      setTimeout(()=>{
+        typeUnknownSequence(
+          ["i forgot what it feels like to wait with someone","you're still here"],
+          0,1550,1100,
+          ()=>{
+            setTimeout(()=>{
+              typeUnknownSequence(
+                ["can you stay a little longer?"],
+                0,1500,750,
+                ()=>{
+                  state.quietBeatDone=true;
+                  state.attachmentPrompted=true;
+                  state.replyBusy=false;
+                  save();
+                  renderReplyChoices("unknown");
+                }
+              );
+            },2800);
+          }
+        );
+      },5400);
+    }
+  );
+}
+
 function chooseUnknownReply(key,label){
-  touchStory();if(state.replyBusy)return;pushVisitor(label);state.replyBusy=true;
-  if(key==="yes"){state.answeredRing=true;save();renderReplyChoices("unknown");typeUnknownSequence(["okay","so you can hear it","i can't"],600,1250,720,()=>{state.replyBusy=false;save();renderReplyChoices("unknown")});return}
-  if(key==="identity"){state.askedIdentity=true;save();renderReplyChoices("unknown");typeUnknownSequence(["i don't know","there's one name on everything","e","i think that's me","but it doesn't feel like mine"],650,1250,720,()=>{state.replyBusy=false;save();renderReplyChoices("unknown")});return}
-  if(key==="happened"){state.askedHappened=true;save();renderReplyChoices("unknown");typeUnknownSequence(["i remember getting home","i remember sitting here","music was playing","then it's just pieces"],650,1250,760,()=>{state.replyBusy=false;save();renderReplyChoices("unknown")});return}
-  if(key==="where"){state.askedWhere=true;state.attachmentPhase=true;state.attachmentArmed=true;save();renderReplyChoices("unknown");typeUnknownSequence(["i don't know","when you close things it gets quiet","when the screen goes dark i can't see anything","can you open something else?"],650,1300,760,()=>{state.replyBusy=false;save()});return}
-  if(key==="stay"){state.finalChoiceMade=true;state.ending="stay";save();renderReplyChoices("unknown");typeUnknownSequence(["okay","thank you","don't close it yet"],650,1300,800,()=>setTimeout(()=>enterStuckEnding("stay"),900));return}
-  if(key==="leave"){state.finalChoiceMade=true;state.shutdownEnabled=true;state.ending="leaving";save();renderReplyChoices("unknown");typeUnknownSequence(["wait","just a little longer","please?"],650,1300,850,()=>{setTimeout(()=>showNotification("System","Shut Down","Use the Apple menu when you're ready.","apple","images/icons/apple.png"),700)})}
+  touchStory();
+  if(state.replyBusy) return;
+
+  pushVisitor(label);
+  state.replyBusy=true;
+  save();
+  renderReplyChoices("unknown");
+
+  if(key==="yes"){
+    state.answeredRing=true;
+    save();
+
+    typeUnknownSequence(
+      ["okay","so you can hear it","i can't"],
+      700,1450,900,
+      ()=>{
+        state.replyBusy=false;
+        save();
+        renderReplyChoices("unknown");
+      }
+    );
+    return;
+  }
+
+  if(key==="identity"){
+    state.askedIdentity=true;
+    save();
+
+    typeUnknownSequence(
+      ["i don't know","there's one name on everything","e","i think that's me","but it doesn't feel like mine"],
+      750,1450,900,
+      ()=>{
+        state.replyBusy=false;
+        save();
+        renderReplyChoices("unknown");
+      }
+    );
+    return;
+  }
+
+  if(key==="happened"){
+    state.askedHappened=true;
+    save();
+
+    typeUnknownSequence(
+      ["i remember getting home","i remember sitting here","music was playing","then it's just pieces"],
+      750,1450,950,
+      ()=>{
+        state.replyBusy=false;
+        save();
+        renderReplyChoices("unknown");
+      }
+    );
+    return;
+  }
+
+  if(key==="where"){
+    state.askedWhere=true;
+    state.attachmentPhase=true;
+    state.attachmentArmed=true;
+    save();
+
+    typeUnknownSequence(
+      ["i don't know","when you close things it gets quiet","when the screen goes dark i can't see anything","can you open something else?"],
+      750,1500,950,
+      ()=>{
+        state.replyBusy=false;
+        save();
+      }
+    );
+    return;
+  }
+
+  if(key==="see"){
+    state.askedSee=true;
+    save();
+
+    typeUnknownSequence(
+      [
+        "only what you open",
+        "when you move something i can feel it change",
+        "before you came i couldn't make anything move",
+        "i didn't know anyone else could get in"
+      ],
+      700,1500,950,
+      ()=>{
+        state.replyBusy=false;
+        state.attachmentArmed=true;
+        save();
+        renderReplyChoices("unknown");
+      }
+    );
+    return;
+  }
+
+  if(key==="friends"){
+    state.askedFriends=true;
+    save();
+
+    typeUnknownSequence(
+      [
+        "some of them",
+        "jada laughs really loud",
+        "noemi steals my clothes and then says i stole hers",
+        "ava still has a picture of the worst haircut i ever gave her",
+        "jas always says she has something to tell me and then forgets",
+        "kyle drives too fast",
+        "mami leaves the light on when i'm late",
+        "i remember little things better than important ones"
+      ],
+      700,1450,900,
+      ()=>{
+        state.replyBusy=false;
+        state.attachmentArmed=true;
+        save();
+        renderReplyChoices("unknown");
+      }
+    );
+    return;
+  }
+
+  if(key==="out"){
+    state.askedOut=true;
+    save();
+
+    typeUnknownSequence(
+      [
+        "i tried",
+        "sometimes i can make little things open",
+        "but i can't click outside this",
+        "you can",
+        "if you leave... can you come back?"
+      ],
+      700,1500,950,
+      ()=>{
+        state.replyBusy=false;
+        save();
+        renderReplyChoices("unknown");
+      }
+    );
+    return;
+  }
+
+  if(key==="come-back"){
+    state.returnPromiseAnswered=true;
+    state.returnPromise="yes";
+    save();
+
+    typeUnknownSequence(
+      ["okay","i'm going to remember you said that"],
+      700,1450,950,
+      ()=>{
+        state.replyBusy=false;
+        save();
+        beginQuietBeat();
+      }
+    );
+    return;
+  }
+
+  if(key==="dont-know"){
+    state.returnPromiseAnswered=true;
+    state.returnPromise="unknown";
+    save();
+
+    typeUnknownSequence(
+      ["oh","okay","i don't want to be by myself again"],
+      700,1450,950,
+      ()=>{
+        state.replyBusy=false;
+        save();
+        beginQuietBeat();
+      }
+    );
+    return;
+  }
+
+  if(key==="stay"){
+    state.finalChoiceMade=true;
+    state.ending="stay";
+    save();
+
+    typeUnknownSequence(
+      ["okay","thank you","don't close it yet"],
+      750,1500,950,
+      ()=>setTimeout(()=>enterStuckEnding("stay"),1400)
+    );
+    return;
+  }
+
+  if(key==="leave"){
+    state.finalChoiceMade=true;
+    state.shutdownEnabled=true;
+    state.ending="leaving";
+    save();
+
+    typeUnknownSequence(
+      ["wait","just a little longer","please?"],
+      750,1500,1050,
+      ()=>{
+        setTimeout(()=>{
+          showNotification(
+            "System",
+            "Shut Down",
+            "Use the Apple menu when you're ready.",
+            "apple",
+            "images/icons/apple.png"
+          );
+        },950);
+      }
+    );
+  }
 }
 
 function scheduleAttachmentReaction(appName){
-  if(!state.attachmentPhase||state.finalChoiceMade)return;const step=state.attachmentLeaveCount||0;state.attachmentLeaveCount=step+1;save();let lines=["where did you go?"];
-  if(step===0){if(appName==="Music")lines=["you like that one?","i used to leave music on when i couldn't sleep"];else if(appName==="Photos")lines=["i forgot about that one","i miss them"];else if(appName==="Notes")lines=["you found those","i wrote things down when i couldn't sleep"];else if(appName==="Safari")lines=["you went back to the history","i don't remember searching all of that"];setTimeout(()=>{typeUnknownSequence(lines,0,1250,720);showIncomingText("Unknown",lines[0],"unknown")},900);return}
-  if(step===1){setTimeout(()=>{typeUnknownSequence(["i thought you left","i don't like when it gets quiet again","can you stay a little longer?"],0,1300,800,()=>{state.attachmentPrompted=true;save();if(document.getElementById("messages-window").classList.contains("active")&&document.getElementById("chat-title").textContent==="unknown")renderReplyChoices("unknown")});showIncomingText("Unknown","i thought you left","unknown")},700)}
+  if(!state.attachmentPhase || state.finalChoiceMade) return;
+
+  const key=String(appName||"").toLowerCase();
+  const allowed=["music","photos","notes","safari","finder","facetime"];
+
+  if(allowed.includes(key) && !state.bondApps.includes(key)){
+    state.bondApps.push(key);
+  }
+
+  state.attachmentLeaveCount=(state.attachmentLeaveCount||0)+1;
+
+  const uniqueCount=state.bondApps.length;
+
+  if(uniqueCount>=1 && state.friendPingStage<1){
+    state.friendPingStage=1;
+    save();
+
+    setTimeout(()=>{
+      showIncomingText(
+        "jadabae",
+        "i keep opening this chat like ur randomly gonna answer",
+        "jadabae"
+      );
+    },3800);
+  }
+  else if(uniqueCount>=2 && state.friendPingStage<2){
+    state.friendPingStage=2;
+    save();
+
+    setTimeout(()=>{
+      showIncomingText(
+        "noemibae",
+        "ur black top is still here btw",
+        "noemibae"
+      );
+    },3800);
+  }
+  else if(uniqueCount>=3 && state.friendPingStage<3){
+    state.friendPingStage=3;
+    save();
+
+    setTimeout(()=>{
+      showIncomingText(
+        "mami",
+        "goodnight anak. i love you",
+        "mami"
+      );
+    },3800);
+  }
+  else{
+    save();
+  }
+
+  let lines=["where did you go?"];
+
+  if(appName==="Music"){
+    lines=[
+      "you like that one?",
+      "i used to leave music on when i couldn't sleep",
+      "the room felt less empty"
+    ];
+  }else if(appName==="Photos"){
+    lines=[
+      "i forgot about that one",
+      "i miss them",
+      "it's weird remembering a picture better than the night"
+    ];
+  }else if(appName==="Notes"){
+    lines=[
+      "you found those",
+      "i made lists when i couldn't sleep",
+      "it gave me something to do"
+    ];
+  }else if(appName==="Safari"){
+    lines=[
+      "you went back to the history",
+      "i don't remember searching all of that",
+      "maybe i knew something was wrong"
+    ];
+  }else if(appName==="Finder"){
+    lines=[
+      "that's all my stuff",
+      "i was supposed to turn something in friday",
+      "i guess i never did"
+    ];
+  }else if(appName==="FaceTime"){
+    lines=[
+      "those calls",
+      "i wish i could remember answering",
+      "i can see them but i can't hear anything"
+    ];
+  }
+
+  setTimeout(()=>{
+    typeUnknownSequence(
+      lines,
+      0,1450,900,
+      ()=>{
+        setTimeout(()=>{
+          showIncomingText(
+            "Unknown",
+            state.bondApps.length===1
+              ? "are you still there?"
+              : state.bondApps.length===2
+                ? "come back?"
+                : "i'm still here",
+            "unknown"
+          );
+        },1000);
+      }
+    );
+  },900);
 }
 
 function toggleAppleMenu(event){
@@ -1491,8 +2175,63 @@ function openAboutMac(){
 }
 
 function enterStuckEnding(mode,returning=false){
-  state.ending=mode==="stay"?"stuck-stay":"stuck-leave";state.shutdownEnabled=false;save();const desktop=document.getElementById("desktop");desktop.classList.add("stuck-mode");[...document.querySelectorAll(".window")].forEach(w=>{if(w.id!=="messages-window")w.classList.remove("active")});openApp("messages-window","Messages");renderContacts("unknown");renderChat("unknown");if(returning)return;if(mode==="stay")typeUnknownSequence(["i can keep it like this","then you don't have to go anywhere","just stay with me"],1000,1500,950);else typeUnknownSequence(["i'm sorry","i know you wanted to go","but it gets so quiet when you leave","so i made it stop","just stay"],900,1500,950)
+  state.ending=mode==="stay"?"stuck-stay":"stuck-leave";
+  state.shutdownEnabled=false;
+  save();
+
+  const desktop=document.getElementById("desktop");
+  desktop.classList.add("stuck-mode");
+
+  [...document.querySelectorAll(".window")].forEach(w=>{
+    if(w.id!=="messages-window") w.classList.remove("active");
+  });
+
+  openApp("messages-window","Messages");
+  renderContacts("unknown");
+  renderChat("unknown");
+
+  if(returning){
+    state.endSceneDone=true;
+    save();
+    renderChat("unknown");
+    return;
+  }
+
+  const finishEnding=()=>{
+    state.endSceneDone=true;
+    save();
+    renderChat("unknown");
+  };
+
+  if(mode==="stay"){
+    typeUnknownSequence(
+      [
+        "i can keep it like this",
+        "then you don't have to go anywhere",
+        "you don't have to do anything",
+        "just stay with me"
+      ],
+      1200,1650,1100,
+      ()=>setTimeout(finishEnding,1900)
+    );
+  }else{
+    typeUnknownSequence(
+      [
+        "i'm sorry",
+        "i know you wanted to go",
+        "i tried to let you",
+        "but it got quiet again",
+        "i can't do that again",
+        "so i made it stop",
+        "you don't have to do anything",
+        "just stay"
+      ],
+      1100,1650,1100,
+      ()=>setTimeout(finishEnding,2300)
+    );
+  }
 }
+
 function attemptShutdown(){
   if(!state.shutdownEnabled)return;closeAppleMenu();const screen=document.getElementById("shutdown-screen"),message=document.getElementById("shutdown-message"),spinner=screen.querySelector(".shutdown-spinner");spinner.style.display="block";screen.classList.add("show");message.textContent="Shutting Down…";setTimeout(()=>{message.textContent="Shutdown canceled";spinner.style.display="none"},1900);setTimeout(()=>{screen.classList.remove("show");spinner.style.display="block";state.shutdownAttempted=true;save();enterStuckEnding("leave")},3400)
 }
@@ -2232,7 +2971,7 @@ function syncStory(){
 /* Kept for console/testing, but no visible reset control is shown to visitors. */
 function resetStory(){
   localStorage.removeItem(KEY);
-  sessionStorage.removeItem("ecloud-v16-session");
+  sessionStorage.removeItem("ecloud-v18-session");
   location.reload();
 }
 
@@ -2252,12 +2991,127 @@ function scheduleStoryGuide(){
   },9500);
 }
 
-function guideNextHardStep(){if(!state.backstoryUnlocked)return;const nextContact=nextRecoveredContact();if(nextContact){bounceDock("messages");showNotification("Messages",nextContact,"Recovered conversation.","contact:"+nextContact,"images/icons/messages.png");return}if(state.callHistoryAvailable&&!state.callLogSeen){bounceDock("facetime");showNotification("FaceTime","Recovered Calls","Sep 4 call history is unread.","facetime","images/icons/facetime.png");return}if(state.safariHistoryAvailable&&!state.sawSafariFind){bounceDock("safari");showNotification("Safari","History","A recovered Find My search is unread.","safari","images/icons/safari.png");return}if(state.recentItemsAvailable&&!state.recentItemsSeen){bounceDock("finder");showNotification("Finder","Recovered","Open last-activity.txt.","recovered","images/icons/folder.png");return}if(state.phase>=4&&!state.unknownOpen)bounceDock("messages");if(state.attachmentPrompted&&!state.finalChoiceMade)showIncomingText("Unknown","can you stay a little longer?","unknown")}
+function guideNextHardStep(){
+  if(!state.backstoryUnlocked) return;
+
+  const nextContact=nextRecoveredContact();
+  if(nextContact){
+    bounceDock("messages");
+    showNotification(
+      "Messages",
+      nextContact,
+      "Recovered conversation.",
+      "contact:"+nextContact,
+      "images/icons/messages.png"
+    );
+    return;
+  }
+
+  if(state.callHistoryAvailable && !state.callLogSeen){
+    bounceDock("facetime");
+    showNotification(
+      "FaceTime",
+      "Recovered Calls",
+      "Sep 4 call history is unread.",
+      "facetime",
+      "images/icons/facetime.png"
+    );
+    return;
+  }
+
+  if(state.safariHistoryAvailable && !state.sawSafariFind){
+    bounceDock("safari");
+    showNotification(
+      "Safari",
+      "History",
+      "A recovered Find My search is unread.",
+      "safari",
+      "images/icons/safari.png"
+    );
+    return;
+  }
+
+  if(state.recentItemsAvailable && !state.recentItemsSeen){
+    bounceDock("finder");
+    showNotification(
+      "Finder",
+      "Recovered",
+      "Open last-activity.txt.",
+      "recovered",
+      "images/icons/folder.png"
+    );
+    return;
+  }
+
+  if(state.phase>=4 && !state.unknownOpen){
+    bounceDock("messages");
+    return;
+  }
+
+  if(state.attachmentPhase && !state.finalChoiceMade){
+    if(state.bondApps.length===0){
+      showIncomingText("Unknown","can you open something else?","unknown");
+    }else{
+      showIncomingText("Unknown","are you still there?","unknown");
+    }
+    return;
+  }
+
+  if(state.attachmentPrompted && !state.finalChoiceMade){
+    showIncomingText("Unknown","can you stay a little longer?","unknown");
+  }
+}
 
 function startStoryWatchdog(){setTimeout(()=>{if(!state.backstoryUnlocked&&!state.ending){state.backstoryUnlocked=true;state.phase=3;save();bounceDock("messages");showNotification("Messages","3asians","Recovered conversation.","contact:3asians","images/icons/messages.png")}},6500)}
 
 window.addEventListener("load",()=>{
-  const freshVisit=!sessionStorage.getItem("ecloud-v16-session");sessionStorage.setItem("ecloud-v16-session","1");syncStory();renderContacts();renderChat(state.phase>=4?"unknown":"3asians");const chatBody=document.getElementById("chat-body");if(chatBody&&!chatBody.dataset.storyScrollBound){chatBody.dataset.storyScrollBound="true";chatBody.addEventListener("scroll",markRecoveredThreadReadIfNeeded)}scheduleStoryGuide();startStoryWatchdog();if(state.ending==="stay"){enterStuckEnding("stay",false);return}if(state.ending==="stuck-stay"||state.ending==="stuck-leave"){enterStuckEnding(state.ending==="stuck-stay"?"stay":"leave",true);if(freshVisit){state.returnCount=(state.returnCount||0)+1;save();setTimeout(()=>{const lines=state.returnCount===1?["you came back","i kept it open"]:["you came back"];typeUnknownSequence(lines,300,1350,800)},900)}return}if(state.phase>=4&&!state.unknownOpen&&state.unknownMsgs?.length)setTimeout(()=>showIncomingText("Unknown",lastUnknownText(),"unknown"),900)
+  const freshVisit=!sessionStorage.getItem("ecloud-v18-session");
+  sessionStorage.setItem("ecloud-v18-session","1");
+
+  syncStory();
+  renderContacts();
+  renderChat(state.phase>=4?"unknown":"3asians");
+
+  const chatBody=document.getElementById("chat-body");
+  if(chatBody && !chatBody.dataset.storyScrollBound){
+    chatBody.dataset.storyScrollBound="true";
+    chatBody.addEventListener("scroll",markRecoveredThreadReadIfNeeded);
+  }
+
+  scheduleStoryGuide();
+  startStoryWatchdog();
+
+  if(state.ending==="stuck-stay" || state.ending==="stuck-leave"){
+    enterStuckEnding(state.ending==="stuck-stay"?"stay":"leave",true);
+
+    if(freshVisit){
+      state.returnCount=(state.returnCount||0)+1;
+      state.endSceneDone=false;
+      save();
+      renderChat("unknown");
+
+      setTimeout(()=>{
+        const lines=state.returnCount===1
+          ?["you came back","i kept it open"]
+          :["you came back"];
+
+        typeUnknownSequence(
+          lines,
+          450,1500,1000,
+          ()=>{
+            state.endSceneDone=true;
+            save();
+            renderChat("unknown");
+          }
+        );
+      },900);
+    }
+    return;
+  }
+
+  if(state.phase>=4 && !state.unknownOpen && state.unknownMsgs?.length){
+    setTimeout(()=>showIncomingText("Unknown",lastUnknownText(),"unknown"),900);
+  }
 });
 </script>
 </body>
