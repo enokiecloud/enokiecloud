@@ -19,9 +19,10 @@
     :root {
       --paper: #fdfcf9;
       --ink: #111;
-      --soft: #efefec;
-      --line: #d8d7d2;
-      --muted: #777;
+      --line: #d9d9d9;
+      --incoming: #e9e9eb;
+      --blue: #0b84ff;
+      --muted: #8e8e93;
     }
 
     body {
@@ -41,11 +42,12 @@
       margin: 0 auto;
     }
 
-    /* header */
+    /* site header */
 
     header {
       padding: 34px 0 18px;
-      border-bottom: 1px solid var(--ink);
+      border-bottom: 1px solid #111;
+
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -60,6 +62,7 @@
     nav {
       display: flex;
       gap: 28px;
+
       font-family: "IBM Plex Mono", monospace;
       font-size: 11px;
     }
@@ -68,22 +71,19 @@
 
     main {
       min-height: calc(100vh - 120px);
+
       display: flex;
       justify-content: center;
-      align-items: flex-start;
-      padding: 48px 0 70px;
+
+      padding: 48px 0 75px;
     }
 
     .feature {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      width: 390px;
+      max-width: 100%;
     }
 
-    .feature-label {
-      width: 370px;
-      max-width: 100%;
+    .feature-top {
       margin-bottom: 10px;
 
       display: flex;
@@ -91,108 +91,162 @@
 
       font-family: "IBM Plex Mono", monospace;
       font-size: 9px;
-      letter-spacing: .08em;
+      letter-spacing: .06em;
     }
 
-    /* actual phone */
+    /* phone */
 
     .phone {
-      width: 370px;
+      width: 390px;
       max-width: 100%;
-      height: 650px;
+      height: 690px;
 
-      border: 2px solid var(--ink);
-      border-radius: 42px;
+      background: white;
 
-      background: #fff;
+      border: 2px solid #111;
+      border-radius: 44px;
+
       overflow: hidden;
 
-      box-shadow: 7px 8px 0 #e6e5e0;
+      box-shadow: 7px 8px 0 #e7e6e1;
 
       display: flex;
       flex-direction: column;
     }
 
-    /* phone status */
+    /* ios-ish status */
 
-    .phone-status {
-      height: 30px;
+    .status-bar {
+      height: 31px;
       flex-shrink: 0;
 
+      padding: 8px 21px 0;
+
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
 
-      padding: 7px 20px 0;
-
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 8px;
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      font-weight: 600;
     }
 
-    .phone-icons {
-      letter-spacing: 2px;
-    }
-
-    /* contact header */
-
-    .contact-header {
-      height: 67px;
-      flex-shrink: 0;
-
-      border-bottom: 1px solid var(--line);
-
+    .status-icons {
       display: flex;
+      gap: 5px;
       align-items: center;
-      justify-content: center;
+    }
+
+    .signal {
+      letter-spacing: -1px;
+    }
+
+    .battery {
+      width: 18px;
+      height: 8px;
+
+      border: 1px solid #111;
+      border-radius: 2px;
 
       position: relative;
     }
 
-    .back {
+    .battery::before {
+      content: "";
       position: absolute;
-      left: 20px;
-      top: 18px;
 
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 19px;
+      left: 1px;
+      top: 1px;
+
+      width: 12px;
+      height: 4px;
+
+      background: #111;
+    }
+
+    .battery::after {
+      content: "";
+      position: absolute;
+
+      right: -3px;
+      top: 2px;
+
+      width: 2px;
+      height: 3px;
+
+      background: #111;
+      border-radius: 0 1px 1px 0;
+    }
+
+    /* imessage header */
+
+    .contact-header {
+      height: 76px;
+      flex-shrink: 0;
+
+      border-bottom: 1px solid #ececec;
+
+      position: relative;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .ios-back {
+      position: absolute;
+      left: 18px;
+      top: 27px;
+
+      color: var(--blue);
+
+      font-family: Arial, sans-serif;
+      font-size: 26px;
+      font-weight: 300;
     }
 
     .contact {
       text-align: center;
     }
 
-    .avatar {
-      width: 29px;
-      height: 29px;
-      margin: 0 auto 2px;
+    .contact-circle {
+      width: 34px;
+      height: 34px;
 
-      border: 1px solid var(--ink);
+      margin: 0 auto 3px;
+
       border-radius: 50%;
+
+      background: #d8d8dc;
+      color: white;
 
       display: flex;
       align-items: center;
       justify-content: center;
 
-      font-family: "Cormorant Garamond", serif;
+      font-family: Arial, sans-serif;
       font-size: 17px;
+      font-weight: 500;
     }
 
     .contact-name {
-      display: block;
-      font-size: 13px;
-      line-height: 1;
+      display: inline-block;
+
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      color: #111;
     }
 
-    .contact-status {
-      display: block;
-      margin-top: 3px;
+    .contact-arrow {
+      display: inline-block;
+      margin-left: 2px;
 
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 7px;
-      color: var(--muted);
+      font-family: Arial, sans-serif;
+      font-size: 9px;
+      color: #999;
     }
 
-    /* message screen */
+    /* messages */
 
     .messages {
       flex: 1;
@@ -201,11 +255,11 @@
       overflow-y: auto;
       overscroll-behavior: contain;
 
-      padding: 22px 15px 18px;
+      padding: 16px 12px 18px;
 
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: 3px;
 
       scroll-behavior: smooth;
     }
@@ -215,96 +269,109 @@
     }
 
     .messages::-webkit-scrollbar-thumb {
-      background: #d1d0cc;
-      border-radius: 10px;
+      background: #d4d4d4;
+      border-radius: 20px;
     }
 
-    .day {
-      text-align: center;
-      margin: 1px 0 15px;
+    .date {
+      margin: 3px 0 15px;
 
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 7px;
-      color: #999;
+      text-align: center;
+
+      font-family: Arial, sans-serif;
+      font-size: 9px;
+      font-weight: 500;
+      color: var(--muted);
     }
 
     .message {
       width: fit-content;
-      max-width: 76%;
+      max-width: 78%;
 
       padding: 8px 11px;
 
-      border-radius: 16px;
-
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 10px;
-      line-height: 1.45;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.28;
 
       opacity: 0;
-      transform: translateY(4px);
+      transform: translateY(3px);
 
-      animation: messageIn .18s ease forwards;
+      animation: appear .18s ease forwards;
     }
 
-    @keyframes messageIn {
+    @keyframes appear {
       to {
         opacity: 1;
         transform: translateY(0);
       }
     }
 
-    .them {
+    .incoming {
       align-self: flex-start;
-      background: var(--soft);
-      border-bottom-left-radius: 5px;
+
+      background: var(--incoming);
+
+      border-radius: 17px 17px 17px 5px;
     }
 
-    .you {
+    .outgoing {
       align-self: flex-end;
-      background: var(--ink);
-      color: #fff;
-      border-bottom-right-radius: 5px;
+
+      background: var(--blue);
+      color: white;
+
+      border-radius: 17px 17px 5px 17px;
     }
 
-    .typing {
-      align-self: flex-start;
+    .delivered {
+      align-self: flex-end;
 
-      background: var(--soft);
-      border-radius: 16px;
-      border-bottom-left-radius: 5px;
+      margin: 0 4px 4px 0;
 
-      padding: 7px 11px;
+      font-family: Arial, sans-serif;
+      font-size: 8px;
+      color: var(--muted);
+    }
 
-      font-family: "IBM Plex Mono", monospace;
+    /* typing text */
+
+    .typing-line {
+      min-height: 20px;
+
+      padding: 5px 16px 2px;
+
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
       font-size: 9px;
-      color: #777;
+      color: var(--muted);
+
+      flex-shrink: 0;
     }
 
-    /* choices stay at bottom */
+    .typing-line:empty {
+      visibility: hidden;
+    }
 
-    .reply-panel {
+    /* replies */
+
+    .reply-area {
       flex-shrink: 0;
 
-      min-height: 112px;
-      max-height: 160px;
+      border-top: 1px solid #ededed;
 
-      border-top: 1px solid var(--line);
       background: #fff;
 
-      padding: 10px 12px 14px;
-
-      overflow-y: auto;
+      padding: 9px 10px 15px;
     }
 
     .reply-label {
-      margin-bottom: 8px;
+      margin-bottom: 7px;
 
       text-align: center;
 
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 7px;
-      color: #999;
-      letter-spacing: .08em;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+      font-size: 8px;
+      color: var(--muted);
     }
 
     .choices {
@@ -318,29 +385,28 @@
 
       appearance: none;
 
-      background: #fff;
-      color: var(--ink);
+      border: 1px solid #d5d5d8;
+      border-radius: 16px;
 
-      border: 1px solid #bdbcb8;
-      border-radius: 15px;
+      background: white;
+      color: var(--blue);
 
-      padding: 7px 10px;
+      padding: 7px 9px;
 
       cursor: pointer;
 
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 9px;
-      text-align: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+      font-size: 10px;
 
       transition: .12s ease;
     }
 
     .choice:hover {
-      border-color: var(--ink);
-      background: #f6f5f1;
+      background: #f5f5f7;
+      border-color: #bdbdc1;
     }
 
-    .end-text {
+    .ending {
       text-align: center;
 
       font-family: "Cormorant Garamond", serif;
@@ -351,23 +417,21 @@
     .restart {
       display: block;
 
-      margin: 10px auto 0;
+      margin: 8px auto 0;
 
       border: 0;
-      background: none;
-
-      padding: 0;
+      background: transparent;
 
       cursor: pointer;
 
       font-family: "IBM Plex Mono", monospace;
       font-size: 8px;
+
       text-decoration: underline;
     }
 
     .leave {
-      width: 370px;
-      max-width: 100%;
+      display: inline-block;
 
       margin-top: 17px;
 
@@ -376,6 +440,7 @@
     }
 
     @media (max-width: 650px) {
+
       .page {
         width: min(100% - 24px, 1040px);
       }
@@ -395,7 +460,7 @@
       }
 
       .phone {
-        height: 620px;
+        height: 650px;
       }
     }
   </style>
@@ -427,38 +492,47 @@
 
     <div class="feature">
 
-      <div class="feature-label">
+      <div class="feature-top">
         <span>TEXT ME</span>
         <span>wrong number</span>
       </div>
 
       <div class="phone">
 
-        <div class="phone-status">
-          <span id="phoneTime">8:23</span>
-          <span class="phone-icons">•••</span>
+        <div class="status-bar">
+
+          <span id="clock">8:54</span>
+
+          <div class="status-icons">
+            <span class="signal">▮▮▮</span>
+            <span>⌁</span>
+            <span class="battery"></span>
+          </div>
+
         </div>
 
         <div class="contact-header">
 
-          <span class="back">‹</span>
+          <span class="ios-back">‹</span>
 
           <div class="contact">
 
-            <div class="avatar">?</div>
+            <div
+              class="contact-circle"
+              id="contactCircle"
+            >
+              ?
+            </div>
 
             <span
               class="contact-name"
               id="contactName"
             >
-              unknown
+              +1 (415) 555-0138
             </span>
 
-            <span
-              class="contact-status"
-              id="contactStatus"
-            >
-              unknown number
+            <span class="contact-arrow">
+              ›
             </span>
 
           </div>
@@ -470,13 +544,18 @@
           id="messages"
         ></div>
 
-        <div class="reply-panel">
+        <div
+          class="typing-line"
+          id="typingLine"
+        ></div>
+
+        <div class="reply-area">
 
           <div
             class="reply-label"
             id="replyLabel"
           >
-            reply
+            choose a reply
           </div>
 
           <div
@@ -489,8 +568,8 @@
       </div>
 
       <a
-        class="leave"
         href="index.html"
+        class="leave"
       >
         ← leave
       </a>
@@ -504,11 +583,19 @@
 
 <script>
 
+const NUMBER =
+  "+1 (415) 555-0138";
+
+let contactDisplay = NUMBER;
+
 const messages =
   document.getElementById("messages");
 
 const choices =
   document.getElementById("choices");
+
+const typingLine =
+  document.getElementById("typingLine");
 
 const replyLabel =
   document.getElementById("replyLabel");
@@ -516,21 +603,36 @@ const replyLabel =
 const contactName =
   document.getElementById("contactName");
 
-const contactStatus =
-  document.getElementById("contactStatus");
+const contactCircle =
+  document.getElementById("contactCircle");
 
 
-/* utilities */
+/* helpers */
+
+function wait(ms) {
+  return new Promise(resolve =>
+    setTimeout(resolve, ms)
+  );
+}
+
 
 function scrollDown() {
+
   requestAnimationFrame(() => {
-    messages.scrollTop =
-      messages.scrollHeight;
+
+    messages.scrollTo({
+      top: messages.scrollHeight,
+      behavior: "smooth"
+    });
+
   });
 }
 
 
-function addMessage(text, side = "them") {
+function addMessage(
+  text,
+  side = "incoming"
+) {
 
   const bubble =
     document.createElement("div");
@@ -546,23 +648,76 @@ function addMessage(text, side = "them") {
 }
 
 
-function addDay() {
+function addDelivered() {
 
-  const day =
+  const delivered =
     document.createElement("div");
 
-  day.className = "day";
+  delivered.className =
+    "delivered";
 
-  day.textContent = "today";
+  delivered.textContent =
+    "Delivered";
 
-  messages.appendChild(day);
+  messages.appendChild(delivered);
+
+  scrollDown();
 }
 
 
-function wait(ms) {
-  return new Promise(resolve =>
-    setTimeout(resolve, ms)
-  );
+function addDate() {
+
+  const date =
+    document.createElement("div");
+
+  date.className =
+    "date";
+
+  const now =
+    new Date();
+
+  date.textContent =
+    "Today " +
+    now.toLocaleTimeString(
+      [],
+      {
+        hour: "numeric",
+        minute: "2-digit"
+      }
+    );
+
+  messages.appendChild(date);
+}
+
+
+function typingName() {
+
+  if (contactDisplay === NUMBER) {
+    return NUMBER;
+  }
+
+  return contactDisplay;
+}
+
+
+function typingDelay(text) {
+
+  const length =
+    text.length;
+
+  if (length <= 5) {
+    return 950 + Math.random() * 450;
+  }
+
+  if (length <= 15) {
+    return 1300 + Math.random() * 500;
+  }
+
+  if (length <= 35) {
+    return 1700 + Math.random() * 650;
+  }
+
+  return 2200 + Math.random() * 850;
 }
 
 
@@ -570,40 +725,40 @@ async function incoming(lines) {
 
   choices.innerHTML = "";
 
-  for (const line of lines) {
+  for (let i = 0; i < lines.length; i++) {
 
-    const typing =
-      document.createElement("div");
+    const text =
+      lines[i];
 
-    typing.className = "typing";
-    typing.textContent = "...";
-
-    messages.appendChild(typing);
-
-    contactStatus.textContent =
-      "typing...";
+    typingLine.textContent =
+      typingName() + " is typing...";
 
     scrollDown();
 
     await wait(
-      350 + Math.random() * 300
+      typingDelay(text)
     );
 
-    typing.remove();
+    typingLine.textContent = "";
 
-    contactStatus.textContent =
-      "unknown number";
-
-    addMessage(line);
-
-    await wait(
-      250 + Math.random() * 250
+    addMessage(
+      text,
+      "incoming"
     );
+
+    if (i < lines.length - 1) {
+
+      await wait(
+        600 + Math.random() * 650
+      );
+    }
   }
 }
 
 
 function setChoices(options) {
+
+  typingLine.textContent = "";
 
   choices.innerHTML = "";
 
@@ -612,54 +767,82 @@ function setChoices(options) {
     const button =
       document.createElement("button");
 
-    button.className = "choice";
-    button.textContent = option.text;
+    button.className =
+      "choice";
 
-    button.addEventListener(
-      "click",
+    button.textContent =
+      option.text;
+
+    button.onclick =
       async () => {
 
         choices.innerHTML = "";
 
         addMessage(
           option.text,
-          "you"
+          "outgoing"
         );
 
         await wait(300);
 
+        if (Math.random() > .35) {
+          addDelivered();
+        }
+
+        /*
+          important:
+          stranger does NOT immediately
+          start replying
+        */
+
+        await wait(
+          900 + Math.random() * 800
+        );
+
         option.next();
-      }
-    );
+      };
 
     choices.appendChild(button);
   });
 }
 
 
-/* beginning */
+/* start */
 
 async function start() {
 
   messages.innerHTML = "";
   choices.innerHTML = "";
+  typingLine.textContent = "";
+
+  contactDisplay = NUMBER;
 
   contactName.textContent =
-    "unknown";
+    NUMBER;
 
-  contactStatus.textContent =
-    "unknown number";
+  contactCircle.textContent =
+    "?";
 
   replyLabel.textContent =
-    "reply";
+    "choose a reply";
 
-  addDay();
+  addDate();
 
-  await wait(400);
+  await wait(1000);
 
   await incoming([
-    "bro",
-    "answer me",
+    "bro"
+  ]);
+
+  await wait(800);
+
+  await incoming([
+    "answer me"
+  ]);
+
+  await wait(900);
+
+  await incoming([
     "are u still coming"
   ]);
 
@@ -685,40 +868,95 @@ async function start() {
 async function wrongNumber() {
 
   await incoming([
-    "oh shit",
-    "WAIT",
-    "sorry LMAO"
+    "oh shit"
   ]);
 
-  await wait(450);
+  await wait(700);
 
   await incoming([
-    "...",
-    "actually"
+    "WAIT"
+  ]);
+
+  await wait(800);
+
+  await incoming([
+    "LMAOO my bad"
+  ]);
+
+  await wait(1500);
+
+  await incoming([
+    "..."
+  ]);
+
+  await wait(1100);
+
+  await incoming([
+    "wait actually"
   ]);
 
   setChoices([
     {
       text: "actually what",
-      next: actuallyWhat
+      next: askSomething
     },
     {
-      text: "LMAO ur good",
-      next: youreGood
+      text: "ur good lol",
+      next: niceAboutIt
     },
     {
       text: "bye 😭",
-      next: earlyBye
+      next: byeEarly
     }
   ]);
 }
 
 
-async function actuallyWhat() {
+async function niceAboutIt() {
 
   await incoming([
-    "can i ask u something",
-    "i need someone who doesn't know me"
+    "thank u 😭"
+  ]);
+
+  await wait(1100);
+
+  await incoming([
+    "wait"
+  ]);
+
+  await wait(900);
+
+  await incoming([
+    "can i ask u something"
+  ]);
+
+  setChoices([
+    {
+      text: "why me 😭",
+      next: whyMe
+    },
+    {
+      text: "sure lol",
+      next: setupStory
+    },
+    {
+      text: "depends",
+      next: depends
+    }
+  ]);
+}
+
+
+async function askSomething() {
+
+  await incoming([
+    "can i ask u something"
+  ]);
+
+  await wait(800);
+
+  await incoming([
+    "i need someone who literally doesn't know me"
   ]);
 
   setChoices([
@@ -728,37 +966,11 @@ async function actuallyWhat() {
     },
     {
       text: "okay go",
-      next: situation
+      next: setupStory
     },
     {
-      text: "this sounds dangerous",
-      next: dangerous
-    }
-  ]);
-}
-
-
-async function youreGood() {
-
-  await incoming([
-    "thank u 😭",
-    "wait",
-    "since u answered",
-    "can i ask u something"
-  ]);
-
-  setChoices([
-    {
-      text: "why me",
-      next: whyMe
-    },
-    {
-      text: "sure lol",
-      next: situation
-    },
-    {
-      text: "depends what it is",
-      next: depends
+      text: "this sounds concerning",
+      next: concerning
     }
   ]);
 }
@@ -767,70 +979,33 @@ async function youreGood() {
 async function whyMe() {
 
   await incoming([
-    "idk",
-    "u answered 😭",
-    "everyone i know is biased"
+    "idk"
+  ]);
+
+  await wait(800);
+
+  await incoming([
+    "u answered 😭"
+  ]);
+
+  await wait(950);
+
+  await incoming([
+    "and everyone i know is biased"
   ]);
 
   setChoices([
     {
       text: "okay fair",
-      next: situation
+      next: setupStory
     },
     {
-      text: "that's a terrible reason",
+      text: "terrible reasoning",
       next: terribleReason
     },
     {
-      text: "im listening",
-      next: situation
-    }
-  ]);
-}
-
-
-async function dangerous() {
-
-  await incoming([
-    "LMAOOO",
-    "no omg",
-    "nothing like that",
-    "i just need an opinion"
-  ]);
-
-  setChoices([
-    {
-      text: "okayyy go",
-      next: situation
-    },
-    {
-      text: "im scared but okay",
-      next: situation
-    }
-  ]);
-}
-
-
-async function depends() {
-
-  await incoming([
-    "relationship drama",
-    "kinda",
-    "don't judge me"
-  ]);
-
-  setChoices([
-    {
-      text: "oh im listening",
-      next: situation
-    },
-    {
-      text: "i will absolutely judge",
-      next: judge
-    },
-    {
-      text: "go ahead lol",
-      next: situation
+      text: "fine im listening",
+      next: setupStory
     }
   ]);
 }
@@ -839,268 +1014,270 @@ async function depends() {
 async function terribleReason() {
 
   await incoming([
-    "i know 😭",
-    "but ur literally perfect",
-    "u have zero context"
+    "i know 😭"
+  ]);
+
+  await wait(700);
+
+  await incoming([
+    "but that's why ur perfect"
+  ]);
+
+  await wait(700);
+
+  await incoming([
+    "zero context"
   ]);
 
   setChoices([
     {
       text: "fine tell me",
-      next: situation
+      next: setupStory
     },
     {
       text: "okay that's kinda true",
-      next: situation
+      next: setupStory
     }
   ]);
 }
 
 
-async function judge() {
+async function concerning() {
 
   await incoming([
-    "okay fair",
-    "but like",
-    "quietly"
+    "LMAOO no"
+  ]);
+
+  await wait(700);
+
+  await incoming([
+    "nothing crazy"
+  ]);
+
+  await wait(800);
+
+  await incoming([
+    "just relationship drama"
+  ]);
+
+  setChoices([
+    {
+      text: "oh im listening",
+      next: setupStory
+    },
+    {
+      text: "of course it is 😭",
+      next: relationshipReaction
+    }
+  ]);
+}
+
+
+async function depends() {
+
+  await incoming([
+    "relationship drama"
+  ]);
+
+  await wait(1000);
+
+  await incoming([
+    "kinda"
+  ]);
+
+  setChoices([
+    {
+      text: "oh brother",
+      next: relationshipReaction
+    },
+    {
+      text: "okay go",
+      next: setupStory
+    },
+    {
+      text: "i will judge u btw",
+      next: judgeMe
+    }
+  ]);
+}
+
+
+async function relationshipReaction() {
+
+  await incoming([
+    "DONT START 😭"
+  ]);
+
+  await wait(900);
+
+  await incoming([
+    "i already know how it sounds"
+  ]);
+
+  setupStory();
+}
+
+
+async function judgeMe() {
+
+  await incoming([
+    "okay fair"
+  ]);
+
+  await wait(700);
+
+  await incoming([
+    "but like"
+  ]);
+
+  await wait(700);
+
+  await incoming([
+    "judge quietly"
   ]);
 
   setChoices([
     {
       text: "no promises",
-      next: situation
+      next: setupStory
     },
     {
-      text: "LMAO go",
-      next: situation
+      text: "LMAO okay",
+      next: setupStory
     }
   ]);
 }
 
 
-/* who is this */
+/* who is this path */
 
 async function whoIsThis() {
 
   await incoming([
-    "mina?",
-    "...",
+    "..."
+  ]);
+
+  await wait(800);
+
+  await incoming([
     "wait"
   ]);
 
+  await wait(1000);
+
   await incoming([
-    "ur not mina"
+    "wrong number isn't it"
   ]);
 
   setChoices([
     {
-      text: "no 😭 who are YOU",
-      next: whoAreYou
+      text: "yeah 😭",
+      next: realizeWrong
     },
     {
-      text: "apparently not",
-      next: apparentlyNot
+      text: "probably",
+      next: realizeWrong
     },
     {
-      text: "maybe i am",
-      next: maybeMina
+      text: "depends who are u",
+      next: suspiciousIntro
     }
   ]);
 }
 
 
-async function whoAreYou() {
+async function realizeWrong() {
 
   await incoming([
-    "YOU'RE asking ME??",
-    "i texted the wrong number 😭"
+    "omg"
+  ]);
+
+  await wait(650);
+
+  await incoming([
+    "sorry 😭"
+  ]);
+
+  await wait(1400);
+
+  await incoming([
+    "wait though"
   ]);
 
   setChoices([
     {
-      text: "exactly so introduce urself",
-      next: introduce
+      text: "what 😭",
+      next: askSomething
     },
-    {
-      text: "LMAOO",
-      next: introduce
-    },
-    {
-      text: "okay bye stranger",
-      next: earlyBye
-    }
-  ]);
-}
-
-
-async function apparentlyNot() {
-
-  await incoming([
-    "omg sorry",
-    "that's embarrassing"
-  ]);
-
-  setChoices([
     {
       text: "ur good lol",
-      next: youreGood
-    },
-    {
-      text: "extremely",
-      next: embarrassing
+      next: niceAboutIt
     }
   ]);
 }
 
 
-async function embarrassing() {
+async function suspiciousIntro() {
 
   await incoming([
-    "damn 😭",
-    "okay deserved",
-    "but wait"
+    "why would i tell a random number 😭"
   ]);
 
   setChoices([
     {
-      text: "what now",
-      next: actuallyWhat
+      text: "YOU texted ME",
+      next: fairPoint
     },
     {
-      text: "oh god",
-      next: actuallyWhat
+      text: "okay fair",
+      next: realizeWrong
     }
   ]);
 }
 
 
-async function maybeMina() {
+async function fairPoint() {
 
   await incoming([
-    "no",
-    "absolutely not",
-    "mina would've yelled at me already"
+    "..."
+  ]);
+
+  await wait(900);
+
+  await incoming([
+    "okay fair point"
+  ]);
+
+  await wait(1100);
+
+  await incoming([
+    "my bad"
   ]);
 
   setChoices([
     {
-      text: "maybe she's changed",
-      next: changedMina
+      text: "LMAO ur good",
+      next: niceAboutIt
     },
     {
-      text: "okay u got me",
-      next: introduce
+      text: "so who are u",
+      next: introduceM
     }
   ]);
 }
 
 
-async function changedMina() {
-
-  await incoming([
-    "in the last 20 minutes??",
-    "girl"
-  ]);
-
-  setChoices([
-    {
-      text: "anything is possible",
-      next: playful
-    },
-    {
-      text: "LMAOO okay fine",
-      next: introduce
-    }
-  ]);
-}
-
-
-async function playful() {
-
-  await incoming([
-    "ur annoying",
-    "i kinda respect it tho"
-  ]);
-
-  setChoices([
-    {
-      text: "thank u",
-      next: introduce
-    },
-    {
-      text: "as u should",
-      next: introduce
-    }
-  ]);
-}
-
-
-async function introduce() {
-
-  await incoming([
-    "im not giving a random number my government name 😭",
-    "u can call me m"
-  ]);
-
-  contactName.textContent = "m";
-
-  setChoices([
-    {
-      text: "m is suspicious",
-      next: suspicious
-    },
-    {
-      text: "okay m",
-      next: mContinue
-    },
-    {
-      text: "im still calling u stranger",
-      next: stranger
-    }
-  ]);
-}
-
-
-async function suspicious() {
-
-  await incoming([
-    "GOOD",
-    "stranger danger",
-    "anyway"
-  ]);
-
-  situation();
-}
-
-
-async function mContinue() {
-
-  await incoming([
-    "see we're friends now",
-    "kinda"
-  ]);
-
-  situation();
-}
-
-
-async function stranger() {
-
-  await incoming([
-    "rude",
-    "but fair"
-  ]);
-
-  situation();
-}
-
-
-/* pretending */
+/* pretending path */
 
 async function pretend() {
 
   await incoming([
-    "finally",
+    "finally"
+  ]);
+
+  await wait(800);
+
+  await incoming([
     "did u bring it"
   ]);
 
@@ -1111,7 +1288,7 @@ async function pretend() {
     },
     {
       text: "obviously",
-      next: deeperPretend
+      next: keepPretending
     },
     {
       text: "no i forgot",
@@ -1124,47 +1301,66 @@ async function pretend() {
 async function caughtPretending() {
 
   await incoming([
-    "...",
-    "ur not mina",
-    "LMAOOOO"
+    "..."
+  ]);
+
+  await wait(900);
+
+  await incoming([
+    "who is this 😭"
   ]);
 
   setChoices([
     {
-      text: "u caught me",
-      next: caught
+      text: "LMAOO wrong number",
+      next: prankReveal
     },
     {
-      text: "who's mina 😭",
-      next: whoIsThis
+      text: "u caught me",
+      next: prankReveal
     }
   ]);
 }
 
 
-async function deeperPretend() {
+async function keepPretending() {
 
   await incoming([
-    "okay good",
-    "because if u forgot the cat carrier AGAIN"
+    "okay good"
   ]);
 
-  await wait(300);
+  await wait(800);
 
   await incoming([
-    "...",
-    "wait",
+    "because if u forgot the cat carrier again"
+  ]);
+
+  await wait(1300);
+
+  await incoming([
+    "..."
+  ]);
+
+  await wait(900);
+
+  await incoming([
+    "wait"
+  ]);
+
+  await wait(800);
+
+  await incoming([
     "what color is my cat"
   ]);
 
   setChoices([
     {
-      text: "orange",
-      next: orangeGuess
+      text: "black",
+      next: blackCat
     },
     {
-      text: "black",
-      next: blackGuess
+      text: "orange",
+      next: orangeCat
     },
     {
       text: "cat colored",
@@ -1174,69 +1370,104 @@ async function deeperPretend() {
 }
 
 
-async function orangeGuess() {
+async function blackCat() {
 
   await incoming([
-    "WRONG",
-    "WHO IS THIS 😭"
+    "..."
   ]);
 
-  caught();
+  await wait(1100);
+
+  await incoming([
+    "that's actually concerning"
+  ]);
+
+  await wait(700);
+
+  await incoming([
+    "but wrong 😭"
+  ]);
+
+  prankReveal();
 }
 
 
-async function blackGuess() {
+async function orangeCat() {
 
   await incoming([
-    "...",
-    "okay that's actually concerning",
-    "but still wrong person"
+    "WRONG"
   ]);
 
-  caught();
+  await wait(650);
+
+  await incoming([
+    "WHO IS THIS 😭"
+  ]);
+
+  prankReveal();
 }
 
 
 async function catColored() {
 
   await incoming([
-    "CAT COLORED???",
-    "okay ur definitely not mina",
-    "im crying"
+    "CAT COLORED????"
   ]);
 
-  caught();
+  await wait(700);
+
+  await incoming([
+    "LMAOOOO"
+  ]);
+
+  await wait(700);
+
+  await incoming([
+    "ur definitely not who i meant to text"
+  ]);
+
+  prankReveal();
 }
 
 
 async function forgot() {
 
   await incoming([
-    "MINA",
-    "i swear to god"
+    "BRO"
   ]);
 
-  await wait(400);
+  await wait(700);
 
   await incoming([
-    "...wait",
-    "ur not mina are u"
+    "i literally reminded u"
+  ]);
+
+  await wait(1200);
+
+  await incoming([
+    "..."
+  ]);
+
+  await wait(800);
+
+  await incoming([
+    "wait ur not them are u"
   ]);
 
   setChoices([
     {
       text: "nope",
-      next: caught
+      next: prankReveal
     },
     {
       text: "surprise",
-      next: caught
+      next: prankReveal
     }
   ]);
 }
 
 
-async function caught() {
+async function prankReveal() {
 
   await incoming([
     "why did u go along with it 😭"
@@ -1262,96 +1493,150 @@ async function caught() {
 async function curious() {
 
   await incoming([
-    "nosy",
-    "respect",
+    "nosy"
+  ]);
+
+  await wait(700);
+
+  await incoming([
+    "respect"
+  ]);
+
+  await wait(1000);
+
+  await incoming([
     "okay since ur here"
   ]);
 
-  actuallyWhat();
+  askSomething();
 }
 
 
 async function funny() {
 
   await incoming([
-    "okay it was kinda funny",
-    "u scared me tho",
-    "anyway wait"
+    "okay it was kinda funny"
   ]);
 
-  actuallyWhat();
+  await wait(700);
+
+  await incoming([
+    "u scared me though 😭"
+  ]);
+
+  await wait(1100);
+
+  await incoming([
+    "wait actually"
+  ]);
+
+  askSomething();
 }
 
 
-/* main conversation */
+/* actual conversation */
 
-async function situation() {
+async function setupStory() {
 
   await incoming([
-    "okay",
+    "okay"
+  ]);
+
+  await wait(850);
+
+  await incoming([
     "so there's this guy"
   ]);
 
-  await wait(300);
+  await wait(1200);
 
   await incoming([
-    "we've been talking for like 2 months",
-    "not dating",
+    "we've been talking for like 2 months"
+  ]);
+
+  await wait(900);
+
+  await incoming([
+    "not dating"
+  ]);
+
+  await wait(850);
+
+  await incoming([
     "but definitely not just friends"
   ]);
 
   setChoices([
     {
-      text: "oh brother 😭",
-      next: ohBrother
-    },
-    {
-      text: "situationship...",
+      text: "situationship 😭",
       next: situationship
     },
     {
+      text: "oh brother",
+      next: ohBrother
+    },
+    {
       text: "okay keep going",
-      next: keepGoing
+      next: storyPartTwo
     }
   ]);
-}
-
-
-async function ohBrother() {
-
-  await incoming([
-    "DONT START",
-    "i already know how it sounds 😭"
-  ]);
-
-  keepGoing();
 }
 
 
 async function situationship() {
 
   await incoming([
-    "don't call it that",
-    "i hate that word",
+    "don't call it that 😭"
+  ]);
+
+  await wait(700);
+
+  await incoming([
+    "i hate that word"
+  ]);
+
+  await wait(1100);
+
+  await incoming([
     "...but yes"
   ]);
 
-  keepGoing();
+  storyPartTwo();
 }
 
 
-async function keepGoing() {
+async function ohBrother() {
 
   await incoming([
-    "anyway",
+    "SHUT UP 😭"
+  ]);
+
+  await wait(800);
+
+  await incoming([
+    "just listen"
+  ]);
+
+  storyPartTwo();
+}
+
+
+async function storyPartTwo() {
+
+  await incoming([
     "yesterday he disappeared for like 8 hours"
   ]);
 
-  await wait(300);
+  await wait(1100);
 
   await incoming([
-    "then came back at 1am",
-    "and texted me \"u up\""
+    "then texted me at 1am"
+  ]);
+
+  await wait(900);
+
+  await incoming([
+    "\"u up\""
   ]);
 
   setChoices([
@@ -1360,8 +1645,8 @@ async function keepGoing() {
       next: absolutelyNot
     },
     {
-      text: "8 hours isn't that crazy",
-      next: defendGuy
+      text: "8 hours isn't that bad",
+      next: defendHim
     },
     {
       text: "what did u say",
@@ -1374,63 +1659,87 @@ async function keepGoing() {
 async function absolutelyNot() {
 
   await incoming([
-    "THANK U",
-    "that's what i said"
+    "THANK U"
   ]);
 
-  await wait(300);
+  await wait(700);
 
   await incoming([
-    "well",
+    "that's what i thought too"
+  ]);
+
+  await wait(1200);
+
+  await incoming([
+    "well"
+  ]);
+
+  await wait(900);
+
+  await incoming([
     "that's what i THOUGHT"
   ]);
 
   setChoices([
     {
-      text: "oh no what did u actually say",
+      text: "girl what did u say",
       next: confession
     },
     {
-      text: "girl...",
+      text: "oh no 😭",
       next: confession
     }
   ]);
 }
 
 
-async function defendGuy() {
+async function defendHim() {
 
   await incoming([
-    "okay mina said that too",
-    "but it's not JUST the 8 hours"
+    "okay listen"
   ]);
 
-  await wait(300);
+  await wait(800);
 
   await incoming([
-    "he watched my story",
+    "normally i would agree"
+  ]);
+
+  await wait(1000);
+
+  await incoming([
+    "but he watched my story"
+  ]);
+
+  await wait(850);
+
+  await incoming([
     "during the 8 hours"
   ]);
 
   setChoices([
     {
       text: "OH nvm",
-      next: storyWatch
+      next: storyWatcher
     },
     {
-      text: "maybe he was busy",
+      text: "maybe he was busy 😭",
       next: stillDefending
     }
   ]);
 }
 
 
-async function storyWatch() {
+async function storyWatcher() {
 
   await incoming([
-    "EXACTLY",
-    "like hello??",
-    "ur phone clearly works"
+    "EXACTLY"
+  ]);
+
+  await wait(700);
+
+  await incoming([
+    "ur phone clearly works sir"
   ]);
 
   confession();
@@ -1440,17 +1749,22 @@ async function storyWatch() {
 async function stillDefending() {
 
   await incoming([
-    "why are u defending this man",
-    "u don't even know him 😭"
+    "why are u defending this man 😭"
+  ]);
+
+  await wait(900);
+
+  await incoming([
+    "u don't even know him"
   ]);
 
   setChoices([
     {
-      text: "im trying to be unbiased",
+      text: "im being unbiased",
       next: unbiased
     },
     {
-      text: "okay fine he's guilty",
+      text: "okay fine guilty",
       next: confession
     }
   ]);
@@ -1460,8 +1774,13 @@ async function stillDefending() {
 async function unbiased() {
 
   await incoming([
-    "okay fair",
-    "that's literally why i asked a stranger"
+    "okay fair"
+  ]);
+
+  await wait(900);
+
+  await incoming([
+    "that's literally why im asking a stranger"
   ]);
 
   confession();
@@ -1471,7 +1790,12 @@ async function unbiased() {
 async function whatDidYouSay() {
 
   await incoming([
-    "...",
+    "..."
+  ]);
+
+  await wait(1200);
+
+  await incoming([
     "that's the problem"
   ]);
 
@@ -1491,14 +1815,24 @@ async function whatDidYouSay() {
 async function confession() {
 
   await incoming([
-    "i said",
+    "i said"
+  ]);
+
+  await wait(1200);
+
+  await incoming([
     "\"yeah what's up\""
   ]);
 
-  await wait(500);
+  await wait(1600);
 
   await incoming([
-    "I KNOW",
+    "I KNOW"
+  ]);
+
+  await wait(700);
+
+  await incoming([
     "don't say anything"
   ]);
 
@@ -1508,11 +1842,11 @@ async function confession() {
       next: standUp
     },
     {
-      text: "LMAOOOO",
-      next: laughAtHer
+      text: "LMAOOOOO",
+      next: laughing
     },
     {
-      text: "honestly i would've replied too",
+      text: "ngl i would've replied too",
       next: relatable
     }
   ]);
@@ -1522,41 +1856,61 @@ async function confession() {
 async function standUp() {
 
   await incoming([
-    "I KNOWWW",
-    "leave me alone 😭"
+    "I KNOWWW 😭"
   ]);
 
-  nextProblem();
+  await wait(800);
+
+  await incoming([
+    "leave me alone"
+  ]);
+
+  tonight();
 }
 
 
-async function laughAtHer() {
+async function laughing() {
 
   await incoming([
-    "ur supposed to HELP ME",
-    "not laugh 😭"
+    "UR SUPPOSED TO HELP"
   ]);
 
-  nextProblem();
+  await wait(700);
+
+  await incoming([
+    "not laugh at me 😭"
+  ]);
+
+  tonight();
 }
 
 
 async function relatable() {
 
   await incoming([
-    "THANK U",
+    "THANK U"
+  ]);
+
+  await wait(800);
+
+  await incoming([
     "finally someone honest"
   ]);
 
-  nextProblem();
+  tonight();
 }
 
 
-async function nextProblem() {
+async function tonight() {
 
   await incoming([
-    "okay so now",
-    "he asked if i wanna see him tonight"
+    "anyway"
+  ]);
+
+  await wait(900);
+
+  await incoming([
+    "now he wants to see me tonight"
   ]);
 
   setChoices([
@@ -1565,12 +1919,12 @@ async function nextProblem() {
       next: dontGo
     },
     {
-      text: "go but act normal",
-      next: goNormal
+      text: "go if u want to",
+      next: goIfWant
     },
     {
       text: "do u actually like him",
-      next: likeHim
+      next: doYouLikeHim
     }
   ]);
 }
@@ -1579,7 +1933,12 @@ async function nextProblem() {
 async function dontGo() {
 
   await incoming([
-    "that's what my brain says",
+    "that's what my brain says"
+  ]);
+
+  await wait(1000);
+
+  await incoming([
     "unfortunately i am stupid"
   ]);
 
@@ -1589,45 +1948,60 @@ async function dontGo() {
       next: selfAware
     },
     {
-      text: "then why did u ask me 😭",
+      text: "then why ask me 😭",
       next: whyAsk
     }
   ]);
 }
 
 
-async function goNormal() {
+async function goIfWant() {
 
   await incoming([
-    "see",
-    "this is the answer i wanted"
+    "see"
+  ]);
+
+  await wait(700);
+
+  await incoming([
+    "that's the answer i wanted"
   ]);
 
   setChoices([
     {
-      text: "so u just wanted validation",
+      text: "so u wanted validation 😭",
       next: validation
     },
     {
-      text: "but don't act desperate",
+      text: "just don't act desperate",
       next: desperate
     }
   ]);
 }
 
 
-async function likeHim() {
+async function doYouLikeHim() {
 
   await incoming([
-    "...",
+    "..."
+  ]);
+
+  await wait(1400);
+
+  await incoming([
     "unfortunately"
   ]);
 
-  await wait(400);
+  await wait(1000);
 
   await incoming([
-    "yeah",
-    "a little too much probably"
+    "yeah"
+  ]);
+
+  await wait(900);
+
+  await incoming([
+    "probably more than i should"
   ]);
 
   setChoices([
@@ -1640,7 +2014,7 @@ async function likeHim() {
       next: cooked
     },
     {
-      text: "that's kinda cute tho",
+      text: "that's kinda cute",
       next: cute
     }
   ]);
@@ -1650,93 +2024,148 @@ async function likeHim() {
 async function selfAware() {
 
   await incoming([
-    "barely",
+    "barely"
+  ]);
+
+  await wait(700);
+
+  await incoming([
     "but yes"
   ]);
 
-  realAdvice();
+  seriousQuestion();
 }
 
 
 async function whyAsk() {
 
   await incoming([
-    "because maybe a stranger would magically fix me",
-    "apparently not"
+    "idk maybe a stranger would magically fix me"
   ]);
 
-  realAdvice();
+  await wait(900);
+
+  await incoming([
+    "apparently not 😭"
+  ]);
+
+  seriousQuestion();
 }
 
 
 async function validation() {
 
   await incoming([
-    "...maybe",
+    "..."
+  ]);
+
+  await wait(800);
+
+  await incoming([
+    "maybe"
+  ]);
+
+  await wait(700);
+
+  await incoming([
     "don't expose me"
   ]);
 
-  realAdvice();
+  seriousQuestion();
 }
 
 
 async function desperate() {
 
   await incoming([
-    "HELLO",
-    "i wasn't planning on it 😭",
+    "HELLO 😭"
+  ]);
+
+  await wait(750);
+
+  await incoming([
+    "i wasn't planning on it"
+  ]);
+
+  await wait(1100);
+
+  await incoming([
     "okay maybe i needed to hear that"
   ]);
 
-  realAdvice();
+  seriousQuestion();
 }
 
 
 async function communicate() {
 
   await incoming([
-    "ugh",
-    "the mature answer",
+    "ugh"
+  ]);
+
+  await wait(900);
+
+  await incoming([
+    "the mature answer"
+  ]);
+
+  await wait(700);
+
+  await incoming([
     "hate that"
   ]);
 
-  realAdvice();
+  seriousQuestion();
 }
 
 
 async function cooked() {
 
   await incoming([
-    "i KNOW",
+    "I KNOW"
+  ]);
+
+  await wait(750);
+
+  await incoming([
     "it's bad over here"
   ]);
 
-  realAdvice();
+  seriousQuestion();
 }
 
 
 async function cute() {
 
   await incoming([
-    "don't encourage me 😭",
+    "don't encourage me 😭"
+  ]);
+
+  await wait(800);
+
+  await incoming([
     "but thank u"
   ]);
 
-  realAdvice();
+  seriousQuestion();
 }
 
 
-async function realAdvice() {
+async function seriousQuestion() {
 
   await incoming([
-    "okay wait",
-    "fr though"
+    "okay fr though"
   ]);
 
-  await wait(350);
+  await wait(1100);
 
   await incoming([
-    "should i tell him it bothered me",
+    "should i tell him it bothered me"
+  ]);
+
+  await wait(900);
+
+  await incoming([
     "or is that doing too much"
   ]);
 
@@ -1746,12 +2175,12 @@ async function realAdvice() {
       next: tellHim
     },
     {
-      text: "wait and see what he does",
-      next: waitSee
+      text: "wait and see",
+      next: waitAndSee
     },
     {
       text: "depends what u want from him",
-      next: whatWant
+      next: whatDoYouWant
     }
   ]);
 }
@@ -1760,57 +2189,87 @@ async function realAdvice() {
 async function tellHim() {
 
   await incoming([
-    "yeah",
-    "ur probably right",
-    "i hate communicating"
+    "yeah"
   ]);
 
-  bond();
+  await wait(900);
+
+  await incoming([
+    "ur probably right"
+  ]);
+
+  await wait(800);
+
+  await incoming([
+    "i hate communicating 😭"
+  ]);
+
+  becomeFriends();
 }
 
 
-async function waitSee() {
+async function waitAndSee() {
 
   await incoming([
-    "that's kinda what i was thinking",
+    "that's kinda what i was thinking"
+  ]);
+
+  await wait(1000);
+
+  await incoming([
     "i don't wanna make it bigger than it is"
   ]);
 
-  bond();
+  becomeFriends();
 }
 
 
-async function whatWant() {
+async function whatDoYouWant() {
 
   await incoming([
-    "...",
-    "okay damn",
+    "..."
+  ]);
+
+  await wait(1500);
+
+  await incoming([
+    "damn"
+  ]);
+
+  await wait(900);
+
+  await incoming([
     "why is the random number asking the real questions"
   ]);
 
-  await wait(300);
+  await wait(1200);
 
   await incoming([
     "i think i want it to actually go somewhere"
   ]);
 
-  bond();
+  becomeFriends();
 }
 
 
-/* little friendship */
+/* introduction happens naturally */
 
-async function bond() {
+async function becomeFriends() {
 
   await incoming([
-    "anyway",
+    "anyway"
+  ]);
+
+  await wait(900);
+
+  await incoming([
     "thank u random person"
   ]);
 
   setChoices([
     {
       text: "ur welcome random person",
-      next: mutualStrangers
+      next: strangerSolidarity
     },
     {
       text: "that'll be $20",
@@ -1818,39 +2277,59 @@ async function bond() {
     },
     {
       text: "i need an update later",
-      next: updateLater
+      next: updateRequest
     }
   ]);
 }
 
 
-async function mutualStrangers() {
+async function strangerSolidarity() {
 
   await incoming([
-    "wait that's cute",
+    "wait that's kinda cute"
+  ]);
+
+  await wait(800);
+
+  await incoming([
     "random person solidarity"
   ]);
 
-  saveNumber();
+  introduceM();
 }
 
 
 async function invoice() {
 
   await incoming([
-    "LMAOOO",
-    "send the invoice to mina",
-    "she caused this"
+    "LMAOOOO"
   ]);
 
-  saveNumber();
+  await wait(700);
+
+  await incoming([
+    "absolutely not"
+  ]);
+
+  await wait(1000);
+
+  await incoming([
+    "but fr thank u"
+  ]);
+
+  introduceM();
 }
 
 
-async function updateLater() {
+async function updateRequest() {
 
   await incoming([
-    "WAIT",
+    "WAIT"
+  ]);
+
+  await wait(700);
+
+  await incoming([
     "u actually want an update??"
   ]);
 
@@ -1860,7 +2339,7 @@ async function updateLater() {
       next: invested
     },
     {
-      text: "obviously",
+      text: "obviously 😭",
       next: invested
     },
     {
@@ -1874,101 +2353,234 @@ async function updateLater() {
 async function invested() {
 
   await incoming([
-    "omg",
-    "okay fine",
+    "omg 😭"
+  ]);
+
+  await wait(750);
+
+  await incoming([
+    "okay fine"
+  ]);
+
+  await wait(800);
+
+  await incoming([
     "ur getting an update"
   ]);
 
-  saveNumber();
+  introduceM();
 }
 
 
 async function maybeUpdate() {
 
   await incoming([
-    "too late",
+    "too late"
+  ]);
+
+  await wait(800);
+
+  await incoming([
     "ur involved now"
   ]);
 
-  saveNumber();
+  introduceM();
 }
 
 
-async function saveNumber() {
+async function introduceM() {
 
   await incoming([
-    "wait",
-    "what do i save ur number as"
+    "wait"
   ]);
+
+  await wait(900);
+
+  await incoming([
+    "i can't keep calling u random person"
+  ]);
+
+  await wait(1100);
+
+  await incoming([
+    "u can call me m btw"
+  ]);
+
+  await wait(700);
+
+  contactDisplay = "M";
+
+  contactName.textContent =
+    "M";
+
+  contactCircle.textContent =
+    "M";
 
   setChoices([
     {
-      text: "wrong number",
-      next: savedWrongNumber
+      text: "m is suspicious",
+      next: suspiciousM
     },
     {
-      text: "free therapist",
-      next: savedTherapist
+      text: "okay m",
+      next: okayM
     },
     {
-      text: "none of ur business",
-      next: savedMystery
+      text: "im still calling u stranger",
+      next: stillStranger
     }
   ]);
 }
 
 
-async function savedWrongNumber() {
-
-  contactName.textContent =
-    "m";
+async function suspiciousM() {
 
   await incoming([
-    "boring",
-    "but okay 😭",
-    "ur officially wrong number"
+    "GOOD"
   ]);
 
-  finish();
+  await wait(700);
+
+  await incoming([
+    "stranger danger"
+  ]);
+
+  saveVisitor();
 }
 
 
-async function savedTherapist() {
-
-  contactName.textContent =
-    "m";
+async function okayM() {
 
   await incoming([
-    "FREE THERAPIST 😭",
-    "okay that's actually perfect",
+    "see"
+  ]);
+
+  await wait(700);
+
+  await incoming([
+    "we're basically friends now"
+  ]);
+
+  await wait(900);
+
+  await incoming([
+    "kinda"
+  ]);
+
+  saveVisitor();
+}
+
+
+async function stillStranger() {
+
+  await incoming([
+    "rude"
+  ]);
+
+  await wait(700);
+
+  await incoming([
+    "but fair"
+  ]);
+
+  saveVisitor();
+}
+
+
+async function saveVisitor() {
+
+  await incoming([
+    "what do i save u as"
+  ]);
+
+  setChoices([
+    {
+      text: "wrong number",
+      next: wrongNumberName
+    },
+    {
+      text: "free therapist",
+      next: therapistName
+    },
+    {
+      text: "none of ur business",
+      next: mysteryName
+    }
+  ]);
+}
+
+
+async function wrongNumberName() {
+
+  await incoming([
+    "boring 😭"
+  ]);
+
+  await wait(750);
+
+  await incoming([
+    "fine"
+  ]);
+
+  await wait(700);
+
+  await incoming([
+    "wrong number it is"
+  ]);
+
+  finalPart();
+}
+
+
+async function therapistName() {
+
+  await incoming([
+    "FREE THERAPIST 😭"
+  ]);
+
+  await wait(750);
+
+  await incoming([
+    "wait that's actually perfect"
+  ]);
+
+  await wait(700);
+
+  await incoming([
     "saved"
   ]);
 
-  finish();
+  finalPart();
 }
 
 
-async function savedMystery() {
-
-  contactName.textContent =
-    "m";
+async function mysteryName() {
 
   await incoming([
-    "okay mysterious",
+    "okay mysterious"
+  ]);
+
+  await wait(800);
+
+  await incoming([
     "i'll come up with something myself"
   ]);
 
-  finish();
+  finalPart();
 }
 
 
-async function finish() {
+async function finalPart() {
 
-  await wait(500);
+  await wait(1100);
 
   await incoming([
-    "anyway",
-    "i gotta go",
+    "okay i gotta go"
+  ]);
+
+  await wait(850);
+
+  await incoming([
     "wish me luck"
   ]);
 
@@ -1983,7 +2595,7 @@ async function finish() {
     },
     {
       text: "update me later",
-      next: finalUpdate
+      next: updateMe
     }
   ]);
 }
@@ -1991,13 +2603,13 @@ async function finish() {
 
 async function goodLuck() {
 
-  addMessage(
-    "good luck m",
-    "you"
-  );
+  await incoming([
+    "thank u stranger"
+  ]);
+
+  await wait(900);
 
   await incoming([
-    "thank u stranger",
     "talk later"
   ]);
 
@@ -2009,14 +2621,14 @@ async function goodLuck() {
 
 async function dontBeStupid() {
 
-  addMessage(
-    "don't do anything stupid",
-    "you"
-  );
+  await incoming([
+    "no promises 😭"
+  ]);
+
+  await wait(800);
 
   await incoming([
-    "no promises",
-    "bye 😭"
+    "bye"
   ]);
 
   endConversation(
@@ -2025,15 +2637,15 @@ async function dontBeStupid() {
 }
 
 
-async function finalUpdate() {
-
-  addMessage(
-    "update me later",
-    "you"
-  );
+async function updateMe() {
 
   await incoming([
-    "i will",
+    "i will"
+  ]);
+
+  await wait(900);
+
+  await incoming([
     "don't disappear"
   ]);
 
@@ -2043,12 +2655,15 @@ async function finalUpdate() {
 }
 
 
-/* early exit */
-
-async function earlyBye() {
+async function byeEarly() {
 
   await incoming([
-    "LMAO okay",
+    "LMAO okay"
+  ]);
+
+  await wait(800);
+
+  await incoming([
     "bye stranger"
   ]);
 
@@ -2062,8 +2677,7 @@ async function earlyBye() {
 
 function endConversation(text) {
 
-  contactStatus.textContent =
-    "offline";
+  typingLine.textContent = "";
 
   replyLabel.textContent =
     "conversation ended";
@@ -2073,35 +2687,39 @@ function endConversation(text) {
   const ending =
     document.createElement("div");
 
-  ending.className = "end-text";
-  ending.textContent = text;
+  ending.className =
+    "ending";
+
+  ending.textContent =
+    text;
 
   choices.appendChild(ending);
 
   const restart =
     document.createElement("button");
 
-  restart.className = "restart";
+  restart.className =
+    "restart";
+
   restart.textContent =
     "start over";
 
-  restart.addEventListener(
-    "click",
-    start
-  );
+  restart.onclick =
+    start;
 
   choices.appendChild(restart);
 }
 
 
-/* clock */
+/* phone clock */
 
 function updateClock() {
 
-  const now = new Date();
+  const now =
+    new Date();
 
   document.getElementById(
-    "phoneTime"
+    "clock"
   ).textContent =
     now.toLocaleTimeString(
       [],
@@ -2120,7 +2738,7 @@ setInterval(
 );
 
 
-/* start */
+/* go */
 
 start();
 
