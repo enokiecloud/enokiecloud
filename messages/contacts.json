@@ -1,10 +1,20 @@
 [
   {
-    "name": "mom",
+    "name": "3asians",
+    "type": "group",
+    "members": [
+      "jadabae",
+      "noemibae",
+      "kyle",
+      "kels"
+    ]
+  },
+  {
+    "name": "jadabae",
     "type": "person"
   },
   {
-    "name": "jada",
+    "name": "noemibae",
     "type": "person"
   },
   {
@@ -12,15 +22,16 @@
     "type": "person"
   },
   {
-    "name": "noemi",
+    "name": "lil sis ava",
     "type": "person"
   },
   {
-    "name": "hula 2 🌺",
-    "type": "group"
+    "name": "kiddo jas",
+    "type": "person"
   },
   {
-    "name": "school gc",
-    "type": "group"
+    "name": "mami",
+    "type": "person",
+    "note": "mom"
   }
 ]

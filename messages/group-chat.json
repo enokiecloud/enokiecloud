@@ -1,45 +1,59 @@
 {
-  "name": "hula 2 🌺",
+  "name": "3asians",
+  "members": [
+    "jadabae",
+    "noemibae",
+    "kyle",
+    "kels"
+  ],
   "messages": [
     {
-      "sender": "mia",
-      "text": "wait are we still meeting thursday"
+      "sender": "jadabae",
+      "text": "bro where are we eating"
     },
     {
-      "sender": "jules",
-      "text": "i can after 4"
+      "sender": "noemibae",
+      "text": "why do we ask this every time 😭"
     },
     {
-      "sender": "kels",
-      "text": "yess i can too!! i added the timeline to the doc btw"
-    },
-    {
-      "sender": "ana",
-      "text": "omg ty 😭"
-    },
-    {
-      "sender": "mia",
-      "text": "who still needs a topic"
-    },
-    {
-      "sender": "jules",
-      "text": "i think music + modern hula are still open"
+      "sender": "kyle",
+      "text": "because nobody ever picks"
     },
     {
       "sender": "kels",
-      "text": "yeah if no one claims them tonight i'll just send another msg tmrw lol"
+      "text": "okay everyone gets ONE suggestion and then we're spinning a wheel"
     },
     {
-      "sender": "ana",
-      "text": "sounds good"
+      "sender": "jadabae",
+      "text": "hotpot"
     },
     {
-      "sender": "jules",
-      "text": "also are we adding our sources in the same doc?"
+      "sender": "noemibae",
+      "text": "kbbq"
+    },
+    {
+      "sender": "kyle",
+      "text": "in n out"
     },
     {
       "sender": "kels",
-      "text": "yup! just use your tab so everything stays organized"
+      "text": "kyle be serious"
+    },
+    {
+      "sender": "kyle",
+      "text": "i am serious"
+    },
+    {
+      "sender": "jadabae",
+      "text": "remove him from the gc"
+    },
+    {
+      "sender": "noemibae",
+      "text": "LMFAOOOO"
+    },
+    {
+      "sender": "kels",
+      "text": "okay hotpot vs kbbq bc apparently democracy has limits"
     }
   ]
 }
