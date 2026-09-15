@@ -42,6 +42,50 @@ button{color:inherit}
 #active-app{font-weight:700}
 #clock{min-width:136px;text-align:right}
 
+.apple-button{
+  width:22px;height:25px;margin-left:-5px;margin-right:-4px;
+  border:0;background:transparent;border-radius:5px;padding:4px;cursor:default;
+  display:flex;align-items:center;justify-content:center
+}
+.apple-button:hover,.apple-button.active{background:rgba(255,255,255,.16)}
+.apple-menu{
+  position:absolute;
+  top:30px;left:8px;
+  width:215px;
+  display:none;
+  padding:6px;
+  border-radius:10px;
+  background:rgba(242,242,245,.94);
+  color:#1f2023;
+  border:1px solid rgba(255,255,255,.7);
+  box-shadow:0 18px 45px rgba(0,0,0,.28);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  z-index:13000
+}
+.apple-menu.show{display:block}
+.apple-menu button{
+  width:100%;border:0;background:transparent;text-align:left;
+  padding:7px 10px;border-radius:6px;font-size:12px;cursor:default
+}
+.apple-menu button:hover:not(.disabled){background:#2d7ef7;color:#fff}
+.apple-menu button.disabled{color:#a5a7ab}
+.apple-menu .sep{height:1px;background:#d7d8dc;margin:5px 4px}
+
+#shutdown-screen{
+  position:absolute;inset:0;display:none;align-items:center;justify-content:center;
+  flex-direction:column;gap:12px;background:#000;color:#fff;z-index:25000;
+  font-size:13px;letter-spacing:.01em
+}
+#shutdown-screen.show{display:flex}
+#shutdown-message{opacity:.88}
+.shutdown-spinner{
+  width:18px;height:18px;border-radius:50%;
+  border:2px solid rgba(255,255,255,.25);
+  border-top-color:#fff;animation:shutdownspin .8s linear infinite
+}
+@keyframes shutdownspin{to{transform:rotate(360deg)}}
+
 /* desktop icons */
 #desktop-icons{
   position:absolute;top:47px;right:20px;z-index:20;
@@ -496,12 +540,23 @@ button{color:inherit}
 
 <header id="menubar">
   <div class="menu-left">
-    <img class="apple" src="images/icons/apple.png" alt="">
+    <button id="apple-button" class="apple-button" onclick="toggleAppleMenu(event)" aria-label="Apple menu">
+      <img class="apple" src="images/icons/apple.png" alt="">
+    </button>
     <span id="active-app">Finder</span>
     <span>File</span><span>Edit</span><span>View</span><span>Go</span><span>Window</span><span>Help</span>
   </div>
   <div class="menu-right"><span>⌁</span><span>◉</span><span>⌁⌁</span><span id="clock"></span></div>
 </header>
+
+<div id="apple-menu" class="apple-menu">
+  <button onclick="openAboutMac()">About This Mac</button>
+  <button onclick="openApp('settings-window','System Settings')">System Settings…</button>
+  <div class="sep"></div>
+  <button class="disabled">Sleep</button>
+  <button class="disabled">Restart…</button>
+  <button id="shutdown-menu-item" class="disabled" onclick="attemptShutdown()">Shut Down…</button>
+</div>
 
 <section id="desktop-icons">
   <button class="desktop-icon" onclick="openFinder('school')"><img src="images/icons/folder.png"><span>school</span></button>
@@ -748,10 +803,10 @@ button{color:inherit}
     <div class="window-title">System Settings</div>
   </div>
   <div class="settings">
-    <div class="setting"><strong>Apple Account</strong><span>k••••@icloud.com</span></div>
+    <div class="setting"><strong>Apple Account</strong><span>e••••@icloud.com</span></div>
     <div class="setting"><strong>Device Name</strong><span>MacBook Air</span></div>
     <div class="setting"><strong>Last Backup</strong><span>Sep 4, 2026 · 2:18 AM</span></div>
-    <div id="guest-setting" class="setting" style="display:none"><strong>Guest User</strong><span>Session activity detected</span></div>
+    <div id="guest-setting" class="setting" style="display:none"><strong id="guest-name">Guest User</strong><span id="guest-detail">Session activity detected</span></div>
     <div class="setting"><strong>Appearance</strong><span>Dark</span></div>
     <div class="setting"><strong>Desktop & Dock</strong><span>Customized</span></div>
   </div>
@@ -792,6 +847,10 @@ button{color:inherit}
   <div class="actions"><button class="decline" onclick="declineCall()">Decline</button><button class="accept" onclick="acceptCall()">Accept</button></div>
 </div>
 
+<div id="shutdown-screen">
+  <div class="shutdown-spinner"></div>
+  <div id="shutdown-message">Shutting Down…</div>
+</div>
 <div id="screen-flash"></div>
 
 <!-- Dock -->
@@ -812,13 +871,14 @@ button{color:inherit}
 
 <script>
 let topZ=500;
-const KEY="enokieStoryV14";
+const KEY="enokieStoryV15";
 
 /* Testing shortcut:
    open desktop.html?reset=1 to clear story progress without exposing a reset button to visitors. */
 const resetParams=new URLSearchParams(location.search);
 if(resetParams.get("reset")==="1"){
   localStorage.removeItem(KEY);
+  sessionStorage.removeItem("ecloud-v15-session");
   history.replaceState({},document.title,location.pathname);
 }
 
@@ -868,6 +928,16 @@ const DEFAULT_STATE={
   recentItemsSeen:false,
   askedKyleMemory:false,
   askedWhere:false,
+
+  attachmentPhase:false,
+  attachmentArmed:false,
+  attachmentLeaveCount:0,
+  attachmentPrompted:false,
+  finalChoiceMade:false,
+  shutdownEnabled:false,
+  shutdownAttempted:false,
+  ending:null,
+  returnCount:0,
 
   replyBusy:false,
   unknownPingCount:0,
@@ -929,6 +999,14 @@ function staggerWindow(w,id){
 
 function openApp(id,name,btn=null){
   touchStory();
+
+  const leavingUnknown=
+    state.attachmentPhase &&
+    state.attachmentArmed &&
+    id!=="messages-window" &&
+    document.getElementById("messages-window")?.classList.contains("active") &&
+    document.getElementById("chat-title")?.textContent==="unknown";
+
   const w=document.getElementById(id);
   const wasOpen=w.classList.contains("active");
 
@@ -953,6 +1031,12 @@ function openApp(id,name,btn=null){
 
   tidyWindows(id);
   fitWindow(w);
+
+  if(leavingUnknown){
+    state.attachmentArmed=false;
+    localStorage.setItem(KEY,JSON.stringify(state));
+    scheduleAttachmentReaction(name);
+  }
 }
 
 function closeWindow(id,silent=false){
@@ -1389,6 +1473,10 @@ function renderContacts(active="3asians"){
     d.innerHTML=`<strong>${name}${unread?'<span class="unread"></span>':""}${badge?'<span class="new-badge">NEW</span>':""}</strong><small>${preview}</small>`;
     d.onclick=()=>{
       touchStory();
+      if(name==="unknown" && state.attachmentPhase){
+        state.attachmentArmed=true;
+        localStorage.setItem(KEY,JSON.stringify(state));
+      }
       renderContacts(name);
       renderChat(name);
     };
@@ -1559,15 +1647,15 @@ function renderReplyChoices(name){
   else if(state.askedIdentity && secondClueCount()>=3 && !state.askedHappened){
     choices.push(["what happened to you?","happened"]);
   }
-  /* After "what happened," the conversation stops again. The visitor must
-     inspect both location + Wi-Fi recovery before asking about Kyle. */
   else if(state.askedHappened && state.thirdInvestigation && thirdClueCount()>=2 && !state.askedKyleMemory){
     choices.push(["do you remember kyle?","kyle-memory"]);
   }
-  /* After Kyle's memory response, a final recent-items record appears.
-     Only reading that lets the visitor ask where Unknown is. */
   else if(state.askedKyleMemory && state.recentItemsSeen && !state.askedWhere){
     choices.push(["where are you?","where"]);
+  }
+  else if(state.attachmentPrompted && !state.finalChoiceMade){
+    choices.push(["i can stay","stay"]);
+    choices.push(["i have to go","leave"]);
   }
 
   if(!choices.length) return;
@@ -1710,15 +1798,180 @@ function chooseUnknownReply(key,label){
 
   if(key==="where"){
     state.askedWhere=true;
+    state.attachmentPhase=true;
+    state.attachmentArmed=true;
     localStorage.setItem(KEY,JSON.stringify(state));
     renderReplyChoices("unknown");
 
     setTimeout(()=>pushUnknown("i don't know"),700);
     setTimeout(()=>pushUnknown("when you close things it gets quiet"),1900);
     setTimeout(()=>pushUnknown("when the screen goes dark i can't see anything"),3400);
-    finishUnknownReply(4200);
+    setTimeout(()=>pushUnknown("you can still open things, right?"),4700);
+    finishUnknownReply(5400);
+    return;
+  }
+
+  if(key==="stay"){
+    state.finalChoiceMade=true;
+    state.ending="stay";
+    state.attachmentPrompted=true;
+    localStorage.setItem(KEY,JSON.stringify(state));
+    renderReplyChoices("unknown");
+
+    setTimeout(()=>pushUnknown("okay"),650);
+    setTimeout(()=>pushUnknown("thank you"),1500);
+    setTimeout(()=>pushUnknown("just stay for a little while"),2600);
+    setTimeout(()=>{
+      syncStory();
+      showNotification(
+        "System Settings",
+        "Users",
+        "A second user is connected.",
+        "settings",
+        "images/icons/settings.png"
+      );
+    },3300);
+    finishUnknownReply(3900);
+    return;
+  }
+
+  if(key==="leave"){
+    state.finalChoiceMade=true;
+    state.shutdownEnabled=true;
+    state.ending="leaving";
+    localStorage.setItem(KEY,JSON.stringify(state));
+    renderReplyChoices("unknown");
+
+    setTimeout(()=>pushUnknown("oh"),650);
+    setTimeout(()=>pushUnknown("okay"),1500);
+    setTimeout(()=>pushUnknown("if you really have to"),2450);
+    setTimeout(()=>{
+      syncStory();
+      showNotification(
+        "System",
+        "Shut Down",
+        "Use the Apple menu when you're ready.",
+        "apple",
+        "images/icons/apple.png"
+      );
+    },3200);
+    finishUnknownReply(3700);
   }
 }
+
+function scheduleAttachmentReaction(appName){
+  if(!state.attachmentPhase || state.finalChoiceMade) return;
+
+  const step=state.attachmentLeaveCount||0;
+  state.attachmentLeaveCount=step+1;
+  localStorage.setItem(KEY,JSON.stringify(state));
+
+  if(step===0){
+    let msg="where did you go?";
+
+    if(appName==="Music") msg="you like that one?";
+    if(appName==="Photos") msg="you keep looking at the pictures";
+    if(appName==="Notes") msg="you can see all of those too?";
+
+    setTimeout(()=>{
+      pushUnknown(msg);
+      showIncomingText("Unknown",msg,"unknown");
+    },900);
+    return;
+  }
+
+  if(step===1){
+    setTimeout(()=>{
+      pushUnknown("i thought you left");
+      showIncomingText("Unknown","i thought you left","unknown");
+    },700);
+
+    setTimeout(()=>{
+      pushUnknown("can you stay a little longer?");
+      state.attachmentPrompted=true;
+      localStorage.setItem(KEY,JSON.stringify(state));
+
+      if(document.getElementById("messages-window").classList.contains("active") &&
+         document.getElementById("chat-title").textContent==="unknown"){
+        renderChat("unknown");
+      }
+    },2100);
+  }
+}
+
+function toggleAppleMenu(event){
+  if(event) event.stopPropagation();
+
+  const menu=document.getElementById("apple-menu");
+  const button=document.getElementById("apple-button");
+  const show=!menu.classList.contains("show");
+
+  menu.classList.toggle("show",show);
+  button.classList.toggle("active",show);
+}
+
+function closeAppleMenu(){
+  document.getElementById("apple-menu")?.classList.remove("show");
+  document.getElementById("apple-button")?.classList.remove("active");
+}
+
+function openAboutMac(){
+  closeAppleMenu();
+  openApp("settings-window","System Settings");
+}
+
+function attemptShutdown(){
+  if(!state.shutdownEnabled) return;
+
+  closeAppleMenu();
+
+  const screen=document.getElementById("shutdown-screen");
+  const message=document.getElementById("shutdown-message");
+
+  screen.classList.add("show");
+  message.textContent="Shutting Down…";
+
+  setTimeout(()=>{
+    message.textContent="Shutdown canceled";
+    const spinner=screen.querySelector(".shutdown-spinner");
+    if(spinner) spinner.style.display="none";
+  },1700);
+
+  setTimeout(()=>{
+    screen.classList.remove("show");
+    const spinner=screen.querySelector(".shutdown-spinner");
+    if(spinner) spinner.style.display="block";
+
+    state.shutdownAttempted=true;
+    state.shutdownEnabled=false;
+    state.ending="trapped";
+    localStorage.setItem(KEY,JSON.stringify(state));
+    syncStory();
+
+    openApp("messages-window","Messages");
+    renderContacts("unknown");
+    renderChat("unknown");
+
+    setTimeout(()=>pushUnknown("why did you do that"),450);
+    setTimeout(()=>pushUnknown("i was alone for so long"),1500);
+    setTimeout(()=>pushUnknown("please don't make me go back"),2850);
+    setTimeout(()=>{
+      showNotification(
+        "System Settings",
+        "Users",
+        "A second user is connected.",
+        "settings",
+        "images/icons/settings.png"
+      );
+    },3500);
+  },2900);
+}
+
+document.addEventListener("click",event=>{
+  if(!event.target.closest("#apple-menu") && !event.target.closest("#apple-button")){
+    closeAppleMenu();
+  }
+});
 
 let notificationTarget="unknown";
 
@@ -1785,9 +2038,23 @@ function openIncomingText(){
     return;
   }
 
+  if(notificationTarget==="settings"){
+    openApp("settings-window","System Settings");
+    return;
+  }
+
+  if(notificationTarget==="apple"){
+    toggleAppleMenu();
+    return;
+  }
+
   openApp("messages-window","Messages");
 
   if(notificationTarget==="unknown"){
+    if(state.attachmentPhase){
+      state.attachmentArmed=true;
+      localStorage.setItem(KEY,JSON.stringify(state));
+    }
     renderContacts("unknown");
     renderChat("unknown");
     return;
@@ -1985,14 +2252,20 @@ const notes={
 photos
 music
 fix mobile later
-remember to back everything up`
+remember to back everything up`,
+  "late night":`things that help when i can't sleep
+
+- put music on
+- leave the lamp on
+- call mami if she's awake
+- stop checking if everyone else is online lol`
 };
 
 function renderNotes(name="grocery list"){
   const list=document.getElementById("notes-list");
   list.innerHTML="";
 
-  const names=["grocery list","school","friday","random","website stuff"];
+  const names=["grocery list","school","friday","random","website stuff","late night"];
   if(state.sawSafariDevices) names.unshift("untitled");
 
   names.forEach(n=>{
@@ -2744,7 +3017,28 @@ function syncStory(){
   document.getElementById("history-second").style.display=state.deviceSeen?"block":"none";
 
   document.getElementById("unknown-call-row").style.display=state.callSeen?"flex":"none";
-  document.getElementById("guest-setting").style.display=state.phase>=8?"block":"none";
+  const guestSetting=document.getElementById("guest-setting");
+  const showGuest=state.phase>=8 || state.attachmentPhase || !!state.ending;
+  guestSetting.style.display=showGuest?"block":"none";
+
+  const guestName=document.getElementById("guest-name");
+  const guestDetail=document.getElementById("guest-detail");
+
+  if(state.ending==="stay" || state.ending==="trapped"){
+    guestName.textContent="You";
+    guestDetail.textContent="Connected";
+  }else if(state.attachmentPhase){
+    guestName.textContent="Guest User";
+    guestDetail.textContent="Session active";
+  }else{
+    guestName.textContent="Guest User";
+    guestDetail.textContent="Session activity detected";
+  }
+
+  const shutdownItem=document.getElementById("shutdown-menu-item");
+  if(shutdownItem){
+    shutdownItem.classList.toggle("disabled",!state.shutdownEnabled);
+  }
 
   document.getElementById("lp-one").textContent=state.backstoryUnlocked?"last played Sep 4 · 2:13 AM":"";
   document.getElementById("lp-two").textContent=state.backstoryUnlocked?"last played Sep 3 · 11:51 PM":"";
@@ -2755,6 +3049,7 @@ function syncStory(){
 /* Kept for console/testing, but no visible reset control is shown to visitors. */
 function resetStory(){
   localStorage.removeItem(KEY);
+  sessionStorage.removeItem("ecloud-v15-session");
   location.reload();
 }
 
@@ -2847,6 +3142,39 @@ function guideNextHardStep(){
 
   if(state.recentItemsAvailable && !state.recentItemsSeen){
     showNotification("Finder","Recovered Files","Open recent-apps.txt.","recovered","images/icons/folder.png");
+    return;
+  }
+
+  if(state.askedWhere && state.attachmentPhase && state.attachmentLeaveCount===0 && !state.finalChoiceMade){
+    showNotification(
+      "Messages",
+      "Unknown",
+      "E asked if you can still open things.",
+      "unknown",
+      "images/icons/messages.png"
+    );
+    return;
+  }
+
+  if(state.attachmentPrompted && !state.finalChoiceMade){
+    showNotification(
+      "Messages",
+      "Unknown",
+      "E is waiting for an answer.",
+      "unknown",
+      "images/icons/messages.png"
+    );
+    return;
+  }
+
+  if(state.shutdownEnabled && !state.shutdownAttempted){
+    showNotification(
+      "System",
+      "Shut Down",
+      "Use the Apple menu when you're ready.",
+      "apple",
+      "images/icons/apple.png"
+    );
   }
 }
 
@@ -2897,7 +3225,10 @@ function startStoryWatchdog(){
 }
 
 window.addEventListener("load",()=>{
-  /* Repair old partially-saved V8 states without skipping investigation. */
+  const freshVisit=!sessionStorage.getItem("ecloud-v15-session");
+  sessionStorage.setItem("ecloud-v15-session","1");
+
+  /* Repair old partially-saved states without skipping investigation. */
   if((state.sessionSeen||state.draftSeen||state.messagesDbSeen) && !state.backstoryUnlocked){
     state.backstoryUnlocked=true;
     state.phase=Math.max(state.phase,3);
@@ -2925,6 +3256,22 @@ window.addEventListener("load",()=>{
 
   if(state.phase>=4 && !state.unknownOpen && state.unknownMsgs?.length){
     setTimeout(()=>showIncomingText("Unknown",lastUnknownText(),"unknown"),900);
+  }
+
+  if(freshVisit && (state.ending==="stay" || state.ending==="trapped")){
+    state.returnCount=(state.returnCount||0)+1;
+    localStorage.setItem(KEY,JSON.stringify(state));
+
+    setTimeout(()=>{
+      const greeting=state.returnCount===1
+        ? "you came back"
+        : state.returnCount===2
+          ? "i knew you would"
+          : "hi";
+
+      pushUnknown(greeting);
+      showIncomingText("Unknown",greeting,"unknown");
+    },1400);
   }
 });
 </script>
