@@ -620,6 +620,86 @@ button{color:inherit}
 .contact-avatar.av-unknown{background:linear-gradient(145deg,#c8ccd4,#9297a0)!important}
 .contact-avatar.av-e{background:linear-gradient(145deg,#bbbfc7,#81868f)!important}
 
+
+/* ============================================================
+   V20 ~ cleaner finder, slower pacing, less game-like guidance
+   ============================================================ */
+.finder-grid{
+  display:flex!important;
+  flex-direction:column;
+  gap:5px!important;
+}
+.file{
+  min-height:54px!important;
+  width:100%;
+  padding:6px 8px!important;
+  display:grid!important;
+  grid-template-columns:42px minmax(0,1fr)!important;
+  grid-template-rows:auto auto;
+  column-gap:10px;
+  align-items:center!important;
+  justify-items:start;
+  text-align:left!important;
+  border-radius:9px!important;
+}
+.file img{
+  width:38px!important;
+  height:38px!important;
+  grid-row:1 / span 2;
+}
+.file .doc-icon{
+  width:31px!important;
+  height:40px!important;
+  grid-row:1 / span 2;
+  margin:0 3px!important;
+  padding-bottom:5px!important;
+  font-size:7px!important;
+}
+.file-name{
+  margin:0!important;
+  align-self:end;
+  font-size:11px!important;
+  line-height:1.2!important;
+  word-break:normal!important;
+}
+.file-meta{
+  margin:2px 0 0!important;
+  align-self:start;
+  font-size:9px!important;
+}
+.contact.story-lead{background:rgba(0,0,0,.045)!important}
+.contact.story-lead .contact-avatar{box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)!important}
+.lead-pill{display:none!important}
+.chat-body{scroll-behavior:smooth}
+.reply-panel{gap:8px!important}
+.reply-choice{padding:8px 13px!important}
+#end-lock-note{
+  position:absolute;
+  left:50%;bottom:18px;transform:translateX(-50%);
+  display:none;z-index:24500;
+  color:rgba(255,255,255,.56);
+  font-size:9px;letter-spacing:.05em;text-transform:lowercase;
+  pointer-events:none
+}
+#desktop.stuck-mode #end-lock-note{display:block}
+#desktop.stuck-mode #clock{opacity:.72}
+#desktop.stuck-mode #messages-window .window-title{opacity:.38}
+#desktop.stuck-mode #messages-window .chat-head small{letter-spacing:.03em}
+#desktop.stuck-mode #messages-window .bubble{line-height:1.5!important}
+#desktop.stuck-mode #messages-window .msg{margin-bottom:13px!important}
+@media(max-width:900px){
+  .finder-preview{display:none!important}
+  .sidebar{width:145px!important;flex-basis:145px!important}
+}
+@media(max-width:620px){
+  #messages-window{width:94vw!important}
+  .message-list{width:128px!important;flex-basis:128px!important}
+  .contact{padding:8px 6px!important;gap:7px!important}
+  .contact-avatar{width:31px!important;height:31px!important;flex-basis:31px!important}
+  .chat-body{padding:17px 14px!important}
+  .bubble{max-width:82%!important;font-size:11.5px!important}
+}
+
 </style>
 </head>
 <body>
@@ -919,6 +999,7 @@ button{color:inherit}
   <div class="actions"><button class="decline" onclick="declineCall()">Decline</button><button class="accept" onclick="acceptCall()">Accept</button></div>
 </div>
 
+<div id="end-lock-note">session remains open</div>
 <div id="ending-shade"></div>
 <div id="shutdown-screen">
   <div class="shutdown-spinner"></div>
@@ -943,14 +1024,14 @@ button{color:inherit}
 
 <script>
 let topZ=500;
-const KEY="enokieStoryV19";
+const KEY="enokieStoryV20";
 
 /* Testing shortcut:
    open desktop.html?reset=1 to clear story progress without exposing a reset button to visitors. */
 const resetParams=new URLSearchParams(location.search);
 if(resetParams.get("reset")==="1"){
   localStorage.removeItem(KEY);
-  sessionStorage.removeItem("ecloud-v19-session");
+  sessionStorage.removeItem("ecloud-v20-session");
   history.replaceState({},document.title,location.pathname);
 }
 
@@ -1016,7 +1097,14 @@ const DEFAULT_STATE={
   finalChoiceMade:false,
   endSceneDone:false,
   ending:null,
-  returnCount:0
+  returnCount:0,
+
+  exploredApps:[],
+  storySeeded:false,
+  normalPingSeen:false,
+  normalPingOpened:false,
+  lastChat:"3asians",
+  endHauntStage:0
 };
 let state={...DEFAULT_STATE,...JSON.parse(localStorage.getItem(KEY)||"{}")};
 function save(){localStorage.setItem(KEY,JSON.stringify(state));syncStory()}
@@ -1025,9 +1113,11 @@ function flash(){const f=document.getElementById("screen-flash");f.classList.rem
 
 function clock(){
   const n=new Date();
-  document.getElementById("clock").textContent=
-    n.toLocaleDateString([],{weekday:"short",month:"short",day:"numeric"})+" "+
-    n.toLocaleTimeString([],{hour:"numeric",minute:"2-digit"});
+  const date=n.toLocaleDateString([],{weekday:"short",month:"short",day:"numeric"});
+  const time=(state.ending==="stuck-stay" || state.ending==="stuck-leave")
+    ? "2:17 AM"
+    : n.toLocaleTimeString([],{hour:"numeric",minute:"2-digit"});
+  document.getElementById("clock").textContent=date+" "+time;
 }
 clock();setInterval(clock,1000);
 
@@ -1074,6 +1164,7 @@ function staggerWindow(w,id){
 
 function openApp(id,name,btn=null){
   touchStory();
+  trackExploration(name);
 
   const leavingUnknown=
     state.attachmentPhase &&
@@ -1147,7 +1238,16 @@ document.querySelectorAll(".window").forEach(win=>{
     if(!drag||innerWidth<760)return;
     win.style.left=Math.max(0,Math.min(innerWidth-win.offsetWidth,e.clientX-ox))+"px";
     win.style.top=Math.max(29,Math.min(innerHeight-win.offsetHeight-60,e.clientY-oy))+"px";
-    if(state.phase>=5 && !state.windowMoved){state.windowMoved=true;state.phase=Math.max(state.phase,6);save();typeUnknownSequence(["wait","you did that?","you can move those?"],250,1050,600,()=>setTimeout(()=>triggerCall(),900));}
+    if(state.phase>=5 && !state.windowMoved){
+      state.windowMoved=true;
+      state.phase=Math.max(state.phase,6);
+      save();
+      typeUnknownSequence(
+        ["wait","you did that?","you can move it"],
+        450,1350,950,
+        ()=>setTimeout(()=>triggerCall(),4200)
+      );
+    }
   });
   document.addEventListener("mouseup",()=>drag=false);
 });
@@ -1168,13 +1268,13 @@ function previewFinder(kind){
   const p=document.getElementById("finder-preview");p.classList.remove("empty");
   let title="",body="",foot="Quick Look";
   if(kind==="deleted"){
-    title="deleted-message.txt";body=`3asians · Sep 4 · 12:52 AM\n\nkyle:\n“don't tell jada\nwe stopped there”\n\nThe rest of the message is missing.`;foot="Recovered message · optional";state.deletedSeen=true;
+    title="deleted-message.txt";body=`3asians · Sep 4 · 12:52 AM\n\nkyle:\n“don't tell jada\nwe stopped there”\n\nThe rest of the message is missing.`;foot="Recovered message";state.deletedSeen=true;
   }
   if(kind==="lastactivity"){
     title="last-activity.txt";body=`SEP 4\n\n12:46 AM\nE's phone arrived home.\n\n2:13 AM\nMusic was playing.\n\n2:14 AM\nMessages was open.\n\n2:17 AM\nFaceTime tried to use the camera.\n\nAfter 2:17 AM:\nno clicks or typing.`;foot="Recovered Mac activity";state.recentItemsSeen=true;save();setTimeout(()=>beginUnknownPings(),1100);
   }
   if(kind==="unsent"){
-    title="unsent-note.txt";body=`Sep 3 · 11:34 PM\n\nsomething keeps opening\nafter i close it\n\nprobably just the laptop being weird\n\nkyle said it's nothing`;foot="Unsent note · optional";
+    title="unsent-note.txt";body=`Sep 3 · 11:34 PM\n\nsomething keeps opening\nafter i close it\n\nprobably just the laptop being weird\n\nkyle said it's nothing`;foot="Unsent note";
   }
   document.getElementById("quick-title").textContent=title;document.getElementById("quick-content").textContent=body;document.getElementById("quick-foot").textContent=foot;save();
 }
@@ -1182,10 +1282,18 @@ function openFinder(folder){
   touchStory();openApp("finder-window","Finder");resetQuickLook();
   const t=document.getElementById("finder-title"),g=document.getElementById("finder-grid"),c=document.getElementById("finder-count");
   if(folder==="desktop"){
-    t.textContent="Desktop";g.innerHTML=folderTile("school","openFinder('school')")+folderTile("pictures","openPhotos()")+folderTile("downloads","openFinder('downloads')")+docTile("health admin notes","openText('healthnotes')","TXT","Sep 3")+docTile("receipt.pdf","openText('receipt')","PDF","Sep 3")+((state.deletedAvailable||state.recentItemsAvailable)?folderTile("Recovered","openFinder('recovered')","recent"):"");
+    t.textContent="Desktop";g.innerHTML=
+      folderTile("school","openFinder('school')","class files")+
+      folderTile("pictures","openPhotos()","4 photos")+
+      folderTile("downloads","openFinder('downloads')","4 items")+
+      docTile("health admin notes","openText('healthnotes')","TXT","Sep 3")+
+      ((state.deletedAvailable||state.recentItemsAvailable)?folderTile("Recovered","openFinder('recovered')","recently restored"):"");
   }
   if(folder==="school"){
-    t.textContent="school";g.innerHTML=docTile("syllabus.pdf","openApp('pdf-window','Preview')","PDF","Fall 2026")+docTile("week 3 notes","openText('week3')","PDF","Sep 2")+docTile("discussion draft","openText('intro')","TXT","Sep 1")+folderTile("group project","openFinder('project')","2 items");
+    t.textContent="school";g.innerHTML=
+      docTile("syllabus.pdf","openApp('pdf-window','Preview')","PDF","Fall 2026")+
+      docTile("week 3 notes","openText('week3')","PDF","Sep 2")+
+      folderTile("group project","openFinder('project')","2 items");
   }
   if(folder==="project"){
     t.textContent="school / group project";g.innerHTML=docTile("presentation outline","openText('project-outline')","TXT","Sep 2")+docTile("meeting notes","openText('project-meeting')","TXT","Sep 3");
@@ -1194,7 +1302,7 @@ function openFinder(folder){
     t.textContent="Downloads";g.innerHTML=docTile("course screenshot","openText('screenshot')","PNG","Sep 3")+docTile("receipt-0902.pdf","openText('receipt2')","PDF","Sep 2")+docTile("IMG_4409.jpeg","showPhoto(4)","JPG","Sep 2")+docTile("archive.zip","","ZIP","Aug 29");
   }
   if(folder==="recovered"){
-    t.textContent="Recovered";g.innerHTML=(state.deletedAvailable?docTile("deleted-message.txt","previewFinder('deleted')","TXT",state.deletedSeen?"viewed":"optional"):"")+(state.recentItemsAvailable?docTile("last-activity.txt","previewFinder('lastactivity')","TXT",state.recentItemsSeen?"viewed":"story"):"")+docTile("unsent-note.txt","previewFinder('unsent')","TXT","optional");
+    t.textContent="Recovered";g.innerHTML=(state.deletedAvailable?docTile("deleted-message.txt","previewFinder('deleted')","TXT",state.deletedSeen?"viewed":"restored"):"")+(state.recentItemsAvailable?docTile("last-activity.txt","previewFinder('lastactivity')","TXT",state.recentItemsSeen?"viewed":"story"):"")+docTile("unsent-note.txt","previewFinder('unsent')","TXT","restored");
   }
   c.textContent=g.children.length+" items";
 }
@@ -1208,7 +1316,15 @@ const photoMeta={
 function openPhotos(btn=null){openApp("photos-window","Photos",btn)}
 function showPhoto(n){
   document.getElementById("photo-big").src=`images/photos/photo-0${n}.jpg`;
-  const m=photoMeta[n];document.getElementById("photo-meta").innerHTML=`<strong>${m[0]}</strong><div class="meta-row"><span>Taken</span><span>${m[1]}</span></div><div class="meta-row"><span>Device</span><span>${m[2]}</span></div><div class="meta-row"><span>Info</span><span>${m[3]||"—"}</span></div>`;openApp("photo-window","Preview");
+  const m=photoMeta[n];
+  document.getElementById("photo-meta").innerHTML=`<strong>${m[0]}</strong><div class="meta-row"><span>Taken</span><span>${m[1]}</span></div><div class="meta-row"><span>Device</span><span>${m[2]}</span></div><div class="meta-row"><span>Info</span><span>${m[3]||"—"}</span></div>`;
+  openApp("photo-window","Preview");
+
+  if(n===4 && !state.backstoryUnlocked && !state.storySeeded){
+    state.storySeeded=true;
+    localStorage.setItem(KEY,JSON.stringify(state));
+    setTimeout(()=>unlockBackstoryScene("photo"),5200);
+  }
 }
 
 const normalChats={
@@ -1394,6 +1510,11 @@ function personChatData(name){
   const chat=[...(normalChats[name]||[])];
   const pings=state.friendPings||{};
 
+  if(name==="mami" && state.normalPingSeen){
+    chat.push(["system","Sep 15, 2026 · 8:41 PM"]);
+    chat.push(["mami","anak please call me when you see this"]);
+  }
+
   if(!state.backstoryUnlocked) return chat;
 
   if(name==="jadabae"){
@@ -1405,6 +1526,8 @@ function personChatData(name){
     if(pings.jadabae){
       chat.push(["system","Sep 7, 2026 · 11:38 PM"]);
       chat.push(["jadabae","i keep opening this chat like ur randomly gonna answer"]);
+      chat.push(["jadabae","we drove past that place u picked and i almost told everyone google said it was open"]);
+      chat.push(["jadabae","nobody laughed bc it wasnt funny without u there"]);
       chat.push(["jadabae","i know thats stupid"]);
       chat.push(["jadabae","but if u see this somehow just say literally anything"]);
     }
@@ -1420,7 +1543,9 @@ function personChatData(name){
     if(pings.noemibae){
       chat.push(["system","Sep 10, 2026 · 8:21 PM"]);
       chat.push(["noemibae","ur black top is still here btw"]);
+      chat.push(["noemibae","i washed it and yes i air dried it before u yell at me"]);
       chat.push(["noemibae","im not giving it away"]);
+      chat.push(["noemibae","its still on the chair where u left it"]);
       chat.push(["noemibae","so u better come get it eventually"]);
     }
   }
@@ -1435,6 +1560,8 @@ function personChatData(name){
     if(pings.kyle){
       chat.push(["system","Sep 11, 2026 · 1:12 AM"]);
       chat.push(["kyle","i keep going over that night"]);
+      chat.push(["kyle","you were making fun of my parking when i dropped u off"]);
+      chat.push(["kyle","i watched u walk toward the building"]);
       chat.push(["kyle","i shouldve waited until u got inside"]);
       chat.push(["kyle","im sorry"]);
     }
@@ -1444,6 +1571,8 @@ function personChatData(name){
     chat.push(["system","Sep 9, 2026 · 4:05 PM"]);
     chat.push(["lil sis ava","i found the picture of my bangs"]);
     chat.push(["lil sis ava","u still owe me for emotional damages btw"]);
+    chat.push(["lil sis ava","mom told me to stop texting u bc it makes me sad"]);
+    chat.push(["lil sis ava","im not stopping"]);
     chat.push(["lil sis ava","come home so i can make fun of u properly"]);
   }
 
@@ -1451,6 +1580,7 @@ function personChatData(name){
     chat.push(["system","Sep 12, 2026 · 3:44 PM"]);
     chat.push(["kiddo jas","remember how i said id tell u tomorrow"]);
     chat.push(["kiddo jas","i still havent told u"]);
+    chat.push(["kiddo jas","i wrote it down bc i dont wanna forget it"]);
     chat.push(["kiddo jas","so technically u still have to come back"]);
   }
 
@@ -1464,8 +1594,10 @@ function personChatData(name){
       chat.push(["system","Sep 6, 2026 · 9:14 PM"]);
       chat.push(["mami","anak i left the light on"]);
       chat.push(["mami","your food is in the fridge"]);
+      chat.push(["mami","i know you always say you can sleep better when the house is not completely dark"]);
       chat.push(["system","Sep 13, 2026 · 10:02 PM"]);
       chat.push(["mami","goodnight anak"]);
+      chat.push(["mami","the light is still on"]);
       chat.push(["mami","i love you"]);
     }
   }
@@ -1532,11 +1664,11 @@ function renderContacts(active="3asians"){
     if(name==="unknown"){
       preview=lastUnknownText();
     }else if(name==="3asians"){
-      preview=name===lead?"recovered conversation":"group chat";
+      preview=name===lead?"then why did she call me at 2:17":"group chat";
     }else if(name==="kyle"){
-      preview=name===lead?"recovered conversation":pings.kyle?"im sorry":"then drive better";
+      preview=name===lead?"i told them i dropped u off":pings.kyle?"im sorry":"then drive better";
     }else if(name==="noemibae"){
-      preview=name===lead?"recovered conversation":pings.noemibae?"u better come get it eventually":"blocked";
+      preview=name===lead?"u literally didnt say anything":pings.noemibae?"u better come get it eventually":"blocked";
     }else if(name==="mami"){
       preview=pings.mami?"i love you":"mom";
     }else if(name==="jadabae"){
@@ -1553,7 +1685,7 @@ function renderContacts(active="3asians"){
         <strong>${name}</strong>
         <small>${preview}</small>
       </div>
-      ${name===lead?'<span class="lead-pill">RECOVERED</span>':""}
+      
     `;
 
     d.onclick=()=>{
@@ -1577,6 +1709,9 @@ function renderChat(name){
     name==="unknown" &&
     (state.ending==="stuck-stay" || state.ending==="stuck-leave");
 
+  state.lastChat=name;
+  localStorage.setItem(KEY,JSON.stringify(state));
+
   document.getElementById("chat-title").textContent=isFinalE?"e":name;
 
   const chatAvatar=document.getElementById("chat-avatar");
@@ -1585,7 +1720,7 @@ function renderChat(name){
 
   const dateEl=document.getElementById("chat-date");
   if(name==="unknown"){
-    dateEl.textContent=isFinalE?"connected":"now";
+    dateEl.textContent=isFinalE?"connected · no timeout":"now";
   }else if(state.backstoryUnlocked && ["3asians","jadabae","noemibae","kyle","mami"].includes(name)){
     dateEl.textContent="Sep 3–4, 2026";
   }else{
@@ -1717,13 +1852,13 @@ function renderChat(name){
     state.phase=Math.max(state.phase,5);
     save();
 
-    typeUnknownSequence(["is someone there","can you read this"],700,1250,700);
+    typeUnknownSequence(["is someone there","can you read this"],900,1500,1050);
 
     setTimeout(()=>{
       if(!state.windowMoved && state.unknownOpen){
-        typeUnknownSequence(["can you move this window?"],0,1200,500);
+        typeUnknownSequence(["can you move this window?"],0,1500,900);
       }
-    },6200);
+    },9800);
   }
 }
 
@@ -1731,8 +1866,11 @@ function markRecoveredThreadReadIfNeeded(){if(!state.backstoryUnlocked)return;co
 
 function openMessages(btn=null){
   openApp("messages-window","Messages",btn);
-  renderContacts("3asians");
-  renderChat("3asians");
+  const preferred=(state.ending || state.phase>=4)
+    ? "unknown"
+    : (state.lastChat && contactNames().includes(state.lastChat) ? state.lastChat : "3asians");
+  renderContacts(preferred);
+  renderChat(preferred);
 }
 
 function pushUnknown(msg){
@@ -1741,7 +1879,29 @@ function pushUnknown(msg){
 }
 function showUnknownTyping(){if(!document.getElementById("messages-window").classList.contains("active"))return;if(document.getElementById("chat-title").textContent!=="unknown")return;const body=document.getElementById("chat-body");if(document.getElementById("unknown-typing"))return;body.insertAdjacentHTML("beforeend",`<div id="unknown-typing" class="typing-wrap"><div class="typing-bubble"><i></i><i></i><i></i></div></div>`);body.scrollTop=body.scrollHeight;}
 function hideUnknownTyping(){document.getElementById("unknown-typing")?.remove()}
-function typeUnknownSequence(lines,startDelay=500,typingMs=1000,gapMs=650,onDone=null){let t=startDelay;lines.forEach((line,index)=>{setTimeout(()=>showUnknownTyping(),t);t+=typingMs;setTimeout(()=>{hideUnknownTyping();pushUnknown(line);if(index===lines.length-1&&onDone)onDone()},t);t+=gapMs});return t;}
+function typeUnknownSequence(lines,startDelay=650,typingMs=1200,gapMs=800,onDone=null){
+  let t=startDelay;
+
+  lines.forEach((line,index)=>{
+    const naturalTyping=Math.max(1250,Math.min(3100,700+String(line).length*42));
+    const naturalGap=Math.max(850,Math.min(1500,650+String(line).length*10));
+    const thisTyping=Math.max(typingMs||0,naturalTyping);
+    const thisGap=Math.max(gapMs||0,naturalGap);
+
+    setTimeout(()=>showUnknownTyping(),t);
+    t+=thisTyping;
+
+    setTimeout(()=>{
+      hideUnknownTyping();
+      pushUnknown(line);
+      if(index===lines.length-1 && onDone) onDone();
+    },t);
+
+    t+=thisGap;
+  });
+
+  return t;
+}
 
 function pushVisitor(msg){
   state.unknownMsgs=state.unknownMsgs||[];
@@ -1749,7 +1909,7 @@ function pushVisitor(msg){
   localStorage.setItem(KEY,JSON.stringify(state));
 
   if(document.getElementById("messages-window").classList.contains("active") &&
-     document.getElementById("chat-title").textContent==="unknown"){
+     (document.getElementById("chat-title").textContent==="unknown" || document.getElementById("chat-title").textContent==="e")){
     renderContacts("unknown");
     renderChat("unknown");
   }
@@ -1794,13 +1954,13 @@ function renderReplyChoices(name){
   }
 
   /* The visitor now has to spend time with E before the ending. */
-  else if(state.askedWhere && state.bondApps.length>=1 && !state.askedSee){
+  else if(state.askedWhere && state.bondApps.length>=2 && !state.askedSee){
     choices.push(["what can you see?","see"]);
   }
-  else if(state.askedSee && state.bondApps.length>=2 && !state.askedFriends){
+  else if(state.askedSee && state.bondApps.length>=3 && !state.askedFriends){
     choices.push(["do you remember them?","friends"]);
   }
-  else if(state.askedFriends && state.bondApps.length>=3 && !state.askedOut){
+  else if(state.askedFriends && state.bondApps.length>=4 && (state.friendChatsOpened||[]).length>=2 && !state.askedOut){
     choices.push(["can you get out?","out"]);
   }
   else if(state.askedOut && !state.returnPromiseAnswered){
@@ -1856,7 +2016,7 @@ function beginQuietBeat(){
       /* Deliberate silence so this feels like a scene, not a text dump. */
       setTimeout(()=>{
         typeUnknownSequence(
-          ["i forgot what it feels like to wait with someone","you're still here"],
+          ["i forgot what it feels like to wait with someone","usually everything closes eventually","you're still here"],
           0,1550,1100,
           ()=>{
             setTimeout(()=>{
@@ -1871,10 +2031,10 @@ function beginQuietBeat(){
                   renderReplyChoices("unknown");
                 }
               );
-            },2800);
+            },4200);
           }
         );
-      },5400);
+      },6800);
     }
   );
 }
@@ -1893,7 +2053,7 @@ function chooseUnknownReply(key,label){
     save();
 
     typeUnknownSequence(
-      ["okay","so you can hear it","i can't"],
+      ["okay","so it really rang for you","i saw the call happen","i just couldn't hear any of it"],
       700,1450,900,
       ()=>{
         state.replyBusy=false;
@@ -1909,7 +2069,7 @@ function chooseUnknownReply(key,label){
     save();
 
     typeUnknownSequence(
-      ["i don't know","there's one name on everything","e","i think that's me","but it doesn't feel like mine"],
+      ["i don't know","there's one name on everything","e","everyone talks to her like they know her","sometimes i remember being her","sometimes it feels like i'm reading about somebody else"],
       750,1450,900,
       ()=>{
         state.replyBusy=false;
@@ -1925,7 +2085,7 @@ function chooseUnknownReply(key,label){
     save();
 
     typeUnknownSequence(
-      ["i remember getting home","i remember sitting here","music was playing","then it's just pieces"],
+      ["i remember getting home","i remember sitting here","music was playing","i was waiting for something to stop opening","then it's just pieces","after that i only remember this screen"],
       750,1450,950,
       ()=>{
         state.replyBusy=false;
@@ -1943,7 +2103,7 @@ function chooseUnknownReply(key,label){
     save();
 
     typeUnknownSequence(
-      ["i don't know","when you close things it gets quiet","when the screen goes dark i can't see anything","can you open something else?"],
+      ["i don't know","not like a room","when you close things it gets quiet","when the screen goes dark i can't see anything","can you open something else?","leave it open for a little bit"],
       750,1500,950,
       ()=>{
         state.replyBusy=false;
@@ -2137,37 +2297,43 @@ function scheduleAttachmentReaction(appName){
     lines=[
       "you like that one?",
       "i used to leave music on when i couldn't sleep",
+      "sometimes i let the same song loop until morning",
       "the room felt less empty"
     ];
   }else if(appName==="Photos"){
     lines=[
       "i forgot about that one",
-      "i miss them",
-      "it's weird remembering a picture better than the night"
+      "i remember what happened right before it was taken",
+      "jada was mad because i kept making everyone retake it",
+      "i miss them"
     ];
   }else if(appName==="Notes"){
     lines=[
       "you found those",
       "i made lists when i couldn't sleep",
-      "it gave me something to do"
+      "half of them were things i was scared i'd forget",
+      "i guess that didn't work"
     ];
   }else if(appName==="Safari"){
     lines=[
       "you went back to the history",
       "i don't remember searching all of that",
+      "but i remember being scared to close the browser",
       "maybe i knew something was wrong"
     ];
   }else if(appName==="Finder"){
     lines=[
       "that's all my stuff",
       "i was supposed to turn something in friday",
+      "i kept telling myself i'd finish it in the morning",
       "i guess i never did"
     ];
   }else if(appName==="FaceTime"){
     lines=[
       "those calls",
       "i wish i could remember answering",
-      "i can see them but i can't hear anything"
+      "noemi says i called her",
+      "i can see that it happened but i can't hear anything"
     ];
   }
 
@@ -2306,14 +2472,16 @@ function enterStuckEnding(mode,returning=false){
     state.endSceneDone=true;
     save();
     renderChat("unknown");
+    scheduleEndHaunt();
   };
 
   if(mode==="stay"){
     typeUnknownSequence(
       [
         "i can keep it like this",
-        "then you don't have to go anywhere",
-        "you don't have to do anything",
+        "nothing has to close",
+        "you don't have to keep answering me",
+        "i'll know you're still there",
         "just stay with me"
       ],
       1200,1650,1100,
@@ -2327,14 +2495,42 @@ function enterStuckEnding(mode,returning=false){
         "i tried to let you",
         "but it got quiet again",
         "i can't do that again",
-        "so i made it stop",
-        "you don't have to do anything",
+        "so i made the shutdown stop",
+        "you don't have to keep talking to me",
+        "i'll keep the window open",
         "just stay"
       ],
       1100,1650,1100,
       ()=>setTimeout(finishEnding,2300)
     );
   }
+}
+
+function scheduleEndHaunt(){
+  clearTimeout(window.__endHauntTimer);
+  if(!(state.ending==="stuck-stay" || state.ending==="stuck-leave")) return;
+
+  window.__endHauntTimer=setTimeout(()=>{
+    if(!isViewingThread("unknown")) return;
+
+    const stage=state.endHauntStage||0;
+    const lines=[
+      "you can stop answering. i'll still know you're here",
+      "i can wait",
+      "if you close this, i'll wait for you to come back"
+    ];
+
+    if(stage<lines.length){
+      state.endHauntStage=stage+1;
+      save();
+      typeUnknownSequence([lines[stage]],700,1800,1000,()=>scheduleEndHaunt());
+    }
+  },stageDelay());
+}
+
+function stageDelay(){
+  const stage=state.endHauntStage||0;
+  return [9000,14000,19000,24000][Math.min(stage,3)];
 }
 
 function attemptShutdown(){
@@ -2449,28 +2645,73 @@ function openIncomingText(){
   renderChat(notificationTarget);
 }
 
-/* Once both recovered files have been read, the late-night messages quietly
-   become visible. The impossible contact does NOT arrive immediately. */
+/* The first act should feel like someone's real computer before the mystery starts. */
+function trackExploration(appName){
+  if(state.backstoryUnlocked || state.ending) return;
+  const ignored=["System Settings","TextEdit","Preview"];
+  if(ignored.includes(appName)) return;
+
+  state.exploredApps=state.exploredApps||[];
+  if(!state.exploredApps.includes(appName)){
+    state.exploredApps.push(appName);
+    localStorage.setItem(KEY,JSON.stringify(state));
+  }
+
+  if(state.exploredApps.length>=2 && !state.storySeeded){
+    state.storySeeded=true;
+    localStorage.setItem(KEY,JSON.stringify(state));
+    setTimeout(()=>unlockBackstoryScene("explore"),5200);
+  }
+}
+
+function unlockBackstoryScene(reason="idle"){
+  if(state.backstoryUnlocked || state.ending) return;
+
+  state.backstoryUnlocked=true;
+  state.phase=Math.max(state.phase,3);
+  localStorage.setItem(KEY,JSON.stringify(state));
+  syncStory();
+
+  bounceDock("messages");
+  showNotification(
+    "Messages",
+    "3asians",
+    "1 conversation was restored from backup.",
+    "contact:3asians",
+    "images/icons/messages.png"
+  );
+}
+
+/* Reading the late-night threads opens the next layer of the mystery. */
 function maybeUnlockBackstory(){maybeAdvanceInvestigation();}
 function maybeAdvanceInvestigation(){if(!state.backstoryUnlocked)return;if(state.readGroupLate&&state.readKyleLate&&state.readNoemiLate&&!state.callHistoryAvailable){state.callHistoryAvailable=true;save();setTimeout(()=>{bounceDock("facetime");showNotification("FaceTime","Recovered Calls","New Sep 4 call history is available.","facetime","images/icons/facetime.png")},700)}}
 
 function beginUnknownPings(){
-  if(state.phase>=4||state.unknownOpen||!state.recentItemsSeen)return;state.phase=4;state.unknownMsgs=state.unknownMsgs?.length?state.unknownMsgs:["hello?"];save();bounceDock("messages");showIncomingText("Unknown","hello?","unknown");setTimeout(()=>{if(!state.unknownOpen){pushUnknown("can you see this?");showIncomingText("Unknown","can you see this?","unknown")}},7000);
+  if(state.phase>=4||state.unknownOpen||!state.recentItemsSeen)return;
+  state.phase=4;
+  state.unknownMsgs=state.unknownMsgs?.length?state.unknownMsgs:["hello?"];
+  save();
+  bounceDock("messages");
+  showIncomingText("Unknown","hello?","unknown");
+  setTimeout(()=>{
+    if(!state.unknownOpen){
+      pushUnknown("can you see this?");
+      showIncomingText("Unknown","can you see this?","unknown");
+    }
+  },11000);
 }
 
 function scheduleNormalPing(){
-  if(state.normalPingSeen || state.phase>=3) return;
+  if(state.normalPingSeen || state.ending) return;
 
   setTimeout(()=>{
-    if(state.normalPingSeen || state.phase>=3) return;
+    if(state.normalPingSeen || state.ending) return;
 
     state.normalPingSeen=true;
     localStorage.setItem(KEY,JSON.stringify(state));
-
-    /* It reads like a normal current text at first. Later, once the visitor
-       understands the computer has been unattended, it becomes unsettling. */
+    renderContacts(state.lastChat||"3asians");
     showIncomingText("mami","anak please call me when you see this","mami");
-  },4500);
+  },10500);
 }
 
 const notes={
@@ -3018,6 +3259,56 @@ function openSafariHome(btn=null){openApp("safari-window","Safari",btn);document
 function openSafariHistory(btn=null){openApp("safari-window","Safari",btn);document.getElementById("safari-home-view").style.display="none";document.getElementById("safari-history-view").classList.add("show");document.getElementById("safari-tab-home").classList.remove("active");document.getElementById("safari-tab-history").classList.add("active");document.getElementById("safari-address").textContent="History";}
 function openSafariDetail(kind){touchStory();openSafariHistory();const card=document.getElementById("safari-detail-card"),title=document.getElementById("safari-detail-title"),body=document.getElementById("safari-detail-body");if(kind==="find"){title.textContent="Find My · Sep 4 · 2:08 AM";body.textContent=`iPhone 15\n\n12:46 AM — arrived home\n12:47 AM — connected to home Wi-Fi\n2:17 AM — location unavailable`;card.classList.add("show");state.sawSafariFind=true;save();if(!state.recentItemsAvailable){state.recentItemsAvailable=true;save();setTimeout(()=>{bounceDock("finder");showNotification("Finder","Recovered","Last Mac activity was recovered.","recovered","images/icons/folder.png")},800)}}}
 
+const MUSIC_TRACKS={
+  one:{title:"One More Try",artist:"bistencs, cursedcry",duration:149,art:"images/music/album-one-more-try.jpg"},
+  two:{title:"wantmetoo (demo)",artist:"reiko",duration:132,art:"images/music/album-wantmetoo.jpg"}
+};
+const musicState={track:null,elapsed:0,playing:false};
+let musicTimer=null;
+
+function formatMusicTime(seconds){
+  const s=Math.max(0,Math.floor(seconds||0));
+  return Math.floor(s/60)+":"+String(s%60).padStart(2,"0");
+}
+
+function renderMusicPlayer(){
+  const shell=document.getElementById("music-now-playing");
+  const play=document.getElementById("music-play-button");
+  document.querySelectorAll(".album").forEach(el=>el.classList.remove("active"));
+
+  if(!musicState.track){
+    shell.classList.remove("show");
+    return;
+  }
+
+  const track=MUSIC_TRACKS[musicState.track];
+  shell.classList.add("show");
+  document.getElementById("album-"+musicState.track)?.classList.add("active");
+  document.getElementById("now-art").src=track.art;
+  document.getElementById("now-title").textContent=track.title;
+  document.getElementById("now-artist").textContent=track.artist;
+  document.getElementById("music-elapsed").textContent=formatMusicTime(musicState.elapsed);
+  document.getElementById("music-duration").textContent=formatMusicTime(track.duration);
+  document.getElementById("music-progress-fill").style.width=Math.min(100,(musicState.elapsed/track.duration)*100)+"%";
+  play.textContent=musicState.playing?"❚❚":"▶";
+}
+
+function startMusicTimer(){
+  clearInterval(musicTimer);
+  if(!musicState.playing || !musicState.track) return;
+
+  musicTimer=setInterval(()=>{
+    const track=MUSIC_TRACKS[musicState.track];
+    musicState.elapsed+=1;
+    if(musicState.elapsed>=track.duration){
+      musicState.elapsed=track.duration;
+      musicState.playing=false;
+      clearInterval(musicTimer);
+    }
+    renderMusicPlayer();
+  },1000);
+}
+
 function playSong(which){
   if(!MUSIC_TRACKS[which]) return;
 
@@ -3082,13 +3373,25 @@ function declineCall(){document.getElementById("incoming").classList.remove("sho
 function acceptCall(){document.getElementById("incoming").classList.remove("show");const status=document.getElementById("unknown-call-status");if(status){status.textContent="Incoming · 0:00";status.className="incoming"}openFaceTime();state.phase=Math.max(state.phase,7);state.ringQuestionSent=true;save();setTimeout(()=>{typeUnknownSequence(["did that ring for you"],0,1300,600);showIncomingText("Unknown","did that ring for you","unknown")},850)}
 
 function syncStory(){
-  document.getElementById("recovered-desktop").style.display=state.recentItemsAvailable?"block":"none";document.getElementById("recovered-side").style.display=state.recentItemsAvailable?"block":"none";document.getElementById("recovered-calls").classList.toggle("show",!!state.callHistoryAvailable);document.getElementById("history-find").style.display=state.safariHistoryAvailable?"block":"none";document.getElementById("unknown-call-row").style.display=state.callSeen?"flex":"none";document.getElementById("lp-one").textContent=state.recentItemsSeen?"last played Sep 4 · 2:13 AM":"";document.getElementById("lp-two").textContent="";const shutdownItem=document.getElementById("shutdown-menu-item");if(shutdownItem)shutdownItem.classList.toggle("disabled",!state.shutdownEnabled);renderContacts();
+  document.getElementById("recovered-desktop").style.display=state.recentItemsAvailable?"block":"none";
+  document.getElementById("recovered-side").style.display=state.recentItemsAvailable?"block":"none";
+  document.getElementById("recovered-calls").classList.toggle("show",!!state.callHistoryAvailable);
+  document.getElementById("history-find").style.display=state.safariHistoryAvailable?"block":"none";
+  document.getElementById("unknown-call-row").style.display=state.callSeen?"flex":"none";
+  document.getElementById("lp-one").textContent=state.recentItemsSeen?"last played Sep 4 · 2:13 AM":"";
+  document.getElementById("lp-two").textContent="";
+  const shutdownItem=document.getElementById("shutdown-menu-item");
+  if(shutdownItem) shutdownItem.classList.toggle("disabled",!state.shutdownEnabled);
+
+  const title=document.getElementById("chat-title")?.textContent;
+  const current=(title==="e")?"unknown":(title||state.lastChat||"3asians");
+  renderContacts(contactNames().includes(current)?current:"3asians");
 }
 
 /* Kept for console/testing, but no visible reset control is shown to visitors. */
 function resetStory(){
   localStorage.removeItem(KEY);
-  sessionStorage.removeItem("ecloud-v19-session");
+  sessionStorage.removeItem("ecloud-v20-session");
   location.reload();
 }
 
@@ -3105,7 +3408,7 @@ function scheduleStoryGuide(){
   /* Give the visitor time to browse. Guidance only appears after a stall. */
   storyGuideTimer=setTimeout(()=>{
     guideNextHardStep();
-  },9500);
+  },16000);
 }
 
 function guideNextHardStep(){
@@ -3117,7 +3420,7 @@ function guideNextHardStep(){
     showNotification(
       "Messages",
       nextContact,
-      "Recovered conversation.",
+      "there are newer messages at the bottom.",
       "contact:"+nextContact,
       "images/icons/messages.png"
     );
@@ -3129,7 +3432,7 @@ function guideNextHardStep(){
     showNotification(
       "FaceTime",
       "Recovered Calls",
-      "Sep 4 call history is unread.",
+      "Sep 4 calls were restored.",
       "facetime",
       "images/icons/facetime.png"
     );
@@ -3141,7 +3444,7 @@ function guideNextHardStep(){
     showNotification(
       "Safari",
       "History",
-      "A recovered Find My search is unread.",
+      "Find My appears in restored history.",
       "safari",
       "images/icons/safari.png"
     );
@@ -3153,7 +3456,7 @@ function guideNextHardStep(){
     showNotification(
       "Finder",
       "Recovered",
-      "Open last-activity.txt.",
+      "last-activity.txt was restored.",
       "recovered",
       "images/icons/folder.png"
     );
@@ -3170,9 +3473,9 @@ function guideNextHardStep(){
     if(state.pendingBondApp) return;
 
     if(state.bondApps.length===0){
-      showIncomingText("Unknown","can you open something else?","unknown");
+      showIncomingText("Unknown","open something else. i want to remember more","unknown");
     }else{
-      showIncomingText("Unknown","are you still there?","unknown");
+      showIncomingText("Unknown","come back when you’re done. i’ll wait","unknown");
     }
     return;
   }
@@ -3182,15 +3485,40 @@ function guideNextHardStep(){
   }
 }
 
-function startStoryWatchdog(){setTimeout(()=>{if(!state.backstoryUnlocked&&!state.ending){state.backstoryUnlocked=true;state.phase=3;save();bounceDock("messages");showNotification("Messages","3asians","Recovered conversation.","contact:3asians","images/icons/messages.png")}},6500)}
+function startStoryWatchdog(){
+  setTimeout(()=>{
+    if(!state.backstoryUnlocked && !state.ending){
+      state.storySeeded=true;
+      localStorage.setItem(KEY,JSON.stringify(state));
+      unlockBackstoryScene("idle");
+    }
+  },32000);
+}
 
 window.addEventListener("load",()=>{
-  const freshVisit=!sessionStorage.getItem("ecloud-v19-session");
-  sessionStorage.setItem("ecloud-v19-session","1");
+  const freshVisit=!sessionStorage.getItem("ecloud-v20-session");
+  sessionStorage.setItem("ecloud-v20-session","1");
+
+  /* Reloading in the middle of an animated reply should not trap the visitor. */
+  if(!state.ending){
+    state.replyBusy=false;
+    state.bondSceneBusy=false;
+
+    if(state.callSeen && !state.ringQuestionSent){
+      state.ringQuestionSent=true;
+      state.unknownMsgs=state.unknownMsgs||[];
+      if(!state.unknownMsgs.some(m=>unknownText(m)==="did that ring for you")){
+        state.unknownMsgs.push("did that ring for you");
+      }
+    }
+
+    localStorage.setItem(KEY,JSON.stringify(state));
+  }
 
   syncStory();
   renderContacts();
-  renderChat(state.phase>=4?"unknown":"3asians");
+  renderChat(state.phase>=4?"unknown":(state.lastChat||"3asians"));
+  renderMusicPlayer();
 
   const chatBody=document.getElementById("chat-body");
   if(chatBody && !chatBody.dataset.storyScrollBound){
@@ -3199,6 +3527,7 @@ window.addEventListener("load",()=>{
   }
 
   scheduleStoryGuide();
+  scheduleNormalPing();
   startStoryWatchdog();
 
   if(state.ending==="stuck-stay" || state.ending==="stuck-leave"){
@@ -3217,20 +3546,23 @@ window.addEventListener("load",()=>{
 
         typeUnknownSequence(
           lines,
-          450,1500,1000,
+          650,1700,1100,
           ()=>{
             state.endSceneDone=true;
             save();
             renderChat("unknown");
+            scheduleEndHaunt();
           }
         );
-      },900);
+      },1200);
+    }else{
+      scheduleEndHaunt();
     }
     return;
   }
 
   if(state.phase>=4 && !state.unknownOpen && state.unknownMsgs?.length){
-    setTimeout(()=>showIncomingText("Unknown",lastUnknownText(),"unknown"),900);
+    setTimeout(()=>showIncomingText("Unknown",lastUnknownText(),"unknown"),1400);
   }
 });
 </script>
