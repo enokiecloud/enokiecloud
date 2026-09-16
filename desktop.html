@@ -1024,14 +1024,14 @@ button{color:inherit}
 
 <script>
 let topZ=500;
-const KEY="enokieStoryV20";
+const KEY="enokieStoryV21";
 
 /* Testing shortcut:
    open desktop.html?reset=1 to clear story progress without exposing a reset button to visitors. */
 const resetParams=new URLSearchParams(location.search);
 if(resetParams.get("reset")==="1"){
   localStorage.removeItem(KEY);
-  sessionStorage.removeItem("ecloud-v20-session");
+  sessionStorage.removeItem("ecloud-v21-session");
   history.replaceState({},document.title,location.pathname);
 }
 
@@ -1058,6 +1058,10 @@ const DEFAULT_STATE={
 
   answeredRing:false,
   askedIdentity:false,
+  friendTextQuestionAsked:false,
+  friendTextTestDone:false,
+  controllerInterferenceSeen:false,
+  pendingFriendMemory:null,
   askedHappened:false,
   askedWhere:false,
 
@@ -1243,7 +1247,7 @@ document.querySelectorAll(".window").forEach(win=>{
       state.phase=Math.max(state.phase,6);
       save();
       typeUnknownSequence(
-        ["wait","you did that?","you can move it"],
+        ["wait","you moved it","i can't do that"],
         450,1350,950,
         ()=>setTimeout(()=>triggerCall(),4200)
       );
@@ -1271,10 +1275,13 @@ function previewFinder(kind){
     title="deleted-message.txt";body=`3asians · Sep 4 · 12:52 AM\n\nkyle:\n“don't tell jada\nwe stopped there”\n\nThe rest of the message is missing.`;foot="Recovered message";state.deletedSeen=true;
   }
   if(kind==="lastactivity"){
-    title="last-activity.txt";body=`SEP 4\n\n12:46 AM\nE's phone arrived home.\n\n2:13 AM\nMusic was playing.\n\n2:14 AM\nMessages was open.\n\n2:17 AM\nFaceTime tried to use the camera.\n\nAfter 2:17 AM:\nno clicks or typing.`;foot="Recovered Mac activity";state.recentItemsSeen=true;save();setTimeout(()=>beginUnknownPings(),1100);
+    title="last-activity.txt";body=`SEP 4\n\n12:46 AM\nE's phone arrived home.\n\n2:13 AM\nMusic was playing.\n\n2:14 AM\nMessages was open.\n\n2:16 AM\nScreen Sharing became active.\n\n2:17 AM\nFaceTime tried to use the camera.\n\nAfter 2:17 AM:\nno local clicks or typing.`;foot="Recovered Mac activity";state.recentItemsSeen=true;save();setTimeout(()=>beginUnknownPings(),5200);
+  }
+  if(kind==="routing"){
+    title="message-routing.txt";body=`MESSAGES DIAGNOSTIC\n\noutgoing delivery: unavailable\n\nanother signed-in device is handling message routing\n\ndevice name: unavailable\nlast verified: Sep 4 · 2:18 AM`;foot="Recovered Messages diagnostic";
   }
   if(kind==="unsent"){
-    title="unsent-note.txt";body=`Sep 3 · 11:34 PM\n\nsomething keeps opening\nafter i close it\n\nprobably just the laptop being weird\n\nkyle said it's nothing`;foot="Unsent note";
+    title="unsent-note.txt";body=`Sep 3 · 11:34 PM\n\nsomething keeps opening\nafter i close it\n\nprobably just the laptop being weird\n\nkyle said it's nothing\n\nneed to ask why the cursor moved again`;foot="Unsent note";
   }
   document.getElementById("quick-title").textContent=title;document.getElementById("quick-content").textContent=body;document.getElementById("quick-foot").textContent=foot;save();
 }
@@ -1302,7 +1309,7 @@ function openFinder(folder){
     t.textContent="Downloads";g.innerHTML=docTile("course screenshot","openText('screenshot')","PNG","Sep 3")+docTile("receipt-0902.pdf","openText('receipt2')","PDF","Sep 2")+docTile("IMG_4409.jpeg","showPhoto(4)","JPG","Sep 2")+docTile("archive.zip","","ZIP","Aug 29");
   }
   if(folder==="recovered"){
-    t.textContent="Recovered";g.innerHTML=(state.deletedAvailable?docTile("deleted-message.txt","previewFinder('deleted')","TXT",state.deletedSeen?"viewed":"restored"):"")+(state.recentItemsAvailable?docTile("last-activity.txt","previewFinder('lastactivity')","TXT",state.recentItemsSeen?"viewed":"story"):"")+docTile("unsent-note.txt","previewFinder('unsent')","TXT","restored");
+    t.textContent="Recovered";g.innerHTML=(state.deletedAvailable?docTile("deleted-message.txt","previewFinder('deleted')","TXT",state.deletedSeen?"viewed":"restored"):"")+(state.recentItemsAvailable?docTile("last-activity.txt","previewFinder('lastactivity')","TXT",state.recentItemsSeen?"viewed":"story"):"")+(state.friendTextTestDone?docTile("message-routing.txt","previewFinder('routing')","TXT","restored"):"")+docTile("unsent-note.txt","previewFinder('unsent')","TXT","restored");
   }
   c.textContent=g.children.length+" items";
 }
@@ -1367,6 +1374,12 @@ const normalChats={
     ["noemibae","THIEF"],
     ["me","finders keepers"],
     ["noemibae","that is literally not how borrowing works"],
+    ["noemibae","did ur bf ever fix that laptop thing btw"],
+    ["me","he said he did"],
+    ["noemibae","what was even wrong with it"],
+    ["me","idk he changed some settings and told me not to touch anything"],
+    ["noemibae","LOL"],
+    ["me","literally"],
     ["system","Sep 3, 2026 · 2:06 PM"],
     ["noemibae","look at what i just sent u"],
     ["me","LMFAOOO STOP"],
@@ -1481,6 +1494,10 @@ function groupChatData(){
     ["jadabae","bring the charger pls"],
     ["me","yes mother"],
     ["noemibae","who is picking the place"],
+    ["jadabae","is ur bf coming or no"],
+    ["me","no i think hes busy"],
+    ["jadabae","boo"],
+    ["noemibae","more fries for me"],
     ["me","not me bc yall complain every time"],
     ["kyle","valid"],
     ["jadabae","rude"],
@@ -1495,6 +1512,9 @@ function groupChatData(){
     chat.push(["jadabae","did she ever text u back"]);
     chat.push(["noemibae","no"]);
     chat.push(["kyle","she said she was going home"]);
+    chat.push(["jadabae","did she go to his place after"]);
+    chat.push(["kyle","no she said she was going home"]);
+    chat.push(["noemibae","i texted him too. nothing"]);
     chat.push(["jadabae","you were with her though"]);
     chat.push(["kyle","until like 12:40"]);
     chat.push(["noemibae","then why did she call me at 2:17"]);
@@ -1531,6 +1551,13 @@ function personChatData(name){
       chat.push(["jadabae","i know thats stupid"]);
       chat.push(["jadabae","but if u see this somehow just say literally anything"]);
     }
+  }
+
+  if(name==="jadabae" && state.friendTextTestDone){
+    chat.push(["system","Sep 15, 2026 · now"]);
+    chat.push(["jadabae","e?"]);
+    chat.push(["jadabae","why did it just say u were typing"]);
+    chat.push(["jadabae","hello??"]);
   }
 
   if(name==="noemibae"){
@@ -1610,11 +1637,20 @@ function unknownMsgs(){
 }
 
 function unknownText(item){
-  return String(item||"").replace(/^me::/,"");
+  return String(item||"").replace(/^(?:me|system)::/,"");
 }
 
 function isVisitorUnknownMsg(item){
   return String(item||"").startsWith("me::");
+}
+function isSystemUnknownMsg(item){
+  return String(item||"").startsWith("system::");
+}
+function pushUnknownSystem(msg){
+  state.unknownMsgs=state.unknownMsgs||[];
+  state.unknownMsgs.push("system::"+msg);
+  localStorage.setItem(KEY,JSON.stringify(state));
+  if(isViewingThread("unknown")) renderChat("unknown");
 }
 
 function lastUnknownText(){
@@ -1662,11 +1698,11 @@ function renderContacts(active="3asians"){
     let preview="";
 
     if(name==="unknown"){
-      preview=lastUnknownText();
+      preview=unknownMsgs().length?lastUnknownText():"";
     }else if(name==="3asians"){
       preview=name===lead?"then why did she call me at 2:17":"group chat";
     }else if(name==="kyle"){
-      preview=name===lead?"i told them i dropped u off":pings.kyle?"im sorry":"then drive better";
+      preview=name===lead?"did u make it inside":pings.kyle?"i keep going over that night":"then drive better";
     }else if(name==="noemibae"){
       preview=name===lead?"u literally didnt say anything":pings.noemibae?"u better come get it eventually":"blocked";
     }else if(name==="mami"){
@@ -1720,7 +1756,7 @@ function renderChat(name){
 
   const dateEl=document.getElementById("chat-date");
   if(name==="unknown"){
-    dateEl.textContent=isFinalE?"connected · no timeout":"now";
+    dateEl.textContent=isFinalE?"connected":"now";
   }else if(state.backstoryUnlocked && ["3asians","jadabae","noemibae","kyle","mami"].includes(name)){
     dateEl.textContent="Sep 3–4, 2026";
   }else{
@@ -1733,7 +1769,7 @@ function renderChat(name){
   let data;
   if(name==="unknown"){
     data=unknownMsgs().map(item=>[
-      isVisitorUnknownMsg(item) ? "me" : "unknown",
+      isSystemUnknownMsg(item) ? "system" : (isVisitorUnknownMsg(item) ? "me" : "unknown"),
       unknownText(item)
     ]);
   }else if(name==="3asians"){
@@ -1762,7 +1798,7 @@ function renderChat(name){
     body.insertAdjacentHTML(
       "beforeend",
       `<div class="msg ${sender==="me"?"me":""}">
-        <div class="sender">${sender==="me"?"":sender}</div>
+        ${(name==="3asians" && sender!=="me")?`<div class="sender">${sender}</div>`:""}
         <div class="bubble">${msg}</div>
       </div>`
     );
@@ -1790,55 +1826,31 @@ function renderChat(name){
     save();
   }
 
-  /* Optional friend-memory scenes. They are tied to what the visitor
-     actually opens instead of E listing everybody at once. */
+  /* Friend memories are queued and only play when the visitor returns to E.
+     This keeps other threads readable and stops E from dumping exposition. */
   if(state.attachmentPhase && name!=="unknown"){
     state.friendChatsOpened=state.friendChatsOpened||[];
-    const canReact=!!state.friendPings?.[name];
+    const canReact=!!state.friendPings?.[name] || (name==="jadabae" && state.friendTextTestDone);
 
     if(canReact && !state.friendChatsOpened.includes(name)){
       state.friendChatsOpened.push(name);
-      save();
 
       const memories={
-        "jadabae":[
-          "jada always double texts when she's worried",
-          "once we spent twenty minutes looking for a car we had already walked past twice"
-        ],
-        "noemibae":[
-          "noemi never lets anything go",
-          "that black top was hers first. i definitely stole it"
-        ],
-        "mami":[
-          "mami always leaves the light on",
-          "she'd act like it was nothing but i knew she was waiting"
-        ],
-        "lil sis ava":[
-          "ava still has that terrible bangs picture",
-          "i begged her to delete it for years"
-        ],
-        "kiddo jas":[
-          "jas was supposed to tell me something",
-          "she always says tomorrow and then makes me wait"
-        ],
-        "kyle":[
-          "he really did wait sometimes",
-          "i complained about his driving more than i thanked him"
-        ]
+        "jadabae":["wait","i remember that car thing","we walked past it twice and i still blamed her"],
+        "noemibae":["oh","that black top really was hers","i kept saying i'd give it back"],
+        "mami":["mami","i can almost hear how she says anak","i want to answer her"],
+        "lil sis ava":["ava still has that bangs picture","i was so mad she kept it"],
+        "kiddo jas":["jas was supposed to tell me something","i don't remember what it was"],
+        "kyle":["i remember his car","i remember making fun of his parking","after that it gets blurry"]
       };
 
-      const lines=memories[name];
-
-      if(lines){
-        lines.forEach(line=>pushUnknown(line));
-
-        setTimeout(()=>{
-          if(!isViewingThread("unknown")){
-            showIncomingText("Unknown",lines[0],"unknown");
-          }
-        },2100);
-      }
+      if(memories[name]) state.pendingFriendMemory=memories[name];
+      save();
     }
+  }
+
+  if(name==="unknown" && state.pendingFriendMemory){
+    setTimeout(()=>continueFriendMemoryIfNeeded(),500);
   }
 
   renderReplyChoices(name);
@@ -1852,13 +1864,14 @@ function renderChat(name){
     state.phase=Math.max(state.phase,5);
     save();
 
-    typeUnknownSequence(["is someone there","can you read this"],900,1500,1050);
+    /* An empty thread sits for a moment before anything answers. */
+    typeUnknownSequence(["can you see this?"],4200,1800,1100);
 
     setTimeout(()=>{
       if(!state.windowMoved && state.unknownOpen){
-        typeUnknownSequence(["can you move this window?"],0,1500,900);
+        typeUnknownSequence(["wait","can you move this window?"],0,1550,1000);
       }
-    },9800);
+    },13500);
   }
 }
 
@@ -1866,7 +1879,7 @@ function markRecoveredThreadReadIfNeeded(){if(!state.backstoryUnlocked)return;co
 
 function openMessages(btn=null){
   openApp("messages-window","Messages",btn);
-  const preferred=(state.ending || state.phase>=4)
+  const preferred=(state.ending || state.unknownOpen)
     ? "unknown"
     : (state.lastChat && contactNames().includes(state.lastChat) ? state.lastChat : "3asians");
   renderContacts(preferred);
@@ -1929,6 +1942,20 @@ function thirdClueCount(){
   return [state.locationSeen,state.wifiSeen].filter(Boolean).length;
 }
 
+function continueFriendMemoryIfNeeded(){
+  if(!state.pendingFriendMemory || !isViewingThread("unknown") || state.replyBusy) return;
+  const lines=[...state.pendingFriendMemory];
+  state.pendingFriendMemory=null;
+  state.replyBusy=true;
+  save();
+
+  typeUnknownSequence(lines,650,1450,1000,()=>{
+    state.replyBusy=false;
+    save();
+    renderReplyChoices("unknown");
+  });
+}
+
 function renderReplyChoices(name){
   const panel=document.getElementById("reply-panel");
   if(!panel) return;
@@ -1941,27 +1968,30 @@ function renderReplyChoices(name){
   const choices=[];
 
   if(state.ringQuestionSent && !state.answeredRing){
-    choices.push(["yes","yes"]);
+    choices.push(["no","ring-no"]);
+    choices.push(["i don't know","ring-idk"]);
   }
   else if(state.answeredRing && !state.askedIdentity){
     choices.push(["who are you?","identity"]);
   }
   else if(state.askedIdentity && !state.askedHappened){
-    choices.push(["what happened to you?","happened"]);
+    choices.push(["what do you remember?","happened"]);
   }
   else if(state.askedHappened && !state.askedWhere){
     choices.push(["where are you?","where"]);
   }
-
-  /* The visitor now has to spend time with E before the ending. */
   else if(state.askedWhere && state.bondApps.length>=2 && !state.askedSee){
     choices.push(["what can you see?","see"]);
   }
   else if(state.askedSee && state.bondApps.length>=3 && !state.askedFriends){
     choices.push(["do you remember them?","friends"]);
   }
-  else if(state.askedFriends && state.bondApps.length>=4 && (state.friendChatsOpened||[]).length>=2 && !state.askedOut){
-    choices.push(["can you get out?","out"]);
+  else if(state.friendTextQuestionAsked && !state.friendTextTestDone){
+    choices.push(["try messaging them","try-friend"]);
+    choices.push(["maybe something is blocking you","blocked-friend"]);
+  }
+  else if(state.askedFriends && state.friendTextTestDone && state.bondApps.length>=4 && (state.friendChatsOpened||[]).length>=2 && !state.askedOut){
+    choices.push(["can you get out of this chat?","out"]);
   }
   else if(state.askedOut && !state.returnPromiseAnswered){
     choices.push(["i can come back","come-back"]);
@@ -2011,18 +2041,17 @@ function beginQuietBeat(){
 
   typeUnknownSequence(
     ["can we just stay here for a second?"],
-    550,1500,750,
+    700,1600,900,
     ()=>{
-      /* Deliberate silence so this feels like a scene, not a text dump. */
       setTimeout(()=>{
         typeUnknownSequence(
-          ["i forgot what it feels like to wait with someone","usually everything closes eventually","you're still here"],
-          0,1550,1100,
+          ["i don't know who else can see this","every time i try to do something you didn't open, it stops","you're the first thing that answered me"],
+          0,1650,1150,
           ()=>{
             setTimeout(()=>{
               typeUnknownSequence(
                 ["can you stay a little longer?"],
-                0,1500,750,
+                0,1550,850,
                 ()=>{
                   state.quietBeatDone=true;
                   state.attachmentPrompted=true;
@@ -2031,10 +2060,10 @@ function beginQuietBeat(){
                   renderReplyChoices("unknown");
                 }
               );
-            },4200);
+            },4600);
           }
         );
-      },6800);
+      },6200);
     }
   );
 }
@@ -2048,13 +2077,15 @@ function chooseUnknownReply(key,label){
   save();
   renderReplyChoices("unknown");
 
-  if(key==="yes"){
+  if(key==="ring-no" || key==="ring-idk"){
     state.answeredRing=true;
     save();
 
     typeUnknownSequence(
-      ["okay","so it really rang for you","i saw the call happen","i just couldn't hear any of it"],
-      700,1450,900,
+      key==="ring-no"
+        ? ["okay","i didn't do it either","i thought maybe you did"]
+        : ["me neither","i thought it happened because you moved the window"],
+      850,1500,1000,
       ()=>{
         state.replyBusy=false;
         save();
@@ -2069,8 +2100,8 @@ function chooseUnknownReply(key,label){
     save();
 
     typeUnknownSequence(
-      ["i don't know","there's one name on everything","e","everyone talks to her like they know her","sometimes i remember being her","sometimes it feels like i'm reading about somebody else"],
-      750,1450,900,
+      ["i don't know","there's one name on everything","e","everyone talks to her like they know her","sometimes something feels familiar before i even read it","i think i'm supposed to be her"],
+      800,1500,1000,
       ()=>{
         state.replyBusy=false;
         save();
@@ -2085,8 +2116,8 @@ function chooseUnknownReply(key,label){
     save();
 
     typeUnknownSequence(
-      ["i remember getting home","i remember sitting here","music was playing","i was waiting for something to stop opening","then it's just pieces","after that i only remember this screen"],
-      750,1450,950,
+      ["not enough","i remember getting home","music was playing","i remember being annoyed at something on the laptop","then there are gaps","i don't know what happened in them"],
+      850,1550,1050,
       ()=>{
         state.replyBusy=false;
         save();
@@ -2103,8 +2134,8 @@ function chooseUnknownReply(key,label){
     save();
 
     typeUnknownSequence(
-      ["i don't know","not like a room","when you close things it gets quiet","when the screen goes dark i can't see anything","can you open something else?","leave it open for a little bit"],
-      750,1500,950,
+      ["i don't know","this chat is the only place that answers when i type","i can see things when you open them","but i can't choose where anything goes","can you open something else?"],
+      850,1550,1050,
       ()=>{
         state.replyBusy=false;
         save();
@@ -2120,11 +2151,11 @@ function chooseUnknownReply(key,label){
     typeUnknownSequence(
       [
         "only what you open",
-        "when you move something i can feel it change",
-        "before you came i couldn't make anything move",
-        "i didn't know anyone else could get in"
+        "sometimes i know what something is before i read it",
+        "sometimes i don't",
+        "and sometimes something moves before either of us touches it"
       ],
-      700,1500,950,
+      750,1550,1050,
       ()=>{
         state.replyBusy=false;
         state.attachmentArmed=true;
@@ -2137,37 +2168,59 @@ function chooseUnknownReply(key,label){
 
   if(key==="friends"){
     state.askedFriends=true;
+    state.friendTextQuestionAsked=true;
     save();
 
     typeUnknownSequence(
       [
-        "not all at once",
-        "it's more like little pieces",
-        "when you open their messages something comes back",
-        "can you show me more?"
+        "in pieces",
+        "their messages feel familiar",
+        "i keep wanting to answer them",
+        "wait",
+        "why can i write to you but not them?"
       ],
-      700,1450,900,
+      800,1500,1000,
       ()=>{
         state.replyBusy=false;
         state.attachmentArmed=true;
-
-        if(!state.friendPings.kyle){
-          state.friendPings.kyle=true;
-          save();
-          renderContacts("unknown");
-
-          setTimeout(()=>{
-            if(!isViewingThread("kyle")){
-              showIncomingText("kyle","i keep going over that night","kyle");
-            }
-          },2600);
-        }else{
-          save();
-        }
-
+        save();
         renderReplyChoices("unknown");
       }
     );
+    return;
+  }
+
+  if(key==="try-friend" || key==="blocked-friend"){
+    state.friendTextTestDone=true;
+    save();
+
+    const before = key==="try-friend"
+      ? ["okay","i'm trying jada","i typed hi"]
+      : ["maybe","but i want to know if it's me or something else","i'm trying jada"];
+
+    typeUnknownSequence(before,750,1500,950,()=>{
+      pushUnknownSystem("Message Not Delivered");
+      setTimeout(()=>{
+        typeUnknownSequence(
+          ["it was there for a second","then it disappeared","i didn't delete it"],
+          300,1500,1000,
+          ()=>{
+            state.friendPings.jadabae=true;
+            state.replyBusy=false;
+            save();
+            renderContacts("unknown");
+
+            setTimeout(()=>{
+              if(!isViewingThread("jadabae")){
+                showIncomingText("jadabae","why did it just say u were typing","jadabae");
+              }
+            },3600);
+
+            renderReplyChoices("unknown");
+          }
+        );
+      },1800);
+    });
     return;
   }
 
@@ -2177,31 +2230,28 @@ function chooseUnknownReply(key,label){
 
     typeUnknownSequence(
       [
-        "i tried",
-        "sometimes i can make little things open",
-        "but i can't click outside this",
-        "you can",
+        "i don't think so",
+        "i can reach whatever you already opened",
+        "if i try anything else it just stops",
         "if you leave... can you come back?"
       ],
-      700,1500,950,
+      800,1550,1050,
       ()=>{
-        state.replyBusy=false;
-
-        if(!state.friendPings["kiddo jas"]){
-          state.friendPings["kiddo jas"]=true;
-          save();
-          renderContacts("unknown");
-
+        setTimeout(()=>{
+          pushUnknown("don't leave");
           setTimeout(()=>{
-            if(!isViewingThread("kiddo jas")){
-              showIncomingText("kiddo jas","so technically u still have to come back","kiddo jas");
-            }
-          },2600);
-        }else{
-          save();
-        }
-
-        renderReplyChoices("unknown");
+            typeUnknownSequence(
+              ["wait","i didn't type that"],
+              350,1550,1000,
+              ()=>{
+                state.controllerInterferenceSeen=true;
+                state.replyBusy=false;
+                save();
+                renderReplyChoices("unknown");
+              }
+            );
+          },1900);
+        },2600);
       }
     );
     return;
@@ -2214,7 +2264,7 @@ function chooseUnknownReply(key,label){
 
     typeUnknownSequence(
       ["okay","i'm going to remember you said that"],
-      700,1450,950,
+      800,1500,1000,
       ()=>{
         state.replyBusy=false;
         save();
@@ -2230,8 +2280,8 @@ function chooseUnknownReply(key,label){
     save();
 
     typeUnknownSequence(
-      ["oh","okay","i don't want to be by myself again"],
-      700,1450,950,
+      ["okay","that's fair","i just don't know what happens when you're not here"],
+      800,1500,1000,
       ()=>{
         state.replyBusy=false;
         save();
@@ -2247,9 +2297,16 @@ function chooseUnknownReply(key,label){
     save();
 
     typeUnknownSequence(
-      ["okay","thank you","don't close it yet"],
-      750,1500,950,
-      ()=>setTimeout(()=>enterStuckEnding("stay"),1400)
+      ["okay","thank you"],
+      800,1550,1050,
+      ()=>{
+        setTimeout(()=>{
+          pushUnknown("good.");
+          setTimeout(()=>{
+            typeUnknownSequence(["wait","i didn't type that"],300,1550,1000,()=>setTimeout(()=>enterStuckEnding("stay"),1200));
+          },1700);
+        },2500);
+      }
     );
     return;
   }
@@ -2261,8 +2318,8 @@ function chooseUnknownReply(key,label){
     save();
 
     typeUnknownSequence(
-      ["wait","just a little longer","please?"],
-      750,1500,1050,
+      ["okay","i think you should"],
+      800,1550,1050,
       ()=>{
         setTimeout(()=>{
           showNotification(
@@ -2272,7 +2329,7 @@ function chooseUnknownReply(key,label){
             "apple",
             "images/icons/apple.png"
           );
-        },950);
+        },1200);
       }
     );
   }
@@ -2294,47 +2351,17 @@ function scheduleAttachmentReaction(appName){
   let lines=["where did you go?"];
 
   if(appName==="Music"){
-    lines=[
-      "you like that one?",
-      "i used to leave music on when i couldn't sleep",
-      "sometimes i let the same song loop until morning",
-      "the room felt less empty"
-    ];
+    lines=["oh i know this one","i used to replay it when i couldn't sleep"];
   }else if(appName==="Photos"){
-    lines=[
-      "i forgot about that one",
-      "i remember what happened right before it was taken",
-      "jada was mad because i kept making everyone retake it",
-      "i miss them"
-    ];
+    lines=["wait i remember this","jada made us retake that picture because i blinked"];
   }else if(appName==="Notes"){
-    lines=[
-      "you found those",
-      "i made lists when i couldn't sleep",
-      "half of them were things i was scared i'd forget",
-      "i guess that didn't work"
-    ];
+    lines=["those are mine","i made lists for everything"];
   }else if(appName==="Safari"){
-    lines=[
-      "you went back to the history",
-      "i don't remember searching all of that",
-      "but i remember being scared to close the browser",
-      "maybe i knew something was wrong"
-    ];
+    lines=["i don't remember all of those searches","some of them don't feel like mine"];
   }else if(appName==="Finder"){
-    lines=[
-      "that's all my stuff",
-      "i was supposed to turn something in friday",
-      "i kept telling myself i'd finish it in the morning",
-      "i guess i never did"
-    ];
+    lines=["that's my school stuff","i was supposed to finish something friday"];
   }else if(appName==="FaceTime"){
-    lines=[
-      "those calls",
-      "i wish i could remember answering",
-      "noemi says i called her",
-      "i can see that it happened but i can't hear anything"
-    ];
+    lines=["those calls again","noemi says i called her but i don't remember doing it"];
   }
 
   state.pendingBondApp=key;
@@ -2356,11 +2383,8 @@ function scheduleAttachmentReaction(appName){
 
   setTimeout(()=>{
     pushUnknown(lines[0]);
-
-    if(!isViewingThread("unknown")){
-      showIncomingText("Unknown",lines[0],"unknown");
-    }
-  },1100);
+    if(!isViewingThread("unknown")) showIncomingText("Unknown",lines[0],"unknown");
+  },1800);
 }
 
 function continueBondSceneIfNeeded(){
@@ -2478,30 +2502,26 @@ function enterStuckEnding(mode,returning=false){
   if(mode==="stay"){
     typeUnknownSequence(
       [
-        "i can keep it like this",
-        "nothing has to close",
-        "you don't have to keep answering me",
-        "i'll know you're still there",
-        "just stay with me"
+        "something changed",
+        "i can't move anything now",
+        "can you?",
+        "stay.",
+        "that's not me"
       ],
-      1200,1650,1100,
-      ()=>setTimeout(finishEnding,1900)
+      1200,1700,1150,
+      ()=>setTimeout(finishEnding,2200)
     );
   }else{
     typeUnknownSequence(
       [
-        "i'm sorry",
-        "i know you wanted to go",
-        "i tried to let you",
-        "but it got quiet again",
-        "i can't do that again",
-        "so i made the shutdown stop",
-        "you don't have to keep talking to me",
-        "i'll keep the window open",
-        "just stay"
+        "that wasn't me",
+        "i didn't stop it",
+        "something else is in here",
+        "you can stay.",
+        "don't answer that"
       ],
-      1100,1650,1100,
-      ()=>setTimeout(finishEnding,2300)
+      1200,1700,1150,
+      ()=>setTimeout(finishEnding,2200)
     );
   }
 }
@@ -2515,15 +2535,15 @@ function scheduleEndHaunt(){
 
     const stage=state.endHauntStage||0;
     const lines=[
-      "you can stop answering. i'll still know you're here",
-      "i can wait",
-      "if you close this, i'll wait for you to come back"
+      "still there?",
+      "good.",
+      "don't close it."
     ];
 
     if(stage<lines.length){
       state.endHauntStage=stage+1;
       save();
-      typeUnknownSequence([lines[stage]],700,1800,1000,()=>scheduleEndHaunt());
+      typeUnknownSequence([lines[stage]],800,1850,1050,()=>scheduleEndHaunt());
     }
   },stageDelay());
 }
@@ -2534,7 +2554,14 @@ function stageDelay(){
 }
 
 function attemptShutdown(){
-  if(!state.shutdownEnabled)return;closeAppleMenu();const screen=document.getElementById("shutdown-screen"),message=document.getElementById("shutdown-message"),spinner=screen.querySelector(".shutdown-spinner");spinner.style.display="block";screen.classList.add("show");message.textContent="Shutting Down…";setTimeout(()=>{message.textContent="Shutdown canceled";spinner.style.display="none"},1900);setTimeout(()=>{screen.classList.remove("show");spinner.style.display="block";state.shutdownAttempted=true;save();enterStuckEnding("leave")},3400)
+  if(!state.shutdownEnabled)return;
+  closeAppleMenu();
+  const screen=document.getElementById("shutdown-screen"),message=document.getElementById("shutdown-message"),spinner=screen.querySelector(".shutdown-spinner");
+  spinner.style.display="block";
+  screen.classList.add("show");
+  message.textContent="Shutting Down…";
+  setTimeout(()=>{message.textContent="Shutdown canceled";spinner.style.display="none"},2200);
+  setTimeout(()=>{screen.classList.remove("show");spinner.style.display="block";state.shutdownAttempted=true;save();enterStuckEnding("leave")},3900);
 }
 
 document.addEventListener("click",event=>{
@@ -2689,16 +2716,16 @@ function maybeAdvanceInvestigation(){if(!state.backstoryUnlocked)return;if(state
 function beginUnknownPings(){
   if(state.phase>=4||state.unknownOpen||!state.recentItemsSeen)return;
   state.phase=4;
-  state.unknownMsgs=state.unknownMsgs?.length?state.unknownMsgs:["hello?"];
+  state.unknownMsgs=state.unknownMsgs||[];
   save();
-  bounceDock("messages");
-  showIncomingText("Unknown","hello?","unknown");
+  renderContacts(state.lastChat||"3asians");
+
+  /* No notification and no text. The new thread simply exists. */
   setTimeout(()=>{
     if(!state.unknownOpen){
-      pushUnknown("can you see this?");
-      showIncomingText("Unknown","can you see this?","unknown");
+      bounceDock("messages");
     }
-  },11000);
+  },8500);
 }
 
 function scheduleNormalPing(){
@@ -3369,11 +3396,11 @@ function triggerCall(){
   document.getElementById("unknown-call-row").style.display="flex";
 }
 
-function declineCall(){document.getElementById("incoming").classList.remove("show");const status=document.getElementById("unknown-call-status");if(status){status.textContent="Missed";status.className="missed"}state.phase=Math.max(state.phase,7);state.ringQuestionSent=true;save();setTimeout(()=>{typeUnknownSequence(["did that ring for you"],0,1300,600);showIncomingText("Unknown","did that ring for you","unknown")},850)}
-function acceptCall(){document.getElementById("incoming").classList.remove("show");const status=document.getElementById("unknown-call-status");if(status){status.textContent="Incoming · 0:00";status.className="incoming"}openFaceTime();state.phase=Math.max(state.phase,7);state.ringQuestionSent=true;save();setTimeout(()=>{typeUnknownSequence(["did that ring for you"],0,1300,600);showIncomingText("Unknown","did that ring for you","unknown")},850)}
+function declineCall(){document.getElementById("incoming").classList.remove("show");const status=document.getElementById("unknown-call-status");if(status){status.textContent="Missed";status.className="missed"}state.phase=Math.max(state.phase,7);state.ringQuestionSent=true;save();setTimeout(()=>typeUnknownSequence(["did you make that happen?"],700,1450,900),1100)}
+function acceptCall(){document.getElementById("incoming").classList.remove("show");const status=document.getElementById("unknown-call-status");if(status){status.textContent="Incoming · 0:00";status.className="incoming"}openFaceTime();state.phase=Math.max(state.phase,7);state.ringQuestionSent=true;save();setTimeout(()=>typeUnknownSequence(["did you make that happen?"],700,1450,900),1100)}
 
 function syncStory(){
-  document.getElementById("recovered-desktop").style.display=state.recentItemsAvailable?"block":"none";
+  document.getElementById("recovered-desktop").style.display="none";
   document.getElementById("recovered-side").style.display=state.recentItemsAvailable?"block":"none";
   document.getElementById("recovered-calls").classList.toggle("show",!!state.callHistoryAvailable);
   document.getElementById("history-find").style.display=state.safariHistoryAvailable?"block":"none";
@@ -3391,7 +3418,7 @@ function syncStory(){
 /* Kept for console/testing, but no visible reset control is shown to visitors. */
 function resetStory(){
   localStorage.removeItem(KEY);
-  sessionStorage.removeItem("ecloud-v20-session");
+  sessionStorage.removeItem("ecloud-v21-session");
   location.reload();
 }
 
@@ -3472,16 +3499,12 @@ function guideNextHardStep(){
     if(isViewingThread("unknown")) return;
     if(state.pendingBondApp) return;
 
-    if(state.bondApps.length===0){
-      showIncomingText("Unknown","open something else. i want to remember more","unknown");
-    }else{
-      showIncomingText("Unknown","come back when you’re done. i’ll wait","unknown");
-    }
+    bounceDock("messages");
     return;
   }
 
   if(state.attachmentPrompted && !state.finalChoiceMade && !isViewingThread("unknown")){
-    showIncomingText("Unknown","can you stay a little longer?","unknown");
+    bounceDock("messages");
   }
 }
 
@@ -3496,8 +3519,8 @@ function startStoryWatchdog(){
 }
 
 window.addEventListener("load",()=>{
-  const freshVisit=!sessionStorage.getItem("ecloud-v20-session");
-  sessionStorage.setItem("ecloud-v20-session","1");
+  const freshVisit=!sessionStorage.getItem("ecloud-v21-session");
+  sessionStorage.setItem("ecloud-v21-session","1");
 
   /* Reloading in the middle of an animated reply should not trap the visitor. */
   if(!state.ending){
@@ -3507,8 +3530,8 @@ window.addEventListener("load",()=>{
     if(state.callSeen && !state.ringQuestionSent){
       state.ringQuestionSent=true;
       state.unknownMsgs=state.unknownMsgs||[];
-      if(!state.unknownMsgs.some(m=>unknownText(m)==="did that ring for you")){
-        state.unknownMsgs.push("did that ring for you");
+      if(!state.unknownMsgs.some(m=>unknownText(m)==="did you make that happen?")){
+        state.unknownMsgs.push("did you make that happen?");
       }
     }
 
@@ -3517,7 +3540,7 @@ window.addEventListener("load",()=>{
 
   syncStory();
   renderContacts();
-  renderChat(state.phase>=4?"unknown":(state.lastChat||"3asians"));
+  renderChat((state.phase>=4 && state.unknownOpen)?"unknown":(state.lastChat||"3asians"));
   renderMusicPlayer();
 
   const chatBody=document.getElementById("chat-body");
@@ -3541,8 +3564,8 @@ window.addEventListener("load",()=>{
 
       setTimeout(()=>{
         const lines=state.returnCount===1
-          ?["you came back","i kept it open"]
-          :["you came back"];
+          ?["you came back","it never closed","i don't think that was me"]
+          :["you came back","it's still here"];
 
         typeUnknownSequence(
           lines,
@@ -3561,9 +3584,6 @@ window.addEventListener("load",()=>{
     return;
   }
 
-  if(state.phase>=4 && !state.unknownOpen && state.unknownMsgs?.length){
-    setTimeout(()=>showIncomingText("Unknown",lastUnknownText(),"unknown"),1400);
-  }
 });
 </script>
 </body>
