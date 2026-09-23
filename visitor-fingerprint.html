@@ -402,7 +402,7 @@ main{width:min(930px,91%);margin:38px auto 85px}
         </div>
 
         <div class="visitor-note">
-          your number = ur place in the visitor log ~ if ur #27, 26 visitor passes came before u ♡
+          ur # is ur place in the visitor log ~ #27 = 27th pass issued ♡
         </div>
 
         <div class="row">
@@ -458,6 +458,7 @@ main{width:min(930px,91%);margin:38px auto 85px}
 
 <script>
 const STORAGE_KEY = "enokiecloud_cat_pass_v2";
+const SESSION_VISIT_KEY = "enokiecloud_visit_counted_v2";
 const SUPABASE_URL = "https://szezeozsmdhlyibxhwqv.supabase.co";
 const SUPABASE_KEY = "sb_publishable_k40X-XyTfxJ97f4_kkMTPQ_epBOcFAh";
 
@@ -544,7 +545,8 @@ function makeIdentity(){
     currently: pick(statuses),
     message: pick(messages),
     caption: pick(captions),
-    visits: 1
+    visits: 1,
+    visitCounterVersion: 2
   };
 }
 
@@ -608,11 +610,30 @@ async function start(){
     if(saved){
       identity = JSON.parse(saved);
       returning = true;
-      identity.visits = (identity.visits || 1) + 1;
+
+      // Older versions counted every refresh as a visit.
+      // Reset that inflated counter once, but keep the same visitor number + identity.
+      if(identity.visitCounterVersion !== 2){
+        identity.visits = 1;
+        identity.visitCounterVersion = 2;
+        sessionStorage.setItem(SESSION_VISIT_KEY, "1");
+      } else if(!sessionStorage.getItem(SESSION_VISIT_KEY)){
+        // Count only once per browser session, not once per refresh.
+        identity.visits = (identity.visits || 1) + 1;
+        sessionStorage.setItem(SESSION_VISIT_KEY, "1");
+      }
+
+      // Remove an old saved message that is no longer in the allowed list.
+      if(identity.message === "come look around"){
+        identity.message = pick(messages);
+      }
+
       identity.currently = pick(statuses);
     } else {
       identity = makeIdentity();
+      identity.visitCounterVersion = 2;
       identity.number = await getNewVisitorNumber();
+      sessionStorage.setItem(SESSION_VISIT_KEY, "1");
     }
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify(identity));
