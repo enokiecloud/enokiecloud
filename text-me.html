@@ -589,8 +589,8 @@ const NUMBER =
 let contactDisplay = NUMBER;
 
 /* persistent story memory */
-const STORY_KEY = "enokiecloud_text_me_story_v6";
-const COOLDOWN_MS = 5 * 60 * 1000;
+const STORY_KEY = "enokiecloud_text_me_story_v8";
+const COOLDOWN_MS = 5 * 1000;
 
 function loadStory(){
   const base = {
@@ -611,6 +611,7 @@ function loadStory(){
     boundaryStrength: "",
     finished: false,
     finalEnding: "",
+    earlyByePending: false,
     transcript: []
   };
 
@@ -745,7 +746,34 @@ function addDelivered(persist = true) {
 }
 
 
-function addDate(persist = true) {
+const STORY_DATES = {
+  1:  "Feb 7, 2026 · 10:42 PM",
+  2:  "Feb 14, 2026 · 8:16 PM",
+  3:  "Feb 22, 2026 · 12:08 AM",
+  4:  "Mar 3, 2026 · 9:31 PM",
+  5:  "Mar 12, 2026 · 11:17 PM",
+  6:  "Mar 26, 2026 · 7:48 PM",
+  7:  "Apr 8, 2026 · 1:06 AM",
+  8:  "Apr 21, 2026 · 10:24 PM",
+  9:  "May 5, 2026 · 6:39 PM",
+  10: "May 21, 2026 · 11:52 PM",
+  11: "Jun 3, 2026 · 9:14 PM",
+  12: "Jun 15, 2026 · 12:27 AM",
+  13: "Jun 27, 2026 · 8:41 PM",
+  14: "Jun 30, 2026 · 10:03 PM"
+};
+
+function storyDateFor(chapterNumber){
+  return (
+    STORY_DATES[chapterNumber] ||
+    STORY_DATES[14]
+  );
+}
+
+function addDate(
+  label = storyDateFor(1),
+  persist = true
+) {
 
   const date =
     document.createElement("div");
@@ -753,18 +781,8 @@ function addDate(persist = true) {
   date.className =
     "date";
 
-  const now =
-    new Date();
-
   date.textContent =
-    "Today " +
-    now.toLocaleTimeString(
-      [],
-      {
-        hour: "numeric",
-        minute: "2-digit"
-      }
-    );
+    label;
 
   messages.appendChild(date);
 
@@ -774,6 +792,12 @@ function addDate(persist = true) {
       date.textContent
     );
   }
+}
+
+function addStoryDate(chapterNumber){
+  addDate(
+    storyDateFor(chapterNumber)
+  );
 }
 
 function restoreTranscript(){
@@ -962,7 +986,7 @@ async function start() {
   replyLabel.textContent =
     "choose a reply";
 
-  addDate();
+  addStoryDate(1);
 
   await wait(1000);
 
@@ -1701,7 +1725,12 @@ function prepareKConversation(){
     Do NOT clear messages here.
     Every new update stays underneath the old conversation.
   */
-  addDate();
+  addStoryDate(
+    Math.min(
+      story.chapter + 1,
+      14
+    )
+  );
 }
 
 function formatCooldown(ms){
@@ -1906,6 +1935,31 @@ async function chapterOnePresent(){
   await wait(850);
 
   await incoming([
+    "but even that sounds more consistent than it actually is"
+  ]);
+  await wait(850);
+
+  await incoming([
+    "we've been on and off for a while"
+  ]);
+  await wait(800);
+
+  await incoming([
+    "like we'll hang out"
+  ]);
+  await wait(650);
+
+  await incoming([
+    "then stop talking"
+  ]);
+  await wait(650);
+
+  await incoming([
+    "then randomly end up back in each other's lives again"
+  ]);
+  await wait(850);
+
+  await incoming([
     "and now we see each other sometimes"
   ]);
   await wait(850);
@@ -1980,13 +2034,13 @@ async function chapterOneEmail(){
   await incoming(["and before u ask"]);
   await wait(700);
 
-  await incoming(["it's because i blocked his number a long time ago"]);
+  await incoming(["it's because i blocked his number last year"]);
   await wait(850);
 
-  await incoming(["like YEARS ago"]);
+  await incoming(["during one of our stop-talking phases"]);
   await wait(750);
 
-  await incoming(["and i just... never unblocked it"]);
+  await incoming(["and i just... never unblocked it after that"]);
   await wait(850);
 
   await incoming(["so when we started talking again email became the loophole"]);
@@ -2576,7 +2630,77 @@ async function chapterThreePast(){
   await wait(850);
 
   await incoming([
-    "but the second he started asking me to choose the relationship"
+    "and i need to explain something else about back then"
+  ]);
+  await wait(850);
+
+  await incoming([
+    "seeing each other was hard"
+  ]);
+  await wait(750);
+
+  await incoming([
+    "i'd literally drive like 2 hours back and forth just to see him"
+  ]);
+  await wait(900);
+
+  await incoming([
+    "and he basically couldn't come see me"
+  ]);
+  await wait(800);
+
+  await incoming([
+    "his parents were really strict"
+  ]);
+  await wait(750);
+
+  await incoming([
+    "he couldn't just go out whenever"
+  ]);
+  await wait(750);
+
+  await incoming([
+    "couldn't really make spontaneous plans"
+  ]);
+  await wait(800);
+
+  await incoming([
+    "couldn't just be like 'i'll come to u this time'"
+  ]);
+  await wait(900);
+
+  await incoming([
+    "and i knew it wasn't always something he could control"
+  ]);
+  await wait(850);
+
+  await incoming([
+    "but it still made me sad"
+  ]);
+  await wait(800);
+
+  await incoming([
+    "because i wanted to feel like somebody could come toward me too"
+  ]);
+  await wait(900);
+
+  await incoming([
+    "not like i was always the one getting in the car and making the distance disappear"
+  ]);
+  await wait(950);
+
+  await incoming([
+    "so there were all these things i loved about him"
+  ]);
+  await wait(800);
+
+  await incoming([
+    "while also feeling tired and confused inside the relationship"
+  ]);
+  await wait(900);
+
+  await incoming([
+    "and THEN the second he started asking me to choose the relationship"
   ]);
   await wait(900);
 
@@ -2657,13 +2781,27 @@ async function chapterThreeLove(){
 
 async function chapterThreeCore(){
 
-  await incoming(["there wasn't anything he could fix"]);
+  await incoming(["there wasn't some one thing he could fix"]);
   await wait(850);
 
-  await incoming(["he wasn't the problem"]);
+  await incoming([
+    "there were things about our situation that hurt me"
+  ]);
   await wait(800);
 
-  await incoming(["i just wasn't there"]);
+  await incoming([
+    "but it wasn't like he could magically change his parents or suddenly become a different person"
+  ]);
+  await wait(900);
+
+  await incoming([
+    "and even if all of that changed"
+  ]);
+  await wait(750);
+
+  await incoming([
+    "i still wasn't emotionally there yet"
+  ]);
   await wait(850);
 
   await incoming([
@@ -2727,9 +2865,117 @@ async function chapterFour(){
     {
       text: "do u regret hurting him?",
       next: chapterFourHurt
+    },
+    {
+      text: "so why do u want him NOW?",
+      next: chapterFourWhyNow
     }
   ]);
 }
+
+async function chapterFourWhyNow(){
+  story.selfView = "whyNow";
+  saveStory();
+
+  await incoming(["that's the question i'm scared makes me sound bad"]);
+  await wait(900);
+
+  await incoming(["because he DOES seem more put together now"]);
+  await wait(850);
+
+  await incoming(["he can actually go out"]);
+  await wait(750);
+
+  await incoming(["he sees his friends"]);
+  await wait(750);
+
+  await incoming(["he has more freedom"]);
+  await wait(800);
+
+  await incoming(["he can make plans like a normal person"]);
+  await wait(850);
+
+  await incoming(["and sometimes seeing that makes me weirdly sad"]);
+  await wait(900);
+
+  await incoming(["because i'm like"]);
+  await wait(650);
+
+  await incoming(["that's what i wanted with u back then"]);
+  await wait(900);
+
+  await incoming(["not some richer cooler upgraded version of him"]);
+  await wait(850);
+
+  await incoming(["literally just the ability to DO life together"]);
+  await wait(950);
+
+  await incoming(["for him to come see me too"]);
+  await wait(800);
+
+  await incoming(["for us to go somewhere without it being this whole impossible thing"]);
+  await wait(900);
+
+  await incoming(["for me not to be the one driving 2 hours back and forth every time"]);
+  await wait(1000);
+
+  await incoming(["and i hate that part of me looks at him now and thinks"]);
+  await wait(850);
+
+  await incoming(["wow"]);
+  await wait(650);
+
+  await incoming(["this is the version of life with u i used to wish we could have"]);
+  await wait(1000);
+
+  await incoming(["and then i feel guilty"]);
+  await wait(750);
+
+  await incoming(["because it sounds like"]);
+  await wait(650);
+
+  await incoming(["oh NOW that he's doing better u want him"]);
+  await wait(950);
+
+  await incoming(["but that's not what it feels like"]);
+  await wait(850);
+
+  await incoming(["i didn't suddenly discover that i liked him because he got more independent"]);
+  await wait(950);
+
+  await incoming(["i already loved him"]);
+  await wait(750);
+
+  await incoming(["i already wanted to be around him"]);
+  await wait(800);
+
+  await incoming(["i just think seeing him able to live more freely now"]);
+  await wait(900);
+
+  await incoming(["shows me a version of us that never really got the chance to exist"]);
+  await wait(1000);
+
+  await incoming(["and THAT is what makes me feel like i'm missing out"]);
+  await wait(900);
+
+  await incoming(["not like"]);
+  await wait(600);
+
+  await incoming(["i missed my chance at a better product 😭"]);
+  await wait(800);
+
+  await incoming(["more like"]);
+  await wait(650);
+
+  await incoming(["we finally have some of the circumstances i used to wish we had"]);
+  await wait(900);
+
+  await incoming(["except now we're emotionally on opposite sides"]);
+  await wait(950);
+
+  chapterFourRegret();
+}
+
 
 async function chapterFourYes(){
   story.selfView = "noForcedYes";
@@ -2768,22 +3014,47 @@ async function chapterFourRegret(){
   await wait(750);
 
   await incoming([
-    "i was just prioritizing dumb shit"
+    "i was young and i was prioritizing a lot of things that felt more urgent to me then"
+  ]);
+  await wait(900);
+
+  await incoming([
+    "some of those priorities probably were wrong"
   ]);
   await wait(800);
 
   await incoming([
-    "and deep down i knew i was"
+    "and i think deep down i knew that"
   ]);
   await wait(850);
 
   await incoming([
-    "but i couldn't make myself care about the right things yet"
+    "but i also had real feelings about how hard the relationship felt"
+  ]);
+  await wait(900);
+
+  await incoming([
+    "the distance"
+  ]);
+  await wait(650);
+
+  await incoming([
+    "always being the one driving"
+  ]);
+  await wait(700);
+
+  await incoming([
+    "how limited he was by home"
+  ]);
+  await wait(800);
+
+  await incoming([
+    "and me not understanding why loving him still wasn't making me feel ready"
   ]);
   await wait(950);
 
   await incoming([
-    "i was young and confused and honestly kind of selfish"
+    "i was young and confused and yeah sometimes selfish"
   ]);
   await wait(850);
 
@@ -2835,6 +3106,12 @@ async function chapterFourRedo(){
   await wait(750);
   await incoming(["less hot and cold"]);
   await wait(750);
+  await incoming(["i would've told him how sad it made me to always be the one driving to him"]);
+  await wait(850);
+  await incoming(["and how lonely it felt that he couldn't really come toward me"]);
+  await wait(850);
+  await incoming(["without making it sound like those things were entirely his fault"]);
+  await wait(900);
   await incoming(["and i would've stopped letting him think there was some perfect thing he could do to make me ready"]);
   chapterFourEnd();
 }
@@ -3052,6 +3329,45 @@ async function chapterSixNight(){
   await incoming(["we tried another korean place"]);
   await wait(750);
 
+  await incoming(["and this is one of those things that gets me now"]);
+  await wait(800);
+
+  await incoming(["because he can just... go"]);
+  await wait(700);
+
+  await incoming(["he can meet me somewhere"]);
+  await wait(700);
+
+  await incoming(["he can be out late"]);
+  await wait(700);
+
+  await incoming(["he can see friends and make plans and actually have a life outside his house"]);
+  await wait(950);
+
+  await incoming(["and i'm happy for him"]);
+  await wait(750);
+
+  await incoming(["genuinely"]);
+  await wait(650);
+
+  await incoming(["but there is this tiny sad part of me that's like"]);
+  await wait(800);
+
+  await incoming(["where was this freedom when i was driving 2 hours just to get a few hours with u"]);
+  await wait(1000);
+
+  await incoming(["not because he owed me something he literally couldn't give"]);
+  await wait(900);
+
+  await incoming(["just because this is the kind of normal i used to want so badly"]);
+  await wait(950);
+
+  await incoming(["and now i finally get little pieces of it"]);
+  await wait(850);
+
+  await incoming(["while technically not even being with him"]);
+  await wait(950);
+
   await incoming(["because apparently our relationship status is unknowable"]);
   await wait(700);
 
@@ -3246,6 +3562,18 @@ async function chapterSevenVoiceFirst(){
   await wait(800);
 
   await incoming(["that he'd change whatever i needed"]);
+  await wait(900);
+
+  await incoming(["and listening now hurts because"]);
+  await wait(750);
+
+  await incoming(["some of what was making us hard wasn't even something he could just promise away"]);
+  await wait(900);
+
+  await incoming(["he couldn't magically make his parents less strict"]);
+  await wait(850);
+
+  await incoming(["he couldn't suddenly have the freedom i kept wishing he had"]);
   await wait(900);
 
   await incoming(["and there are these little pauses where u can hear him trying not to cry harder"]);
@@ -4805,7 +5133,57 @@ async function byeEarly(){
   await incoming(["LMAO okay"]);
   await wait(700);
   await incoming(["bye stranger"]);
-  endConversation("well... that was short.");
+
+  story.metK = true;
+  story.earlyByePending = true;
+  story.nextUnlockAt =
+    Date.now() + COOLDOWN_MS;
+
+  saveStory();
+
+  renderCooldown();
+}
+
+async function earlyByeReturn(){
+
+  choices.innerHTML = "";
+  typingLine.textContent = "";
+
+  contactDisplay = NUMBER;
+  contactName.textContent = NUMBER;
+  contactCircle.textContent = "?";
+  replyLabel.textContent = "choose a reply";
+
+  await wait(700);
+  await incoming(["wait 😭"]);
+  await wait(750);
+  await incoming(["sorry"]);
+  await wait(700);
+  await incoming(["ik i literally said bye"]);
+  await wait(800);
+  await incoming(["but can i ask u something"]);
+  await wait(850);
+  await incoming(["i need an opinion from somebody who doesn't know me"]);
+
+  story.earlyByePending = false;
+  story.nextUnlockAt = 0;
+  story.metK = false;
+  saveStory();
+
+  setChoices([
+    {
+      text: "LMAOO okay go",
+      next: setupStory
+    },
+    {
+      text: "u came BACK to the wrong number?? 😭",
+      next: setupStory
+    },
+    {
+      text: "this better be good",
+      next: setupStory
+    }
+  ]);
 }
 
 
@@ -4831,6 +5209,11 @@ async function openTextMe(){
     Date.now() < story.nextUnlockAt
   ){
     renderCooldown();
+    return;
+  }
+
+  if(story.earlyByePending){
+    earlyByeReturn();
     return;
   }
 
