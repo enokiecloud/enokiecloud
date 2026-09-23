@@ -222,6 +222,12 @@ main{width:min(930px,91%);margin:38px auto 85px}
 .label{font-size:12px;color:#55514b}
 .value{font:500 15px "DM Mono",monospace}
 
+.visitor-note{
+  margin:8px 4px 0 126px;
+  color:var(--soft);
+  font:10px/1.55 "DM Mono",monospace;
+}
+
 .personal{
   display:flex;
   align-items:center;
@@ -340,6 +346,7 @@ main{width:min(930px,91%);margin:38px auto 85px}
   .speech:before{display:none}
   .pass-head{flex-direction:column;gap:8px}
   .pass-title{font-size:17px}
+  .visitor-note{margin-left:4px}
 }
 </style>
 </head>
@@ -394,6 +401,10 @@ main{width:min(930px,91%);margin:38px auto 85px}
           <div class="value" id="visitorNo">#1</div>
         </div>
 
+        <div class="visitor-note">
+          your number = ur place in the visitor log ~ if ur #27, 26 visitor passes came before u ♡
+        </div>
+
         <div class="row">
           <div class="label">cat type</div>
           <div class="value" id="catType">cloud cat</div>
@@ -407,6 +418,11 @@ main{width:min(930px,91%);margin:38px auto 85px}
         <div class="row">
           <div class="label">first seen</div>
           <div class="value" id="firstSeen">09.14.26</div>
+        </div>
+
+        <div class="row">
+          <div class="label">visits</div>
+          <div class="value" id="visitCount">01</div>
         </div>
 
         <div class="row">
@@ -497,8 +513,7 @@ const messages = [
   "ur kinda cute",
   "welcome back",
   "don't cause problems",
-  "i'll allow it",
-  "come look around"
+  "i'll allow it"
 ];
 
 const captions = [
@@ -565,6 +580,8 @@ function showIdentity(identity, returning){
   document.getElementById("catType").textContent = identity.catType;
   document.getElementById("vibe").textContent = identity.vibe;
   document.getElementById("firstSeen").textContent = identity.firstSeen;
+  document.getElementById("visitCount").textContent =
+    String(identity.visits || 1).padStart(2, "0");
   document.getElementById("currently").textContent = identity.currently;
   document.getElementById("littleMessage").textContent = identity.message;
   document.getElementById("caption").textContent = identity.caption;
