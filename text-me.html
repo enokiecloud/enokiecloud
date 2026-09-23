@@ -589,7 +589,7 @@ const NUMBER =
 let contactDisplay = NUMBER;
 
 /* persistent story memory */
-const STORY_KEY = "enokiecloud_text_me_story_v8";
+const STORY_KEY = "enokiecloud_text_me_story_v12";
 const COOLDOWN_MS = 5 * 1000;
 
 function loadStory(){
@@ -760,7 +760,7 @@ const STORY_DATES = {
   11: "Jun 3, 2026 · 9:14 PM",
   12: "Jun 15, 2026 · 12:27 AM",
   13: "Jun 27, 2026 · 8:41 PM",
-  14: "Jun 30, 2026 · 10:03 PM"
+  14: "Jun 27, 2026 · 11:18 PM"
 };
 
 function storyDateFor(chapterNumber){
@@ -795,9 +795,27 @@ function addDate(
 }
 
 function addStoryDate(chapterNumber){
-  addDate(
-    storyDateFor(chapterNumber)
-  );
+  const label =
+    storyDateFor(chapterNumber);
+
+  const transcript =
+    Array.isArray(story.transcript)
+      ? story.transcript
+      : [];
+
+  const lastDate =
+    [...transcript]
+      .reverse()
+      .find(item => item.type === "date");
+
+  if(
+    lastDate &&
+    lastDate.text === label
+  ){
+    return;
+  }
+
+  addDate(label);
 }
 
 function restoreTranscript(){
@@ -2562,9 +2580,33 @@ async function chapterTwoGirlReaction(){
 async function chapterTwoHonest(){
   await incoming(["i know"]);
   await wait(700);
+
   await incoming(["and that's why being mad makes me feel guilty"]);
   await wait(850);
-  await incoming(["because technically he's telling me exactly where he's at"]);
+
+  await incoming(["because technically he IS telling me where he's at"]);
+  await wait(850);
+
+  await incoming(["he keeps saying the problem isn't me"]);
+  await wait(750);
+
+  await incoming(["he says he doesn't even understand his own feelings rn"]);
+  await wait(850);
+
+  await incoming(["that he feels directionless"]);
+  await wait(750);
+
+  await incoming(["and scared"]);
+  await wait(800);
+
+  await incoming(["and he doesn't want me sitting around waiting for him to figure himself out"]);
+  await wait(950);
+
+  await incoming(["which is a really fair thing to say"]);
+  await wait(850);
+
+  await incoming(["and somehow also the last thing i want to hear"]);
+
   chapterTwoEnd();
 }
 
@@ -2878,6 +2920,69 @@ async function chapterFourWhyNow(){
   saveStory();
 
   await incoming(["that's the question i'm scared makes me sound bad"]);
+  await wait(900);
+
+  await incoming(["and there's this other tiny thing i keep thinking about"]);
+  await wait(850);
+
+  await incoming(["his birthday was june 23"]);
+  await wait(750);
+
+  await incoming(["i made him something by hand"]);
+  await wait(800);
+
+  await incoming(["this big black fan wall decor piece"]);
+  await wait(850);
+
+  await incoming(["i spent forever on it because i thought it'd look cute in his room"]);
+  await wait(950);
+
+  await incoming(["and when i gave it to him"]);
+  await wait(750);
+
+  await incoming(["he seemed like he liked it"]);
+  await wait(850);
+
+  await incoming(["like i left feeling really good about it"]);
+  await wait(850);
+
+  await incoming(["but he still hasn't put it up"]);
+  await wait(950);
+
+  await incoming(["and i KNOW that could mean literally nothing"]);
+  await wait(850);
+
+  await incoming(["maybe he hasn't gotten around to it"]);
+  await wait(750);
+
+  await incoming(["maybe he doesn't know where to put it"]);
+  await wait(750);
+
+  await incoming(["whatever"]);
+  await wait(700);
+
+  await incoming(["but because it's him"]);
+  await wait(750);
+
+  await incoming(["my brain turns one piece of wall decor into a referendum on whether he actually cares 😭"]);
+  await wait(1000);
+
+  await incoming(["and i hate that"]);
+  await wait(750);
+
+  await incoming(["because i didn't make it to get proof back"]);
+  await wait(850);
+
+  await incoming(["i made it because i know him"]);
+  await wait(750);
+
+  await incoming(["and i wanted to give him something that felt like me noticing him"]);
+  await wait(950);
+
+  await incoming(["so yeah"]);
+  await wait(700);
+
+  await incoming(["that's another reason this whole thing gets under my skin"]);
   await wait(900);
 
   await incoming(["because he DOES seem more put together now"]);
@@ -3931,6 +4036,39 @@ async function chapterNine(){
   await incoming(["my friend asked me to go out"]);
   await wait(750);
 
+  await incoming(["and earlier that day i randomly thought about the stupid birthday fan again"]);
+  await wait(850);
+
+  await incoming(["like"]);
+  await wait(650);
+
+  await incoming(["why do i even care that it's not on his wall"]);
+  await wait(800);
+
+  await incoming(["but i do"]);
+  await wait(750);
+
+  await incoming(["because every tiny thing has started feeling like evidence"]);
+  await wait(850);
+
+  await incoming(["did he put it up"]);
+  await wait(650);
+
+  await incoming(["did he email"]);
+  await wait(650);
+
+  await incoming(["did he kiss me first"]);
+  await wait(650);
+
+  await incoming(["did he mention that girl"]);
+  await wait(750);
+
+  await incoming(["and i hate that i'm collecting clues instead of just living"]);
+  await wait(950);
+
+  await incoming(["then my friend asked me to go out"]);
+  await wait(750);
+
   await incoming(["and my first thought was"]);
   await wait(700);
 
@@ -4124,22 +4262,209 @@ async function chapterTen(){
   await incoming(["he still isn't ready"]);
   await wait(1000);
 
-  await incoming(["and i think i'm finally tired"]);
+  await incoming(["and this time i actually told him how bad it's getting"]);
   await wait(850);
 
-  await incoming([
-    "because being with him makes me so happy"
-  ]);
+  await incoming(["i told him"]);
+  await wait(700);
+
+  await incoming(["\"i just feel so desperate and i hate it so much\""]);
+  await wait(1000);
+
+  await incoming(["and he sent me this long message"]);
   await wait(850);
 
-  await incoming([
-    "but being with him without actually having him"
-  ]);
+  await incoming(["basically saying"]);
+  await wait(700);
+
+  await incoming(["he feels like there's something in him that lacks personal purpose"]);
+  await wait(900);
+
+  await incoming(["that he feels sad"]);
+  await wait(650);
+
+  await incoming(["behind"]);
+  await wait(650);
+
+  await incoming(["annoyed"]);
+  await wait(700);
+
+  await incoming(["and he hates how much he looks to other people for direction or comfort"]);
+  await wait(950);
+
+  await incoming(["and sometimes that person is me"]);
+  await wait(750);
+
+  await incoming(["because i know him"]);
+  await wait(750);
+
+  await incoming(["and he does want somebody to talk to"]);
+  await wait(850);
+
+  await incoming(["but then he said something that made my stomach drop"]);
+  await wait(900);
+
+  await incoming(["he doesn't want me sitting around waiting for him to make a decision"]);
+  await wait(1000);
+
+  await incoming(["he literally told me"]);
+  await wait(700);
+
+  await incoming(["he's decision-less rn"]);
+  await wait(700);
+
+  await incoming(["directionless"]);
+  await wait(700);
+
+  await incoming(["and so out of touch with what he wants that he can't even decide his own feelings half the time"]);
+  await wait(1050);
+
+  await incoming(["he said my feelings matter"]);
+  await wait(750);
+
+  await incoming(["but he doesn't know what to tell me when he doesn't even know what HE feels"]);
+  await wait(1000);
+
+  await incoming(["and apparently every conversation we have about us"]);
+  await wait(850);
+
+  await incoming(["feels to him like it's about to be the conversation where everything ends"]);
+  await wait(1000);
+
+  await incoming(["which"]);
+  await wait(650);
+
+  await incoming(["fair"]);
+  await wait(650);
+
+  await incoming(["because i'm always two seconds away from saying i can't do this anymore"]);
+  await wait(950);
+
+  await incoming(["he said he feels like he's been fucking up genuine interactions with people"]);
+  await wait(900);
+
+  await incoming(["because he doesn't know what's actually good for him"]);
+  await wait(950);
+
+  await incoming(["and the only thing he seems sure about"]);
+  await wait(800);
+
+  await incoming(["is that he's scared every time"]);
+  await wait(950);
+
+  await incoming(["then he told me"]);
+  await wait(700);
+
+  await incoming(["he hates that i'm feeling this way"]);
+  await wait(800);
+
+  await incoming(["he doesn't blame me for where his head is"]);
+  await wait(800);
+
+  await incoming(["he blames himself"]);
+  await wait(750);
+
+  await incoming(["and he needs time to figure out what this feeling even is"]);
+  await wait(1000);
+
+  await incoming(["and that's the thing"]);
+  await wait(700);
+
+  await incoming(["i believe him"]);
+  await wait(850);
+
+  await incoming(["i don't think he's secretly sitting there trying to hurt me"]);
+  await wait(900);
+
+  await incoming(["i think he's genuinely lost"]);
+  await wait(850);
+
+  await incoming(["but knowing WHY somebody can't give u what u need"]);
+  await wait(900);
+
+  await incoming(["doesn't make needing it hurt less"]);
+  await wait(1000);
+
+  await incoming(["i literally asked"]);
+  await wait(700);
+
+  await incoming(["\"then what's the point of being around\""]);
+  await wait(1000);
+
+  await incoming(["because being with him makes me so happy"]);
+  await wait(850);
+
+  await incoming(["but being with him without actually having him"]);
   await wait(800);
 
   await incoming(["is making me miserable"]);
   await wait(1000);
 
+  setChoices([
+    {
+      text: "he's telling u not to wait for him",
+      next: chapterTenNotWait
+    },
+    {
+      text: "he clearly cares ~ he just can't give u certainty",
+      next: chapterTenCares
+    },
+    {
+      text: "that's almost worse because nobody's the villain",
+      next: chapterTenNoVillain
+    }
+  ]);
+}
+
+async function chapterTenNotWait(){
+  await incoming(["I KNOW"]);
+  await wait(800);
+
+  await incoming(["that's what makes staying feel so embarrassing"]);
+  await wait(850);
+
+  await incoming(["he isn't even asking me to put my life on hold"]);
+  await wait(900);
+
+  await incoming(["i'm the one trying to turn \"i don't know\" into a reason to keep hoping"]);
+  await wait(950);
+
+  chapterTenChoice();
+}
+
+async function chapterTenCares(){
+  await incoming(["exactly"]);
+  await wait(800);
+
+  await incoming(["and i think that's why i can't make myself hate him"]);
+  await wait(850);
+
+  await incoming(["he isn't saying i mean nothing"]);
+  await wait(750);
+
+  await incoming(["he's basically saying i matter and he STILL can't promise me anything"]);
+  await wait(950);
+
+  chapterTenChoice();
+}
+
+async function chapterTenNoVillain(){
+  await incoming(["THAT'S IT"]);
+  await wait(800);
+
+  await incoming(["i almost wish one of us was just being awful"]);
+  await wait(850);
+
+  await incoming(["then i'd know what to do"]);
+  await wait(800);
+
+  await incoming(["instead we're both hurting and neither of us knows how to make the timing different"]);
+  await wait(950);
+
+  chapterTenChoice();
+}
+
+async function chapterTenChoice(){
   await incoming(["so i need u to pick"]);
   await wait(750);
 
@@ -4162,6 +4487,7 @@ async function chapterTen(){
     }
   ]);
 }
+
 
 async function chooseStayRoute(){
   story.route = "stay";
@@ -4246,37 +4572,64 @@ async function stayEleven(){
   await incoming(["okay so i stayed"]);
   await wait(800);
 
+  await incoming(["which is kinda insane"]);
+  await wait(750);
+
+  await incoming(["because he literally told me not to sit around waiting for him"]);
+  await wait(900);
+
+  await incoming(["so i can't even pretend he promised me something"]);
+  await wait(850);
+
+  await incoming(["he didn't"]);
+  await wait(700);
+
+  await incoming(["i'm staying because every time we're together"]);
+  await wait(800);
+
+  await incoming(["some part of me still thinks maybe the way he looks at me means more than what he's telling me"]);
+  await wait(1000);
+
   await incoming(["and at first"]);
   await wait(700);
 
-  await incoming(["i thought maybe u were right"]);
+  await incoming(["i thought maybe giving him time was actually working"]);
   await wait(850);
 
-  await incoming(["he kept reaching out"]);
+  await incoming(["because he kept reaching out"]);
   await wait(750);
 
   await incoming(["we kept seeing each other"]);
   await wait(750);
 
-  await incoming(["and every time we were together it felt better"]);
-  await wait(850);
-
-  await incoming(["like maybe we were slowly getting somewhere"]);
-  await wait(900);
-
-  await incoming(["except"]);
+  await incoming(["another korean place"]);
   await wait(700);
 
-  await incoming(["nothing outside those nights changed"]);
+  await incoming(["another argument over which banchan was better 😭"]);
+  await wait(800);
+
+  await incoming(["another night sitting in the car way too long"]);
+  await wait(800);
+
+  await incoming(["another hug where neither of us lets go"]);
   await wait(850);
 
-  await incoming(["still no calls"]);
-  await wait(650);
+  await incoming(["another kiss that makes me forget every conversation we've had about not being together"]);
+  await wait(950);
 
-  await incoming(["still barely any contact"]);
+  await incoming(["and every single time"]);
   await wait(750);
 
-  await incoming(["still no answer"]);
+  await incoming(["i leave thinking"]);
+  await wait(650);
+
+  await incoming(["okay"]);
+  await wait(600);
+
+  await incoming(["maybe THIS time something shifted"]);
+  await wait(900);
+
+  await incoming(["then we barely talk again"]);
 
   setChoices([
     {
@@ -4284,12 +4637,12 @@ async function stayEleven(){
       next: stayElevenAsk
     },
     {
-      text: "keep giving him space",
+      text: "don't push him ~ just wait",
       next: stayElevenSpace
     },
     {
-      text: "protect urself a little",
-      next: stayElevenProtect
+      text: "maybe enjoy it for what it is",
+      next: stayElevenAccept
     }
   ]);
 }
@@ -4300,14 +4653,27 @@ async function stayElevenAsk(){
 
   await incoming(["i did"]);
   await wait(750);
-  await incoming(["and instantly felt like 3-years-ago him"]);
-  await wait(800);
-  await incoming(["he didn't get mad"]);
+
+  await incoming(["and he said he still doesn't know"]);
   await wait(750);
-  await incoming(["he just still didn't have a different answer"]);
+
+  await incoming(["still likes me"]);
+  await wait(700);
+
+  await incoming(["still thinks about me"]);
+  await wait(750);
+
+  await incoming(["still isn't ready"]);
+  await wait(850);
+
+  await incoming(["then he kissed me before i left"]);
+  await wait(900);
+
+  await incoming(["which obviously did NOT help 😭"]);
+
   await completeChapter(
     11,
-    "asking again didn't create an answer that wasn't there."
+    "same answer. same person. somehow i'm still hopeful."
   );
 }
 
@@ -4315,31 +4681,65 @@ async function stayElevenSpace(){
   story.stayApproach = "space";
   saveStory();
 
-  await incoming(["that's what i kept doing"]);
+  await incoming(["that's what i did"]);
   await wait(750);
-  await incoming(["i became so good at pretending i didn't need anything"]);
+
+  await incoming(["i stopped asking"]);
+  await wait(750);
+
+  await incoming(["stopped bringing up the girl"]);
+  await wait(750);
+
+  await incoming(["stopped asking what we are"]);
+  await wait(800);
+
+  await incoming(["and honestly"]);
+  await wait(700);
+
+  await incoming(["we had more fun"]);
+  await wait(800);
+
+  await incoming(["which almost made it worse"]);
   await wait(850);
-  await incoming(["which is maybe not the achievement i thought it was"]);
+
+  await incoming(["because now i'm like"]);
+  await wait(650);
+
+  await incoming(["see?? this is good when i don't ruin it by asking questions"]);
+
   await completeChapter(
     11,
-    "k keeps waiting quietly."
+    "k learns how easy the gray area feels when she stops naming it."
   );
 }
 
-async function stayElevenProtect(){
-  story.stayApproach = "protect";
+async function stayElevenAccept(){
+  story.stayApproach = "accept";
   saveStory();
 
-  await incoming(["i tried"]);
+  await incoming(["that's what i've been telling myself"]);
   await wait(750);
-  await incoming(["made more plans"]);
-  await wait(700);
-  await incoming(["stopped being available every single time"]);
+
+  await incoming(["like"]);
+  await wait(600);
+
+  await incoming(["why can't i just enjoy him when i have him"]);
   await wait(800);
-  await incoming(["but emotionally i was still waiting"]);
+
+  await incoming(["why does everything need a label"]);
+  await wait(800);
+
+  await incoming(["which sounds very chill and evolved"]);
+  await wait(750);
+
+  await incoming(["until he leaves"]);
+  await wait(750);
+
+  await incoming(["and then i feel sick again 😭"]);
+
   await completeChapter(
     11,
-    "distance on a calendar is not always distance in ur head."
+    "k calls it acceptance because that hurts less than calling it waiting."
   );
 }
 
@@ -4347,84 +4747,165 @@ async function stayTwelve(){
   prepareKConversation();
 
   await wait(850);
-  await incoming(["i think i'm getting worse"]);
-  await wait(900);
-
-  await incoming(["not like dramatic worse"]);
-  await wait(750);
-
-  await incoming(["quiet worse"]);
-  await wait(800);
-
-  await incoming(["i'm irritated all the time"]);
-  await wait(750);
-
-  await incoming(["sad for no obvious reason"]);
-  await wait(800);
-
-  await incoming(["and every email from him changes my entire mood"]);
-  await wait(900);
-
-  await incoming(["my friend literally asked me"]);
-  await wait(750);
-
-  await incoming(["\"are u waiting for him to text right now?\""]);
-  await wait(850);
-
-  await incoming(["and i said no"]);
+  await incoming(["okay"]);
   await wait(700);
 
-  await incoming(["while checking my email 😭"]);
+  await incoming(["i'm not doing great"]);
+  await wait(850);
+
+  await incoming(["but also nothing dramatic happened"]);
+  await wait(800);
+
+  await incoming(["that's almost the problem"]);
+  await wait(850);
+
+  await incoming(["it's just the same thing"]);
+  await wait(750);
+
+  await incoming(["he emails"]);
+  await wait(650);
+
+  await incoming(["my whole mood changes"]);
+  await wait(700);
+
+  await incoming(["we see each other"]);
+  await wait(650);
+
+  await incoming(["i'm happy"]);
+  await wait(650);
+
+  await incoming(["he hugs me"]);
+  await wait(650);
+
+  await incoming(["he kisses me"]);
+  await wait(650);
+
+  await incoming(["we act like us"]);
+  await wait(750);
+
+  await incoming(["then i go home"]);
+  await wait(700);
+
+  await incoming(["and wait"]);
+  await wait(750);
+
+  await incoming(["and wait"]);
+  await wait(800);
+
+  await incoming(["and tell myself i'm not waiting"]);
   await wait(900);
 
-  await incoming([
-    "i thought patience would be me loving him better than i did before"
-  ]);
-  await wait(950);
+  await incoming(["my friends have started noticing"]);
+  await wait(800);
 
-  await incoming([
-    "but i think i'm making myself smaller so he never feels pressured"
-  ]);
+  await incoming(["like if i'm quiet they'll ask"]);
+  await wait(750);
+
+  await incoming(["\"did he disappear again?\""]);
+  await wait(900);
+
+  await incoming(["and i HATE that they know the pattern"]);
 
   setChoices([
     {
-      text: "give it one more chance",
-      next: stayTwelveMore
+      text: "k this is making u miserable",
+      next: stayTwelveMiserable
     },
     {
-      text: "this is enough ~ leave now",
-      next: stayTwelveLeave
+      text: "maybe he really just needs more time",
+      next: stayTwelveMoreTime
+    },
+    {
+      text: "what happens if he emails tonight?",
+      next: stayTwelveTonight
     }
   ]);
 }
 
-async function stayTwelveMore(){
-  story.route = "stay";
-  saveStory();
-
-  await incoming(["okay"]);
-  await wait(750);
-  await incoming(["one more chance"]);
+async function stayTwelveMiserable(){
+  await incoming(["i know"]);
   await wait(800);
-  await incoming(["but i think part of me already knows"]);
+
+  await incoming(["i KNOW"]);
+  await wait(750);
+
+  await incoming(["and every time i get this sad"]);
+  await wait(750);
+
+  await incoming(["i swear i'm done"]);
+  await wait(850);
+
+  await incoming(["then he reaches out"]);
+  await wait(750);
+
+  await incoming(["and suddenly the version of me who was done is gone"]);
+  await wait(900);
+
+  await incoming(["because being wanted for one night still feels better than missing him all week"]);
+
   await completeChapter(
     12,
-    "k gives the waiting one last chance."
+    "k knows the pattern now. knowing doesn't stop it."
   );
 }
 
-async function stayTwelveLeave(){
-  story.route = "lateLeave";
-  saveStory();
-
-  await incoming(["yeah"]);
+async function stayTwelveMoreTime(){
+  await incoming(["that's what i keep thinking"]);
   await wait(800);
-  await incoming(["i think i needed somebody to say i'm allowed to stop"]);
+
+  await incoming(["what if i leave right before he would've been ready"]);
   await wait(850);
-  await incoming(["even after choosing to stay before"]);
+
+  await incoming(["what if all he needed was for me not to pressure him"]);
+  await wait(850);
+
+  await incoming(["what if this is me finally giving him the patience i couldn't give before"]);
+  await wait(900);
+
+  await incoming(["there's always a what if"]);
+  await wait(750);
+
+  await incoming(["even though he already told me"]);
+  await wait(700);
+
+  await incoming(["don't wait for me"]);
+  await wait(850);
+
+  await incoming(["and somehow i hear that"]);
+  await wait(700);
+
+  await incoming(["then turn around and wait anyway"]);
+  await wait(850);
+
+  await incoming(["every what if buys another week"]);
+
   await completeChapter(
     12,
-    "k finally stops treating a past choice like a life sentence."
+    "another week becomes easier to justify than an ending."
+  );
+}
+
+async function stayTwelveTonight(){
+  await incoming(["..."]);
+  await wait(900);
+
+  await incoming(["i'd go"]);
+  await wait(800);
+
+  await incoming(["that's the embarrassing answer"]);
+  await wait(850);
+
+  await incoming(["i could sit here and tell u everything that's wrong with this"]);
+  await wait(850);
+
+  await incoming(["and if his name showed up in my inbox tonight"]);
+  await wait(750);
+
+  await incoming(["i'd still go"]);
+
+  await completeChapter(
+    12,
+    "k already knows what she'd choose before the email even arrives."
   );
 }
 
@@ -4432,51 +4913,144 @@ async function stayThirteen(){
   prepareKConversation();
 
   await wait(850);
-  await incoming(["nothing changed"]);
+  await incoming(["lol"]);
+  await wait(700);
+
+  await incoming(["guess who emailed me"]);
   await wait(850);
 
-  await incoming(["that's the update"]);
+  await incoming(["and yes"]);
+  await wait(650);
+
+  await incoming(["i went"]);
   await wait(850);
 
-  await incoming(["we had another perfect night"]);
+  await incoming(["we tried another korean place"]);
   await wait(750);
 
-  await incoming(["then another empty week"]);
-  await wait(850);
+  await incoming(["the kimchi was actually really good 😭"]);
+  await wait(800);
 
-  await incoming(["and i finally realized"]);
+  await incoming(["we argued about the potatoes"]);
+  await wait(750);
+
+  await incoming(["he made fun of me"]);
+  await wait(700);
+
+  await incoming(["i made fun of him"]);
+  await wait(750);
+
+  await incoming(["and for a few hours"]);
+  await wait(800);
+
+  await incoming(["i forgot i'm sad"]);
   await wait(900);
 
-  await incoming([
-    "every time i'm with him i reset the clock"
-  ]);
+  await incoming(["then outside"]);
+  await wait(700);
+
+  await incoming(["he hugged me"]);
+  await wait(700);
+
+  await incoming(["for a long time"]);
+  await wait(750);
+
+  await incoming(["kissed me"]);
+  await wait(750);
+
+  await incoming(["and i almost asked again"]);
+  await wait(800);
+
+  await incoming(["what are we"]);
+  await wait(750);
+
+  await incoming(["what about that girl"]);
+  await wait(750);
+
+  await incoming(["do u actually want me"]);
   await wait(850);
 
-  await incoming([
-    "i get enough happiness to convince myself i can survive the waiting again"
-  ]);
+  await incoming(["but i didn't"]);
+  await wait(800);
+
+  await incoming(["because i already know what he'll say"]);
+  await wait(850);
+
+  await incoming(["he likes me"]);
+  await wait(700);
+
+  await incoming(["he thinks about me"]);
+  await wait(700);
+
+  await incoming(["he doesn't know where he's at"]);
+  await wait(750);
+
+  await incoming(["he isn't proud of it"]);
+  await wait(750);
+
+  await incoming(["he isn't ready"]);
   await wait(950);
 
-  await incoming([
-    "three years ago i couldn't give him enough of me"
-  ]);
+  await incoming(["so i came home"]);
+  await wait(800);
+
+  await incoming(["and for some reason"]);
+  await wait(700);
+
+  await incoming(["i thought about the birthday fan again"]);
+  await wait(800);
+
+  await incoming(["still not on the wall"]);
   await wait(850);
 
-  await incoming([
-    "now i'm giving this so much of me that i barely recognize myself"
-  ]);
-  await wait(1000);
+  await incoming(["which is such a stupid thing to be sad about"]);
+  await wait(800);
 
-  await incoming(["i still love him"]);
+  await incoming(["but i think it's because i keep wanting little permanent signs that i exist in his life"]);
+  await wait(950);
+
+  await incoming(["and instead everything with us keeps feeling temporary"]);
+  await wait(950);
+
+  await incoming(["told myself"]);
+  await wait(650);
+
+  await incoming(["this has to be the last time"]);
+  await wait(900);
+
+  await incoming(["anyway"]);
+  await wait(700);
+
+  await incoming(["he emailed me again"]);
+
+  setChoices([
+    {
+      text: "are u going?",
+      next: stayLoopGoing
+    },
+    {
+      text: "k...",
+      next: stayLoopGoing
+    },
+    {
+      text: "u already know what i'm gonna say",
+      next: stayLoopGoing
+    }
+  ]);
+}
+
+async function stayLoopGoing(){
+  await incoming(["yeah"]);
   await wait(850);
 
-  await incoming([
-    "i just don't think love is supposed to require this much disappearing"
-  ]);
+  await incoming(["i know"]);
+  await wait(750);
+
+  await incoming(["i'm going"]);
 
   await finishStory(
-    "stayHeartbreak",
-    "ending: k stayed, and the waiting slowly became its own kind of heartbreak."
+    "stayLoop",
+    "ending: nothing ended. that was the problem."
   );
 }
 
@@ -5076,13 +5650,19 @@ async function postEnding(){
 
   await wait(850);
 
-  if(story.finalEnding === "stayHeartbreak"){
+  if(story.finalEnding === "stayLoop"){
     await incoming(["hi"]);
     await wait(750);
-    await incoming(["still figuring out what comes after staying too long"]);
+    await incoming(["nothing new"]);
+    await wait(700);
+    await incoming(["which somehow means everything is exactly the same"]);
     await wait(800);
-    await incoming(["but i'm finally asking what i want instead of only what he can handle"]);
-    endConversation("k is still learning what staying cost.");
+    await incoming(["we stopped talking again"]);
+    await wait(750);
+    await incoming(["for now"]);
+    await wait(850);
+    await incoming(["i'm sure he'll email eventually"]);
+    endConversation("k is still inside the loop.");
     return;
   }
 
